@@ -2,18 +2,18 @@
 
 set -e
 
-echo "🚀 Docker Auto-Maintenance Installer"
+echo "🚀 Docker Auto-Maintenance Installer (Self-Healing Edition)"
 
 # -----------------------------
-# Check root
+# Root check
 # -----------------------------
 if [ "$EUID" -ne 0 ]; then
-  echo "⚠️ Please run with sudo"
+  echo "⚠️ Run with sudo"
   exit 1
 fi
 
 # -----------------------------
-# Function: install if missing
+# Install if missing
 # -----------------------------
 install_if_missing() {
   if ! dpkg -s "$1" >/dev/null 2>&1; then
@@ -25,55 +25,92 @@ install_if_missing() {
 }
 
 # -----------------------------
-# Detect & fix Docker conflicts
+# FULL Docker repair
 # -----------------------------
-if dpkg -l | grep -q containerd.io && dpkg -l | grep -q containerd; then
-  echo "⚠️ Docker conflict detected (containerd vs containerd.io)"
-  echo "🧹 Fixing..."
+fix_docker_install() {
+  echo "🧠 Running FULL Docker repair..."
 
-  apt remove -y containerd containerd.io docker docker-engine docker.io || true
+  systemctl stop docker 2>/dev/null || true
+
+  apt remove -y docker docker.io docker-compose containerd containerd.io || true
   apt autoremove -y
-fi
+  apt clean
+
+  rm -rf /var/lib/docker
+  rm -rf /var/lib/containerd
+
+  apt update
+  apt install -y docker.io docker-compose
+
+  systemctl daemon-reexec
+  systemctl daemon-reload
+}
 
 # -----------------------------
-# Update apt
+# Check Docker service exists
 # -----------------------------
-echo "🔄 Updating package list..."
-apt update
+check_docker_service() {
+  if ! systemctl list-unit-files | grep -q docker.service; then
+    echo "❌ Docker service missing → repairing"
+    fix_docker_install
+  fi
+}
 
 # -----------------------------
-# Install dependencies
+# Start Docker safely
 # -----------------------------
-install_if_missing docker.io
-install_if_missing docker-compose
-install_if_missing jq
-install_if_missing curl
+start_docker() {
+  if ! systemctl start docker 2>/dev/null; then
+    echo "⚠️ Docker failed to start → repairing"
+    fix_docker_install
 
-# -----------------------------
-# Enable Docker
-# -----------------------------
-systemctl enable docker
-systemctl start docker
+    systemctl enable docker
+    systemctl start docker
+  fi
+}
 
 # -----------------------------
 # Verify Docker works
 # -----------------------------
-if ! docker ps >/dev/null 2>&1; then
-  echo "❌ Docker failed to start"
-  exit 1
+verify_docker() {
+  if ! docker ps >/dev/null 2>&1; then
+    echo "❌ Docker still broken after repair"
+    echo "👉 Run: journalctl -xeu docker.service"
+    exit 1
+  fi
+}
+
+# -----------------------------
+# Detect conflicts
+# -----------------------------
+if dpkg -l | grep -q containerd.io && dpkg -l | grep -q containerd; then
+  echo "⚠️ Conflict detected (containerd vs containerd.io)"
+  fix_docker_install
 fi
 
-echo "✅ Docker is running"
+# -----------------------------
+# Base deps
+# -----------------------------
+apt update
+
+install_if_missing jq
+install_if_missing curl
 
 # -----------------------------
-# Setup config
+# Docker self-healing flow
+# -----------------------------
+check_docker_service
+start_docker
+verify_docker
+
+echo "✅ Docker healthy"
+
+# -----------------------------
+# Config setup
 # -----------------------------
 if [ ! -f connections.env ]; then
-  echo "📄 Creating connections.env"
   cp connections.env.example connections.env
-  echo "⚠️ Edit connections.env before running system"
-else
-  echo "✅ connections.env exists"
+  echo "⚠️ Edit connections.env before use"
 fi
 
 # -----------------------------
@@ -83,13 +120,9 @@ chmod +x *.sh
 chmod +x lib/*.sh 2>/dev/null || true
 
 # -----------------------------
-# Cron (deduplicated)
+# Cron (clean + deduped)
 # -----------------------------
-echo "⏰ Setting up cron jobs..."
-
 CRON_TMP=$(mktemp)
-
-# Remove old entries
 crontab -l 2>/dev/null | grep -v "$(pwd)" > "$CRON_TMP" || true
 
 cat <<EOF >> "$CRON_TMP"
@@ -109,10 +142,10 @@ EOF
 crontab "$CRON_TMP"
 rm "$CRON_TMP"
 
-echo "✅ Cron installed"
+echo "⏰ Cron installed"
 
 # -----------------------------
-# Start monitoring (if present)
+# Monitoring
 # -----------------------------
 if [ -f monitoring-compose.yml ]; then
   docker compose -f monitoring-compose.yml up -d || true
@@ -126,7 +159,6 @@ fi
 # Done
 # -----------------------------
 echo ""
-echo "🎉 INSTALL COMPLETE"
-echo "➡️ Next step:"
-echo "nano connections.env"
+echo "🎉 INSTALL COMPLETE (SELF-HEALED)"
+echo "➡️ Next: nano connections.env"
 echo ""
