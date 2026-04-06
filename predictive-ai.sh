@@ -3,7 +3,7 @@
 # 🧠 Predictive AI (heuristic-based)
 # Detects trends and warns before failure
 
-source .env
+source "$(dirname "$0")/lib/env.sh"
 
 HOST=$(hostname)
 
@@ -31,10 +31,10 @@ if (( $(echo "$CPU1 < $CPU2" | bc -l) )) && (( $(echo "$CPU2 < $CPU3" | bc -l) )
   send "⚠️ [$HOST] CPU trending upward (possible runaway process)"
 fi
 
-if [ "$MEM" -gt 85 ]; then
+if [ "$MEM" -gt "${MEM_THRESHOLD:-85}" ]; then
   send "⚠️ [$HOST] Memory high ($MEM%) – possible leak"
 fi
 
-if [ "$DISK" -gt 85 ]; then
+if [ "$DISK" -gt "${DISK_THRESHOLD:-85}" ]; then
   send "⚠️ [$HOST] Disk usage high ($DISK%) – may fill soon"
 fi

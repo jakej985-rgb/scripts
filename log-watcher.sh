@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source .env
+source "$(dirname "$0")/lib/env.sh"
 LOG_DIR="/docker/maintenance/logs"
 KEYWORDS="error|failed|unhealthy|panic|critical"
 

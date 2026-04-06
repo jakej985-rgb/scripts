@@ -2,7 +2,7 @@
 
 # Auto reboot if system unhealthy (high CPU or memory)
 
-source .env
+source "$(dirname "$0")/lib/env.sh"
 
 CPU=$(top -bn1 | grep "Cpu(s)" | awk '{print $2 + $4}')
 MEM=$(free | awk '/Mem:/ {printf("%.0f", $3/$2 * 100)}')

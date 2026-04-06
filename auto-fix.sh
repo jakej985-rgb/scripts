@@ -2,7 +2,7 @@
 
 # 🔧 Targeted auto-fix system
 
-source .env
+source "$(dirname "$0")/lib/env.sh"
 
 HOST=$(hostname)
 
@@ -18,15 +18,17 @@ TOP_CONTAINER=$(docker stats --no-stream --format "{{.Name}} {{.CPUPerc}}" | sor
 # Restart if CPU spike
 CPU=$(top -bn1 | grep "Cpu(s)" | awk '{print $2+$4}')
 
-if (( $(echo "$CPU > 90" | bc -l) )); then
-  send "🔧 High CPU detected ($CPU%). Restarting $TOP_CONTAINER"
-  docker restart "$TOP_CONTAINER"
-fi
+if [ "$ENABLE_AUTO_FIX" = "true" ]; then
+  if (( $(echo "$CPU > ${CPU_THRESHOLD:-90}" | bc -l) )); then
+    send "🔧 High CPU detected ($CPU%). Restarting $TOP_CONTAINER"
+    docker restart "$TOP_CONTAINER"
+  fi
 
-# Memory pressure
-MEM=$(free | awk '/Mem:/ {printf("%.0f", $3/$2 * 100)}')
+  # Memory pressure
+  MEM=$(free | awk '/Mem:/ {printf("%.0f", $3/$2 * 100)}')
 
-if [ "$MEM" -gt 90 ]; then
-  send "🔧 High memory usage ($MEM%). Restarting top container"
-  docker restart "$TOP_CONTAINER"
+  if [ "$MEM" -gt "${MEM_THRESHOLD:-90}" ]; then
+    send "🔧 High memory usage ($MEM%). Restarting top container"
+    docker restart "$TOP_CONTAINER"
+  fi
 fi

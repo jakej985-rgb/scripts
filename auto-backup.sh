@@ -1,6 +1,8 @@
 #!/bin/bash
 
-BASE_BACKUP_DIR="/mnt/backups/docker"
+source "$(dirname "$0")/lib/env.sh"
+
+BASE_BACKUP_DIR="${BACKUP_DIR:-/mnt/backups/docker}"
 DATE=$(date "+%Y-%m-%d_%H-%M")
 
 for NAME in $(docker ps --format "{{.Names}}"); do
