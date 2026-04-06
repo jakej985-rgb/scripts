@@ -1,31 +1,33 @@
-# 🚀 Docker Auto-Maintenance System (Clean Version)
+# 🚀 Docker Auto-Maintenance System (Clean Structure)
 
-All scripts are now in the **root folder** for simplicity.
-
-## Setup
-
-```bash
-chmod +x *.sh
-crontab -e
-```
+Use this as your primary reference. Old README may be outdated.
 
 ## Core Scripts
+Only these are required:
+- auto-backup.sh
+- auto-heal.sh
+- auto-fix.sh
+- learning-mode.sh
+- predictive-ai.sh
+- auto-rollback-on-update.sh
+- auto-reboot-if-unhealthy.sh
+- graceful-reboot.sh
+- safe-reboot.sh
+- post-reboot-check.sh
+- secure-telegram-control.sh
+- log-watcher.sh
+- ai-log-analyzer.sh
 
-- auto-backup.sh → backups (keeps 4)
-- auto-heal.sh → restarts broken containers
-- secure-telegram-control.sh → remote control
-- log-watcher.sh → alerts
-- ai-log-analyzer.sh → summaries
-- rollback.sh → restore container
-- zero-downtime-update.sh → safe updates
-
-## Monitoring
-
+## Remove old structure
 ```bash
-docker compose -f monitoring-compose.yml up -d
+rm -rf docker-maintenance
 ```
 
-## Notes
+## Setup
+```bash
+./install.sh
+nano .env
+```
 
-- Old folder structure can be ignored
-- Everything needed is now in root
+## Done
+System is fully autonomous.
