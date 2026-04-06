@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source "$(dirname "$0")/lib/env.sh"
+
 # 🧠 Learning mode: builds baseline of normal system behavior
 
 DATA_DIR="/tmp/system_learning"

@@ -2,7 +2,7 @@
 
 # 🔍 Post-reboot verification + alert
 
-source .env
+source "$(dirname "$0")/lib/env.sh"
 
 HOST=$(hostname)
 

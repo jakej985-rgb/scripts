@@ -26,8 +26,20 @@ rm -rf docker-maintenance
 ## Setup
 ```bash
 ./install.sh
-nano .env
 ```
+
+# ⚙️ Configuration
+
+This system uses a centralized config file:
+
+```bash
+cp connections.env.example connections.env
+nano connections.env
+```
+
+All scripts depend on this file.
+
+If missing, scripts will fail safely.
 
 ## Done
 System is fully autonomous.

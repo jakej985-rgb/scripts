@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source "$(dirname "$0")/lib/env.sh"
+
 set -e
 
 echo "🚀 Installing Docker Auto-Maintenance System"
@@ -10,9 +12,9 @@ sudo apt install -y docker.io docker-compose jq
 sudo systemctl enable docker
 
 # Setup env
-if [ ! -f .env ]; then
-  cp .env.example .env
-  echo "⚠️ Edit .env with your BOT_TOKEN and CHAT_ID"
+if [ ! -f connections.env ]; then
+  cp connections.env.example connections.env
+  echo "⚠️ Edit connections.env with your BOT_TOKEN and CHAT_ID"
 fi
 
 # Permissions
