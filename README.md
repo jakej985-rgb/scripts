@@ -26,7 +26,7 @@ rm -rf docker-maintenance
 ## Setup
 ```bash
 ./install.sh
-nano .env
+nano connections.env
 ```
 
 ## Done

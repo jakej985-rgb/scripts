@@ -17,7 +17,7 @@ chmod +x install.sh
 ## 3. Add your Telegram info
 
 ```bash
-nano .env
+nano connections.env
 ```
 
 Fill in:

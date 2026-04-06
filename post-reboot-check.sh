@@ -2,7 +2,7 @@
 
 # 🔍 Post-reboot verification + alert
 
-source .env
+source connections.env
 
 HOST=$(hostname)
 

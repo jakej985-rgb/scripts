@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source .env
+source connections.env
 
 for NAME in $(docker ps --format "{{.Names}}"); do
   HEALTH=$(docker inspect --format='{{.State.Health.Status}}' $NAME 2>/dev/null)

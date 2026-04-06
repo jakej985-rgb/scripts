@@ -1,3 +1,4 @@
 .env
+connections.env
 *.log
 /tmp

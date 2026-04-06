@@ -3,7 +3,7 @@
 # 🧠 Predictive AI (heuristic-based)
 # Detects trends and warns before failure
 
-source .env
+source connections.env
 
 HOST=$(hostname)
 

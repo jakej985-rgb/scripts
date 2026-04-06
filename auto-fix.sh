@@ -2,7 +2,7 @@
 
 # 🔧 Targeted auto-fix system
 
-source .env
+source connections.env
 
 HOST=$(hostname)
 

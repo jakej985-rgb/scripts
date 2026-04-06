@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source .env
+source connections.env
 LOG_DIR="/docker/maintenance/logs"
 KEYWORDS="error|failed|unhealthy|panic|critical"
 

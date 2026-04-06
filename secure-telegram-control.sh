@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source .env
+source connections.env
 LAST_UPDATE_FILE="/tmp/telegram_last_update"
 LAST_UPDATE=$(cat $LAST_UPDATE_FILE 2>/dev/null || echo 0)
 

@@ -2,7 +2,7 @@
 
 # 🧠 Graceful reboot: notify → stop containers → optional backup → reboot
 
-source .env
+source connections.env
 
 HOST=$(hostname)
 TIME=$(date)

@@ -2,7 +2,7 @@
 
 # 🔄 Safe system reboot with notification
 
-source .env
+source connections.env
 
 HOST=$(hostname)
 TIME=$(date)
