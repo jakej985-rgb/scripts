@@ -1,8 +1,10 @@
 #!/bin/bash
 
+# 🚀 Production Installer v2 (Safe + Smart + Self-Healing Lite)
+
 set -e
 
-echo "🚀 Docker Auto-Maintenance Installer (SAFE MODE)"
+echo "🚀 Docker Auto-Maintenance Installer (Production v2)"
 
 # -----------------------------
 # Root check
@@ -12,22 +14,29 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
+log() { echo -e "[INFO] $1"; }
+warn() { echo -e "[WARN] $1"; }
+err() { echo -e "[ERROR] $1"; }
+
 have_cmd() { command -v "$1" >/dev/null 2>&1; }
 
 install_if_missing() {
   if ! dpkg -s "$1" >/dev/null 2>&1; then
-    echo "📦 Installing $1..."
+    log "Installing $1..."
     apt-get install -y "$1"
   else
-    echo "✅ $1 already installed"
+    log "$1 already installed"
   fi
 }
 
-echo "🔄 Updating packages..."
+# -----------------------------
+# Update system
+# -----------------------------
+log "Updating apt..."
 apt-get update -y
 
 # -----------------------------
-# Base dependencies
+# Base deps
 # -----------------------------
 install_if_missing curl
 install_if_missing jq
@@ -35,56 +44,63 @@ install_if_missing jq
 # -----------------------------
 # Docker detection
 # -----------------------------
-DOCKER_OK=false
+DOCKER_STATUS="missing"
 
 if have_cmd docker; then
   if docker info >/dev/null 2>&1; then
-    DOCKER_OK=true
-    echo "✅ Docker already working"
+    DOCKER_STATUS="healthy"
   else
-    echo "⚠️ Docker installed but not running"
+    DOCKER_STATUS="broken"
   fi
-else
-  echo "ℹ️ Docker not installed"
 fi
 
-# -----------------------------
-# Safe Docker fix (NO DATA DELETE)
-# -----------------------------
-if [ "$DOCKER_OK" = false ]; then
-  echo "🔧 Attempting SAFE Docker repair..."
+log "Docker status: $DOCKER_STATUS"
 
-  # Only fix known conflict
-  if dpkg -l | grep -q containerd.io && dpkg -l | grep -q containerd; then
-    echo "⚠️ containerd conflict → removing only containerd"
-    apt-get remove -y containerd || true
-  fi
+# -----------------------------
+# Handle Docker states
+# -----------------------------
 
+# Install if missing
+if [ "$DOCKER_STATUS" = "missing" ]; then
+  log "Installing Docker (fresh)"
   install_if_missing docker.io
   install_if_missing docker-compose
+fi
+
+# Repair if broken (SAFE)
+if [ "$DOCKER_STATUS" = "broken" ]; then
+  warn "Docker installed but not working"
 
   systemctl daemon-reexec || true
   systemctl daemon-reload || true
-  systemctl enable docker || true
 
   if ! systemctl start docker 2>/dev/null; then
-    echo ""
-    echo "⚠️ Docker failed to start"
-    echo "👉 NOT forcing cleanup to avoid data loss"
-    echo "👉 If broken, run manual reset:"
-    echo "   sudo systemctl stop docker"
-    echo "   sudo rm -rf /var/lib/docker"
-    echo ""
+    warn "Docker failed to start"
+
+    # Detect mount lock (your current issue)
+    if mount | grep -q "/var/lib/docker"; then
+      err "Docker mount lock detected"
+      echo "👉 REQUIRED ACTION:"
+      echo "   sudo reboot"
+      echo "   then re-run installer"
+      exit 1
+    fi
+
+    warn "Attempting safe package repair"
+    apt-get install --reinstall -y docker.io docker-compose
+
+    systemctl daemon-reload
+    systemctl start docker || true
   fi
 fi
 
 # -----------------------------
-# Verify (non-fatal)
+# Final Docker check
 # -----------------------------
 if docker ps >/dev/null 2>&1; then
-  echo "✅ Docker running"
+  log "Docker is running"
 else
-  echo "⚠️ Docker not running yet (installer continues safely)"
+  warn "Docker still not running (continuing safely)"
 fi
 
 # -----------------------------
@@ -92,9 +108,9 @@ fi
 # -----------------------------
 if [ ! -f connections.env ]; then
   cp connections.env.example connections.env
-  echo "⚠️ Created connections.env (edit it)"
+  warn "Created connections.env (edit required)"
 else
-  echo "✅ connections.env exists"
+  log "connections.env exists"
 fi
 
 # -----------------------------
@@ -104,8 +120,9 @@ chmod +x *.sh
 chmod +x lib/*.sh 2>/dev/null || true
 
 # -----------------------------
-# Cron (idempotent)
+# Cron setup (idempotent)
 # -----------------------------
+log "Configuring cron..."
 CRON_TMP=$(mktemp)
 crontab -l 2>/dev/null | grep -v "$(pwd)" > "$CRON_TMP" || true
 
@@ -126,7 +143,7 @@ EOF
 crontab "$CRON_TMP"
 rm "$CRON_TMP"
 
-echo "⏰ Cron configured"
+log "Cron installed"
 
 # -----------------------------
 # Optional monitoring
@@ -135,7 +152,6 @@ if docker ps >/dev/null 2>&1; then
   if [ -f monitoring-compose.yml ]; then
     docker compose -f monitoring-compose.yml up -d || true
   fi
-
   if [ -f node-exporter-compose.yml ]; then
     docker compose -f node-exporter-compose.yml up -d || true
   fi
@@ -145,5 +161,5 @@ fi
 # Done
 # -----------------------------
 echo ""
-echo "🎉 INSTALL COMPLETE (SAFE)"
+echo "🎉 INSTALL COMPLETE (Production v2)"
 echo "➡️ Next: nano connections.env"
