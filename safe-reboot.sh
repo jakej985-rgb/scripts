@@ -2,7 +2,7 @@
 
 # 🔄 Safe system reboot with notification
 
-source .env
+source "$(dirname "$0")/lib/env.sh"
 
 HOST=$(hostname)
 TIME=$(date)

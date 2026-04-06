@@ -2,7 +2,7 @@
 
 # 🧠 Graceful reboot: notify → stop containers → optional backup → reboot
 
-source .env
+source "$(dirname "$0")/lib/env.sh"
 
 HOST=$(hostname)
 TIME=$(date)
