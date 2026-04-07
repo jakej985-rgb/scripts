@@ -1,31 +1,8 @@
-# M3TAL Media Server
+state/*
+!state/.keep
 
-# Secrets
-connections.env
 .env
-*.env
-!connections.env.example
-
-# Runtime state (generated on server, not tracked)
-docker/state/locks/*
-docker/state/cooldowns/*
-docker/state/retries/*
-docker/state/*.txt
-docker/state/*.csv
-docker/logs/*.log
-
-# Dashboard users (contains passwords)
-docker/dashboard/users.json
-
-# OS / editor
-.DS_Store
-Thumbs.db
-*.swp
-*.swo
-*~
-
-# Temp
-/tmp
-
-# Keep directory structure
-!.gitkeep
+*.log
+__pycache__/
+*.pyc
+dashboard/users.json
