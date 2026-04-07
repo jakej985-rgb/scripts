@@ -3,7 +3,7 @@
 # 🔗 Dependency Agent v3.2 — Container relationship awareness
 # Checks if upstream dependencies are running
 
-CONF="/docker/dependencies.conf"
+CONF="/docker/config/dependencies.conf"
 STATE="/docker/state/dependency-issues.txt"
 
 > $STATE

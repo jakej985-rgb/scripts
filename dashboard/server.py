@@ -12,8 +12,8 @@ app = Flask(__name__)
 STATE = "/docker/state"
 LOGS = "/docker/logs"
 USERS_FILE = "/docker/dashboard/users.json"
-NODES_FILE = "/docker/nodes.json"
-JOBS_FILE = "/docker/jobs.json"
+NODES_FILE = "/docker/config/nodes.json"
+JOBS_FILE = "/docker/config/jobs.json"
 
 # ── v5.1: In-Memory Node Registry (heartbeat-based) ──
 
@@ -541,6 +541,20 @@ def rolling_update(name):
         f.write(f"{time.strftime('%c')} Rolling update: {name} ({image})\n")
 
     return jsonify({"status": "ok", "container": name, "image": image})
+
+@app.route("/update/<name>")
+@requires_auth("operator")
+def update(name):
+    """Simple GET route to pull and restart container (for easy webhook/browser usage)"""
+    try:
+        image = subprocess.check_output(["docker", "inspect", "--format", "{{.Config.Image}}", name], text=True).strip()
+        subprocess.run(["docker", "pull", image])
+    except:
+        pass
+    subprocess.run(["docker", "restart", name])
+    with open(f"{LOGS}/actions.log", "a") as f:
+        f.write(f"{time.strftime('%c')} Dashboard: Simple updated {name}\n")
+    return redirect("/")
 
 # ══════════════════════════════════════
 

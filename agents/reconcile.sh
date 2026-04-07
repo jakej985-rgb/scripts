@@ -4,7 +4,7 @@
 # Compares desired state (cluster.yml) against actual state
 # Scales up/down to match, respects cooldowns
 
-CONFIG="/docker/cluster.yml"
+CONFIG="/docker/config/cluster.yml"
 STATE="/docker/state"
 LOG="/docker/logs/reconcile.log"
 
