@@ -1,0 +1,196 @@
+services:
+  gluetun:
+    image: qmcgaw/gluetun
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - VPN_SERVICE_PROVIDER=private internet access
+      - VPN_TYPE=openvpn
+      - OPENVPN_USER=p9481123
+      - OPENVPN_PASSWORD=7zcYzm4KMu
+      - SERVER_REGIONS=US East
+      - FIREWALL_VPN_INPUT_PORTS=8080,6881
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 6881:6881/udp
+    restart: unless-stopped
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent
+    container_name: qbittorrent
+    network_mode: "service:gluetun"
+    depends_on:
+      - gluetun
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - WEBUI_PORT=8080
+    volumes:
+#      - /mnt/downloads:/downloads
+      - /docker/media/qbittorrent/config:/config
+      - /mnt/:/data
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr
+    container_name: radarr
+    ports:
+      - 7878:7878
+    volumes:
+      - /docker/media/radarr/config:/config
+      - /mnt/:/data
+#      - /mnt/downloads:/downloads
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr
+    container_name: sonarr
+    ports:
+      - 8989:8989
+    volumes:
+      - /docker/media/sonarr/config:/config
+      - /mnt/:/data
+#      - /mnt/downloads:/downloads
+
+    restart: unless-stopped
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr
+    container_name: bazarr
+    ports:
+      - 6767:6767
+    volumes:
+      - /docker/media/bazarr/config:/config
+      - /mnt/:/data
+#      - /mnt/downloads:/downloads
+    restart: unless-stopped
+
+  komga:
+    image: gotson/komga
+    container_name: komga
+    ports:
+      - 25600:25600
+    volumes:
+      - /docker/media/komga/config:/config
+      - /mnt/:/data
+    restart: unless-stopped
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    ports:
+      - 5055:5055
+    volumes:
+      - /docker/media/jellyseerr/config:/app/config
+    restart: unless-stopped
+
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    ports:
+      - 3000:3000
+    volumes:
+      - /docker/media/homepage/config:/app/config
+      - /mnt/disk1:/disk1
+      - /mnt/downloads:/downloads
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    environment:
+      - HOMEPAGE_ALLOWED_HOSTS=*
+    restart: unless-stopped
+
+  autobrr:
+    image: ghcr.io/autobrr/autobrr:latest
+    container_name: autobrr
+    ports:
+      - 7474:7474
+    volumes:
+      - /docker/media/autobrr/config:/config
+    restart: unless-stopped
+
+  recyclarr:
+    image: ghcr.io/recyclarr/recyclarr
+    container_name: recyclarr
+    volumes:
+      - /docker/media/recyclarr/config:/config
+    restart: unless-stopped
+
+  maintainerr:
+    image: ghcr.io/maintainerr/maintainerr:latest
+    container_name: maintainerr
+    ports:
+      - 6246:6246
+    volumes:
+      - /docker/media/maintainerr/config:/opt/data
+    restart: unless-stopped
+
+  tdarr:
+    image: ghcr.io/haveagitgat/tdarr:latest
+    container_name: tdarr
+    ports:
+      - 8265:8265
+      - 8266:8266
+    volumes:
+      - /docker/media/tdarr/config:/app/config
+      - /docker/media/tdarr/config:/app/logs
+      - /mnt/disk1:/data
+    restart: unless-stopped
+
+  glances:
+    image: nicolargo/glances:latest-full
+    container_name: glances
+    ports:
+      - 61208:61208
+    pid: host
+    command: glances -w
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    environment:
+      - HOMEPAGE_ALLOWED_HOST=*
+      - NODE_TLS_REJECT_UNAUTHORIZED:0
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Denver
+    volumes:
+      - /docker/media/prowlarr/config:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+
+  flaresolverr:
+      image: ghcr.io/flaresolverr/flaresolverr
+      container_name: flaresolverr
+      environment:
+        - LOG_LEVEL:info
+      ports:
+        - 8191:8191
+      restart: unless-stopped
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
