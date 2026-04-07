@@ -1,70 +1,68 @@
 # Changelog
 
-## v2.0.0 — Agent-Based Architecture
+## v5.0.0 — Full Control Plane
 
-**Breaking:** Full rewrite from chaotic scripts to controlled agent pipeline.
+### v3.1 — Anomaly Detection (Metrics-Based)
+- New `metrics-agent.sh` — captures docker stats (CPU%, MEM) per container
+- New `anomaly-agent.sh` — flags containers exceeding CPU/MEM thresholds
+- Metrics history stored as CSV time-series for graphing
+- Auto-trims history to last 10,000 data points
+- Decision engine processes `HIGH_CPU` and `HIGH_MEM` anomalies
+- Action agent sends Telegram alerts for anomalies
 
-### Core (v2.0)
-- Replaced all maintenance scripts with 5 core agents
-- `m3tal.sh` master controller runs pipeline via cron
-- Lock files prevent overlapping agent runs
-- Cooldowns (120s) prevent action spam
-- Per-container retry limits (max 3 auto-restarts)
-- Removed: auto-reboot, auto-rollback, predictive-ai actions
+### v3.2 — Container Dependency Graph
+- New `dependency-agent.sh` — checks container-to-container and container-to-path relationships
+- New `dependencies.conf` — declarative dependency map (radarr→qbittorrent, tdarr→/mnt/disk1, etc.)
+- Decision engine processes `DEPENDENCY_DOWN` and `DEPENDENCY_MISSING` events
+- Action agent sends context-aware alerts ("Radarr degraded because qbittorrent is down")
 
-### Dashboard (v2.1)
-- Flask-based web dashboard at port 8080
-- Live-polling JSON API (`/api/state`)
-- Real-time container status, analysis, actions queue
-- Retry tracking meters per container
-- Disk usage view
-- Action history log (last 50 entries)
-- AI recommendations panel
+### v4 — Full UI Control Panel
+- Container control buttons: Restart, Stop, Start (per container)
+- "Approve Pending" button — executes force-mode on action-agent from browser
+- All control actions are POST-protected (no accidental GET triggers)
+- Action logging for all dashboard-initiated actions
+- Toast notifications for action feedback
 
-### Telegram Control (v2.2)
-- `telegram-agent.sh` handles approval flow
-- `yes` / `no` to approve or reject pending actions
-- `status` for container overview
-- `/restart [name]` for manual restarts
-- `/logs [name]` to tail container logs
-- `/help` for command reference
-- Chat ID security — only authorized users
+### v4.1 — Metrics Graphs (Time-Series)
+- Chart.js integration with dual-axis CPU/MEM line charts
+- `/api/metrics/<name>` endpoint returns last 100 data points
+- Container selector dropdown auto-populated from history
+- Responsive chart with JetBrains Mono axis labels
 
-### AI Layer (v3)
-- `ai-agent.sh` — read-only AI analysis
-- Tries Ollama (local LLM) first
-- Falls back to local heuristic analysis
-- Outputs to `state/ai-recommendations.txt`
-- Decision engine reads suggestions but NEVER auto-executes
-- AI restart suggestions require human approval
-- Controlled via `ENABLE_AI=true/false` in connections.env
+### v4.2 — Role-Based Access Control
+- `users.json` — admin/operator/viewer roles
+- Role hierarchy: admin (full) > operator (restart/stop/start) > viewer (read-only)
+- HTTP Basic Auth on all endpoints
+- Approve action restricted to admin role only
 
-### Removed
-- `api.py` (replaced by dashboard)
-- `auto-heal.sh` (replaced by monitor + decision engine)
-- `auto-fix.sh`
-- `auto-reboot-if-unhealthy.sh`
-- `auto-rollback-on-update.sh`
-- `predictive-ai.sh` (replaced by ai-agent.sh)
-- `ai-log-analyzer.sh`
-- `log-watcher.sh`
-- `graceful-reboot.sh`
-- `safe-reboot.sh`
-- `learning-mode.sh`
-- `manage-cron.sh`
-- `maintenance-mode.sh`
-- `post-reboot-check.sh`
-- `install.sh`
-- `lib/` directory
+### v5 — Multi-Node Cluster
+- `nodes.json` — maps node names to URLs
+- `node-agent.sh` — lightweight status broadcaster for remote nodes
+- `/api/cluster` — aggregates status from all nodes
+- `/api/cluster/restart/<node>/<container>` — remote container restart
+- Cluster tab in dashboard with per-node status view
+- Offline detection with timeout handling
+
+### Infrastructure
+- Dashboard port moved to 8888 (avoids gluetun conflict on 8080)
+- Docker socket mounted for dashboard container control
+- `requests` library added to dashboard container
+- Tabbed dashboard navigation (Overview, Metrics, Intelligence, Logs, Cluster)
+- Master controller pipeline expanded with metrics, anomaly, and dependency agents
+
+---
+
+## v3.0.0 — Agent-Based Architecture
+- Core: 5 agent pipeline (monitor → analyzer → decision-engine → action-agent + backup-agent)
+- v2.1: Flask dashboard with live-polling glassmorphic UI
+- v2.2: Telegram approval system (yes/no gate, /restart, /logs, /status)
+- v3: Safe AI agent (Ollama + heuristic fallback, read-only recommendations)
+- Safety: lock files, 120s cooldowns, 3-retry limits, force-mode via approval only
+- Removed: 16 legacy scripts, stale api.py, lib/ directory
 
 ## v1.0.0
 - Initial production release
-- One-command installer (install.sh)
+- One-command installer
 - Auto backup + retention
 - Self-healing containers
 - Telegram control + alerts
-- AI-style log summaries
-- Auto rollback system
-- Monitoring stack (Grafana + Prometheus + Node Exporter)
-- Secure env-based configuration
-- Root-level simplified structure

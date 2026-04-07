@@ -1,103 +1,128 @@
-# M3TAL Media Server v2
+# M3TAL Media Server v5
 
-Agent-based Docker orchestration system — controlled, observable, and safe.
+Agent-based Docker orchestration with anomaly detection, dependency awareness, full UI control, metrics graphs, RBAC, and multi-node cluster support.
 
 ## Architecture
 
 ```
-┌──────────┐    ┌──────────┐    ┌─────────────────┐    ┌──────────────┐
-│ Monitor  │ →  │ Analyzer │ →  │ Decision Engine │ →  │ Action Agent │
-└──────────┘    └──────────┘    └─────────────────┘    └──────────────┘
-                      ↑                   ↑                    ↑
-                ┌───────────┐       ┌───────────┐       ┌─────────────┐
-                │ AI Agent  │       │ Telegram  │       │ Backup Agent│
-                │ (v3 safe) │       │ (v2.2)    │       │ (isolated)  │
-                └───────────┘       └───────────┘       └─────────────┘
-                                                              │
-                                          ┌───────────────────┘
-                                          ↓
-                                    ┌──────────┐
-                                    │Dashboard │
-                                    │ (v2.1)   │
-                                    └──────────┘
+┌──────────┐   ┌──────────┐   ┌───────────┐   ┌───────────┐
+│ Monitor  │ → │ Analyzer │ → │ Decision  │ → │  Action   │
+└──────────┘   └──────────┘   │  Engine   │   │  Agent    │
+                              └───────────┘   └───────────┘
+┌──────────┐   ┌──────────┐        ↑               ↑
+│ Metrics  │ → │ Anomaly  │ ───────┘               │
+└──────────┘   └──────────┘                   ┌─────┴──────┐
+┌──────────┐        ↑                         │ Telegram   │
+│ Depend.  │ ───────┘                         └────────────┘
+└──────────┘
+┌──────────┐                           ┌─────────────┐
+│ AI Agent │ ── recommendations ──→    │  Dashboard   │
+└──────────┘                           │  (v4 + v5)  │
+┌──────────┐                           └─────────────┘
+│  Backup  │ (isolated, daily cron)
+└──────────┘
 ```
 
 ## Structure
 
 ```
-/docker/
-├── m3tal.sh              ← master controller (cron entry point)
-├── connections.env        ← credentials + config
+docker/
+├── m3tal.sh                  ← Master controller (cron)
+├── connections.env.example   ← Config template
+├── dependencies.conf         ← Container dependency map (v3.2)
+├── nodes.json                ← Cluster node URLs (v5)
+│
 ├── agents/
-│   ├── monitor.sh         ← collects container + disk state
-│   ├── analyzer.sh        ← detects unhealthy / crash loops
-│   ├── decision-engine.sh ← applies rules, retry limits, queues actions
-│   ├── action-agent.sh    ← executes restarts, sends alerts
-│   ├── backup-agent.sh    ← daily backup with 4-snapshot rotation
-│   ├── telegram-agent.sh  ← approval system + remote commands
-│   └── ai-agent.sh        ← safe read-only AI recommendations
+│   ├── monitor.sh            ← Collects container + disk state
+│   ├── analyzer.sh           ← Detects unhealthy / crash loops
+│   ├── metrics-agent.sh      ← Docker stats + time-series CSV (v3.1)
+│   ├── anomaly-agent.sh      ← CPU/MEM threshold detection (v3.1)
+│   ├── dependency-agent.sh   ← Checks upstream dependencies (v3.2)
+│   ├── decision-engine.sh    ← Rules, retries, anomalies, deps → actions
+│   ├── action-agent.sh       ← Executes restarts, sends alerts
+│   ├── backup-agent.sh       ← Daily backup with rotation
+│   ├── telegram-agent.sh     ← Approval system + remote commands (v2.2)
+│   ├── ai-agent.sh           ← Safe read-only AI recommendations (v3)
+│   └── node-agent.sh         ← Status broadcaster for cluster (v5)
+│
 ├── dashboard/
-│   ├── server.py          ← Flask API + web UI server
+│   ├── server.py             ← Flask API + RBAC + control endpoints
+│   ├── users.json            ← Role-based user accounts (v4.2)
+│   ├── static/
 │   └── templates/
-│       └── index.html     ← live control plane dashboard
-├── state/
-│   ├── locks/             ← prevents concurrent runs
-│   ├── cooldowns/         ← prevents action spam
-│   └── retries/           ← per-container retry counters
-├── logs/
-├── media/                 ← media stack compose
-├── maintenance/           ← maintenance stack compose
-└── tattoo/                ← tattoo app compose
+│       └── index.html        ← Full control plane dashboard
+│
+├── state/                    ← Runtime state (git-ignored)
+│   ├── locks/ cooldowns/ retries/
+│   ├── containers.txt  metrics.txt  analysis.txt
+│   ├── anomalies.txt  dependency-issues.txt  actions.txt
+│   └── metrics-history.csv
+│
+├── logs/                     ← Centralized action logs
+├── media/                    ← Media stack compose
+├── maintenance/              ← Maintenance stack + dashboard compose
+└── tattoo/                   ← Tattoo app compose
 ```
 
 ## Quick Start
 
-1. Copy and configure env:
-   ```bash
-   cp /docker/connections.env.example /docker/connections.env
-   nano /docker/connections.env
-   ```
+```bash
+# 1. Configure
+cp /docker/connections.env.example /docker/connections.env
+nano /docker/connections.env
 
-2. Add cron jobs:
-   ```bash
-   # Agent pipeline — every minute
-   * * * * * /docker/m3tal.sh
+# 2. Set up RBAC (change default passwords!)
+nano /docker/dashboard/users.json
 
-   # Backups — daily at 3 AM
-   0 3 * * * /docker/agents/backup-agent.sh
-   ```
+# 3. Make executable
+chmod +x /docker/m3tal.sh /docker/agents/*.sh
 
-3. Start the dashboard:
-   ```bash
-   cd /docker/maintenance
-   docker compose up -d dashboard
-   ```
-   Dashboard available at `http://your-server:8080`
+# 4. Add cron
+crontab -e
+# * * * * * /docker/m3tal.sh
+# 0 3 * * * /docker/agents/backup-agent.sh
 
-## Safety Guarantees
+# 5. Launch dashboard
+cd /docker/maintenance && docker compose up -d dashboard
+```
 
-| Layer         | Protection                          |
-|---------------|-------------------------------------|
-| Lock files    | Prevents overlapping agent runs     |
-| Cooldowns     | 120s minimum between actions        |
-| Retry limits  | Max 3 auto-restarts per container   |
-| AI boundaries | Read-only, never acts directly      |
-| Telegram gate | Critical actions require approval   |
+Dashboard available at `http://your-server:8888`
+
+## Dashboard Tabs
+
+| Tab | What It Shows |
+|-----|---------------|
+| **📦 Overview** | Container status with Restart/Stop/Start buttons, analysis, actions queue, anomalies, dependencies, retry meters |
+| **📊 Metrics** | Live CPU/MEM bars per container, Chart.js time-series graphs, disk usage |
+| **🧠 Intelligence** | AI recommendations (Ollama or local heuristics) |
+| **📜 Logs** | Last 50 action history entries |
+| **🌐 Cluster** | Multi-node status with online/offline detection |
+
+## Safety Matrix
+
+| Layer | Protection |
+|---|---|
+| Lock Files | Prevents overlapping agent runs |
+| Cooldowns | 120s minimum between actions |
+| Retry Limits | Max 3 auto-restarts per container |
+| AI Boundaries | Read-only, never acts directly |
+| Telegram Gate | Critical actions require yes/no approval |
+| RBAC | admin/operator/viewer role hierarchy |
+| POST-only | Control actions require POST (no accidental GETs) |
 
 ## Telegram Commands
 
-| Command              | Action                        |
-|----------------------|-------------------------------|
-| `status`             | Show container overview       |
-| `yes`                | Approve pending action        |
-| `no`                 | Reject pending action         |
-| `/restart [name]`    | Restart specific container    |
-| `/logs [name]`       | Tail 30 lines of container    |
-| `/help`              | List all commands             |
+| Command | Action |
+|---|---|
+| `status` | Container overview |
+| `yes` / `no` | Approve or reject pending action |
+| `/restart [name]` | Restart container |
+| `/logs [name]` | Tail 30 lines |
+| `/help` | List commands |
 
-## Enabling AI (v3)
+## Cluster Setup (v5)
 
-1. Install Ollama on your server
-2. Set `ENABLE_AI=true` in `connections.env`
-3. Set `OLLAMA_HOST=http://localhost:11434`
-4. AI will provide recommendations visible in the dashboard
+1. On each remote node, run `node-agent.sh`
+2. Edit `/docker/nodes.json` with node URLs
+3. Dashboard aggregates all nodes in the Cluster tab
+4. Remote restart available via `/api/cluster/restart/<node>/<container>`

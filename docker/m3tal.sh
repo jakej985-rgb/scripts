@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# ⚡ M3TAL v2 — Master Controller
+# ⚡ M3TAL v5 — Master Controller
 # Runs the full agent pipeline in order
 # Cron: * * * * * /docker/m3tal.sh
 
@@ -12,6 +12,15 @@ source $BASE/connections.env 2>/dev/null
 # Phase 1-3: Core pipeline
 bash $AGENTS/monitor.sh
 bash $AGENTS/analyzer.sh
+
+# Phase 3.1: Metrics + anomaly detection
+bash $AGENTS/metrics-agent.sh
+bash $AGENTS/anomaly-agent.sh
+
+# Phase 3.2: Dependency checks
+bash $AGENTS/dependency-agent.sh
+
+# Phase 3-4: Decision + action
 bash $AGENTS/decision-engine.sh
 
 # Phase 4: AI analysis (safe, read-only)

@@ -11,7 +11,11 @@ docker/state/locks/*
 docker/state/cooldowns/*
 docker/state/retries/*
 docker/state/*.txt
+docker/state/*.csv
 docker/logs/*.log
+
+# Dashboard users (contains passwords)
+docker/dashboard/users.json
 
 # OS / editor
 .DS_Store
@@ -22,3 +26,6 @@ Thumbs.db
 
 # Temp
 /tmp
+
+# Keep directory structure
+!.gitkeep
