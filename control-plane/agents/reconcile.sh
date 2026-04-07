@@ -1,49 +1,89 @@
 #!/bin/bash
 
-CLUSTER="control-plane/config/cluster.yml"
 LOG="control-plane/state/logs/reconcile.log"
+
+# =========================
+# LOAD STATE
+# =========================
+CLUSTER="control-plane/config/cluster.yml"
+running=$(docker ps --format "{{.Names}}")
+defined=$(yq e '.services | keys | .[]' $CLUSTER)
 
 echo "[RECONCILE] $(date)" >> $LOG
 
-defined=$(yq e '.services | keys | .[]' $CLUSTER)
-running=$(docker ps --format "{{.Names}}")
-
-# --- enforce desired services ---
+# =========================
+# SERVICE ENFORCEMENT
+# =========================
 for svc in $defined; do
   enabled=$(yq e ".services.$svc.enabled" $CLUSTER)
   stack=$(yq e ".services.$svc.stack" $CLUSTER)
+  replicas=$(yq e ".services.$svc.replicas" $CLUSTER)
+  if [ "$replicas" = "null" ] || [ -z "$replicas" ]; then replicas=1; fi
 
-  if [ "$enabled" = "true" ]; then
+  containers=$(echo "$running" | grep "^$svc")
+  count=$(echo "$containers" | grep -c "^$svc")
 
-    # --- MISSING ---
-    if ! echo "$running" | grep -q "^$svc$"; then
-      echo "[START] $svc via $stack" | tee -a $LOG
-      bash scripts/docker-exec.sh $stack
-      continue
+  # 1. Disabled handling FIRST
+  if [ "$enabled" != "true" ]; then
+    if [ "$count" -gt 0 ]; then
+      for c in $containers; do
+        if [ -n "$c" ]; then
+          echo "[STOP] $c disabled" | tee -a $LOG
+          docker stop $c
+        fi
+      done
     fi
-
-    # --- HEALTH CHECK ---
-    status=$(docker inspect --format='{{.State.Health.Status}}' $svc 2>/dev/null)
-
-    if [ "$status" = "unhealthy" ]; then
-      echo "[HEAL] $svc unhealthy → restart" | tee -a $LOG
-      docker restart $svc
-    fi
-
-  else
-    # --- DISABLED SERVICE ---
-    if echo "$running" | grep -q "^$svc$"; then
-      echo "[STOP] $svc disabled" | tee -a $LOG
-      docker stop $svc
-    fi
+    continue
   fi
+
+  # 2. Existence check
+  if [ "$count" -eq 0 ]; then
+    echo "[START] $svc via $stack" | tee -a $LOG
+    bash scripts/docker-exec.sh $stack
+    continue
+  fi
+
+  # =========================
+  # SCALING
+  # =========================
+  if [ "$count" -lt "$replicas" ]; then
+    echo "[SCALE-UP] $svc ($count -> $replicas)" | tee -a $LOG
+    # Basic scale-up logic pending future unlock
+  fi
+
+  if [ "$count" -gt "$replicas" ]; then
+    echo "[SCALE-DOWN] $svc ($count -> $replicas)" | tee -a $LOG
+    # Basic scale-down logic pending future unlock
+  fi
+
+  # =========================
+  # HEALTH CHECKS
+  # =========================
+  for c in $containers; do
+    if [ -n "$c" ]; then
+      status=$(docker inspect --format='{{.State.Health.Status}}' $c 2>/dev/null)
+      if [ "$status" = "unhealthy" ]; then
+        echo "[HEAL] $c unhealthy → restart" | tee -a $LOG
+        docker restart $c
+      fi
+    fi
+  done
+
 done
 
-# --- DETECT DRIFT ---
+# =========================
+# DRIFT DETECTION
+# =========================
 for c in $running; do
-  if ! echo "$defined" | grep -q "^$c$"; then
+  if ! echo "$defined" | grep -q "^$c"; then
     echo "[DRIFT] Unknown container: $c" | tee -a $LOG
   fi
 done
 
+# =========================
+# SUMMARY
+# =========================
+def_count=$(echo "$defined" | wc -w)
+run_count=$(echo "$running" | wc -w)
+echo "[SUMMARY] services=$def_count running=$run_count" >> $LOG
 echo "[RECONCILE DONE]" >> $LOG
