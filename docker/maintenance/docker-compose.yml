@@ -33,5 +33,20 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
 
+  dashboard:
+    image: python:3.11-slim
+    container_name: m3tal-dashboard
+    restart: unless-stopped
+    volumes:
+      - /docker:/docker
+      - /var/run/docker.sock:/var/run/docker.sock
+    working_dir: /docker/dashboard
+    command: >
+      sh -c "pip install --quiet flask requests && python server.py"
+    ports:
+      - "8888:8080"
+    environment:
+      - TZ=America/Denver
+
 volumes:
   portainer_data:

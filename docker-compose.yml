@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+  traefik:
+    image: traefik:v3.0
+    container_name: traefik
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+  m3tal-dashboard:
+    image: python:3.11
+    container_name: m3tal-dashboard
+    volumes:
+      - ./dashboard:/app
+      - ./state:/docker/state
+      - ./config:/docker/config
+      - ./logs:/docker/logs
+      - /var/run/docker.sock:/var/run/docker.sock
+    working_dir: /app
+    command: >
+      sh -c "pip install --quiet flask requests && python server.py"
+    ports:
+      - "8888:8080"
+    restart: unless-stopped
+    environment:
+      - TZ=America/Denver
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`m3tal.local`)"
+      - "traefik.http.services.dashboard.loadbalancer.server.port=8080"
+
+  m3tal-agents:
+    image: ubuntu:22.04
+    container_name: m3tal-agents
+    volumes:
+      - ./:/docker
+      - /var/run/docker.sock:/var/run/docker.sock
+    working_dir: /docker
+    command: >
+      sh -c "apt-get update && apt-get install -y jq curl curl docker.io python3-pip && while true; do bash m3tal.sh; sleep 60; done"
+    restart: unless-stopped
+    environment:
+      - TZ=America/Denver

@@ -1,0 +1,14 @@
+[
+  {
+    "name": "backup",
+    "command": "/docker/agents/backup-agent.sh",
+    "schedule": "0 3 * * *",
+    "node": "local"
+  },
+  {
+    "name": "cleanup",
+    "command": "docker system prune -f",
+    "schedule": "0 */6 * * *",
+    "node": "local"
+  }
+]
