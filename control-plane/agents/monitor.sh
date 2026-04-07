@@ -1,10 +1,6 @@
 #!/bin/bash
 
-STATE="/docker/state"
-LOG="/docker/logs/monitor.log"
-
-docker ps --format "{{.Names}} {{.Status}}" > $STATE/containers.txt
-
-df -h > $STATE/disk.txt
-
-echo "$(date) Monitor run" >> $LOG
+# MONITOR AGENT
+echo "[MONITOR] Running..."
+docker ps --format '{{json .}}' > control-plane/state/state.json
+echo "[MONITOR] State updated."

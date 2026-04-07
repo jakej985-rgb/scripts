@@ -1,8 +1,20 @@
 services:
   radarr:
     stack: media
-    replicas: 1
+    enabled: true
+
+  sonarr:
+    stack: media
+    enabled: true
 
   qbittorrent:
     stack: media
-    replicas: 1
+    enabled: true
+
+  prowlarr:
+    stack: media
+    enabled: true
+
+  tattoo-app:
+    stack: apps
+    enabled: true
