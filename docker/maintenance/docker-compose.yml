@@ -31,7 +31,7 @@ services:
       - "9443:9443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data
+      - /docker/configs/portainer:/data
 
   dashboard:
     image: python:3.11-slim
@@ -48,5 +48,12 @@ services:
     environment:
       - TZ=America/Denver
 
-volumes:
-  portainer_data:
+  autoheal:
+    image: willfarrell/autoheal
+    restart: always
+
+  prune:
+    image: alpine
+    command: sh -c "while true; do docker system prune -af; sleep 86400; done"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
