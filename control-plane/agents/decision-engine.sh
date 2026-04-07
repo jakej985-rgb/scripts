@@ -1,7 +1,7 @@
 #!/bin/bash
 
-STATE="/docker/state"
-ACTIONS="$STATE/actions.txt"
+STATE="control-plane/state"
+ACTIONS="$STATE/decisions.json"
 > $ACTIONS
 
 LOCK="$STATE/locks/decision.lock"
@@ -34,21 +34,21 @@ if [ -f "$STATE/analysis.txt" ]; then
 fi
 
 # ── v3.1: Process anomaly detections ──
-if [ -f "$STATE/anomalies.txt" ]; then
+if [ -f "$STATE/anomalies.json" ]; then
   while read line; do
     NAME=$(echo $line | awk '{print $1}')
     ISSUE=$(echo $line | awk '{print $2}')
     VALUE=$(echo $line | awk '{print $3}')
 
     if [ "$ISSUE" == "HIGH_CPU" ]; then
-      echo "$NAME ALERT_CPU $VALUE" >> $ACTIONS
+      echo "{\"name\":\"$NAME\", \"action\":\"ALERT_CPU\", \"value\":\"$VALUE\"}" >> $ACTIONS
     fi
 
     if [ "$ISSUE" == "HIGH_MEM" ]; then
-      echo "$NAME ALERT_MEM $VALUE" >> $ACTIONS
+      echo "{\"name\":\"$NAME\", \"action\":\"ALERT_MEM\", \"value\":\"$VALUE\"}" >> $ACTIONS
     fi
 
-  done < $STATE/anomalies.txt
+  done < $STATE/anomalies.json
 fi
 
 # ── v3.2: Process dependency issues ──
@@ -74,4 +74,4 @@ if [ -f "$STATE/ai-recommendations.txt" ]; then
   fi
 fi
 
-bash /docker/agents/action-agent.sh
+

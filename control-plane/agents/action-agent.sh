@@ -1,10 +1,10 @@
 #!/bin/bash
 
-STATE="/docker/state"
-ACTIONS="$STATE/actions.txt"
-LOG="/docker/logs/actions.log"
+STATE="control-plane/state"
+ACTIONS="$STATE/decisions.json"
+LOG="control-plane/state/logs/actions.log"
 
-source /docker/connections.env 2>/dev/null
+source control-plane/config/connections.env 2>/dev/null
 API="https://api.telegram.org/bot$BOT_TOKEN"
 
 COOLDOWN="$STATE/cooldowns/action"
@@ -35,7 +35,7 @@ while read line; do
 
   case "$ACTION" in
     "RESTART")
-      docker restart $NAME
+      bash scripts/docker-exec.sh restart $NAME
       echo "{\"time\":\"$(date -Iseconds)\",\"event\":\"restart\",\"container\":\"$NAME\",\"type\":\"auto\"}" >> $LOG
       send "🛠 Restarted $NAME (auto)"
       ;;

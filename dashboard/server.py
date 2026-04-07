@@ -12,11 +12,11 @@ from auth import get_role
 app = Flask(__name__)
 socketio = SocketIO(app)
 
-STATE = "/docker/state"
-LOGS = "/docker/logs"
+STATE = "control-plane/state"
+LOGS = "control-plane/state/logs"
 USERS_FILE = "/docker/dashboard/users.json"
-NODES_FILE = "/docker/config/nodes.json"
-JOBS_FILE = "/docker/config/jobs.json"
+NODES_FILE = "control-plane/config/nodes.json"
+JOBS_FILE = "control-plane/config/jobs.json"
 
 # ── v5.1: In-Memory Node Registry (heartbeat-based) ──
 
@@ -144,8 +144,8 @@ def requires_auth(role_required=None):
 @app.route("/")
 def index():
     version = "1.0.0"
-    if os.path.exists("/docker/VERSION"):
-        with open("/docker/VERSION") as f:
+    if os.path.exists("VERSION"):
+        with open("VERSION") as f:
             version = f.read().strip()
     return render_template("index.html", version=version)
 
@@ -160,31 +160,39 @@ def health():
 @app.route("/api/state")
 @requires_auth("viewer")
 def api_state():
-    containers = read_file(f"{STATE}/containers.txt")
+    containers = [] # managed via json now
     analysis = read_file(f"{STATE}/analysis.txt")
-    actions = read_file(f"{STATE}/actions.txt")
+    actions = [] # decisions.json now
     disk = read_file(f"{STATE}/disk.txt")
     logs = read_file(f"{LOGS}/actions.log")[-50:]
     retries = read_retries()
     cooldowns = read_cooldowns()
     ai_recs = read_file(f"{STATE}/ai-recommendations.txt")
-    anomalies = read_file(f"{STATE}/anomalies.txt")
+    anomalies = [] # JSON handled below
     deps = read_file(f"{STATE}/dependency-issues.txt")
     metrics = read_file(f"{STATE}/metrics.txt")
     scaling_log = read_file(f"{LOGS}/scaling.log")[-20:]
     reconcile_log = read_file(f"{LOGS}/reconcile.log")[-20:]
     scheduler_log = read_file(f"{LOGS}/scheduler.log")[-20:]
 
+    # Read json states fallback gracefully
+    def parse_json(path):
+        try:
+            with open(path) as f:
+                return [json.loads(line) if line.startswith('{') else json.loads(f.read()) for line in f if line.strip()]
+        except Exception:
+            return []
+
     return jsonify({
-        "containers": [l.strip() for l in containers],
+        "containers": parse_json(f"{STATE}/state.json"),
         "analysis": [l.strip() for l in analysis],
-        "actions": [l.strip() for l in actions],
+        "decisions": parse_json(f"{STATE}/decisions.json"),
         "disk": [l.strip() for l in disk],
         "logs": [l.strip() for l in logs],
         "retries": retries,
         "cooldowns": cooldowns,
         "ai_recs": [l.strip() for l in ai_recs],
-        "anomalies": [l.strip() for l in anomalies],
+        "anomalies": parse_json(f"{STATE}/anomalies.json"),
         "deps": [l.strip() for l in deps],
         "metrics": [l.strip() for l in metrics],
         "scaling_log": [l.strip() for l in scaling_log],
@@ -224,7 +232,7 @@ def start(name):
 @app.route("/api/approve", methods=["POST"])
 @requires_auth("admin")
 def approve():
-    subprocess.run(["/docker/agents/action-agent.sh", "force"])
+    subprocess.run(["control-plane/agents/action-agent.sh", "force"])
     with open(f"{LOGS}/actions.log", "a") as f:
         f.write(f"{time.strftime('%c')} Dashboard: Force-approved pending actions\n")
     return jsonify({"status": "ok", "action": "approve"})

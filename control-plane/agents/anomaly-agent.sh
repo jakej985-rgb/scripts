@@ -3,9 +3,9 @@
 # 🔍 Anomaly Detection Agent v3.1 — CPU/MEM threshold detection
 # Reads metrics.txt and flags anomalies for the decision engine
 
-STATE="/docker/state"
+STATE="control-plane/state"
 METRICS="$STATE/metrics.txt"
-ANOM="$STATE/anomalies.txt"
+ANOM="$STATE/anomalies.json"
 
 source /docker/connections.env 2>/dev/null
 
@@ -29,12 +29,12 @@ while read line; do
 
   # CPU anomaly
   if [ -n "$CPU" ] && [ "${CPU%.*}" -gt "$CPU_LIMIT" ] 2>/dev/null; then
-    echo "$NAME HIGH_CPU $CPU%" >> $ANOM
+    echo "{\"name\":\"$NAME\", \"issue\":\"HIGH_CPU\", \"value\":\"$CPU%\"}" >> $ANOM
   fi
 
   # Memory anomaly
   if [ -n "$MEM" ] && [ "${MEM%.*}" -gt "$MEM_LIMIT_MB" ] 2>/dev/null; then
-    echo "$NAME HIGH_MEM ${MEM}MiB" >> $ANOM
+    echo "{\"name\":\"$NAME\", \"issue\":\"HIGH_MEM\", \"value\":\"${MEM}MiB\"}" >> $ANOM
   fi
 
 done < $METRICS
