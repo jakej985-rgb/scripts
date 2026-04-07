@@ -27,3 +27,6 @@ services:
       - /mnt/tattoo/db:/var/lib/postgresql/data
     restart: unless-stopped
 
+networks:
+  m3tal:
+    external: true

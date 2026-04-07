@@ -1,4 +1,9 @@
 services:
+  traefik:
+    stack: routing
+    enabled: true
+    replicas: 1
+
   radarr:
     stack: media
     enabled: true
