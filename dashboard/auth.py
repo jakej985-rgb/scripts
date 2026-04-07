@@ -1,9 +1,9 @@
 import os
 
 TOKENS = {
-    "admin-token": "admin",
-    "ops-token": "operator",
-    "view-token": "viewer"
+    "YOUR_SECURE_ADMIN_TOKEN": "admin",
+    "YOUR_SECURE_OPS_TOKEN": "operator",
+    "YOUR_SECURE_VIEW_TOKEN": "viewer"
 }
 
 def get_role(token):

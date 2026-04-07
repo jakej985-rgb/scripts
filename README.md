@@ -1,32 +1,36 @@
 # 🚀 M3TAL Control Plane
 
-A lightweight, agent-based container orchestration system for homelabs and small-scale infrastructure.
+> A lightweight, agent-based container orchestration system for homelabs and small-scale clusters.
 
-![Status](https://img.shields.io/badge/status-active-success) ![License](https://img.shields.io/badge/license-MIT-blue)
+![Status](https://img.shields.io/badge/status-active-success) ![License](https://img.shields.io/badge/license-MIT-blue) ![Version](https://img.shields.io/badge/version-1.0.0-orange)
 
 ---
 
-## ⚙️ Features
+## 🔥 Features
 
 * 🧠 Agent-based automation (safe + controlled)
-* 📊 Metrics + anomaly detection
+* 📊 Real-time metrics & anomaly detection
 * 🔄 Auto-scaling containers
 * 🚀 Rolling updates (zero downtime ready)
 * 🌐 Multi-node cluster support
 * 📦 Declarative service management (`cluster.yml`)
-* 🖥 Web dashboard (RBAC secured)
-* 📲 Telegram approval system
+* 🖥 Web dashboard (RBAC + token auth)
+* 📲 Optional Telegram approval system
 
 ---
 
 ## 🧱 Architecture
 
+```text
+Monitor → Analyzer → Decision Engine → Action Agent
+                ↓
+           AI (advisory only)
 ```
-agents/     → system logic (monitor, decision, scaling)
-dashboard/  → UI + API control plane
-config/     → declarative configs
-state/      → runtime + logs
-```
+
+* **Agents** → system logic
+* **Dashboard** → control plane UI + API
+* **Config** → declarative desired state
+* **State** → runtime + logs
 
 ---
 
@@ -40,23 +44,15 @@ chmod +x install.sh
 ./install.sh
 ```
 
-Access dashboard:
+Then open:
 
-```
+```text
 http://YOUR_SERVER_IP:8888
 ```
 
 ---
 
-## 🔐 Security Model
-
-* Role-based access control (admin/operator/viewer)
-* Action approval system (Telegram optional)
-* No destructive automation by default
-
----
-
-## 📦 Example Declarative Config
+## 📦 Example Config
 
 ```yaml
 services:
@@ -71,12 +67,22 @@ services:
 
 ---
 
+## 🔐 Security
+
+* Token-based authentication (no plain passwords)
+* Role-based access (admin / operator / viewer)
+* Safe automation (no destructive actions by default)
+
+---
+
 ## ⚠️ Disclaimer
 
-This is **not Kubernetes** — it’s a controlled, lightweight alternative designed for:
+This is **not Kubernetes**.
+
+M3TAL is designed for:
 
 * homelabs
-* single / few-node clusters
+* small clusters
 * learning orchestration concepts
 
 ---
@@ -89,21 +95,41 @@ This is **not Kubernetes** — it’s a controlled, lightweight alternative desi
 
 ---
 
-## 📈 Roadmap
+## 📸 Screenshots
 
-* UI improvements (React dashboard)
-* service mesh / routing
-* auto-scaling improvements
-* cluster scheduling policies
+*Screenshots coming soon...*
+
+* Dashboard view
+* Metrics graphs
+* Cluster overview
+
+---
+
+## 🗺 Roadmap
+
+* [ ] React UI
+* [ ] Service mesh routing
+* [ ] Plugin system
+* [ ] Advanced scheduling policies
 
 ---
 
 ## 🤝 Contributing
 
-PRs welcome — keep it clean, safe, and modular.
+PRs welcome — keep it:
+
+* simple
+* safe
+* modular
 
 ---
 
 ## 📜 License
 
 MIT
+
+---
+
+## ⭐ Support
+
+If you like this project, give it a star ⭐

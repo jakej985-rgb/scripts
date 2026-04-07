@@ -4,5 +4,3 @@ state/*
 .env
 *.log
 __pycache__/
-*.pyc
-dashboard/users.json
