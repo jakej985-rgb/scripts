@@ -4,7 +4,7 @@
 # Reads jobs.json and executes matching jobs based on cron-like schedule
 # Designed to run every minute from m3tal.sh
 
-JOBS="/docker/jobs.json"
+JOBS="/docker/config/jobs.json"
 STATE="/docker/state"
 LOG="/docker/logs/scheduler.log"
 

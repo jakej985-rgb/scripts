@@ -5,7 +5,7 @@
 # Respects cooldowns, min/max boundaries, and never scales DB containers
 
 STATE="/docker/state"
-CONFIG="$STATE/scaling.json"
+CONFIG="/docker/config/scaling.json"
 METRICS="$STATE/metrics.txt"
 LOG="/docker/logs/scaling.log"
 
