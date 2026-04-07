@@ -2,5 +2,5 @@
 
 STACK=$1
 
-echo "[EXEC] Applying $STACK"
+echo "[EXEC] $STACK"
 docker compose -f docker/$STACK/docker-compose.yml up -d

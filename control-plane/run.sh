@@ -2,7 +2,7 @@
 
 LOG="control-plane/state/logs/loop.log"
 
-echo "[START] $(date)" >> $LOG
+echo "[BOOT] $(date)" >> $LOG
 
 while true; do
   echo "[LOOP] $(date)" >> $LOG
