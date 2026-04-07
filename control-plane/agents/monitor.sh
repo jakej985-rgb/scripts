@@ -1,6 +1,5 @@
 #!/bin/bash
 
 # MONITOR AGENT
-echo "[MONITOR] Running..."
-docker ps --format '{{json .}}' > control-plane/state/state.json
-echo "[MONITOR] State updated."
+# Gathers all container states (including exited) and writes to state.json
+docker ps -a --format '{{json .}}' > control-plane/state/state.json

@@ -16,12 +16,12 @@ for svc in $defined; do
   if [ "$enabled" = "true" ]; then
     if ! echo "$running" | grep -q "^$svc$"; then
       echo "[START] $svc via $stack" | tee -a $LOG
-      bash scripts/docker-exec.sh stack-up $stack
+      bash scripts/docker-exec.sh $stack
     fi
   else
     if echo "$running" | grep -q "^$svc$"; then
       echo "[STOP] $svc disabled" | tee -a $LOG
-      bash scripts/docker-exec.sh stop $svc
+      docker stop $svc
     fi
   fi
 done

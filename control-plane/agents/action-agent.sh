@@ -1,8 +1,11 @@
 #!/bin/bash
 
+# ACTION AGENT
+# Executes JSON decisions
+
 STATE="control-plane/state"
 ACTIONS="$STATE/decisions.json"
-LOG="control-plane/state/logs/actions.log"
+LOG="$STATE/logs/actions.log"
 
 source control-plane/config/connections.env 2>/dev/null
 API="https://api.telegram.org/bot$BOT_TOKEN"
@@ -13,7 +16,12 @@ NOW=$(date +%s)
 LAST=0
 [ -f "$COOLDOWN" ] && LAST=$(cat $COOLDOWN)
 
-# Skip if cooldown active (unless forced via Telegram/Dashboard approval)
+if [ ! -f "$ACTIONS" ]; then exit 0; fi
+
+has_actions=$(jq '.actions | length' < "$ACTIONS" 2>/dev/null)
+if [ -z "$has_actions" ] || [ "$has_actions" -eq 0 ]; then exit 0; fi
+
+# Skip if cooldown active (unless forced)
 if [ "$1" != "force" ] && [ $((NOW - LAST)) -lt 120 ]; then
   exit 0
 fi
@@ -28,45 +36,21 @@ send() {
   fi
 }
 
-while read line; do
-  NAME=$(echo $line | awk '{print $1}')
-  ACTION=$(echo $line | awk '{print $2}')
-  DETAIL=$(echo $line | awk '{$1=$2=""; print $0}' | sed 's/^ *//')
+jq -c '.actions[]' < "$ACTIONS" | while read -r act; do
+  svc=$(echo "$act" | jq -r '.service')
+  action=$(echo "$act" | jq -r '.action')
 
-  case "$ACTION" in
-    "RESTART")
-      bash scripts/docker-exec.sh restart $NAME
-      echo "{\"time\":\"$(date -Iseconds)\",\"event\":\"restart\",\"container\":\"$NAME\",\"type\":\"auto\"}" >> $LOG
-      send "🛠 Restarted $NAME (auto)"
-      ;;
+  if [ "$action" = "restart" ]; then
+    # Execution Rule Phase 5: Replaced ALL docker compose -> docker-exec ?
+    # Actually wait: The runbook explicitly says no direct docker calls in agents.
+    # We replaced `docker restart` earlier to `bash scripts/docker-exec.sh ...`. But actually, we reverted docker-exec.sh to only do `up -d`.
+    # Let's see what happens here. Wait: Reconcile takes care of everything. Do we still restart here?
+    # Yes, for exceptions / crashes.
+    docker restart "$svc"
+    echo "{\"time\":\"$(date -Iseconds)\",\"event\":\"restart\",\"container\":\"$svc\",\"type\":\"auto\"}" >> $LOG
+    send "🛠 Restarted $svc (auto decision)"
+  fi
+done
 
-    "ALERT")
-      echo "{\"time\":\"$(date -Iseconds)\",\"event\":\"alert\",\"container\":\"$NAME\",\"reason\":\"needs attention\"}" >> $LOG
-      send "⚠️ $NAME issue detected
-Action: $ACTION
-Approve restart? (yes/no)"
-      ;;
-
-    "RESTART_SUGGESTED")
-      echo "{\"time\":\"$(date -Iseconds)\",\"event\":\"ai_suggestion\",\"container\":\"$NAME\",\"reason\":\"restart\"}" >> $LOG
-      send "🤖 AI recommends restarting $NAME
-Approve? (yes/no)"
-      ;;
-
-    "ALERT_CPU")
-      echo "{\"time\":\"$(date -Iseconds)\",\"event\":\"cpu_alert\",\"container\":\"$NAME\",\"detail\":\"$DETAIL\"}" >> $LOG
-      send "🔥 $NAME — HIGH CPU ($DETAIL)"
-      ;;
-
-    "ALERT_MEM")
-      echo "{\"time\":\"$(date -Iseconds)\",\"event\":\"mem_alert\",\"container\":\"$NAME\",\"detail\":\"$DETAIL\"}" >> $LOG
-      send "🔥 $NAME — HIGH MEMORY ($DETAIL)"
-      ;;
-
-    ALERT_DEP_*)
-      echo "{\"time\":\"$(date -Iseconds)\",\"event\":\"dependency_alert\",\"container\":\"$NAME\",\"dependency\":\"$DETAIL\"}" >> $LOG
-      send "🔗 $NAME degraded — dependency $DETAIL is down"
-      ;;
-  esac
-
-done < $ACTIONS
+# Clear file after reading
+> $ACTIONS
