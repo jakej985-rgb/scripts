@@ -8,6 +8,7 @@ while true; do
   echo "[LOOP] $(date)" >> $LOG
 
   bash control-plane/agents/monitor.sh
+  bash control-plane/agents/metrics.sh
   bash control-plane/agents/anomaly-agent.sh
   bash control-plane/agents/decision-engine.sh
   bash control-plane/agents/reconcile.sh
