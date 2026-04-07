@@ -21,8 +21,29 @@ for svc in $defined; do
   replicas=$(yq e ".services.$svc.replicas" $CLUSTER)
   if [ "$replicas" = "null" ] || [ -z "$replicas" ]; then replicas=1; fi
 
+  autoscale=$(yq e ".services.$svc.autoscale.enabled" $CLUSTER)
+  cpu_threshold=$(yq e ".services.$svc.autoscale.cpu_threshold" $CLUSTER)
+  max=$(yq e ".services.$svc.autoscale.max" $CLUSTER)
+  min=$(yq e ".services.$svc.autoscale.min" $CLUSTER)
+
   containers=$(echo "$running" | grep "^$svc")
   count=$(echo "$containers" | grep -c "^$svc")
+
+  # CPU-based Auto Scale Decision
+  if [ "$autoscale" = "true" ]; then
+    cpu=$(grep "^$svc" control-plane/state/metrics.txt | awk '{print $2}' | tr -d '%')
+    if [ -n "$cpu" ]; then
+      if (( $(echo "$cpu > $cpu_threshold" | bc -l) )) && [ "$count" -lt "$max" ]; then
+        echo "[AUTO-SCALE-UP] $svc cpu=$cpu%" | tee -a $LOG
+        replicas=$(($count + 1))
+      fi
+
+      if (( $(echo "$cpu < 30" | bc -l) )) && [ "$count" -gt "$min" ]; then
+        echo "[AUTO-SCALE-DOWN] $svc cpu=$cpu%" | tee -a $LOG
+        replicas=$(($count - 1))
+      fi
+    fi
+  fi
 
   # 1. Disabled handling FIRST
   if [ "$enabled" != "true" ]; then
