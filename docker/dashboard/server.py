@@ -5,6 +5,7 @@ import csv
 import json
 import os
 import time
+import threading
 
 app = Flask(__name__)
 
@@ -12,6 +13,12 @@ STATE = "/docker/state"
 LOGS = "/docker/logs"
 USERS_FILE = "/docker/dashboard/users.json"
 NODES_FILE = "/docker/nodes.json"
+JOBS_FILE = "/docker/jobs.json"
+
+# ── v5.1: In-Memory Node Registry (heartbeat-based) ──
+
+DISCOVERED_NODES = {}
+NODES_LOCK = threading.Lock()
 
 # ── Helpers ──
 
@@ -50,6 +57,59 @@ def read_cooldowns():
                 cooldowns[name] = -1
     return cooldowns
 
+def get_active_nodes():
+    """Return discovered nodes + static nodes, pruning stale heartbeats (>30s)"""
+    now = time.time()
+    nodes = {}
+
+    # Static nodes from nodes.json (fallback)
+    if os.path.exists(NODES_FILE):
+        with open(NODES_FILE) as f:
+            static = json.load(f)
+        for name, url in static.items():
+            nodes[name] = {"url": url, "source": "static"}
+
+    # Discovered nodes via heartbeat (override static if same name)
+    with NODES_LOCK:
+        for name, data in DISCOVERED_NODES.items():
+            if now - data["last_seen"] < 30:
+                port = data.get("port", "8080")
+                nodes[name] = {
+                    "url": f"http://{data['ip']}:{port}",
+                    "ip": data["ip"],
+                    "last_seen": data["last_seen"],
+                    "source": "heartbeat"
+                }
+
+    return nodes
+
+def get_cpu_usage():
+    """Get system CPU usage percentage"""
+    try:
+        out = subprocess.check_output(
+            ["grep", "cpu ", "/proc/stat"], text=True
+        ).strip().split()
+        idle = float(out[4])
+        total = sum(float(x) for x in out[1:])
+        return round(100 * (1 - idle / total), 1)
+    except Exception:
+        return 0.0
+
+def get_mem_usage():
+    """Get system memory usage percentage"""
+    try:
+        with open("/proc/meminfo") as f:
+            lines = f.readlines()
+        mem = {}
+        for line in lines[:5]:
+            parts = line.split()
+            mem[parts[0].rstrip(":")] = int(parts[1])
+        total = mem.get("MemTotal", 1)
+        avail = mem.get("MemAvailable", total)
+        return round(100 * (1 - avail / total), 1)
+    except Exception:
+        return 0.0
+
 # ── v4.2: RBAC Auth ──
 
 def load_users():
@@ -61,7 +121,7 @@ def load_users():
 def check_auth(username, password):
     users = load_users()
     if not users:
-        return True  # No users file = open access (dev mode)
+        return True
     return username in users and users[username]["password"] == password
 
 def get_role(username):
@@ -94,38 +154,18 @@ def requires_auth(role_required=None):
         return wrapper
     return decorator
 
-# ── Routes: Dashboard ──
+# ══════════════════════════════════════
+# ROUTES: Dashboard
+# ══════════════════════════════════════
 
 @app.route("/")
 @requires_auth("viewer")
 def index():
-    containers = read_file(f"{STATE}/containers.txt")
-    analysis = read_file(f"{STATE}/analysis.txt")
-    actions = read_file(f"{STATE}/actions.txt")
-    disk = read_file(f"{STATE}/disk.txt")
-    logs = read_file(f"{LOGS}/actions.log")[-50:]
-    retries = read_retries()
-    cooldowns = read_cooldowns()
-    ai_recs = read_file(f"{STATE}/ai-recommendations.txt")
-    anomalies = read_file(f"{STATE}/anomalies.txt")
-    deps = read_file(f"{STATE}/dependency-issues.txt")
-    metrics = read_file(f"{STATE}/metrics.txt")
+    return render_template("index.html")
 
-    return render_template("index.html",
-        containers=containers,
-        analysis=analysis,
-        actions=actions,
-        disk=disk,
-        logs=logs,
-        retries=retries,
-        cooldowns=cooldowns,
-        ai_recs=ai_recs,
-        anomalies=anomalies,
-        deps=deps,
-        metrics=metrics,
-    )
-
-# ── Routes: JSON API ──
+# ══════════════════════════════════════
+# ROUTES: JSON API (state)
+# ══════════════════════════════════════
 
 @app.route("/api/state")
 @requires_auth("viewer")
@@ -141,6 +181,9 @@ def api_state():
     anomalies = read_file(f"{STATE}/anomalies.txt")
     deps = read_file(f"{STATE}/dependency-issues.txt")
     metrics = read_file(f"{STATE}/metrics.txt")
+    scaling_log = read_file(f"{LOGS}/scaling.log")[-20:]
+    reconcile_log = read_file(f"{LOGS}/reconcile.log")[-20:]
+    scheduler_log = read_file(f"{LOGS}/scheduler.log")[-20:]
 
     return jsonify({
         "containers": [l.strip() for l in containers],
@@ -154,10 +197,15 @@ def api_state():
         "anomalies": [l.strip() for l in anomalies],
         "deps": [l.strip() for l in deps],
         "metrics": [l.strip() for l in metrics],
+        "scaling_log": [l.strip() for l in scaling_log],
+        "reconcile_log": [l.strip() for l in reconcile_log],
+        "scheduler_log": [l.strip() for l in scheduler_log],
         "timestamp": int(time.time()),
     })
 
-# ── v4: Container Control ──
+# ══════════════════════════════════════
+# ROUTES: v4 Container Control
+# ══════════════════════════════════════
 
 @app.route("/api/restart/<name>", methods=["POST"])
 @requires_auth("operator")
@@ -191,7 +239,9 @@ def approve():
         f.write(f"{time.strftime('%c')} Dashboard: Force-approved pending actions\n")
     return jsonify({"status": "ok", "action": "approve"})
 
-# ── v4.1: Metrics Time-Series ──
+# ══════════════════════════════════════
+# ROUTES: v4.1 Metrics Time-Series
+# ══════════════════════════════════════
 
 @app.route("/api/metrics/<name>")
 @requires_auth("viewer")
@@ -228,25 +278,63 @@ def metrics_container_list():
                     names.add(row[1])
     return jsonify(sorted(names))
 
-# ── v5: Cluster ──
+# ══════════════════════════════════════
+# ROUTES: v5.1 Service Discovery
+# ══════════════════════════════════════
+
+@app.route("/api/register", methods=["POST"])
+def register_node():
+    name = request.form.get("name", "")
+    ip = request.form.get("ip", "")
+    port = request.form.get("port", "8080")
+
+    if not name or not ip:
+        return "missing fields", 400
+
+    with NODES_LOCK:
+        DISCOVERED_NODES[name] = {
+            "ip": ip,
+            "port": port,
+            "last_seen": time.time()
+        }
+
+    return "ok"
+
+@app.route("/api/nodes")
+@requires_auth("viewer")
+def list_nodes():
+    nodes = get_active_nodes()
+    return jsonify({
+        name: {
+            "url": data["url"],
+            "source": data["source"],
+            "last_seen": data.get("last_seen"),
+        }
+        for name, data in nodes.items()
+    })
+
+# ══════════════════════════════════════
+# ROUTES: v5 Cluster
+# ══════════════════════════════════════
 
 @app.route("/api/cluster")
 @requires_auth("viewer")
 def cluster_status():
-    if not os.path.exists(NODES_FILE):
-        return jsonify({})
-
     import requests as req
-    with open(NODES_FILE) as f:
-        nodes = json.load(f)
+    nodes = get_active_nodes()
 
     data = {}
-    for name, url in nodes.items():
+    for name, info in nodes.items():
+        url = info["url"]
         try:
             res = req.get(f"{url}/api/node/status", timeout=2)
-            data[name] = {"status": "online", "containers": res.text.strip().split("\n")}
+            data[name] = {
+                "status": "online",
+                "containers": [c for c in res.text.strip().split("\n") if c],
+                "source": info["source"]
+            }
         except Exception:
-            data[name] = {"status": "offline", "containers": []}
+            data[name] = {"status": "offline", "containers": [], "source": info["source"]}
 
     return jsonify(data)
 
@@ -256,24 +344,205 @@ def node_status():
     status = read_file(f"{STATE}/node-status.txt")
     return "\n".join([l.strip() for l in status])
 
+@app.route("/api/node/metrics")
+def node_metrics():
+    """v6: Expose local node metrics for placement decisions"""
+    running = subprocess.check_output(
+        ["docker", "ps", "-q"], text=True
+    ).strip().split("\n")
+    container_count = len([c for c in running if c])
+
+    return jsonify({
+        "cpu": get_cpu_usage(),
+        "mem": get_mem_usage(),
+        "containers": container_count
+    })
+
 @app.route("/api/cluster/restart/<node>/<container>", methods=["POST"])
 @requires_auth("admin")
 def cluster_restart(node, container):
-    if not os.path.exists(NODES_FILE):
-        return jsonify({"error": "no nodes configured"}), 404
-
     import requests as req
-    with open(NODES_FILE) as f:
-        nodes = json.load(f)
+    nodes = get_active_nodes()
 
     if node not in nodes:
         return jsonify({"error": "node not found"}), 404
 
     try:
-        res = req.post(f"{nodes[node]}/api/restart/{container}", timeout=5)
+        res = req.post(f"{nodes[node]['url']}/api/restart/{container}", timeout=5)
         return jsonify({"status": "ok", "node": node, "container": container})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+# ══════════════════════════════════════
+# ROUTES: v5.2 Job Scheduler (Cluster)
+# ══════════════════════════════════════
+
+@app.route("/api/run_job/<job>", methods=["POST"])
+@requires_auth("operator")
+def run_job_cluster(job):
+    """Dispatch a job to all active nodes"""
+    import requests as req
+    nodes = get_active_nodes()
+    results = {}
+
+    for name, info in nodes.items():
+        try:
+            res = req.post(f"{info['url']}/api/execute/{job}", timeout=10)
+            results[name] = "ok"
+        except Exception as e:
+            results[name] = f"error: {str(e)}"
+
+    return jsonify({"job": job, "results": results})
+
+@app.route("/api/execute/<job>", methods=["POST"])
+@requires_auth("operator")
+def execute_job(job):
+    """Execute a job locally on this node"""
+    if not os.path.exists(JOBS_FILE):
+        return jsonify({"error": "no jobs configured"}), 404
+
+    with open(JOBS_FILE) as f:
+        jobs = json.load(f)
+
+    for j in jobs:
+        if j["name"] == job:
+            subprocess.Popen(j["command"], shell=True)
+            with open(f"{LOGS}/scheduler.log", "a") as lf:
+                lf.write(f"{time.strftime('%c')} API: executed job '{job}'\n")
+            return jsonify({"status": "ok", "job": job})
+
+    return jsonify({"error": "job not found"}), 404
+
+# ══════════════════════════════════════
+# ROUTES: v6 Container Placement
+# ══════════════════════════════════════
+
+@app.route("/api/deploy", methods=["POST"])
+@requires_auth("admin")
+def deploy_container():
+    """Deploy container to best available node based on load"""
+    import requests as req
+    image = request.form.get("image", "")
+    prefer_node = request.form.get("node", "auto")
+
+    if not image:
+        return jsonify({"error": "image required"}), 400
+
+    if prefer_node != "auto":
+        # Deploy to specific node
+        nodes = get_active_nodes()
+        if prefer_node in nodes:
+            target_url = nodes[prefer_node]["url"]
+        else:
+            return jsonify({"error": f"node '{prefer_node}' not found"}), 404
+    else:
+        # Auto-placement: choose least loaded node
+        target_url = choose_best_node()
+        if not target_url:
+            # Fallback to local
+            target_url = "http://localhost:8080"
+
+    try:
+        res = req.post(f"{target_url}/api/run_container",
+                      data={"image": image}, timeout=10)
+        return jsonify({"status": "ok", "image": image, "node": target_url})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+def choose_best_node():
+    """v6: Score nodes by load and pick the least loaded"""
+    import requests as req
+    nodes = get_active_nodes()
+    best_url = None
+    best_score = 9999
+
+    for name, info in nodes.items():
+        try:
+            res = req.get(f"{info['url']}/api/node/metrics", timeout=2).json()
+            score = res["cpu"] + res["mem"] + (res["containers"] * 5)
+            if score < best_score:
+                best_score = score
+                best_url = info["url"]
+        except Exception:
+            continue
+
+    return best_url
+
+@app.route("/api/run_container", methods=["POST"])
+@requires_auth("operator")
+def run_container():
+    """Start a container on this node"""
+    image = request.form.get("image", "")
+    name = request.form.get("name", "")
+
+    if not image:
+        return jsonify({"error": "image required"}), 400
+
+    cmd = ["docker", "run", "-d", "--restart", "unless-stopped"]
+    if name:
+        cmd += ["--name", name]
+    cmd.append(image)
+
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    if result.returncode == 0:
+        with open(f"{LOGS}/actions.log", "a") as f:
+            f.write(f"{time.strftime('%c')} Deploy: started {image}\n")
+        return jsonify({"status": "ok", "container_id": result.stdout.strip()[:12]})
+    else:
+        return jsonify({"error": result.stderr.strip()}), 500
+
+# ══════════════════════════════════════
+# ROUTES: v6.2 Rolling Updates
+# ══════════════════════════════════════
+
+@app.route("/api/rolling_update/<name>", methods=["POST"])
+@requires_auth("admin")
+def rolling_update(name):
+    """Zero-downtime update: start new → verify → remove old → rename"""
+    new_name = f"{name}-update"
+
+    # Get current image
+    try:
+        image = subprocess.check_output(
+            ["docker", "inspect", "--format", "{{.Config.Image}}", name],
+            text=True
+        ).strip()
+    except subprocess.CalledProcessError:
+        return jsonify({"error": f"container '{name}' not found"}), 404
+
+    # Pull latest
+    subprocess.run(["docker", "pull", image], capture_output=True)
+
+    # Start new container with same image (latest)
+    result = subprocess.run(
+        ["docker", "run", "-d", "--name", new_name, "--restart", "unless-stopped", image],
+        capture_output=True, text=True
+    )
+    if result.returncode != 0:
+        return jsonify({"error": f"failed to start new: {result.stderr.strip()}"}), 500
+
+    # Wait for new container to be running
+    time.sleep(5)
+    status = subprocess.check_output(
+        ["docker", "inspect", "--format", "{{.State.Status}}", new_name],
+        text=True
+    ).strip()
+
+    if status != "running":
+        subprocess.run(["docker", "rm", "-f", new_name])
+        return jsonify({"error": "new container failed to start, rolled back"}), 500
+
+    # Stop old, remove old, rename new
+    subprocess.run(["docker", "stop", name])
+    subprocess.run(["docker", "rm", name])
+    subprocess.run(["docker", "rename", new_name, name])
+
+    with open(f"{LOGS}/actions.log", "a") as f:
+        f.write(f"{time.strftime('%c')} Rolling update: {name} ({image})\n")
+
+    return jsonify({"status": "ok", "container": name, "image": image})
+
+# ══════════════════════════════════════
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
