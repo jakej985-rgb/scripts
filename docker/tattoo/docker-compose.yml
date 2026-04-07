@@ -1,0 +1,32 @@
+services:
+  api:
+    image: node:20
+    container_name: tattoo-api
+    working_dir: /app
+    volumes:
+      - /mnt/tattoo/backend:/app
+      - /mnt/tattoo/uploads:/app/uploads
+    command:
+      - sh
+      - -c
+      - 'npm install && npm start'
+    ports:
+      -  "3001:3000"
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: postgres:15
+    container_name: tattoo-db
+    environment:
+      POSTGRES_USER: tattoo
+      POSTGRES_PASSWORD: ***REDACTED***
+      POSTGRES_DB: tattooapp
+    volumes:
+      - /mnt/tattoo/db:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  db_data:
+m3tal@m3tal-media-server:/mnt/tattoo$ 
