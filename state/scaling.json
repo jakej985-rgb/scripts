@@ -1,0 +1,9 @@
+{
+  "radarr": {
+    "min": 1,
+    "max": 3,
+    "cpu_up": 80,
+    "cpu_down": 15,
+    "image": "lscr.io/linuxserver/radarr"
+  }
+}

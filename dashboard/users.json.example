@@ -1,0 +1,5 @@
+{
+  "admin": {"password": "changeme", "role": "admin"},
+  "ops": {"password": "ops123", "role": "operator"},
+  "view": {"password": "view123", "role": "viewer"}
+}

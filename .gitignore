@@ -1,3 +1,6 @@
+state/*
+!state/.keep
+
 .env
 *.log
-/tmp
+__pycache__/
