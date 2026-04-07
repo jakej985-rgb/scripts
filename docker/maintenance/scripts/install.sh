@@ -10,7 +10,7 @@ echo "🚀 Docker Auto-Maintenance Installer (Production v2)"
 # Root check
 # -----------------------------
 if [ "$EUID" -ne 0 ]; then
-  echo "⚠️ Run with sudo"
+  echo "⚠ Run with sudo"
   exit 1
 fi
 
@@ -162,4 +162,4 @@ fi
 # -----------------------------
 echo ""
 echo "🎉 INSTALL COMPLETE (Production v2)"
-echo "➡️ Next: nano connections.env"
+echo "➡ Next: nano connections.env"m3tal@m3tal-media-server:/docker/maintenance/scrim3tal@m3tal-media-server:/docker/maintenance/scripts$ 
