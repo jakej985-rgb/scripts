@@ -1,6 +1,7 @@
 #!/bin/bash
 
 LOG="control-plane/state/logs/reconcile.log"
+STRICT=false
 
 # =========================
 # LOAD STATE
@@ -48,12 +49,30 @@ for svc in $defined; do
   # =========================
   if [ "$count" -lt "$replicas" ]; then
     echo "[SCALE-UP] $svc ($count -> $replicas)" | tee -a $LOG
-    # Basic scale-up logic pending future unlock
+
+    missing=$(($replicas - $count))
+
+    for i in $(seq 1 $missing); do
+      name="$svc-$((count + i))"
+
+      echo "[CREATE] $name from $stack" | tee -a $LOG
+
+      docker compose -f docker/$stack/docker-compose.yml run -d --name $name $svc
+    done
   fi
 
   if [ "$count" -gt "$replicas" ]; then
     echo "[SCALE-DOWN] $svc ($count -> $replicas)" | tee -a $LOG
-    # Basic scale-down logic pending future unlock
+
+    extras=$(echo "$containers" | tail -n +$(($replicas + 1)))
+
+    for c in $extras; do
+      if [ -n "$c" ]; then
+        echo "[REMOVE] $c" | tee -a $LOG
+        docker stop $c
+        docker rm $c
+      fi
+    done
   fi
 
   # =========================
@@ -75,8 +94,11 @@ done
 # DRIFT DETECTION
 # =========================
 for c in $running; do
-  if ! echo "$defined" | grep -q "^$c"; then
+  if ! echo "$defined" | grep -q "^$c$"; then
     echo "[DRIFT] Unknown container: $c" | tee -a $LOG
+    if [ "$STRICT" = "true" ]; then
+      docker stop $c
+    fi
   fi
 done
 
