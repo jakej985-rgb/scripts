@@ -1,4 +1,5 @@
 from flask import Flask, render_template, jsonify, request, redirect, Response, abort
+from flask_socketio import SocketIO
 from functools import wraps
 import subprocess
 import csv
@@ -6,8 +7,10 @@ import json
 import os
 import time
 import threading
+from auth import get_role
 
 app = Flask(__name__)
+socketio = SocketIO(app)
 
 STATE = "/docker/state"
 LOGS = "/docker/logs"
@@ -110,46 +113,26 @@ def get_mem_usage():
     except Exception:
         return 0.0
 
-# ── v4.2: RBAC Auth ──
-
-def load_users():
-    if not os.path.exists(USERS_FILE):
-        return {}
-    with open(USERS_FILE) as f:
-        return json.load(f)
-
-def check_auth(username, password):
-    users = load_users()
-    if not users:
-        return True
-    return username in users and users[username]["password"] == password
-
-def get_role(username):
-    users = load_users()
-    if not users:
-        return "admin"
-    if username in users:
-        return users[username]["role"]
-    return "viewer"
-
-def authenticate():
-    return Response(
-        "Authentication required", 401,
-        {"WWW-Authenticate": 'Basic realm="M3TAL Control Plane"'}
-    )
+# ── v4.2/v7.1: Token Auth ──
 
 def requires_auth(role_required=None):
     def decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
-            auth = request.authorization
-            if not auth or not check_auth(auth.username, auth.password):
-                return authenticate()
+            # Support header auth Or querystring for browser convenience
+            token = request.headers.get("Authorization")
+            if not token:
+                token = request.args.get("token")
+                
+            role = get_role(token)
+            if not role:
+                return Response("Token required", 401)
+
             if role_required:
-                role = get_role(auth.username)
                 role_hierarchy = {"admin": 3, "operator": 2, "viewer": 1}
                 if role_hierarchy.get(role, 0) < role_hierarchy.get(role_required, 0):
                     return abort(403)
+                    
             return f(*args, **kwargs)
         return wrapper
     return decorator
@@ -159,9 +142,16 @@ def requires_auth(role_required=None):
 # ══════════════════════════════════════
 
 @app.route("/")
-@requires_auth("viewer")
 def index():
-    return render_template("index.html")
+    version = "1.0.0"
+    if os.path.exists("/docker/VERSION"):
+        with open("/docker/VERSION") as f:
+            version = f.read().strip()
+    return render_template("index.html", version=version)
+
+@app.route("/api/health")
+def health():
+    return jsonify({"status": "ok"})
 
 # ══════════════════════════════════════
 # ROUTES: JSON API (state)
@@ -557,6 +547,21 @@ def update(name):
     return redirect("/")
 
 # ══════════════════════════════════════
+# WEBSOCKET METRICS STREAM
+# ══════════════════════════════════════
+
+def stream_metrics():
+    while True:
+        try:
+            if os.path.exists(f"{STATE}/metrics.txt"):
+                with open(f"{STATE}/metrics.txt", "r") as f:
+                    data = f.read()
+                socketio.emit("metrics", {"data": data})
+        except Exception:
+            pass
+        time.sleep(2)
+
+threading.Thread(target=stream_metrics, daemon=True).start()
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
+    socketio.run(app, host="0.0.0.0", port=8080, allow_unsafe_werkzeug=True)

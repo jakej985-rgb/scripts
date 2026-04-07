@@ -250,6 +250,7 @@
       .nav-tabs { gap: 0.3rem; }
     }
   </style>
+  <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
 </head>
 <body>
   <div class="app">
@@ -803,6 +804,13 @@
         document.getElementById('lastUpdate').textContent = 'Updated ' + new Date(d.timestamp * 1000).toLocaleTimeString();
       } catch (e) { console.error('Poll failed', e); }
     }
+
+    // ── WebSockets (v7.1) ──
+    const socket = io();
+    socket.on("metrics", (msg) => {
+      const lines = msg.data.trim().split('\n').filter(Boolean);
+      renderMetrics(lines);
+    });
 
     poll();
     loadContainerList();
