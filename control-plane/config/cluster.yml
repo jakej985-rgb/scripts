@@ -1,0 +1,8 @@
+services:
+  radarr:
+    stack: media
+    replicas: 1
+
+  qbittorrent:
+    stack: media
+    replicas: 1
