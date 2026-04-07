@@ -13,53 +13,60 @@ NOW=$(date +%s)
 LAST=0
 [ -f "$COOLDOWN" ] && LAST=$(cat $COOLDOWN)
 
-# Skip if cooldown active (unless forced via Telegram approval)
+# Skip if cooldown active (unless forced via Telegram/Dashboard approval)
 if [ "$1" != "force" ] && [ $((NOW - LAST)) -lt 120 ]; then
   exit 0
 fi
 
 echo $NOW > $COOLDOWN
 
+send() {
+  if [ -n "$BOT_TOKEN" ] && [ -n "$CHAT_ID" ]; then
+    curl -s -X POST "$API/sendMessage" \
+      -d chat_id="$CHAT_ID" \
+      -d text="$1" > /dev/null
+  fi
+}
+
 while read line; do
   NAME=$(echo $line | awk '{print $1}')
   ACTION=$(echo $line | awk '{print $2}')
+  DETAIL=$(echo $line | awk '{$1=$2=""; print $0}' | sed 's/^ *//')
 
-  if [ "$ACTION" == "RESTART" ]; then
-    docker restart $NAME
-    echo "$(date) Restarted $NAME" >> $LOG
+  case "$ACTION" in
+    "RESTART")
+      docker restart $NAME
+      echo "$(date) Restarted $NAME" >> $LOG
+      send "🛠 Restarted $NAME (auto)"
+      ;;
 
-    # Notify via Telegram
-    if [ -n "$BOT_TOKEN" ] && [ -n "$CHAT_ID" ]; then
-      curl -s -X POST "$API/sendMessage" \
-        -d chat_id="$CHAT_ID" \
-        -d text="🛠 Restarted $NAME (auto)" > /dev/null
-    fi
-  fi
-
-  if [ "$ACTION" == "ALERT" ]; then
-    echo "$(date) ALERT: $NAME needs attention" >> $LOG
-
-    # Send Telegram alert with approval request
-    if [ -n "$BOT_TOKEN" ] && [ -n "$CHAT_ID" ]; then
-      curl -s -X POST "$API/sendMessage" \
-        -d chat_id="$CHAT_ID" \
-        -d text="⚠️ $NAME issue detected
-
+    "ALERT")
+      echo "$(date) ALERT: $NAME needs attention" >> $LOG
+      send "⚠️ $NAME issue detected
 Action: $ACTION
-Approve restart? (yes/no)" > /dev/null
-    fi
-  fi
+Approve restart? (yes/no)"
+      ;;
 
-  if [ "$ACTION" == "RESTART_SUGGESTED" ]; then
-    echo "$(date) AI SUGGESTED restart: $NAME" >> $LOG
+    "RESTART_SUGGESTED")
+      echo "$(date) AI SUGGESTED restart: $NAME" >> $LOG
+      send "🤖 AI recommends restarting $NAME
+Approve? (yes/no)"
+      ;;
 
-    if [ -n "$BOT_TOKEN" ] && [ -n "$CHAT_ID" ]; then
-      curl -s -X POST "$API/sendMessage" \
-        -d chat_id="$CHAT_ID" \
-        -d text="🤖 AI recommends restarting $NAME
+    "ALERT_CPU")
+      echo "$(date) HIGH CPU: $NAME ($DETAIL)" >> $LOG
+      send "🔥 $NAME — HIGH CPU ($DETAIL)"
+      ;;
 
-Approve? (yes/no)" > /dev/null
-    fi
-  fi
+    "ALERT_MEM")
+      echo "$(date) HIGH MEM: $NAME ($DETAIL)" >> $LOG
+      send "🔥 $NAME — HIGH MEMORY ($DETAIL)"
+      ;;
+
+    ALERT_DEP_*)
+      echo "$(date) DEPENDENCY: $NAME → $DETAIL" >> $LOG
+      send "🔗 $NAME degraded — dependency $DETAIL is down"
+      ;;
+  esac
 
 done < $ACTIONS
