@@ -1,30 +1,36 @@
 #!/bin/bash
 
-CLUSTER_FILE="control-plane/config/cluster.yml"
+CLUSTER="control-plane/config/cluster.yml"
+LOG="control-plane/state/logs/reconcile.log"
 
-echo "[RECONCILE] Starting..."
+echo "[RECONCILE] $(date)" >> $LOG
 
-# get running containers
 running=$(docker ps --format "{{.Names}}")
+defined=$(yq e '.services | keys | .[]' $CLUSTER)
 
-# parse services
-services=$(yq e '.services | keys | .[]' $CLUSTER_FILE)
-
-for svc in $services; do
-  enabled=$(yq e ".services.$svc.enabled" $CLUSTER_FILE)
-  stack=$(yq e ".services.$svc.stack" $CLUSTER_FILE)
+# --- enforce desired services ---
+for svc in $defined; do
+  enabled=$(yq e ".services.$svc.enabled" $CLUSTER)
+  stack=$(yq e ".services.$svc.stack" $CLUSTER)
 
   if [ "$enabled" = "true" ]; then
-    if ! echo "$running" | grep -q "$svc"; then
-      echo "[FIX] $svc missing → starting stack $stack"
-      bash scripts/docker-exec.sh $stack
+    if ! echo "$running" | grep -q "^$svc$"; then
+      echo "[START] $svc via $stack" | tee -a $LOG
+      bash scripts/docker-exec.sh stack-up $stack
     fi
   else
-    if echo "$running" | grep -q "$svc"; then
-      echo "[FIX] $svc disabled → stopping"
+    if echo "$running" | grep -q "^$svc$"; then
+      echo "[STOP] $svc disabled" | tee -a $LOG
       bash scripts/docker-exec.sh stop $svc
     fi
   fi
 done
 
-echo "[RECONCILE] Done"
+# --- remove unknown containers (strict mode optional) ---
+for c in $running; do
+  if ! echo "$defined" | grep -q "^$c$"; then
+    echo "[WARN] Unknown container: $c" | tee -a $LOG
+  fi
+done
+
+echo "[RECONCILE DONE]" >> $LOG
