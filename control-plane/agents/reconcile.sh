@@ -17,6 +17,12 @@ for svc in $defined; do
     if ! echo "$running" | grep -q "^$svc$"; then
       echo "[START] $svc via $stack" | tee -a $LOG
       bash scripts/docker-exec.sh $stack
+    else
+      status=$(docker inspect --format='{{.State.Health.Status}}' $svc 2>/dev/null)
+      if [ "$status" = "unhealthy" ]; then
+        echo "[HEAL] $svc unhealthy → restarting" | tee -a $LOG
+        docker restart $svc
+      fi
     fi
   else
     if echo "$running" | grep -q "^$svc$"; then
