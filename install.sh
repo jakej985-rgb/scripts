@@ -88,7 +88,7 @@ check_and_install "docker compose" \
 check_and_install "python3" "check_cmd python3" "sudo apt-get install -y python3"
 check_and_install "pip3" "check_cmd pip3" "sudo apt-get install -y python3-pip"
 check_and_install "jq" "check_cmd jq" "sudo apt-get install -y jq"
-check_and_install "yq" "check_cmd yq" "sudo apt-get install -y yq"
+check_and_install "yq" "check_cmd yq" "sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq && sudo chmod +x /usr/local/bin/yq"
 
 # -------------------------------
 # TEMP CLONE
