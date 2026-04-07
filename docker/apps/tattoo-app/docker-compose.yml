@@ -27,6 +27,3 @@ services:
       - /mnt/tattoo/db:/var/lib/postgresql/data
     restart: unless-stopped
 
-volumes:
-  db_data:
-m3tal@m3tal-media-server:/mnt/tattoo$ 
