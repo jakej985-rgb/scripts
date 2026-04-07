@@ -1,40 +1,26 @@
 #!/bin/bash
 
-# 🔍 Anomaly Detection Agent v3.1 — CPU/MEM threshold detection
-# Reads metrics.txt and flags anomalies for the decision engine
+# ANOMALY AGENT
+# Detects exited containers or issues from state.json
 
 STATE="control-plane/state"
-METRICS="$STATE/metrics.txt"
-ANOM="$STATE/anomalies.json"
+IN="$STATE/state.json"
+OUT="$STATE/anomalies.json"
 
-source /docker/connections.env 2>/dev/null
+> $OUT
 
-CPU_LIMIT="${CPU_THRESHOLD:-90}"
-MEM_LIMIT_MB="${MEM_LIMIT:-800}"
+if [ ! -f "$IN" ]; then exit 0; fi
 
-> $ANOM
+# Process state.json using jq
+# state.json is a sequence of JSON objects (one per container)
+cat "$IN" | jq -c '.' | while read -r line; do
+  name=$(echo "$line" | jq -r '.Names')
+  state=$(echo "$line" | jq -r '.State')
+  status=$(echo "$line" | jq -r '.Status')
 
-if [ ! -f "$METRICS" ]; then exit 0; fi
-
-while read line; do
-  NAME=$(echo $line | awk '{print $1}')
-  CPU=$(echo $line | awk '{print $2}' | tr -d '%')
-  MEM_RAW=$(echo $line | awk '{print $3}')
-
-  # Normalize memory to MiB
-  MEM=$(echo $MEM_RAW | cut -d '/' -f1 | tr -d ' MiB')
-  if echo "$MEM_RAW" | grep -qi "GiB"; then
-    MEM=$(echo "$MEM_RAW" | cut -d '/' -f1 | tr -d ' GiB' | awk '{printf "%.0f", $1 * 1024}')
+  if [ "$state" = "exited" ]; then
+    echo "{\"service\": \"$name\", \"issue\": \"exited\", \"detail\": \"$status\"}" >> $OUT
+  elif echo "$status" | grep -qi "restarting"; then
+    echo "{\"service\": \"$name\", \"issue\": \"crash_loop\", \"detail\": \"restarting\"}" >> $OUT
   fi
-
-  # CPU anomaly
-  if [ -n "$CPU" ] && [ "${CPU%.*}" -gt "$CPU_LIMIT" ] 2>/dev/null; then
-    echo "{\"name\":\"$NAME\", \"issue\":\"HIGH_CPU\", \"value\":\"$CPU%\"}" >> $ANOM
-  fi
-
-  # Memory anomaly
-  if [ -n "$MEM" ] && [ "${MEM%.*}" -gt "$MEM_LIMIT_MB" ] 2>/dev/null; then
-    echo "{\"name\":\"$NAME\", \"issue\":\"HIGH_MEM\", \"value\":\"${MEM}MiB\"}" >> $ANOM
-  fi
-
-done < $METRICS
+done

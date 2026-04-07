@@ -10,14 +10,6 @@ LOG="/docker/logs/scheduler.log"
 
 if [ ! -f "$JOBS" ]; then exit 0; fi
 
-# ENFORCED AGENT PIPELINE
-echo "[PIPELINE] Executing Control Plane Loop..."
-bash control-plane/agents/monitor.sh
-bash control-plane/agents/anomaly-agent.sh
-bash control-plane/agents/decision-engine.sh
-bash control-plane/agents/reconcile.sh
-bash control-plane/agents/action-agent.sh
-echo "[PIPELINE] Execution complete."
 
 CURRENT_MIN=$(date +%M)
 CURRENT_HOUR=$(date +%H)
