@@ -1,45 +1,103 @@
-# 🚀 Docker Auto-Maintenance System (Clean Structure)
+# M3TAL Media Server v2
 
-Use this as your primary reference. Old README may be outdated.
+Agent-based Docker orchestration system — controlled, observable, and safe.
 
-## Core Scripts
-Only these are required:
-- auto-backup.sh
-- auto-heal.sh
-- auto-fix.sh
-- learning-mode.sh
-- predictive-ai.sh
-- auto-rollback-on-update.sh
-- auto-reboot-if-unhealthy.sh
-- graceful-reboot.sh
-- safe-reboot.sh
-- post-reboot-check.sh
-- secure-telegram-control.sh
-- log-watcher.sh
-- ai-log-analyzer.sh
+## Architecture
 
-## Remove old structure
-```bash
-rm -rf docker-maintenance
+```
+┌──────────┐    ┌──────────┐    ┌─────────────────┐    ┌──────────────┐
+│ Monitor  │ →  │ Analyzer │ →  │ Decision Engine │ →  │ Action Agent │
+└──────────┘    └──────────┘    └─────────────────┘    └──────────────┘
+                      ↑                   ↑                    ↑
+                ┌───────────┐       ┌───────────┐       ┌─────────────┐
+                │ AI Agent  │       │ Telegram  │       │ Backup Agent│
+                │ (v3 safe) │       │ (v2.2)    │       │ (isolated)  │
+                └───────────┘       └───────────┘       └─────────────┘
+                                                              │
+                                          ┌───────────────────┘
+                                          ↓
+                                    ┌──────────┐
+                                    │Dashboard │
+                                    │ (v2.1)   │
+                                    └──────────┘
 ```
 
-## Setup
-```bash
-./install.sh
+## Structure
+
+```
+/docker/
+├── m3tal.sh              ← master controller (cron entry point)
+├── connections.env        ← credentials + config
+├── agents/
+│   ├── monitor.sh         ← collects container + disk state
+│   ├── analyzer.sh        ← detects unhealthy / crash loops
+│   ├── decision-engine.sh ← applies rules, retry limits, queues actions
+│   ├── action-agent.sh    ← executes restarts, sends alerts
+│   ├── backup-agent.sh    ← daily backup with 4-snapshot rotation
+│   ├── telegram-agent.sh  ← approval system + remote commands
+│   └── ai-agent.sh        ← safe read-only AI recommendations
+├── dashboard/
+│   ├── server.py          ← Flask API + web UI server
+│   └── templates/
+│       └── index.html     ← live control plane dashboard
+├── state/
+│   ├── locks/             ← prevents concurrent runs
+│   ├── cooldowns/         ← prevents action spam
+│   └── retries/           ← per-container retry counters
+├── logs/
+├── media/                 ← media stack compose
+├── maintenance/           ← maintenance stack compose
+└── tattoo/                ← tattoo app compose
 ```
 
-# ⚙️ Configuration
+## Quick Start
 
-This system uses a centralized config file:
+1. Copy and configure env:
+   ```bash
+   cp /docker/connections.env.example /docker/connections.env
+   nano /docker/connections.env
+   ```
 
-```bash
-cp connections.env.example connections.env
-nano connections.env
-```
+2. Add cron jobs:
+   ```bash
+   # Agent pipeline — every minute
+   * * * * * /docker/m3tal.sh
 
-All scripts depend on this file.
+   # Backups — daily at 3 AM
+   0 3 * * * /docker/agents/backup-agent.sh
+   ```
 
-If missing, scripts will fail safely.
+3. Start the dashboard:
+   ```bash
+   cd /docker/maintenance
+   docker compose up -d dashboard
+   ```
+   Dashboard available at `http://your-server:8080`
 
-## Done
-System is fully autonomous.
+## Safety Guarantees
+
+| Layer         | Protection                          |
+|---------------|-------------------------------------|
+| Lock files    | Prevents overlapping agent runs     |
+| Cooldowns     | 120s minimum between actions        |
+| Retry limits  | Max 3 auto-restarts per container   |
+| AI boundaries | Read-only, never acts directly      |
+| Telegram gate | Critical actions require approval   |
+
+## Telegram Commands
+
+| Command              | Action                        |
+|----------------------|-------------------------------|
+| `status`             | Show container overview       |
+| `yes`                | Approve pending action        |
+| `no`                 | Reject pending action         |
+| `/restart [name]`    | Restart specific container    |
+| `/logs [name]`       | Tail 30 lines of container    |
+| `/help`              | List all commands             |
+
+## Enabling AI (v3)
+
+1. Install Ollama on your server
+2. Set `ENABLE_AI=true` in `connections.env`
+3. Set `OLLAMA_HOST=http://localhost:11434`
+4. AI will provide recommendations visible in the dashboard
