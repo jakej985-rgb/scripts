@@ -11,6 +11,7 @@ cp -r dashboard/* /docker/dashboard/
 cp -r config/* /docker/config/
 cp .env /docker/connections.env 2>/dev/null || true
 cp m3tal.sh /docker/
+cp VERSION /docker/ 2>/dev/null || true
 
 chmod +x /docker/agents/*.sh /docker/m3tal.sh
 
@@ -30,6 +31,11 @@ echo "Setting cron jobs..."
 
 (crontab -l 2>/dev/null | grep -v "m3tal.sh"; echo "* * * * * /docker/m3tal.sh") | crontab -
 (crontab -l 2>/dev/null | grep -v "backup-agent.sh"; echo "0 3 * * * /docker/agents/backup-agent.sh") | crontab -
+
+echo "Checking system..."
+command -v docker >/dev/null || { echo "Docker missing"; exit 1; }
+command -v jq >/dev/null || { echo "jq missing"; exit 1; }
+command -v yq >/dev/null || { echo "yq missing"; exit 1; }
 
 echo "✅ Installation complete"
 echo "👉 Configure /docker/connections.env and start the dashboard with: cd /docker/maintenance && docker compose up -d dashboard"

@@ -36,35 +36,35 @@ while read line; do
   case "$ACTION" in
     "RESTART")
       docker restart $NAME
-      echo "$(date) Restarted $NAME" >> $LOG
+      echo "{\"time\":\"$(date -Iseconds)\",\"event\":\"restart\",\"container\":\"$NAME\",\"type\":\"auto\"}" >> $LOG
       send "🛠 Restarted $NAME (auto)"
       ;;
 
     "ALERT")
-      echo "$(date) ALERT: $NAME needs attention" >> $LOG
+      echo "{\"time\":\"$(date -Iseconds)\",\"event\":\"alert\",\"container\":\"$NAME\",\"reason\":\"needs attention\"}" >> $LOG
       send "⚠️ $NAME issue detected
 Action: $ACTION
 Approve restart? (yes/no)"
       ;;
 
     "RESTART_SUGGESTED")
-      echo "$(date) AI SUGGESTED restart: $NAME" >> $LOG
+      echo "{\"time\":\"$(date -Iseconds)\",\"event\":\"ai_suggestion\",\"container\":\"$NAME\",\"reason\":\"restart\"}" >> $LOG
       send "🤖 AI recommends restarting $NAME
 Approve? (yes/no)"
       ;;
 
     "ALERT_CPU")
-      echo "$(date) HIGH CPU: $NAME ($DETAIL)" >> $LOG
+      echo "{\"time\":\"$(date -Iseconds)\",\"event\":\"cpu_alert\",\"container\":\"$NAME\",\"detail\":\"$DETAIL\"}" >> $LOG
       send "🔥 $NAME — HIGH CPU ($DETAIL)"
       ;;
 
     "ALERT_MEM")
-      echo "$(date) HIGH MEM: $NAME ($DETAIL)" >> $LOG
+      echo "{\"time\":\"$(date -Iseconds)\",\"event\":\"mem_alert\",\"container\":\"$NAME\",\"detail\":\"$DETAIL\"}" >> $LOG
       send "🔥 $NAME — HIGH MEMORY ($DETAIL)"
       ;;
 
     ALERT_DEP_*)
-      echo "$(date) DEPENDENCY: $NAME → $DETAIL" >> $LOG
+      echo "{\"time\":\"$(date -Iseconds)\",\"event\":\"dependency_alert\",\"container\":\"$NAME\",\"dependency\":\"$DETAIL\"}" >> $LOG
       send "🔗 $NAME degraded — dependency $DETAIL is down"
       ;;
   esac
