@@ -1,20 +1,6 @@
 version: "3.9"
 
 services:
-  traefik:
-    image: traefik:v3.0
-    container_name: traefik
-    command:
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    restart: unless-stopped
   m3tal-dashboard:
     image: python:3.11
     container_name: m3tal-dashboard
@@ -36,6 +22,8 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard.rule=Host(`m3tal.local`)"
       - "traefik.http.services.dashboard.loadbalancer.server.port=8080"
+    networks:
+      - m3tal
 
   m3tal-agents:
     image: ubuntu:22.04
@@ -49,3 +37,7 @@ services:
     restart: unless-stopped
     environment:
       - TZ=America/Denver
+
+networks:
+  m3tal:
+    external: true
