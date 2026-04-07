@@ -227,6 +227,21 @@
     .cluster-node-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; }
     .cluster-node-name { font-weight: 700; font-size: 0.9rem; }
 
+    /* ─── Forms ─── */
+    .form-row { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .form-input {
+      background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.5rem 0.8rem; color: var(--text-primary); font-family: var(--font-mono);
+      font-size: 0.82rem; outline: none; flex: 1; min-width: 200px;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus { border-color: var(--accent-blue); }
+    .form-input::placeholder { color: var(--text-muted); }
+    .btn-deploy { background: rgba(56,217,232,0.1); border-color: rgba(56,217,232,0.3); color: var(--accent-cyan); padding: 0.5rem 1.2rem; }
+    .btn-deploy:hover:not(:disabled) { background: rgba(56,217,232,0.25); }
+    .btn-update { background: rgba(167,139,250,0.1); border-color: rgba(167,139,250,0.3); color: var(--accent-purple); }
+    .btn-update:hover:not(:disabled) { background: rgba(167,139,250,0.25); }
+
     /* ─── Responsive ─── */
     @media (max-width: 900px) {
       .grid { grid-template-columns: 1fr; }
@@ -247,7 +262,7 @@
         <div class="logo">⚡</div>
         <div>
           <h1>M3TAL Control Plane</h1>
-          <div class="card-subtitle" style="margin-top:2px">v5 — Agent Orchestration Dashboard</div>
+          <div class="card-subtitle" style="margin-top:2px">v7 — Container Orchestration Platform</div>
         </div>
       </div>
       <div class="header-right">
@@ -262,6 +277,7 @@
       <div class="nav-tab" data-tab="metrics">📊 Metrics</div>
       <div class="nav-tab" data-tab="intelligence">🧠 Intelligence</div>
       <div class="nav-tab" data-tab="logs">📜 Logs</div>
+      <div class="nav-tab" data-tab="orchestration">⚙️ Orchestration</div>
       <div class="nav-tab" data-tab="cluster">🌐 Cluster</div>
     </nav>
 
@@ -414,13 +430,78 @@
       </div>
     </div>
 
+    <!-- ═══ TAB: ORCHESTRATION ═══ -->
+    <div class="tab-page" id="tab-orchestration">
+      <div class="grid">
+
+        <!-- Deploy Container (v6) -->
+        <div class="card full-width">
+          <div class="card-header">
+            <div class="card-icon cyan">🚀</div>
+            <div><div class="card-title">Deploy Container</div><div class="card-subtitle">v6 · Auto-Placement Engine</div></div>
+          </div>
+          <div class="form-row">
+            <input class="form-input" id="deployImage" placeholder="Image (e.g. lscr.io/linuxserver/radarr)">
+            <input class="form-input" id="deployNode" placeholder="Node (auto)" style="max-width:160px">
+            <button class="btn btn-deploy" onclick="deployContainer()">🚀 Deploy</button>
+          </div>
+        </div>
+
+        <!-- Rolling Update (v6.2) -->
+        <div class="card full-width">
+          <div class="card-header">
+            <div class="card-icon purple">🔄</div>
+            <div><div class="card-title">Rolling Update</div><div class="card-subtitle">v6.2 · Zero-Downtime</div></div>
+          </div>
+          <div class="form-row">
+            <input class="form-input" id="updateName" placeholder="Container name to update">
+            <button class="btn btn-update" onclick="rollingUpdate()">🔄 Update</button>
+          </div>
+        </div>
+
+        <!-- Scaling Log -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon green">📈</div>
+            <div><div class="card-title">Scaling Events</div><div class="card-subtitle">v6.1 · Auto-Scale Log</div></div>
+          </div>
+          <div class="log-area" id="scalingLog" style="max-height:200px">
+            <div class="empty"><div class="empty-icon">📈</div>No scaling events</div>
+          </div>
+        </div>
+
+        <!-- Reconcile Log -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon blue">📦</div>
+            <div><div class="card-title">Reconciliation</div><div class="card-subtitle">v7 · Declarative State</div></div>
+          </div>
+          <div class="log-area" id="reconcileLog" style="max-height:200px">
+            <div class="empty"><div class="empty-icon">📦</div>No reconcile events</div>
+          </div>
+        </div>
+
+        <!-- Scheduler Log -->
+        <div class="card full-width">
+          <div class="card-header">
+            <div class="card-icon amber">⏰</div>
+            <div><div class="card-title">Scheduler</div><div class="card-subtitle">v5.2 · Job Execution Log</div></div>
+          </div>
+          <div class="log-area" id="schedulerLog" style="max-height:200px">
+            <div class="empty"><div class="empty-icon">⏰</div>No scheduled jobs run</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
     <!-- ═══ TAB: CLUSTER ═══ -->
     <div class="tab-page" id="tab-cluster">
       <div class="grid">
         <div class="card full-width">
           <div class="card-header">
             <div class="card-icon cyan">🌐</div>
-            <div><div class="card-title">Cluster Nodes</div><div class="card-subtitle">v5 · Multi-Node Status</div></div>
+            <div><div class="card-title">Cluster Nodes</div><div class="card-subtitle">v5.1 · Auto-Discovery + Heartbeat</div></div>
           </div>
           <div id="clusterArea">
             <div class="empty"><div class="empty-icon">🌐</div>Loading cluster status…</div>
@@ -664,6 +745,43 @@
       }
     }
 
+    // ── Deploy + Update (v6) ──
+    async function deployContainer() {
+      const image = document.getElementById('deployImage').value;
+      const node = document.getElementById('deployNode').value || 'auto';
+      if (!image) { toast('Image required', 'error'); return; }
+      try {
+        const res = await fetch('/api/deploy', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+          body: `image=${encodeURIComponent(image)}&node=${encodeURIComponent(node)}`
+        });
+        if (res.ok) { toast(`Deployed ${image}`); document.getElementById('deployImage').value = ''; poll(); }
+        else { const d = await res.json(); toast(d.error || 'Failed', 'error'); }
+      } catch(e) { toast('Connection error', 'error'); }
+    }
+
+    async function rollingUpdate() {
+      const name = document.getElementById('updateName').value;
+      if (!name) { toast('Container name required', 'error'); return; }
+      toast(`Rolling update: ${name}…`);
+      try {
+        const res = await fetch(`/api/rolling_update/${name}`, { method: 'POST' });
+        const d = await res.json();
+        if (res.ok) { toast(`Updated ${name}`); poll(); }
+        else { toast(d.error || 'Update failed', 'error'); }
+      } catch(e) { toast('Connection error', 'error'); }
+    }
+
+    function renderSubLog(data, elId) {
+      const el = document.getElementById(elId);
+      if (!data || !data.length) { return; }
+      el.innerHTML = data.map(l => {
+        let cls = l.includes('UP') || l.includes('created') || l.includes('started') ? 'log-action' : l.includes('DOWN') || l.includes('removed') ? 'log-alert' : 'log-ts';
+        return `<div class="log-line"><span class="${cls}">${l}</span></div>`;
+      }).join('');
+    }
+
     // ── Polling ──
     async function poll() {
       try {
@@ -679,6 +797,9 @@
         renderDisk(d.disk);
         renderLogs(d.logs);
         renderAI(d.ai_recs);
+        renderSubLog(d.scaling_log, 'scalingLog');
+        renderSubLog(d.reconcile_log, 'reconcileLog');
+        renderSubLog(d.scheduler_log, 'schedulerLog');
         document.getElementById('lastUpdate').textContent = 'Updated ' + new Date(d.timestamp * 1000).toLocaleTimeString();
       } catch (e) { console.error('Poll failed', e); }
     }

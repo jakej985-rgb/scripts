@@ -1,68 +1,76 @@
 # Changelog
 
-## v5.0.0 — Full Control Plane
+## v7.0.0 — Container Orchestration Platform
 
-### v3.1 — Anomaly Detection (Metrics-Based)
-- New `metrics-agent.sh` — captures docker stats (CPU%, MEM) per container
-- New `anomaly-agent.sh` — flags containers exceeding CPU/MEM thresholds
-- Metrics history stored as CSV time-series for graphing
-- Auto-trims history to last 10,000 data points
-- Decision engine processes `HIGH_CPU` and `HIGH_MEM` anomalies
-- Action agent sends Telegram alerts for anomalies
+### v5.1 — Service Discovery (Auto-Detect Nodes)
+- Node agent upgraded to heartbeat-based registration
+- Nodes auto-register via POST to `/api/register`
+- In-memory node registry with 30s auto-prune of stale heartbeats
+- Static `nodes.json` kept as fallback, heartbeats override
+- No more manual node configuration needed
 
-### v3.2 — Container Dependency Graph
-- New `dependency-agent.sh` — checks container-to-container and container-to-path relationships
-- New `dependencies.conf` — declarative dependency map (radarr→qbittorrent, tdarr→/mnt/disk1, etc.)
-- Decision engine processes `DEPENDENCY_DOWN` and `DEPENDENCY_MISSING` events
-- Action agent sends context-aware alerts ("Radarr degraded because qbittorrent is down")
+### v5.2 — Job Scheduler (Cluster-Wide Tasks)
+- New `scheduler-agent.sh` — cron-like schedule matching per-minute
+- New `jobs.json` — declarative job definitions with cron schedules
+- Supports `local`, hostname-specific, and `all` (cluster-wide) targeting
+- Job cooldown prevents double-execution within same minute
+- API endpoints: `/api/run_job/<job>`, `/api/execute/<job>`
 
-### v4 — Full UI Control Panel
-- Container control buttons: Restart, Stop, Start (per container)
-- "Approve Pending" button — executes force-mode on action-agent from browser
-- All control actions are POST-protected (no accidental GET triggers)
-- Action logging for all dashboard-initiated actions
-- Toast notifications for action feedback
+### v6 — Container Auto-Placement
+- `choose_best_node()` — scores nodes by CPU + MEM + container count
+- `/api/deploy` — deploys container to best available node or specified target
+- `/api/run_container` — starts container on local node
+- `/api/node/metrics` — exposes CPU/MEM/container count per node
 
-### v4.1 — Metrics Graphs (Time-Series)
-- Chart.js integration with dual-axis CPU/MEM line charts
-- `/api/metrics/<name>` endpoint returns last 100 data points
-- Container selector dropdown auto-populated from history
-- Responsive chart with JetBrains Mono axis labels
+### v6.1 — Auto-Scaling Containers
+- New `scaling-agent.sh` — CPU-based scale up/down logic
+- New `scaling.json` — per-service min/max replicas and CPU thresholds
+- 5-minute cooldown between scale events per service
+- Lock file prevents concurrent scaling operations
+- Only removes replica containers, never the original
 
-### v4.2 — Role-Based Access Control
-- `users.json` — admin/operator/viewer roles
-- Role hierarchy: admin (full) > operator (restart/stop/start) > viewer (read-only)
-- HTTP Basic Auth on all endpoints
-- Approve action restricted to admin role only
+### v6.2 — Rolling Updates (Zero Downtime)
+- `/api/rolling_update/<name>` — pull latest, start new, verify, swap, remove old
+- Automatic rollback if new container fails to start
+- 5-second health verification before cutover
+- Logged to actions.log
 
-### v5 — Multi-Node Cluster
-- `nodes.json` — maps node names to URLs
-- `node-agent.sh` — lightweight status broadcaster for remote nodes
-- `/api/cluster` — aggregates status from all nodes
-- `/api/cluster/restart/<node>/<container>` — remote container restart
-- Cluster tab in dashboard with per-node status view
-- Offline detection with timeout handling
+### v7 — Declarative System (Desired State)
+- New `reconcile-agent.sh` — enforces desired state from `cluster.yml`
+- New `cluster.yml` — defines services, images, replicas, and node affinity
+- Reconciliation runs every minute: compares actual vs desired, scales accordingly
+- 3-minute cooldown per service between reconcile actions
+- Supports starting stopped replicas and creating new ones
 
-### Infrastructure
-- Dashboard port moved to 8888 (avoids gluetun conflict on 8080)
-- Docker socket mounted for dashboard container control
-- `requests` library added to dashboard container
-- Tabbed dashboard navigation (Overview, Metrics, Intelligence, Logs, Cluster)
-- Master controller pipeline expanded with metrics, anomaly, and dependency agents
+### Dashboard
+- New "Orchestration" tab with deploy form, rolling update, scaling/reconcile/scheduler logs
+- Version bumped to v7 in UI header
+- Cluster tab updated with "Auto-Discovery + Heartbeat" label
+- Form input styling for deploy and update controls
+- Sub-log renderer for scaling/reconcile/scheduler panels
+
+### Pipeline
+- Master controller (`m3tal.sh`) now runs 15 agents in 6 phases:
+  1. Data Collection: monitor, metrics, node-agent
+  2. Analysis: analyzer, anomaly, dependency
+  3. Decision: decision-engine
+  4. AI: ai-agent
+  5. Orchestration: scheduler, scaling, reconcile
+  6. Communication: telegram-agent
 
 ---
 
+## v5.0.0 — Full Control Plane
+- v3.1: Anomaly detection (CPU/MEM thresholds)
+- v3.2: Container dependency graph
+- v4: Dashboard container control buttons
+- v4.1: Chart.js time-series metrics graphs
+- v4.2: RBAC (admin/operator/viewer roles)
+- v5: Multi-node cluster with remote control
+
 ## v3.0.0 — Agent-Based Architecture
-- Core: 5 agent pipeline (monitor → analyzer → decision-engine → action-agent + backup-agent)
-- v2.1: Flask dashboard with live-polling glassmorphic UI
-- v2.2: Telegram approval system (yes/no gate, /restart, /logs, /status)
-- v3: Safe AI agent (Ollama + heuristic fallback, read-only recommendations)
-- Safety: lock files, 120s cooldowns, 3-retry limits, force-mode via approval only
-- Removed: 16 legacy scripts, stale api.py, lib/ directory
+- 5 agent pipeline, Flask dashboard, Telegram control, safe AI
+- Replaced 16 legacy scripts
 
 ## v1.0.0
 - Initial production release
-- One-command installer
-- Auto backup + retention
-- Self-healing containers
-- Telegram control + alerts
