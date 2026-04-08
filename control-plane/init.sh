@@ -44,12 +44,29 @@ for file in "${LOGS[@]}"; do
 done
 
 # -----------------------------
-# State Files (Standardize)
+# State Files (Standardize / Self-Heal)
 # -----------------------------
-touch "$BASE_DIR/control-plane/state/metrics.json"
-touch "$BASE_DIR/control-plane/state/normalized_metrics.json"
-touch "$BASE_DIR/control-plane/state/anomalies.json"
-touch "$BASE_DIR/control-plane/state/decisions.json"
+FILES=(
+  "metrics.json"
+  "normalized_metrics.json"
+  "anomalies.json"
+  "decisions.json"
+)
+
+for f in "${FILES[@]}"; do
+  path="$BASE_DIR/control-plane/state/$f"
+  if [ ! -f "$path" ]; then
+    touch "$path"
+    echo "[INIT] Recreated $f"
+  else
+    # Check if corrupted (not valid JSON)
+    if ! jq . "$path" >/dev/null 2>&1; then
+      echo "[]" > "$path"
+      echo "[STATE] Reset corrupted $f"
+    fi
+  fi
+done
+
 touch "$BASE_DIR/control-plane/state/leader.txt"
 
 # -----------------------------
