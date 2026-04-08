@@ -135,17 +135,14 @@ Create if missing:
 
 ## 🔁 Execution Order
 
-Antigravity MUST run first:
+Agents are managed by `run.sh` and run continuously:
 
-```bash
-antigravity-agent.sh
-monitor.sh
-metrics.sh
-anomaly-agent.sh
-decision-engine.sh
-reconcile.sh
-registry.sh
-```
+1. `monitor.py` -> system state
+2. `metrics.py` -> performance data
+3. `anomaly.py` -> issue identification
+4. `decision.py` -> action planning
+5. `reconcile.sh` -> action enforcement
+6. `registry.py` -> node discovery
 
 ---
 

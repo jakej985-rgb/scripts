@@ -104,12 +104,12 @@ run_agent() {
   done
 }
 
-run_agent monitor "$BASE_DIR/control-plane/agents/monitor.sh" &
-run_agent metrics "$BASE_DIR/control-plane/agents/metrics.sh" &
-run_agent anomaly "$BASE_DIR/control-plane/agents/anomaly-agent.sh" &
-run_agent decision "$BASE_DIR/control-plane/agents/decision-engine.sh" &
-run_agent reconcile "$BASE_DIR/control-plane/agents/reconcile.sh" &
-run_agent registry "$BASE_DIR/control-plane/agents/registry.sh" &
+run_agent monitor "$BASE_DIR/control-plane/agents/monitor.py" python &
+run_agent metrics "$BASE_DIR/control-plane/agents/metrics.py" python &
+run_agent anomaly "$BASE_DIR/control-plane/agents/anomaly.py" python &
+run_agent decision "$BASE_DIR/control-plane/agents/decision.py" python &
+run_agent reconcile "$BASE_DIR/control-plane/agents/reconcile.sh" bash &
+run_agent registry "$BASE_DIR/control-plane/agents/registry.py" python &
 
 wait
 ```

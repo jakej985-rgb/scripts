@@ -9,22 +9,20 @@ No script acts alone. Everything flows through the decision engine.
 
 ### 1. Deploy new structure
 
-```bash
-# The new directories are already in the repo:
-# /docker/agents/    — all 7 agent scripts
-# /docker/dashboard/ — web UI
-# /docker/state/     — runtime state (locks, cooldowns, retries)
-# /docker/logs/      — centralized logs
-```
+The new directories are:
+# control-plane/agents/ — Python-based agent pipeline
+# dashboard/ — Flask-based web UI
+# control-plane/state/ — Standardized JSON state files
+# control-plane/state/logs/ — Centralized logs
 
 ### 2. Configure environment
 
 ```bash
-cp /docker/connections.env.example /docker/connections.env
-nano /docker/connections.env
+cp .env.example .env
+nano .env
 
-# Required: BOT_TOKEN, CHAT_ID
-# Optional: ENABLE_AI=true, OLLAMA_HOST
+# Required: VPN_USER, VPN_PASSWORD, TATTOO_DB_PASSWORD
+# Optional: TELEGRAM_TOKEN, TELEGRAM_CHAT_ID
 ```
 
 ### 3. Remove old cron jobs
@@ -42,14 +40,15 @@ nano /docker/connections.env
 crontab -e
 ```
 
-### 4. Add new cron jobs
+### 4. Run the Control Plane
 
 ```bash
-# Agent pipeline — every minute
-* * * * * /docker/m3tal.sh
+# Make runners executable
+chmod +x control-plane/*.sh
+chmod +x control-plane/agents/*.sh
 
-# Backups — daily at 3 AM
-0 3 * * * /docker/agents/backup-agent.sh
+# Start the supervisor
+bash control-plane/run.sh
 ```
 
 ### 5. Make scripts executable

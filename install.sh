@@ -158,10 +158,19 @@ cd "$INSTALL_DIR"
 echo ""
 log "=== Generating config ==="
 
-cat > .env <<EOF
+if [ -f ".env.example" ]; then
+  cp .env.example .env
+  # Patch common values
+  sed -i "s|^DATA_DIR=.*|DATA_DIR=$DATA_DIR|" .env
+  sed -i "s|^DOMAIN=.*|DOMAIN=$DOMAIN|" .env
+  log "[OK] .env generated from template (please edit secrets manually)"
+else
+  cat > .env <<EOF
 DATA_DIR=$DATA_DIR
 DOMAIN=$DOMAIN
 EOF
+  log "[WARN] .env.example missing, created minimal .env"
+fi
 
 # -------------------------------
 # STATE DIRS

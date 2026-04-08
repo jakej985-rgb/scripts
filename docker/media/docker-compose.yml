@@ -153,7 +153,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     environment:
       - HOMEPAGE_ALLOWED_HOST=*
-      - NODE_TLS_REJECT_UNAUTHORIZED:0
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -177,17 +177,17 @@ services:
     restart: unless-stopped
 
   flaresolverr:
-      image: ghcr.io/flaresolverr/flaresolverr
-      container_name: flaresolverr
-      environment:
-        - LOG_LEVEL:info
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.flaresolverr.rule=Host(`flaresolverr.local`)"
-        - "traefik.http.services.flaresolverr.loadbalancer.server.port=8191"
-      networks:
-        - m3tal
-      restart: unless-stopped
+    image: ghcr.io/flaresolverr/flaresolverr
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=info
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.flaresolverr.rule=Host(`flaresolverr.local`)"
+      - "traefik.http.services.flaresolverr.loadbalancer.server.port=8191"
+    networks:
+      - m3tal
+    restart: unless-stopped
 
 networks:
   m3tal:

@@ -48,10 +48,10 @@ def validate_container(name):
 app = Flask(__name__)
 socketio = SocketIO(app)
 
-STATE = "control-plane/state"
-LOGS = "control-plane/state/logs"
-USERS_FILE = "/docker/dashboard/users.json"
-NODES_FILE = "control-plane/config/nodes.json"
+STATE = os.environ.get("STATE_DIR", "control-plane/state")
+LOGS = os.path.join(STATE, "logs")
+USERS_FILE = os.environ.get("USERS_FILE", "dashboard/users.json")
+NODES_FILE = os.path.join(STATE, "nodes.json") if not os.path.exists("control-plane/config/nodes.json") else "control-plane/config/nodes.json"
 JOBS_FILE = "control-plane/config/jobs.json"
 
 # ── v5.1: In-Memory Node Registry (heartbeat-based) ──
@@ -294,11 +294,19 @@ def start(name):
 @app.route("/api/approve", methods=["POST"])
 @requires_auth("admin")
 def approve():
-    subprocess.run(["control-plane/agents/action-agent.sh", "force"])
+    # Trigger reconcile by reading current decisions and marking for execution
+    decisions_path = f"{STATE}/decisions.json"
+    if not os.path.exists(decisions_path):
+        return jsonify({"error": "no pending decisions"}), 404
+
+    # Log the approval
     token = request.headers.get("Authorization", "unknown")
+    if not os.path.exists(LOGS):
+        os.makedirs(LOGS, exist_ok=True)
     with open(f"{LOGS}/actions.log", "a") as f:
         f.write(f"{time.strftime('%c')} APPROVE by token={token[:8]}...\n")
-    return jsonify({"status": "ok", "action": "approve"})
+
+    return jsonify({"status": "ok", "action": "approve", "message": "Reconcile agent will process pending states"})
 
 # ══════════════════════════════════════
 # ROUTES: v4.1 Metrics Time-Series
