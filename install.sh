@@ -204,7 +204,8 @@ sudo chown -R $USER:$USER "$INSTALL_DIR"
 # -------------------------------
 
 log "=== Applying domain config ==="
-find docker -name "*.yml" -exec sed -i "s/\.local/.$DOMAIN/g" {} \;
+# Recursive find to catch multi-stack architecture (Batch 14 T2)
+find "$REPO_ROOT/docker" -type f -name "*.yml" -exec sed -i "s/\.local/.$DOMAIN/g" {} \;
 
 # -------------------------------
 # FINAL CHECK

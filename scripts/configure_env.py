@@ -44,6 +44,7 @@ def main():
     print(f"{BOLD}--- [1] System Settings ---{END}")
     new_env["MASTER_IP"] = get_input("Master Node IP", current_env.get("MASTER_IP", "127.0.0.1"))
     new_env["DASHBOARD_PORT"] = get_input("Dashboard UI Port", current_env.get("DASHBOARD_PORT", "8080"))
+    new_env["HTTP_PORT"] = get_input("HTTP Gateway Port (80)", current_env.get("HTTP_PORT", "80"))
     new_env["DATA_DIR"] = get_input("Global Data Directory", current_env.get("DATA_DIR", "/mnt"))
     new_env["DOMAIN"] = get_input("Local Domain (for Traefik)", current_env.get("DOMAIN", "local"))
     print("")
