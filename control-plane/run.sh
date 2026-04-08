@@ -20,10 +20,7 @@ run_agent() {
   local name=$1
   local script=$2
   local interpreter=$3
-  
-  # Tracking for backoff (Batch 3 T6)
   local crash_count=0
-  local last_crash=0
 
   while true; do
     echo "[$(date '+%H:%M:%S')] Starting $name..."
@@ -34,18 +31,14 @@ run_agent() {
     fi
 
     exit_code=$?
-    now=$(date +%s)
-    
     if [ $exit_code -eq 0 ]; then
-        crash_count=0 # Reset on success
-        sleep 2
+        crash_count=0
+        sleep 5 # Main loop interval
     else
-        # Backoff logic
         ((crash_count++))
         wait_time=$(( 5 * crash_count ))
-        [ $wait_time -gt 60 ] && wait_time=60 # Cap at 60s
-        
-        echo "[$(date '+%H:%M:%S')] CRASH: $name (Count: $crash_count). Restarting in ${wait_time}s..."
+        [ $wait_time -gt 60 ] && wait_time=60
+        echo "[$(date '+%H:%M:%S')] CRASH: $name. Backoff ${wait_time}s..."
         sleep "$wait_time"
     fi
   done
@@ -53,18 +46,25 @@ run_agent() {
 
 echo "[$(date '+%H:%M:%S')] Supervisor launching Agents..."
 
-# Core Pipeline
+# 0. Primary Leader Election (Updates leader.txt)
+run_agent leader "$BASE_DIR/agents/leader.py" python &
+
+# Wait a moment for initial election to settle
+sleep 2
+
+# 1. Core Pipeline (Self-governed by guards.py leadership check)
 run_agent registry "$BASE_DIR/agents/registry.py" python &
 run_agent monitor "$BASE_DIR/agents/monitor.py" python &
 run_agent metrics "$BASE_DIR/agents/metrics.py" python &
+run_agent scaling "$BASE_DIR/agents/scaling.py" python &
 run_agent anomaly "$BASE_DIR/agents/anomaly.py" python &
 run_agent decision "$BASE_DIR/agents/decision.py" python &
 run_agent reconcile "$BASE_DIR/agents/reconcile.py" python &
 
-# Periodic/Maintenance
-run_agent scheduler "$BASE_DIR/agents/scheduler.py" python &
+# 2. Maintenance / Health (Run on all nodes)
 run_agent scorer "$BASE_DIR/agents/health_score.py" python &
-run_agent chaos "$BASE_DIR/agents/chaos_test.py" python &
+run_agent observer "$BASE_DIR/agents/observer.py" python &
+# run_agent chaos "$BASE_DIR/agents/chaos_test.py" python &
 
 echo "[$(date '+%H:%M:%S')] All agents running."
 wait
