@@ -12,11 +12,12 @@ from utils.guards import wrap_agent
 from utils.logger import get_logger
 
 logger = get_logger("monitor")
-HEALTH_JSON = os.path.join(STATE_DIR, "health.json")
 REGISTRY_JSON = os.path.join(STATE_DIR, "registry.json")
 
+# Batch 5 T3: Per-agent status file
+STATUS_FILE = os.path.join(STATE_DIR, "health", "monitor_containers.json")
+
 def collect_health():
-    # Load registry to know what to monitor
     registry = load_json(REGISTRY_JSON, default={"containers": []})
     targets = registry.get("containers", [])
     
@@ -31,9 +32,7 @@ def collect_health():
     for line in result.stdout.strip().split('\n'):
         if line:
             c = json.loads(line)
-            name = c.get("Names", "")
-            # Handle potential multi-name strings
-            name = name.split(',')[0] 
+            name = c.get("Names", "").split(',')[0] 
             running_containers[name] = c
 
     health_status = {}
@@ -52,7 +51,8 @@ def collect_health():
                 "raw_status": "not found"
             }
             
-    save_json(HEALTH_JSON, health_status)
+    # Save to the per-agent file (Batch 5 T3)
+    save_json(STATUS_FILE, health_status)
     logger.info(f"Health check completed for {len(targets)} containers.")
 
 if __name__ == "__main__":

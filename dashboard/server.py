@@ -485,7 +485,9 @@ def execute_job(job):
 
     for j in jobs:
         if j["name"] == job:
-            subprocess.Popen(j["command"], shell=True)
+            # Batch 5 T2: Security hardening - no shell=True
+            args = j["command"] if isinstance(j["command"], list) else j["command"].split()
+            subprocess.Popen(args)
             with open(f"{LOGS}/scheduler.log", "a") as lf:
                 lf.write(f"{time.strftime('%c')} API: executed job '{job}'\n")
             return jsonify({"status": "ok", "job": job})
