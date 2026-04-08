@@ -1,6 +1,13 @@
 #!/bin/bash
+# >>> AUTO-ROOT (path-agent)
+if git rev-parse --show-toplevel > /dev/null 2>&1; then
+  REPO_ROOT="$(git rev-parse --show-toplevel)"
+else
+  REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+fi
+# <<< AUTO-ROOT
 
-STATE="control-plane/state"
+STATE="$REPO_ROOT/control-plane/state"
 ANOM="$STATE/anomalies.json"
 OUT="$STATE/decisions.json"
 

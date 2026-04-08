@@ -1,18 +1,23 @@
 #!/bin/bash
 
 set -e
-
-BASE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+# >>> AUTO-ROOT (path-agent)
+if git rev-parse --show-toplevel > /dev/null 2>&1; then
+  REPO_ROOT="$(git rev-parse --show-toplevel)"
+else
+  REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+fi
+# <<< AUTO-ROOT
 
 echo "[RUN] Starting control plane..."
 
 # -----------------------------
 # Self-heal first
 # -----------------------------
-bash "$BASE_DIR/control-plane/init.sh"
+bash "$REPO_ROOT/control-plane/init.sh"
 
-LOG_FILE="$BASE_DIR/control-plane/state/logs/loop.log"
-LEADER_FILE="$BASE_DIR/control-plane/state/leader.txt"
+LOG_FILE="$REPO_ROOT/control-plane/state/logs/loop.log"
+LEADER_FILE="$REPO_ROOT/control-plane/state/leader.txt"
 
 # Ensure critical files always exist
 mkdir -p "$(dirname "$LOG_FILE")"
@@ -27,8 +32,8 @@ while true; do
   # -----------------------------
   # Agent execution (safe)
   # -----------------------------
-  for agent in monitor metrics anomaly-agent decision-engine reconcile; do
-    SCRIPT="$BASE_DIR/control-plane/agents/$agent.sh"
+  for agent in path-agent monitor metrics anomaly-agent decision-engine reconcile registry; do
+    SCRIPT="$REPO_ROOT/control-plane/agents/$agent.sh"
 
     if [ -f "$SCRIPT" ]; then
       echo "[RUN] Executing $agent" >> "$LOG_FILE"

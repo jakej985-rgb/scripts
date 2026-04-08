@@ -1,9 +1,16 @@
 #!/bin/bash
+# >>> AUTO-ROOT (path-agent)
+if git rev-parse --show-toplevel > /dev/null 2>&1; then
+  REPO_ROOT="$(git rev-parse --show-toplevel)"
+else
+  REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+fi
+# <<< AUTO-ROOT
 
 # scheduler.sh - Decides node placement based on least-loaded strategy
 
-CLUSTER="control-plane/config/cluster.yml"
-METRICS="control-plane/state/metrics.json"
+CLUSTER="$REPO_ROOT/control-plane/config/cluster.yml"
+METRICS="$REPO_ROOT/control-plane/state/metrics.json"
 
 svc=$1
 nodes=$(yq e '.nodes | keys | .[]' $CLUSTER)

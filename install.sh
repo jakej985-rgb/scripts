@@ -1,6 +1,13 @@
 #!/bin/bash
 
 set -e
+# >>> AUTO-ROOT (path-agent)
+if git rev-parse --show-toplevel > /dev/null 2>&1; then
+  REPO_ROOT="$(git rev-parse --show-toplevel)"
+else
+  REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+fi
+# <<< AUTO-ROOT
 
 LOG="install.log"
 WARNINGS=()
@@ -167,8 +174,8 @@ EOF
 # STATE DIRS
 # -------------------------------
 
-mkdir -p control-plane/state/logs
-touch control-plane/state/{state.json,anomalies.json,decisions.json,metrics.json}
+mkdir -p "$REPO_ROOT/control-plane/state"/logs
+touch "$REPO_ROOT/control-plane/state"/{state.json,anomalies.json,decisions.json,metrics.json}
 
 # -------------------------------
 # DOCKER NETWORK
@@ -192,7 +199,7 @@ sudo chown -R $USER:$USER "$INSTALL_DIR"
 # -------------------------------
 
 log "=== Applying domain config ==="
-find docker -name "*.yml" -exec sed -i "s/\.local/.$DOMAIN/g" {} \;
+find "$REPO_ROOT/docker" -name "*.yml" -exec sed -i "s/\.local/.$DOMAIN/g" {} \;
 
 # -------------------------------
 # FINAL CHECK
@@ -217,7 +224,7 @@ fi
 if [ "$AUTO_START" == "y" ]; then
   echo ""
   log "[START] Control plane"
-  bash control-plane/run.sh &
+  bash "$REPO_ROOT/control-plane/run.sh" &
 fi
 
 # -------------------------------
@@ -245,7 +252,7 @@ echo "Traefik: http://localhost:8080"
 echo "Apps: http://radarr.$DOMAIN"
 echo ""
 echo "Run manually:"
-echo "bash control-plane/run.sh"
+echo "bash \"$REPO_ROOT/control-plane/run.sh\""
 echo ""
 echo "⚠️ If docker permission issues:"
 echo "newgrp docker"

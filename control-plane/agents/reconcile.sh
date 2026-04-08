@@ -1,7 +1,14 @@
 #!/bin/bash
+# >>> AUTO-ROOT (path-agent)
+if git rev-parse --show-toplevel > /dev/null 2>&1; then
+  REPO_ROOT="$(git rev-parse --show-toplevel)"
+else
+  REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+fi
+# <<< AUTO-ROOT
 
-LOG="control-plane/state/logs/reconcile.log"
-CLUSTER="control-plane/config/cluster.yml"
+LOG="$REPO_ROOT/control-plane/state/logs/reconcile.log"
+CLUSTER="$REPO_ROOT/control-plane/config/cluster.yml"
 
 echo "[RECONCILE] $(date)" >> $LOG
 
@@ -58,9 +65,9 @@ for svc in $defined; do
         host=$(yq e ".nodes.$node.host" $CLUSTER)
 
         if [ "$host" = "localhost" ]; then
-          docker compose -f docker/$stack/docker-compose.yml down
+          docker compose -f "$REPO_ROOT/docker/$stack/docker-compose.yml" down
         else
-          ssh $host "docker compose -f docker/$stack/docker-compose.yml down" 2>/dev/null
+          ssh $host "docker compose -f \"$REPO_ROOT/docker/$stack/docker-compose.yml\" down" 2>/dev/null
         fi
       done
     fi
@@ -70,7 +77,7 @@ for svc in $defined; do
   # =========================
   # SCHEDULER (placement)
   # =========================
-  best_node=$(bash control-plane/agents/scheduler.sh $svc)
+  best_node=$(bash "$REPO_ROOT/control-plane/agents/scheduler.sh" $svc)
   best_host=$(yq e ".nodes.$best_node.host" $CLUSTER)
 
   echo "[ENSURE] $svc replicas=$replicas node=$best_node" | tee -a $LOG
@@ -79,9 +86,9 @@ for svc in $defined; do
   # APPLY STATE (IDEMPOTENT)
   # =========================
   if [ "$best_host" = "localhost" ]; then
-    docker compose -f docker/$stack/docker-compose.yml up -d --scale $svc=$replicas
+    docker compose -f "$REPO_ROOT/docker/$stack/docker-compose.yml" up -d --scale $svc=$replicas
   else
-    ssh $best_host "docker compose -f docker/$stack/docker-compose.yml up -d --scale $svc=$replicas" 2>/dev/null
+    ssh $best_host "docker compose -f \"$REPO_ROOT/docker/$stack/docker-compose.yml\" up -d --scale $svc=$replicas" 2>/dev/null
   fi
 
   # =========================

@@ -1,9 +1,16 @@
 #!/bin/bash
+# >>> AUTO-ROOT (path-agent)
+if git rev-parse --show-toplevel > /dev/null 2>&1; then
+  REPO_ROOT="$(git rev-parse --show-toplevel)"
+else
+  REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+fi
+# <<< AUTO-ROOT
 
 # HA-leader.sh - Distributed Leader Election (Minimalist Raft-like behavior)
 
-CLUSTER="control-plane/config/cluster.yml"
-STATE_DIR="control-plane/state"
+CLUSTER="$REPO_ROOT/control-plane/config/cluster.yml"
+STATE_DIR="$REPO_ROOT/control-plane/state"
 LEADER_FILE="$STATE_DIR/leader.txt"
 MY_NODE=$(hostname) # Or identify via config
 

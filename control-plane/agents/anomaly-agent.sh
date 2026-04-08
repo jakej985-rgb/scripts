@@ -1,9 +1,16 @@
 #!/bin/bash
+# >>> AUTO-ROOT (path-agent)
+if git rev-parse --show-toplevel > /dev/null 2>&1; then
+  REPO_ROOT="$(git rev-parse --show-toplevel)"
+else
+  REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+fi
+# <<< AUTO-ROOT
 
 # ANOMALY AGENT
 # Detects exited containers or issues from state.json
 
-STATE="control-plane/state"
+STATE="$REPO_ROOT/control-plane/state"
 IN="$STATE/state.json"
 OUT="$STATE/anomalies.json"
 
