@@ -46,6 +46,9 @@ echo "[RUN] Entering hardened control loop..."
 while true; do
     echo "--- Loop Start: $(date) ---" >> "$LOG_FILE"
     
+    # Self-healing check (Phase 2: Recovery)
+    bash "$BASE_DIR/control-plane/init.sh" >> "$LOG_FILE" 2>&1
+    
     # HA Gate
     if [ -f "$BASE_DIR/control-plane/agents/ha-leader.sh" ]; then
         if ! bash "$BASE_DIR/control-plane/agents/ha-leader.sh" >> "$LOG_FILE" 2>&1; then
