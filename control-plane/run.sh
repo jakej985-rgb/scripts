@@ -13,6 +13,19 @@ BASE_DIR="$REPO_ROOT/control-plane"
 STATE_DIR="$BASE_DIR/state"
 LOG_DIR="$STATE_DIR/logs"
 
+# 0. System Checks
+echo "[CHECK] Waiting for Docker socket..."
+MAX_RETRIES=30
+COUNT=0
+while ! docker ps > /dev/null 2>&1; do
+    ((COUNT++))
+    if [ $COUNT -ge $MAX_RETRIES ]; then
+        echo "[FATAL] Docker not found after 2 minutes. Exiting."
+        exit 1
+    fi
+    sleep 4
+done
+
 # Ensure initialization runs first
 bash "$BASE_DIR/init.sh"
 

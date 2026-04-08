@@ -60,6 +60,14 @@ def append_history(system, containers):
         lines.append(f"{ts},{c['name']},{c['cpu']},{c['mem']}\n")
         
     try:
+        file_exists = os.path.isfile(HISTORY_CSV)
+        header = "timestamp,name,cpu,mem\n"
+        
+        # Ensure header exists if file is missing or empty
+        if not file_exists or os.path.getsize(HISTORY_CSV) == 0:
+            with open(HISTORY_CSV, 'w') as f:
+                f.write(header)
+
         with open(HISTORY_CSV, "a") as f:
             f.writelines(lines)
             

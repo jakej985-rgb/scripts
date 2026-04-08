@@ -31,16 +31,12 @@ echo ""
 echo "=== Configuration Wizard ==="
 
 INSTALL_DIR=$(ask "Install directory" "$HOME/M3tal-Media-Server")
-DATA_DIR=$(ask "Data directory (/mnt recommended)" "/mnt")
-DOMAIN=$(ask "Base domain (for Traefik)" "local")
 AUTO_INSTALL=$(ask "Auto-install missing dependencies? (y/n)" "y")
 AUTO_START=$(ask "Start system after install? (y/n)" "y")
 
 echo ""
 echo "=== Summary ==="
 echo "Install Dir: $INSTALL_DIR"
-echo "Data Dir: $DATA_DIR"
-echo "Domain: $DOMAIN"
 echo "Auto Install: $AUTO_INSTALL"
 echo "Auto Start: $AUTO_START"
 echo ""
@@ -166,29 +162,25 @@ cd "$INSTALL_DIR"
 # CONFIG
 # -------------------------------
 
+# -------------------------------
+# CONFIG & INITIALIZATION
+# -------------------------------
+
 echo ""
-log "=== Generating config ==="
+log "=== Initializing M3TAL Control Plane ==="
 
-if [ -f ".env.example" ]; then
-  cp .env.example .env
-  # Patch common values
-  sed -i "s|^DATA_DIR=.*|DATA_DIR=$DATA_DIR|" .env
-  sed -i "s|^DOMAIN=.*|DOMAIN=$DOMAIN|" .env
-  log "[OK] .env generated from template (please edit secrets manually)"
+# Delegate scaffolding to the unified init script
+bash control-plane/init.sh | tee -a $LOG
+
+echo ""
+log "=== Environment Configuration ==="
+# Use the new interactive Python wizard instead of manual sed patching
+if [ -f "scripts/configure_env.py" ]; then
+  python3 scripts/configure_env.py
 else
-  cat > .env <<EOF
-DATA_DIR=$DATA_DIR
-DOMAIN=$DOMAIN
-EOF
-  log "[WARN] .env.example missing, created minimal .env"
+  warn "Configuration wizard missing, using .env.example"
+  cp .env.example .env
 fi
-
-# -------------------------------
-# STATE DIRS
-# -------------------------------
-
-mkdir -p control-plane/state/logs
-touch control-plane/state/{state.json,anomalies.json,decisions.json,metrics.json}
 
 # -------------------------------
 # DOCKER NETWORK
