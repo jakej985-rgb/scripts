@@ -239,8 +239,17 @@ def api_state():
         except Exception:
             return []
 
+    metrics_blob = parse_json(f"{STATE}/metrics.json")
+    # If it's the new nested dict format, extract the containers list
+    display_containers = []
+    if metrics_blob and isinstance(metrics_blob[0], dict):
+        display_containers = metrics_blob[0].get("containers", [])
+    else:
+        display_containers = metrics_blob
+
     return jsonify({
-        "containers": parse_json(f"{STATE}/metrics.json"), # monitor.sh now outputs to metrics.json
+        "containers": display_containers,
+        "system_metrics": metrics_blob[0].get("system", {}) if metrics_blob and isinstance(metrics_blob[0], dict) else {},
         "analysis": [l.strip() for l in analysis],
         "decisions": parse_json(f"{STATE}/decisions.json"),
         "disk": [l.strip() for l in disk],
@@ -249,8 +258,9 @@ def api_state():
         "cooldowns": cooldowns,
         "ai_recs": [l.strip() for l in ai_recs],
         "anomalies": parse_json(f"{STATE}/anomalies.json"),
+        "health_report": parse_json(f"{STATE}/health_report.json"),
         "deps": [l.strip() for l in deps],
-        "metrics": parse_json(f"{STATE}/normalized_metrics.json"), # metrics.sh now outputs normalized_metrics.json
+        "metrics": parse_json(f"{STATE}/normalized_metrics.json"),
         "scaling_log": [l.strip() for l in scaling_log],
         "reconcile_log": [l.strip() for l in reconcile_log],
         "scheduler_log": [l.strip() for l in scheduler_log],

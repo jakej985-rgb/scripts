@@ -6,26 +6,28 @@ import json
 # Standardize path resolution
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from utils.paths import STATE_DIR, HEALTH_JSON
+from utils.paths import STATE_DIR, HEALTH_JSON, HEALTH_REPORT_JSON
 from utils.state import load_json, save_json
 from utils.logger import get_logger
 
 logger = get_logger("scorer")
 
-FILES = [
+# Files to check for corruption/freshness
+MONITORED_FILES = [
     "metrics.json",
     "normalized_metrics.json",
     "anomalies.json",
-    "decisions.json"
+    "decisions.json",
+    "registry.json"
 ]
 
 MAX_RECOVERY_TIME = 15  # seconds
 CHECK_INTERVAL = 5
 
-file_state = {}
 file_timer = {}
+last_known_status = {}
 
-def get_status(path):
+def get_file_status(path):
     if not os.path.exists(path):
         return "missing"
     data = load_json(path, default=None)
@@ -33,67 +35,71 @@ def get_status(path):
         return "corrupt"
     return "ok"
 
-def main():
-    logger.info("Health scoring started")
+def monitor_recovery(file_name, status):
+    """Integrated recovery_check.py functionality."""
+    prev = last_known_status.get(file_name)
+    if prev and prev != status:
+        logger.info(f"FILE STATUS CHANGE: {file_name} from {prev} to {status}")
+    last_known_status[file_name] = status
 
-    while True:
-        score = 100
-        issues = []
+def calculate_health():
+    """Phase 2: Unified Health/Anomaly as per Audit Batch 2 T6/T7."""
+    score = 100
+    file_issues = []
+    
+    # 1. File Health Core
+    for f_name in MONITORED_FILES:
+        path = os.path.join(STATE_DIR, f_name)
+        status = get_file_status(path)
+        
+        # Log changes (recovery_check integration)
+        monitor_recovery(f_name, status)
 
-        for f in FILES:
-            path = os.path.join(STATE_DIR, f)
-            status = get_status(path)
+        if status in ["missing", "corrupt"]:
+            if f_name not in file_timer:
+                file_timer[f_name] = time.time()
+            score -= 5
+        else:
+            if f_name in file_timer:
+                duration = time.time() - file_timer[f_name]
+                if duration > MAX_RECOVERY_TIME:
+                    file_issues.append(f"{f_name} exceeded recovery SLA ({int(duration)}s)")
+                    score -= 15
+                del file_timer[f_name]
 
-            # Track bad state duration
-            if status in ["missing", "corrupt"]:
-                if f not in file_timer:
-                    file_timer[f] = time.time()
-            else:
-                if f in file_timer:
-                    duration = time.time() - file_timer[f]
+    # 2. Pipeline Integrity (Staleness)
+    decision_path = os.path.join(STATE_DIR, "decisions.json")
+    if os.path.exists(decision_path):
+        age = time.time() - os.path.getmtime(decision_path)
+        if age > 60:
+            file_issues.append("Pipeline Stall: decisions.json is stale (>60s)")
+            score -= 20
 
-                    if duration > MAX_RECOVERY_TIME:
-                        issues.append(f"{f} slow recovery ({int(duration)}s)")
-                        score -= 20
-                    else:
-                        score -= 5
+    # 3. Final Verdict
+    score = max(score, 0)
+    verdict = "HEALTHY" if score >= 85 else ("WARNING" if score >= 60 else "CRITICAL")
+    
+    logger.info(f"System Health Score: {score}% | Verdict: {verdict}")
+    if file_issues:
+        for issue in file_issues:
+            logger.warning(f"Health issue: {issue}")
 
-                    del file_timer[f]
-
-            file_state[f] = status
-
-        # Pipeline freshness check
-        decision_path = os.path.join(STATE_DIR, "decisions.json")
-        if os.path.exists(decision_path):
-            age = time.time() - os.path.getmtime(decision_path)
-            if age > 30:
-                issues.append("decisions stale")
-                score -= 30
-
-        # Clamp score
-        score = max(score, 0)
-        verdict = "PASS" if score >= 70 else "FAIL"
-
-        logger.info(f"SYSTEM HEALTH: {score}% | {verdict}")
-
-        if issues:
-            for i in issues:
-                logger.warning(f"ISSUE: {i}")
-
-        # Phase 4 — Write to state
-        health_data = {
-            "score": score,
-            "verdict": verdict,
-            "issues": issues,
-            "timestamp": int(time.time())
-        }
-        if not save_json(HEALTH_JSON, health_data):
-            logger.error("Failed to write health.json")
-
-        time.sleep(CHECK_INTERVAL)
+    # 4. Save State
+    save_json(HEALTH_REPORT_JSON, {
+        "score": score,
+        "verdict": verdict,
+        "issues": file_issues,
+        "timestamp": int(time.time()),
+        "file_states": last_known_status
+    })
 
 if __name__ == "__main__":
+    logger.info("Health Scorer Active (Consolidated)")
     try:
-        main()
+        while True:
+            calculate_health()
+            time.sleep(CHECK_INTERVAL)
+    except KeyboardInterrupt:
+        pass
     except Exception as e:
-        logger.critical(f"CRASHED: {e}", exc_info=True)
+        logger.critical(f"Health Scorer CRASHED: {e}", exc_info=True)
