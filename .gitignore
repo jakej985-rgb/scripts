@@ -1,6 +1,0 @@
-state/*
-!state/.keep
-
-.env
-*.log
-__pycache__/
