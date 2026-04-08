@@ -1,75 +1,49 @@
 #!/bin/bash
 
-# run-orchestrator.sh
-# Phase 2: Fix control loop reliability with per-agent execution wrapper
+# M3TAL Supervisor - Reliable Control Plane Launcher
+# Follows AGENT_PLAN.md Supervisor Model
 
-set -e
-BASE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-LOG_FILE="$BASE_DIR/control-plane/state/logs/loop.log"
-HEALTH_FILE="$BASE_DIR/control-plane/state/agent-health.json"
+BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
+STATE_DIR="$BASE_DIR/state"
+LOG_DIR="$STATE_DIR/logs"
 
-# 1. Initialize System
-echo "[RUN] Bootstrapping pipeline..."
-bash "$BASE_DIR/control-plane/init.sh"
+mkdir -p "$LOG_DIR"
 
-function run_agent() {
-    local name=$1
-    local cmd=$2
-    local start_time=$(date +%s)
-    
-    echo "[$(date '+%H:%M:%S')] Executing $name..." >> "$LOG_FILE"
-    
-    # Phase 5: Watchdog Check
-    # (Simple version: skip if agent-health says failing AND last failure < 60s ago)
-    if [ -f "$HEALTH_FILE" ] && command -v jq >/dev/null 2>&1; then
-        local status=$(jq -r ".[\"$name\"].status" "$HEALTH_FILE")
-        local last_fail=$(jq -r ".[\"$name\"].last_failure" "$HEALTH_FILE")
-        local now=$(date +%s)
-        if [ "$status" == "failing" ] && [ $((now - last_fail)) -lt 60 ]; then
-            echo "[WATCHDOG] Skipping $name (unstable, cooling down)" >> "$LOG_FILE"
-            return 0
-        fi
-    fi
+# Ensure initialization runs first
+bash "$BASE_DIR/init.sh"
 
-    # Execute with 60s timeout
-    if eval "timeout 60s python3 $cmd" >> "$LOG_FILE" 2>&1; then
-        echo "  ✔ $name success" >> "$LOG_FILE"
+run_agent() {
+  local name=$1
+  local script=$2
+  local interpreter=$3
+
+  while true; do
+    echo "[$(date '+%H:%M:%S')] Starting $name..."
+    if [ "$interpreter" == "python" ]; then
+        python3 "$script" >> "$LOG_DIR/$name.log" 2>&1
     else
-        echo "  ✖ $name failed in $(( $(date +%s) - start_time ))s" >> "$LOG_FILE"
-        # We short-circuit only on critical perception failure if needed
-        # but here we follow Rule #2: loop continues
+        bash "$script" >> "$LOG_DIR/$name.log" 2>&1
     fi
+
+    echo "[$(date '+%H:%M:%S')] CRASH: $name exited. Restarting in 5s..."
+    sleep 5
+  done
 }
 
-echo "[RUN] Entering hardened control loop..."
+# Launching agents in background
+echo "[$(date '+%H:%M:%S')] Supervisor launching Agents..."
 
-while true; do
-    echo "--- Loop Start: $(date) ---" >> "$LOG_FILE"
-    
-    # Self-healing check (Phase 2: Recovery)
-    bash "$BASE_DIR/control-plane/init.sh" >> "$LOG_FILE" 2>&1
-    
-    # HA Gate
-    if [ -f "$BASE_DIR/control-plane/agents/ha-leader.sh" ]; then
-        if ! bash "$BASE_DIR/control-plane/agents/ha-leader.sh" >> "$LOG_FILE" 2>&1; then
-            sleep 10; continue
-        fi
-    fi
+run_agent monitor "$BASE_DIR/agents/monitor.py" python &
+run_agent metrics "$BASE_DIR/agents/metrics.py" python &
+run_agent anomaly "$BASE_DIR/agents/anomaly.py" python &
+run_agent decision "$BASE_DIR/agents/decision.py" python &
+run_agent reconcile "$BASE_DIR/agents/reconcile.sh" bash &
+run_agent registry "$BASE_DIR/agents/registry.py" python &
 
-    # Pipeline Phase 1: Perception
-    run_agent "monitor" "$BASE_DIR/control-plane/agents/monitor.py"
-    run_agent "metrics" "$BASE_DIR/control-plane/agents/metrics.py"
-    
-    # Pipeline Phase 2: Analysis
-    run_agent "anomaly" "$BASE_DIR/control-plane/agents/anomaly.py"
-    run_agent "decision" "$BASE_DIR/control-plane/agents/decision.py"
-    
-    # Pipeline Phase 3: Execution
-    echo "[$(date '+%H:%M:%S')] Executing reconcile..." >> "$LOG_FILE"
-    bash "$BASE_DIR/control-plane/agents/reconcile.sh" >> "$LOG_FILE" 2>&1 || echo "  ✖ reconcile failed" >> "$LOG_FILE"
-    
-    # Pipeline Phase 4: Routing
-    run_agent "registry" "$BASE_DIR/control-plane/agents/registry.py"
+# Observer and Scorer (Phase 3 context)
+run_agent observer "$BASE_DIR/agents/recovery_check.py" python &
+run_agent scorer "$BASE_DIR/agents/health_score.py" python &
 
-    sleep 10
-done
+echo "[$(date '+%H:%M:%S')] All agents running. Supervisor waiting..."
+
+wait

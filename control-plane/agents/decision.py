@@ -1,50 +1,62 @@
 import sys
 import os
+import time
 
 # Add current dir to path for utils
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from utils.paths import ANOMALIES_JSON, DECISIONS_JSON
+from utils.paths import STATE_DIR
 from utils.state import load_json, save_json
 from utils.guards import wrap_agent
 from utils.logger import get_logger
 
 logger = get_logger("decision")
+ANOMALIES_JSON = os.path.join(STATE_DIR, "anomalies.json")
+DECISIONS_JSON = os.path.join(STATE_DIR, "decisions.json")
+COOLDOWNS_JSON = os.path.join(STATE_DIR, "cooldowns.json")
+
+# Cooldown to prevent flapping (Task 5)
+COOLDOWN_PERIOD = 300  # 5 minutes
 
 def make_decisions():
-    # Phase 3: Pipeline Integrity
-    anomalies = load_json(ANOMALIES_JSON, default=[])
-    if not isinstance(anomalies, list):
-        logger.error(f"Invalid anomalies format in {ANOMALIES_JSON}")
-        anomalies = []
-        
-    decisions = {"actions": []}
-    seen_services = set()
+    """Phase 2: Decision Engine with Cooldown system as per Task 5."""
+    issues_data = load_json(ANOMALIES_JSON, default={"issues": []})
+    cooldowns = load_json(COOLDOWNS_JSON, default={})
     
-    for anomaly in anomalies:
-        service = anomaly.get("service")
-        issue = anomaly.get("issue")
-        if not service or service in seen_services: continue
+    issues = issues_data.get("issues", [])
+    actions = []
+    now = int(time.time())
+    
+    new_cooldowns = cooldowns.copy()
+    
+    for issue in issues:
+        target = issue.get("target")
+        issue_type = issue.get("type")
         
-        action = None
-        priority = 1
-        
-        if issue in ["exited", "crash_loop"]:
-            action = "restart"; priority = 3
-        elif issue == "high_cpu":
-            action = "scale_up"; priority = 2
-            
-        if action:
-            decisions["actions"].append({
-                "service": service,
-                "action": action,
-                "priority": priority,
-                "reason": issue
+        if issue_type == "recoverable":
+            # Check cooldown for this specific target
+            last_action_time = cooldowns.get(target, 0)
+            if now - last_action_time < COOLDOWN_PERIOD:
+                logger.info(f"Cooldown active for {target}. Skipping restart action.")
+                continue
+                
+            actions.append({
+                "type": "restart",
+                "target": target,
+                "reason": issue.get("reason")
             })
-            seen_services.add(service)
-
-    decisions["actions"].sort(key=lambda x: x['priority'], reverse=True)
-    save_json(DECISIONS_JSON, decisions)
+            # Update cooldown timestamp
+            new_cooldowns[target] = now
+            
+        elif issue_type == "critical":
+            logger.error(f"CRITICAL issue for {target}: {issue.get('reason')}. No automated action defined.")
+    
+    # Task 3: Writes choices to decisions.json
+    save_json(DECISIONS_JSON, {"actions": actions})
+    save_json(COOLDOWNS_JSON, new_cooldowns)
+    
+    if actions:
+        logger.info(f"Decidied on {len(actions)} actions.")
 
 if __name__ == "__main__":
     wrap_agent("decision", make_decisions)
