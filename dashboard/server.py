@@ -121,6 +121,11 @@ def get_anomalies():
 def get_registry():
     return jsonify(load_json_safe(REGISTRY_JSON))
 
+@app.route('/healthz')
+def health_check():
+    """Liveness probe for external uptime monitors (Batch 16 T2)"""
+    return jsonify({"status": "ready", "version": "1.2.0"}), 200
+
 @app.route('/api/metrics/history')
 @login_required()
 def get_metrics_history():

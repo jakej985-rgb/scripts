@@ -17,12 +17,12 @@ DATE=$(date +%Y-%m-%d_%H%M)
 echo "[BACKUP] Starting backup to $DEST..."
 mkdir -p "$DEST"
 
-# Ensure we include config and docker stacks
+# Ensure we include config, docker stacks, and critical state
 # We use -C to change directory into REPO_ROOT for cleaner archive paths
 tar -czf "$DEST/backup-$DATE.tar.gz" -C "$REPO_ROOT" \
+  ".env" \
   "docker" \
-  "control-plane/config" \
-  "control-plane/state/registry.json" \
+  "control-plane/state" \
   --exclude="*.log" 2>/dev/null
 
 if [ $? -eq 0 ]; then
