@@ -82,6 +82,11 @@ services:
   bazarr:
     image: lscr.io/linuxserver/bazarr
     container_name: bazarr
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6767"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
     volumes:
       - /docker/configs/bazarr:/config
       - /mnt:/data
@@ -90,6 +95,11 @@ services:
   komga:
     image: gotson/komga
     container_name: komga
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:25600/actuator/health"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
     volumes:
       - /docker/configs/komga:/config
       - /mnt:/data
@@ -98,6 +108,11 @@ services:
   jellyseerr:
     image: fallenbagel/jellyseerr:latest
     container_name: jellyseerr
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5055"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
     volumes:
       - /docker/configs/jellyseerr:/app/config
     restart: unless-stopped
@@ -166,6 +181,11 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=America/Denver
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9696"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
     volumes:
       - /docker/configs/prowlarr:/config
     labels:

@@ -11,12 +11,8 @@ from utils.logger import get_logger
 
 logger = get_logger("anomaly")
 
-def classify_anomalies():
-    """Phase 2: Advanced Anomaly Classification as per Audit Batch 2 T7."""
-    health_data = load_json(HEALTH_JSON, default={})
-    metrics_data = load_json(METRICS_JSON, default={})
-    report_data = load_json(HEALTH_REPORT_JSON, default={})
-    
+def classify_issue(health_data, metrics_data, report_data=None):
+    """Core logic extracted for testability (Batch 7 T2)."""
     issues = []
     
     # 1. Container Health
@@ -53,15 +49,30 @@ def classify_anomalies():
             "reason": f"Memory saturation: {mem}%"
         })
 
-    # 3. Flapping / Stability Detection (Task T7 integration)
-    # If the health report shows a warning/critical verdict, log it here
+    # 3. Aggregated per-container resource alerts
+    for c in metrics_data.get("containers", []):
+         if c.get("cpu", 0) > 90:
+             issues.append({
+                "type": "resource_spike",
+                "target": c["name"],
+                "reason": f"High Container CPU: {c['cpu']}%"
+            })
+
+    return issues
+
+def analyze():
+    health_data = load_json(HEALTH_JSON, default={})
+    metrics_data = load_json(METRICS_JSON, default={})
+    report_data = load_json(HEALTH_REPORT_JSON, default={})
+    
+    issues = classify_issue(health_data, metrics_data, report_data)
+    
     if report_data.get("verdict") in ["WARNING", "CRITICAL"]:
         logger.warning(f"System health degraded: {report_data.get('verdict')} (Score: {report_data.get('score')}%)")
 
-    # 4. Save
     save_json(ANOMALIES_JSON, {"issues": issues})
     if issues:
         logger.info(f"Identified {len(issues)} anomalies.")
 
 if __name__ == "__main__":
-    wrap_agent("anomaly", classify_anomalies)
+    wrap_agent("anomaly", analyze)
