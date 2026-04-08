@@ -1,38 +1,35 @@
 #!/bin/bash
 
-STATE="control-plane/state"
-ANOM="$STATE/anomalies.json"
-OUT="$STATE/decisions.json"
+# DECISION ENGINE - Determines corrective actions
+BASE_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
+LOG="$BASE_DIR/control-plane/state/logs/decision-engine.log"
+ANOM="$BASE_DIR/control-plane/state/anomalies.json"
+OUT="$BASE_DIR/control-plane/state/decisions.json"
 
-> $OUT
+echo "[DECISION] $(date)" >> "$LOG"
 
-if [ ! -f "$ANOM" ]; then
-  echo "{\"actions\": []}" > $OUT
+if [ ! -f "$ANOM" ] || [ ! -s "$ANOM" ]; then
+  echo "{\"actions\": []}" > "$OUT"
   exit 0
 fi
 
-has_anomalies=$(wc -c < "$ANOM")
-if [ "$has_anomalies" -eq 0 ]; then
-  echo "{\"actions\": []}" > $OUT
-  exit 0
-fi
-
-echo "{\"actions\": [" > $OUT
+echo "{\"actions\": [" > "$OUT.tmp"
 first=true
 
-cat "$ANOM" | jq -c '.' | while read -r line; do
+while read -r line; do
+  [ -z "$line" ] && continue
   svc=$(echo "$line" | jq -r '.service')
   issue=$(echo "$line" | jq -r '.issue')
 
   if [ "$issue" = "exited" ] || [ "$issue" = "crash_loop" ]; then
-    if [ "$first" = true ]; then
-      first=false
-    else
-      echo "," >> $OUT
-    fi
-    echo "    {\"service\": \"$svc\", \"action\": \"restart\"}" >> $OUT
+    [ "$first" = true ] && first=false || echo "," >> "$OUT.tmp"
+    echo "    {\"service\": \"$svc\", \"action\": \"restart\"}" >> "$OUT.tmp"
+  elif [ "$issue" = "high_cpu" ]; then
+    [ "$first" = true ] && first=false || echo "," >> "$OUT.tmp"
+    echo "    {\"service\": \"$svc\", \"action\": \"scale_up\"}" >> "$OUT.tmp"
   fi
-done
+done < "$ANOM"
 
-echo "  ]" >> $OUT
-echo "}" >> $OUT
+echo "  ]" >> "$OUT.tmp"
+echo "}" >> "$OUT.tmp"
+mv "$OUT.tmp" "$OUT"

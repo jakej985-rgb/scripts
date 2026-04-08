@@ -1,11 +1,13 @@
 # Agent Conversion Plan (Bash → Python)
 
 ## Goal
+
 Migrate control-plane agents from Bash to Python while maintaining compatibility and stability.
 
 ---
 
 ## Strategy: Phased Hybrid Migration
+
 - Keep `run.sh` as orchestrator
 - Replace agents one-by-one with Python
 - Maintain same input/output contracts (JSON files)
@@ -13,44 +15,56 @@ Migrate control-plane agents from Bash to Python while maintaining compatibility
 ---
 
 ## Phase 0 – Foundation
+
 ### Tasks
+
 - Create `/control-plane/python/` directory
 - Add shared utilities:
   - `state.py` (read/write JSON safely)
   - `paths.py` (central path resolution)
   - `logger.py`
 
-### Output
+### Foundation Output
+
 Reusable core modules for all agents
 
 ---
 
 ## Phase 1 – Metrics Layer (LOW RISK)
-### Convert
+
+### Phase 1 Convert
+
 - monitor.sh → monitor.py
 - metrics.sh → metrics.py
 
-### Reason
+### Phase 1 Reason
+
 - No destructive actions
 - Easy validation
 
 ---
 
 ## Phase 2 – Anomaly Detection
-### Convert
+
+### Phase 2 Convert
+
 - anomaly-agent.sh → anomaly.py
 
-### Add
+### Phase 2 Add
+
 - Rule-based detection system
 - Threshold configs
 
 ---
 
 ## Phase 3 – Decision Engine (CRITICAL)
-### Convert
+
+### Phase 3 Convert
+
 - decision-engine.sh → decision.py
 
-### Improvements
+### Phase 3 Improvements
+
 - Structured decision objects
 - Priority system
 - Deduplication
@@ -58,28 +72,35 @@ Reusable core modules for all agents
 ---
 
 ## Phase 4 – Reconcile Layer (KEEP BASH PARTIAL)
-### Hybrid
+
+### Phase 4 Hybrid
+
 - Python generates actions
 - Bash executes system commands
 
 Files:
+
 - decision.py → outputs actions
 - reconcile.sh → executes docker/system commands
 
 ---
 
 ## Phase 5 – Registry + State Manager
-### Convert
+
+### Phase 5 Convert
+
 - registry.sh → registry.py
 
-### Add
+### Phase 5 Add
+
 - Service tracking
 - Health scoring
 
 ---
 
 ## Execution Flow (Final)
-```
+
+```bash
 run.sh
   ↓
 python monitor.py
@@ -93,8 +114,9 @@ python registry.py
 ---
 
 ## File Contracts (STRICT)
+
 | File | Producer | Consumer |
-|------|---------|---------|
+| :--- | :--- | :--- |
 | metrics.json | monitor | metrics |
 | normalized_metrics.json | metrics | anomaly |
 | anomalies.json | anomaly | decision |
@@ -103,11 +125,13 @@ python registry.py
 ---
 
 ## Python Standards
+
 - Always validate JSON before writing
 - Use atomic writes
 - Never overwrite blindly
 
 Example:
+
 ```python
 with open(tmp, 'w') as f:
     json.dump(data, f)
@@ -117,21 +141,25 @@ os.replace(tmp, target)
 ---
 
 ## Rollback Strategy
+
 - Keep original `.sh` files during migration
 - Toggle via run.sh
 
 ---
 
 ## Risks
+
 - Mixed runtime environment
 - Path inconsistencies
 
 Mitigation:
+
 - Central `paths.py`
 
 ---
 
 ## Future State
+
 - Full Python control-plane service
 - Optional API layer
 - Event-driven architecture
@@ -139,4 +167,5 @@ Mitigation:
 ---
 
 ## Summary
+
 This plan minimizes risk while upgrading reliability and scalability.

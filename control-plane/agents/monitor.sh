@@ -1,7 +1,12 @@
 #!/bin/bash
 
-# MONITOR AGENT
-# Gathers all container states (including exited) and writes to state.json
-# Write to temp and move to ensure atomic update (prevents race with dashboard)
-docker ps -a --format '{{json .}}' > control-plane/state/state.json.tmp
-mv control-plane/state/state.json.tmp control-plane/state/state.json
+# MONITOR AGENT - Gathers raw system + container data
+BASE_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
+LOG="$BASE_DIR/control-plane/state/logs/monitor.log"
+OUT="$BASE_DIR/control-plane/state/metrics.json"
+
+echo "[MONITOR] $(date)" >> "$LOG"
+
+# Write to temp and move for atomic update
+docker ps -a --format '{{json .}}' > "${OUT}.tmp"
+mv "${OUT}.tmp" "$OUT"

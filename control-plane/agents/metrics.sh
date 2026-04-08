@@ -1,12 +1,14 @@
 #!/bin/bash
 
-# metrics.sh - Collects cluster-wide node metrics
-
+# METRICS AGENT - Normalizes and aggregates metrics
 BASE_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
+LOG="$BASE_DIR/control-plane/state/logs/metrics.log"
+IN="$BASE_DIR/control-plane/state/metrics.json"
+OUT="$BASE_DIR/control-plane/state/normalized_metrics.json"
 CLUSTER="$BASE_DIR/control-plane/config/cluster.yml"
-METRICS="$BASE_DIR/control-plane/state/metrics.json"
 
-echo "{" > "${METRICS}.tmp"
+echo "[METRICS] $(date)" >> "$LOG"
+echo "{" > "${OUT}.tmp"
 
 nodes=$(yq e '.nodes | keys | .[]' "$CLUSTER")
 count=$(echo "$nodes" | wc -w)
@@ -31,8 +33,8 @@ for node in $nodes; do
   comma=","
   if [ $i -eq $count ]; then comma=""; fi
 
-  echo "  \"$node\": { \"cpu\": $cpu }$comma" >> "${METRICS}.tmp"
+  echo "  \"$node\": { \"cpu\": $cpu }$comma" >> "${OUT}.tmp"
 done
 
-echo "}" >> "${METRICS}.tmp"
-mv "${METRICS}.tmp" "$METRICS"
+echo "}" >> "${OUT}.tmp"
+mv "${OUT}.tmp" "$OUT"

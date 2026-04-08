@@ -35,19 +35,22 @@ while true; do
   fi
 
   # -----------------------------
-  # Agent execution (safe)
+  # Agent execution (Hybrid Python/Bash)
   # -----------------------------
-  for agent in monitor metrics anomaly-agent decision-engine reconcile registry; do
-    SCRIPT="$BASE_DIR/control-plane/agents/$agent.sh"
-
-    if [ -f "$SCRIPT" ]; then
-      echo "[RUN] Executing $agent" >> "$LOG_FILE"
-      # Timeout protection: 30s per agent
-      timeout 30s bash "$SCRIPT" >> "$LOG_FILE" 2>&1 || echo "[ERROR] $agent failed or timed out" >> "$LOG_FILE"
-    else
-      echo "[WARN] Missing $SCRIPT" >> "$LOG_FILE"
-    fi
-  done
+  
+  # 1. Perception Layer (Python)
+  python3 "$BASE_DIR/control-plane/python/monitor.py" >> "$LOG_FILE" 2>&1
+  python3 "$BASE_DIR/control-plane/python/metrics.py" >> "$LOG_FILE" 2>&1
+  
+  # 2. Analysis Layer (Python)
+  python3 "$BASE_DIR/control-plane/python/anomaly.py" >> "$LOG_FILE" 2>&1
+  python3 "$BASE_DIR/control-plane/python/decision.py" >> "$LOG_FILE" 2>&1
+  
+  # 3. Execution Layer (Bash - Critical System Commands)
+  bash "$BASE_DIR/control-plane/agents/reconcile.sh" >> "$LOG_FILE" 2>&1
+  
+  # 4. Routing Layer (Python)
+  python3 "$BASE_DIR/control-plane/python/registry.py" >> "$LOG_FILE" 2>&1
 
   sleep 10
 done

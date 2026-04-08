@@ -28,8 +28,12 @@ done
 # -----------------------------
 LOGS=(
   "$BASE_DIR/control-plane/state/logs/loop.log"
+  "$BASE_DIR/control-plane/state/logs/monitor.log"
   "$BASE_DIR/control-plane/state/logs/metrics.log"
-  "$BASE_DIR/control-plane/state/logs/anomaly.log"
+  "$BASE_DIR/control-plane/state/logs/anomaly-agent.log"
+  "$BASE_DIR/control-plane/state/logs/decision-engine.log"
+  "$BASE_DIR/control-plane/state/logs/reconcile.log"
+  "$BASE_DIR/control-plane/state/logs/registry.log"
 )
 
 for file in "${LOGS[@]}"; do
@@ -40,15 +44,13 @@ for file in "${LOGS[@]}"; do
 done
 
 # -----------------------------
-# Leader file (YOUR FIX)
+# State Files (Standardize)
 # -----------------------------
-LEADER_FILE="$BASE_DIR/control-plane/state/leader.txt"
-
-if [ ! -f "$LEADER_FILE" ]; then
-  echo "[INIT] Creating leader file"
-  touch "$LEADER_FILE"
-  echo "none" > "$LEADER_FILE"
-fi
+touch "$BASE_DIR/control-plane/state/metrics.json"
+touch "$BASE_DIR/control-plane/state/normalized_metrics.json"
+touch "$BASE_DIR/control-plane/state/anomalies.json"
+touch "$BASE_DIR/control-plane/state/decisions.json"
+touch "$BASE_DIR/control-plane/state/leader.txt"
 
 # -----------------------------
 # Optional permissions (safe)
