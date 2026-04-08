@@ -1,135 +1,72 @@
-# 🚀 M3TAL Control Plane
+# 🚀 M3TAL Control Plane (v1.2.0)
 
-> A lightweight, agent-based container orchestration system for homelabs and small-scale clusters.
+> A lightweight, autonomous, and self-healing container orchestration system for homelabs and small-scale clusters.
 
-![Status](https://img.shields.io/badge/status-active-success) ![License](https://img.shields.io/badge/license-MIT-blue) ![Version](https://img.shields.io/badge/version-1.0.0-orange)
+![Status](https://img.shields.io/badge/status-active-success) ![License](https://img.shields.io/badge/license-MIT-blue) ![Version](https://img.shields.io/badge/version-1.2.0-orange)
 
----
-
-## 🔥 Features
-
-* 🧠 Agent-based automation (safe + controlled)
-* 📊 Real-time metrics & anomaly detection
-* 🔄 Auto-scaling containers
-* 🚀 Rolling updates (zero downtime ready)
-* 🌐 Multi-node cluster support
-* 📦 Declarative service management (`cluster.yml`)
-* 🖥 Web dashboard (RBAC + token auth)
-* 📲 Optional Telegram approval system
+M3TAL (Modern Media Management & Management) is an "Autonomous Local Cloud" that manages your Docker containers so you don't have to. It detects failures, scales services, and ensures your media stack is always online.
 
 ---
 
-## 🧱 Architecture
+## 🔥 Key Features
 
-```text
-Monitor → Analyzer → Decision Engine → Action Agent
-                ↓
-           AI (advisory only)
-```
-
-* **Agents** → system logic
-* **Dashboard** → control plane UI + API
-* **Config** → declarative desired state
-* **State** → runtime + logs
+* **🧠 Autonomous Self-Healing**: Detects crashed containers and restarts them automatically within seconds.
+* **🌏 Distributed Leadership**: High Availability (HA) support — switch between nodes automatically if the master fails.
+* **📈 Deep Metrics**: Real-time monitoring of CPU, Memory, and I/O for both the system and every individual container.
+* **🔄 Auto-Scaling**: Automatically adjusts service replicas based on load (Upscale on high CPU, Downscale on idle).
+* **🛡️ Hardened Security**: Token-based RBAC, BCrypt password hashing, and shell-injection protection.
+* **🖥️ Web Dashboard**: Simple UI to manage your cluster, view metrics history, and approve AI actions.
+* **🚑 Disaster Recovery**: Built-in `backup.sh` and `restore.sh` scripts for one-click stack recovery.
 
 ---
 
 ## 🚀 Quick Start
 
+For a detailed beginner guide, see [Getting Started](docs/GET_STARTED.md).
+
+### 1. Install
 ```bash
 git clone https://github.com/jakej985-rgb/M3tal-Media-Server.git
 cd M3tal-Media-Server
-
 chmod +x install.sh
 ./install.sh
 ```
 
-Then open:
-
-```text
-http://YOUR_SERVER_IP:8888
-```
-
----
-
-## 📦 Example Config
-
-```yaml
-services:
-  radarr:
-    image: lscr.io/linuxserver/radarr
-    replicas: 2
-
-  qbittorrent:
-    image: lscr.io/linuxserver/qbittorrent
-    replicas: 1
-```
+### 2. Login
+Open your browser to `http://YOUR_SERVER_IP:8080`.
+* **Default Username**: `admin`
+* **Default Password**: `admin123`
+* *⚠️ Please change your password immediately in the dashboard!*
 
 ---
 
-## 🔐 Security
-
-* Token-based authentication (no plain passwords)
-* Role-based access (admin / operator / viewer)
-* Safe automation (no destructive actions by default)
-
----
-
-## ⚠️ Disclaimer
-
-This is **not Kubernetes**.
-
-M3TAL is designed for:
-
-* homelabs
-* small clusters
-* learning orchestration concepts
+## 🧱 Architecture
+The system uses a "Sense-Think-Act" loop driven by independent Python agents:
+1. **Registry** → Discovers your Docker stacks.
+2. **Monitor** → Senses container health.
+3. **Metrics** → Gathers performance data.
+4. **Anomaly** → Identifies issues (crashes, leaks).
+5. **Decision** → Plans recovery or scaling actions.
+6. **Reconcile** → Executes actions (restart/scale).
 
 ---
 
-## 🧠 Philosophy
-
-> Control > Automation
-> Stability > Complexity
-> Observability > Guessing
-
----
-
-## 📸 Screenshots
-
-*Screenshots coming soon...*
-
-* Dashboard view
-* Metrics graphs
-* Cluster overview
+## 🔐 Security & Safety
+M3TAL is designed to be **safe**:
+* **No Direct Calls**: Agents communicate only via atomic JSON state files.
+* **Cooldowns**: Prevents "flapping" or restart loops by enforcing wait times between actions.
+* **Allowlisting**: Only approved images and container names are permitted via the API.
 
 ---
 
 ## 🗺 Roadmap
-
-* [ ] React UI
-* [ ] Service mesh routing
-* [ ] Plugin system
-* [ ] Advanced scheduling policies
-
----
-
-## 🤝 Contributing
-
-PRs welcome — keep it:
-
-* simple
-* safe
-* modular
+* [ ] React-based "Admin Center" UI
+* [ ] Predictive AI Scaling (predicting load spikes)
+* [ ] Gossip protocol node discovery
+* [ ] Plugin system for custom agents
 
 ---
 
-## 📜 License
-
-MIT
-
----
-
-## ⭐ Support
-
-If you like this project, give it a star ⭐
+## 📜 License & Support
+Licensed under MIT.  
+If you like this project, give it a star ⭐!
