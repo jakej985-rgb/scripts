@@ -1,94 +1,56 @@
-# Migration Guide: v1 → v2
+# Migration Guide: v1.1 → v1.2
 
-## What changed
+This guide covers the transition from the legacy script-based orchestration to the **v1.2.0 Autonomous Agent Pipeline**.
 
-v2 replaces all standalone scripts with an **agent-based pipeline**.
-No script acts alone. Everything flows through the decision engine.
+---
 
-## Steps
+## 🏗️ What changed
 
-### 1. Deploy new structure
+* **Decentralized Execution**: All shell scripts have been replaced by Python-based agents.
+* **State Isolation**: Agents no longer write to a shared global file; they use segmented files in `control-plane/state/health/` to prevent data corruption.
+* **Standardized Supervisor**: The control plane is now managed by a single `run.sh` supervisor with built-in crash protection.
 
-The new directories are:
-# control-plane/agents/ — Python-based agent pipeline
-# dashboard/ — Flask-based web UI
-# control-plane/state/ — Standardized JSON state files
-# control-plane/state/logs/ — Centralized logs
+---
 
-### 2. Configure environment
+## 🚀 Migration Steps
 
+### 1. Repository Alignment
+Ensure you are in the repository root. M3TAL now uses **AUTO-ROOT** detection, so paths are resolved relative to the git directory.
+
+### 2. Dependency Update
+The new Python agents require additional libraries (`PyYAML`, `bcrypt`, `Flask-SocketIO`).
 ```bash
-cp .env.example .env
-nano .env
-
-# Required: VPN_USER, VPN_PASSWORD, TATTOO_DB_PASSWORD
-# Optional: TELEGRAM_TOKEN, TELEGRAM_CHAT_ID
+pip3 install -r requirements.txt
 ```
 
-### 3. Remove old cron jobs
+### 3. Cleanup Legacy Cron
+Remove any old crontab entries that were manually triggering scripts like `auto-heal.sh` or `metrics.sh`. These are now handled by the persistent `run.sh` supervisor.
 
+### 4. Initialize State
+Run the new initialization script to scaffold the directory structure and provision the default admin user:
 ```bash
-# Remove ALL old crontab entries for:
-#   auto-heal.sh
-#   auto-backup.sh
-#   auto-fix.sh
-#   auto-reboot-if-unhealthy.sh
-#   auto-rollback-on-update.sh
-#   predictive-ai.sh
-#   log-watcher.sh
-#   manage-cron.sh
-crontab -e
+bash control-plane/init.sh
 ```
 
-### 4. Run the Control Plane
-
+### 5. Launch the Supervisor
+Start the new control plane:
 ```bash
-# Make runners executable
-chmod +x control-plane/*.sh
-chmod +x control-plane/agents/*.sh
-
-# Start the supervisor
 bash control-plane/run.sh
 ```
 
-### 5. Make scripts executable
+---
 
-```bash
-chmod +x /docker/m3tal.sh
-chmod +x /docker/agents/*.sh
-```
+## 🧱 Component Mapping (v1.1 vs v1.2)
 
-### 6. Start dashboard
+| Legacy Component | Modern Agent | Purpose |
+| :--- | :--- | :--- |
+| `monitor.sh` | `monitor.py` | Container health sensing |
+| `metrics.sh` | `metrics.py` | Telemetry & history |
+| `auto-heal.sh` | `reconcile.py` | State enforcement |
+| `api.py` | `server.py` | Dashboard & Web API |
+| `ha-leader.sh` | `leader.py` | Cluster consensus |
 
-```bash
-cd /docker/maintenance
-docker compose up -d dashboard
-# Access at http://your-server:8080
-```
+---
 
-### 7. Verify
-
-```bash
-# Run manually once to check
-bash /docker/m3tal.sh
-
-# Check state output
-cat /docker/state/containers.txt
-cat /docker/logs/actions.log
-```
-
-## What was removed
-
-| Old Script                     | Replaced By                    |
-|-------------------------------|--------------------------------|
-| `auto-heal.sh`                | monitor + decision-engine      |
-| `auto-fix.sh`                 | decision-engine + action-agent |
-| `auto-reboot-if-unhealthy.sh` | removed (unsafe)               |
-| `auto-rollback-on-update.sh`  | removed (unsafe)               |
-| `predictive-ai.sh`            | ai-agent.sh                    |
-| `ai-log-analyzer.sh`          | ai-agent.sh                    |
-| `log-watcher.sh`              | monitor.sh                     |
-| `auto-backup.sh`              | backup-agent.sh                |
-| `api.py`                      | dashboard/server.py            |
-| `install.sh`                  | manual setup (see above)       |
-| `lib/env.sh`                  | direct `source connections.env`|
+## ⚠️ Important Note
+**Configuration Volume**: Ensure your Docker containers are using the standardized `/mnt` mount point for persistent data. v1.2.0 agents enforce this mount for all monitored services to ensure portable storage.

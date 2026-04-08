@@ -1,10 +1,20 @@
 # Cluster Operations
 
-M3TAL features zero-configuration multi-node discovery.
+M3TAL features zero-configuration multi-node discovery and high-availability leadership.
 
-Every node running the agent stack fires a 10s heartbeat via `node-agent.sh` to the Control Plane `MASTER_URL`.
+---
 
-Features:
-- **Discoverability**: Nodes auto-populate on the dashboard.
-- **Scheduling**: The Master routes new containers via `scheduler.sh`.
-- **Reconciliation**: Nodes synchronize workloads matching `.yml` definitions.
+## Leadership Election
+
+Every node running the agent stack participates in a priority-based election managed by `leader.py`.
+
+* **Active Primary**: The node with the highest priority acts as the Master.
+* **Standby Followers**: All other nodes stay in Standby mode, ready to take over if the Master heartbeats fail.
+
+---
+
+## Cluster Features
+
+* **Discoverability**: Nodes auto-populate on the dashboard via the registry.
+* **Coordination**: The Master node coordinates actions across the cluster.
+* **Reconciliation**: Nodes synchronize workloads matching `.yml` definitions in the shared `docker/` directory.
