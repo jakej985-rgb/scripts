@@ -6,6 +6,7 @@ control-plane/state/metrics.json
 control-plane/state/normalized_metrics.json
 control-plane/state/health.json
 control-plane/state/cooldowns.json
+control-plane/state/scaling.json
 control-plane/state/registry.json
 control-plane/state/metrics-history.csv
 control-plane/state/traefik-dynamic.yml
