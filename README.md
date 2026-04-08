@@ -25,6 +25,7 @@ M3TAL (Modern Media Management & Management) is an "Autonomous Local Cloud" that
 For a detailed beginner guide, see [Getting Started](docs/GET_STARTED.md).
 
 ### 1. Install
+
 ```bash
 git clone https://github.com/jakej985-rgb/M3tal-Media-Server.git
 cd M3tal-Media-Server
@@ -33,7 +34,9 @@ chmod +x install.sh
 ```
 
 ### 2. Login
+
 Open your browser to `http://YOUR_SERVER_IP:8080`.
+
 * **Default Username**: `admin`
 * **Default Password**: `admin123`
 * *⚠️ Please change your password immediately in the dashboard!*
@@ -41,7 +44,9 @@ Open your browser to `http://YOUR_SERVER_IP:8080`.
 ---
 
 ## 🧱 Architecture
+
 The system uses a "Sense-Think-Act" loop driven by independent Python agents:
+
 1. **Registry** → Discovers your Docker stacks.
 2. **Monitor** → Senses container health.
 3. **Metrics** → Gathers performance data.
@@ -52,7 +57,9 @@ The system uses a "Sense-Think-Act" loop driven by independent Python agents:
 ---
 
 ## 🔐 Security & Safety
+
 M3TAL is designed to be **safe**:
+
 * **No Direct Calls**: Agents communicate only via atomic JSON state files.
 * **Cooldowns**: Prevents "flapping" or restart loops by enforcing wait times between actions.
 * **Allowlisting**: Only approved images and container names are permitted via the API.
@@ -60,6 +67,7 @@ M3TAL is designed to be **safe**:
 ---
 
 ## 🗺 Roadmap
+
 * [ ] React-based "Admin Center" UI
 * [ ] Predictive AI Scaling (predicting load spikes)
 * [ ] Gossip protocol node discovery
@@ -68,5 +76,7 @@ M3TAL is designed to be **safe**:
 ---
 
 ## 📜 License & Support
-Licensed under MIT.  
+
+Licensed under MIT.
+
 If you like this project, give it a star ⭐!

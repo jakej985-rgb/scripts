@@ -5,6 +5,7 @@ This is a "Cheat Sheet" for managing and troubleshooting your M3TAL Media Server
 ---
 
 ## 🚀 Core M3TAL Commands
+
 Run these from the repository root directory.
 
 | Task | Command |
@@ -18,21 +19,25 @@ Run these from the repository root directory.
 ---
 
 ## 📜 Log Reading Commands
+
 Monitoring the "thoughts" of the agents in real-time.
 
-### Watch a specific agent live:
+### Watch a specific agent live
+
 ```bash
 tail -f control-plane/state/logs/monitor.log
 tail -f control-plane/state/logs/reconcile.log
 tail -f control-plane/state/logs/decision.log
 ```
 
-### Search for errors across all logs:
+### Search for errors across all logs
+
 ```bash
 grep -r "ERROR" control-plane/state/logs/
 ```
 
-### Check the last 50 actions taken by the system:
+### Check the last 50 actions taken by the system
+
 ```bash
 tail -n 50 control-plane/state/logs/reconcile.log
 ```
@@ -40,6 +45,7 @@ tail -n 50 control-plane/state/logs/reconcile.log
 ---
 
 ## 🐳 Docker Troubleshooting
+
 Sometimes you need to look at the containers directly.
 
 | Task | Command |
@@ -55,19 +61,23 @@ Sometimes you need to look at the containers directly.
 ---
 
 ## 🧪 Debugging Agents Manually
+
 If an agent is failing, you can run it manually in the foreground to see the error output:
 
-**Check Monitor:**
+**Check Monitor**
+
 ```bash
 python3 control-plane/agents/monitor.py
 ```
 
-**Check Metrics:**
+**Check Metrics**
+
 ```bash
 python3 control-plane/agents/metrics.py
 ```
 
-**Check Reconciler:**
+**Check Reconciler**
+
 ```bash
 python3 control-plane/agents/reconcile.py
 ```
@@ -76,17 +86,20 @@ python3 control-plane/agents/reconcile.py
 
 ## 💾 Storage & Filesystem
 
-### Check the Health Score via CLI:
+### Check the Health Score via CLI
+
 ```bash
 cat control-plane/state/health_report.json | jq
 ```
 
-### Check remaining disk space on your media drive:
+### Check remaining disk space on your media drive
+
 ```bash
 df -h | grep /mnt
 ```
 
-### Fix storage permissions:
+### Fix storage permissions
+
 ```bash
 sudo chown -R $USER:$USER .
 chmod -R 775 control-plane/state/
@@ -96,12 +109,14 @@ chmod -R 775 control-plane/state/
 
 ## 🌐 Network
 
-### See what is running on port 8080 (Dashboard):
+### See what is running on port 8080 (Dashboard)
+
 ```bash
 sudo lsof -i :8080
 ```
 
-### Check connectivity to the primary node:
+### Check connectivity to the primary node
+
 ```bash
 ping <leader_ip>
 ```
