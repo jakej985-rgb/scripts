@@ -39,18 +39,18 @@ while true; do
   # -----------------------------
   
   # 1. Perception Layer (Python)
-  python3 "$BASE_DIR/control-plane/python/monitor.py" >> "$LOG_FILE" 2>&1
-  python3 "$BASE_DIR/control-plane/python/metrics.py" >> "$LOG_FILE" 2>&1
+  python3 "$BASE_DIR/control-plane/agents/monitor.py" >> "$LOG_FILE" 2>&1
+  python3 "$BASE_DIR/control-plane/agents/metrics.py" >> "$LOG_FILE" 2>&1
   
   # 2. Analysis Layer (Python)
-  python3 "$BASE_DIR/control-plane/python/anomaly.py" >> "$LOG_FILE" 2>&1
-  python3 "$BASE_DIR/control-plane/python/decision.py" >> "$LOG_FILE" 2>&1
+  python3 "$BASE_DIR/control-plane/agents/anomaly.py" >> "$LOG_FILE" 2>&1
+  python3 "$BASE_DIR/control-plane/agents/decision.py" >> "$LOG_FILE" 2>&1
   
   # 3. Execution Layer (Bash - Critical System Commands)
   bash "$BASE_DIR/control-plane/agents/reconcile.sh" >> "$LOG_FILE" 2>&1
   
   # 4. Routing Layer (Python)
-  python3 "$BASE_DIR/control-plane/python/registry.py" >> "$LOG_FILE" 2>&1
+  python3 "$BASE_DIR/control-plane/agents/registry.py" >> "$LOG_FILE" 2>&1
 
   sleep 10
 done

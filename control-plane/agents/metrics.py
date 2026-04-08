@@ -4,8 +4,8 @@ import sys
 import os
 import yaml
 
-# Add parent dir to path for utils
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Add current dir to path for utils
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from utils.paths import CLUSTER_YML, NORMALIZED_METRICS_JSON
 from utils.state import save_json
