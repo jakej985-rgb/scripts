@@ -15,6 +15,7 @@ The M3TAL Control Plane is designed for high observability. This guide explains 
 ## 🪵 Log Aggregation (Enterprise Strategy)
 
 ### 1. Centralized Logging with Promtail/Loki
+
 To export M3TAL agent logs to a central Grafana instance, add a `promtail` config:
 
 ```yaml
@@ -28,6 +29,7 @@ scrape_configs:
 ```
 
 ### 2. Docker Cloud Logging
+
 Configure your `daemon.json` to send container logs to a remote syslog or loki endpoint:
 
 ```json
@@ -45,6 +47,7 @@ Configure your `daemon.json` to send container logs to a remote syslog or loki e
 ## 📈 Uptime Monitoring
 
 M3TAL provides a standard `/healthz` endpoint. You can hook this into:
+
 1. **Uptime Kuma** (Self-hosted)
 2. **BetterStack** (Cloud)
 3. **Checkly** (E2E)
