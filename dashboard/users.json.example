@@ -1,5 +1,6 @@
 {
-  "admin": {"password": "***REDACTED***", "role": "admin"},
-  "ops": {"password": "***REDACTED***", "role": "operator"},
-  "view": {"password": "***REDACTED***", "role": "viewer"}
+    "admin": {
+        "token_hash": "$2b$12$EixZaYVK1fsbw1ZfbX3OXePaGuNo9p2F19X5h5T9h8Z2Z2Z2Z2Z2Z",
+        "role": "admin"
+    }
 }

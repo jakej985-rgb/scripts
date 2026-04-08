@@ -7,7 +7,43 @@ import json
 import os
 import time
 import threading
+import re
 from auth import get_role
+
+# Image prefixes allowlist for deployment
+ALLOWED_IMAGES_PREFIXES = [
+    "lscr.io/linuxserver/",
+    "ghcr.io/",
+    "containrrr/",
+    "amir20/",
+    "portainer/",
+    "node:",
+    "postgres:",
+    "traefik:",
+    "python:",
+    "ubuntu:"
+]
+
+def validate_image(image: str) -> bool:
+    if not image: return False
+    return any(image.startswith(p) for p in ALLOWED_IMAGES_PREFIXES)
+
+def get_known_containers():
+    try:
+        out = subprocess.check_output(
+            ["docker", "ps", "-a", "--format", "{{.Names}}"], text=True
+        )
+        return set(out.strip().split("\n"))
+    except:
+        return set()
+
+def validate_container(name):
+    if not name: abort(400, "container name required")
+    allowed = re.compile(r'^[a-zA-Z0-9_\-\.]+$')
+    if not allowed.match(name):
+        abort(400, "invalid container name format")
+    if name not in get_known_containers():
+        abort(404, "container not found")
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -208,33 +244,40 @@ def api_state():
 @app.route("/api/restart/<name>", methods=["POST"])
 @requires_auth("operator")
 def restart(name):
+    validate_container(name)
     subprocess.run(["docker", "restart", name])
+    token = request.headers.get("Authorization", "unknown")
     with open(f"{LOGS}/actions.log", "a") as f:
-        f.write(f"{time.strftime('%c')} Dashboard: Restarted {name}\n")
+        f.write(f"{time.strftime('%c')} RESTART {name} by token={token[:8]}...\n")
     return jsonify({"status": "ok", "action": "restart", "container": name})
 
 @app.route("/api/stop/<name>", methods=["POST"])
 @requires_auth("operator")
 def stop(name):
+    validate_container(name)
     subprocess.run(["docker", "stop", name])
+    token = request.headers.get("Authorization", "unknown")
     with open(f"{LOGS}/actions.log", "a") as f:
-        f.write(f"{time.strftime('%c')} Dashboard: Stopped {name}\n")
+        f.write(f"{time.strftime('%c')} STOP {name} by token={token[:8]}...\n")
     return jsonify({"status": "ok", "action": "stop", "container": name})
 
 @app.route("/api/start/<name>", methods=["POST"])
 @requires_auth("operator")
 def start(name):
+    validate_container(name)
     subprocess.run(["docker", "start", name])
+    token = request.headers.get("Authorization", "unknown")
     with open(f"{LOGS}/actions.log", "a") as f:
-        f.write(f"{time.strftime('%c')} Dashboard: Started {name}\n")
+        f.write(f"{time.strftime('%c')} START {name} by token={token[:8]}...\n")
     return jsonify({"status": "ok", "action": "start", "container": name})
 
 @app.route("/api/approve", methods=["POST"])
 @requires_auth("admin")
 def approve():
     subprocess.run(["control-plane/agents/action-agent.sh", "force"])
+    token = request.headers.get("Authorization", "unknown")
     with open(f"{LOGS}/actions.log", "a") as f:
-        f.write(f"{time.strftime('%c')} Dashboard: Force-approved pending actions\n")
+        f.write(f"{time.strftime('%c')} APPROVE by token={token[:8]}...\n")
     return jsonify({"status": "ok", "action": "approve"})
 
 # ══════════════════════════════════════
@@ -476,15 +519,21 @@ def run_container():
     if not image:
         return jsonify({"error": "image required"}), 400
 
+    if not validate_image(image):
+        return jsonify({"error": "image not in allowlist"}), 403
+
     cmd = ["docker", "run", "-d", "--restart", "unless-stopped"]
     if name:
+        if not re.match(r'^[a-zA-Z0-9_\-\.]+$', name):
+             return jsonify({"error": "invalid container name"}), 400
         cmd += ["--name", name]
     cmd.append(image)
 
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode == 0:
+        token = request.headers.get("Authorization", "unknown")
         with open(f"{LOGS}/actions.log", "a") as f:
-            f.write(f"{time.strftime('%c')} Deploy: started {image}\n")
+            f.write(f"{time.strftime('%c')} DEPLOY {image} as {name} by token={token[:8]}...\n")
         return jsonify({"status": "ok", "container_id": result.stdout.strip()[:12]})
     else:
         return jsonify({"error": result.stderr.strip()}), 500

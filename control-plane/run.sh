@@ -25,14 +25,25 @@ while true; do
   echo "[LOOP] $(date)" >> "$LOG_FILE"
 
   # -----------------------------
+  # HA Gate
+  # -----------------------------
+  if [ -f "$BASE_DIR/control-plane/agents/ha-leader.sh" ]; then
+    if ! bash "$BASE_DIR/control-plane/agents/ha-leader.sh"; then
+      sleep 10
+      continue
+    fi
+  fi
+
+  # -----------------------------
   # Agent execution (safe)
   # -----------------------------
-  for agent in monitor metrics anomaly-agent decision-engine reconcile; do
+  for agent in monitor metrics anomaly-agent decision-engine reconcile registry; do
     SCRIPT="$BASE_DIR/control-plane/agents/$agent.sh"
 
     if [ -f "$SCRIPT" ]; then
       echo "[RUN] Executing $agent" >> "$LOG_FILE"
-      bash "$SCRIPT" >> "$LOG_FILE" 2>&1 || echo "[ERROR] $agent failed" >> "$LOG_FILE"
+      # Timeout protection: 30s per agent
+      timeout 30s bash "$SCRIPT" >> "$LOG_FILE" 2>&1 || echo "[ERROR] $agent failed or timed out" >> "$LOG_FILE"
     else
       echo "[WARN] Missing $SCRIPT" >> "$LOG_FILE"
     fi

@@ -2,24 +2,26 @@
 
 # metrics.sh - Collects cluster-wide node metrics
 
-CLUSTER="control-plane/config/cluster.yml"
-METRICS="control-plane/state/metrics.json"
+BASE_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
+CLUSTER="$BASE_DIR/control-plane/config/cluster.yml"
+METRICS="$BASE_DIR/control-plane/state/metrics.json"
 
-echo "{" > $METRICS
+echo "{" > "${METRICS}.tmp"
 
-nodes=$(yq e '.nodes | keys | .[]' $CLUSTER)
+nodes=$(yq e '.nodes | keys | .[]' "$CLUSTER")
 count=$(echo "$nodes" | wc -w)
 i=0
 
+# Helper to calculate CPU on linux from /proc/stat
+CPU_CMD="grep 'cpu ' /proc/stat | awk '{print (\$2+\$4)*100/(\$2+\$4+\$5)}'"
+
 for node in $nodes; do
-  host=$(yq e ".nodes.$node.host" $CLUSTER)
+  host=$(yq e ".nodes.$node.host" "$CLUSTER")
   
   if [ "$host" = "localhost" ]; then
-    # Local CPU usage (fallback for single-node development)
-    cpu=$(top -bn1 | grep "Cpu(s)" | awk '{print 100 - $8}')
+    cpu=$(eval "$CPU_CMD" 2>/dev/null)
   else
-    # Remote CPU usage via SSH
-    cpu=$(ssh -o ConnectTimeout=2 $host "top -bn1 | grep 'Cpu(s)' | awk '{print 100 - \$8}'" 2>/dev/null)
+    cpu=$(ssh -o ConnectTimeout=2 "$host" "$CPU_CMD" 2>/dev/null)
   fi
 
   # Fallback if metrics fail
@@ -29,7 +31,8 @@ for node in $nodes; do
   comma=","
   if [ $i -eq $count ]; then comma=""; fi
 
-  echo "  \"$node\": { \"cpu\": $cpu }$comma" >> $METRICS
+  echo "  \"$node\": { \"cpu\": $cpu }$comma" >> "${METRICS}.tmp"
 done
 
-echo "}" >> $METRICS
+echo "}" >> "${METRICS}.tmp"
+mv "${METRICS}.tmp" "$METRICS"
