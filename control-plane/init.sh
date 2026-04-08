@@ -27,19 +27,21 @@ done
 # Log files
 # -----------------------------
 LOGS=(
-  "$BASE_DIR/control-plane/state/logs/loop.log"
-  "$BASE_DIR/control-plane/state/logs/monitor.log"
-  "$BASE_DIR/control-plane/state/logs/metrics.log"
-  "$BASE_DIR/control-plane/state/logs/anomaly-agent.log"
-  "$BASE_DIR/control-plane/state/logs/decision-engine.log"
-  "$BASE_DIR/control-plane/state/logs/reconcile.log"
-  "$BASE_DIR/control-plane/state/logs/registry.log"
+  "monitor.log"
+  "metrics.log"
+  "anomaly.log"
+  "decision.log"
+  "reconcile.log"
+  "registry.log"
+  "observer.log"
+  "scorer.log"
 )
 
 for file in "${LOGS[@]}"; do
-  if [ ! -f "$file" ]; then
+  path="$BASE_DIR/control-plane/state/logs/$file"
+  if [ ! -f "$path" ]; then
     echo "[INIT] Creating missing log: $file"
-    touch "$file"
+    touch "$path"
   fi
 done
 
@@ -51,12 +53,14 @@ FILES=(
   "normalized_metrics.json"
   "anomalies.json"
   "decisions.json"
+  "registry.json"
+  "health.json"
 )
 
 for f in "${FILES[@]}"; do
   path="$BASE_DIR/control-plane/state/$f"
   if [ ! -f "$path" ]; then
-    touch "$path"
+    echo "[]" > "$path"
     echo "[INIT] Recreated $f"
   else
     # Check if corrupted (not valid JSON)

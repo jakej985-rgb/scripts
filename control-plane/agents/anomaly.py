@@ -4,46 +4,54 @@ import os
 # Add current dir to path for utils
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from utils.paths import METRICS_JSON, NORMALIZED_METRICS_JSON, ANOMALIES_JSON
+from utils.paths import STATE_DIR
 from utils.state import load_json, save_json
 from utils.guards import wrap_agent
 from utils.logger import get_logger
 
 logger = get_logger("anomaly")
+HEALTH_JSON = os.path.join(STATE_DIR, "health.json")
+METRICS_JSON = os.path.join(STATE_DIR, "metrics.json")
+ANOMALIES_JSON = os.path.join(STATE_DIR, "anomalies.json")
 
-CPU_THRESHOLD = 80.0
-
-def detect_anomalies():
-    anomalies = []
+def classify_anomalies():
+    """Phase 2: Anomaly Classification as per Task 4."""
+    health_data = load_json(HEALTH_JSON, default={})
+    metrics_data = load_json(METRICS_JSON, default={})
     
-    # Phase 3: Pipeline Integrity - ensure valid structure
-    container_data = load_json(METRICS_JSON, default=[])
-    if not isinstance(container_data, list):
-        logger.error(f"Integrity check failed: {METRICS_JSON} is not a list. Resetting.")
-        container_data = []
-        
-    for container in container_data:
-        name = container.get("Names", "unknown")
-        state = container.get("State", "")
-        status = container.get("Status", "")
-        
-        if state == "exited":
-            anomalies.append({"service": name, "issue": "exited", "detail": status})
-        elif "restarting" in status.lower():
-            anomalies.append({"service": name, "issue": "crash_loop", "detail": "restarting"})
+    issues = []
+    
+    # Check container health
+    for name, info in health_data.items():
+        status = info.get("status")
+        if status == "offline":
+            issues.append({
+                "type": "recoverable",
+                "target": name,
+                "reason": "container stopped"
+            })
+        elif status == "missing":
+            issues.append({
+                "type": "critical",
+                "target": name,
+                "reason": "container definition missing or not created"
+            })
 
-    # Check metrics integrity
-    node_metrics = load_json(NORMALIZED_METRICS_JSON, default={})
-    if not isinstance(node_metrics, dict):
-        logger.error(f"Integrity check failed: {NORMALIZED_METRICS_JSON} should be dict.")
-        node_metrics = {}
+    # Check system metrics
+    cpu = metrics_data.get("cpu", 0)
+    if cpu > 90:
+        issues.append({
+            "type": "transient",
+            "target": "host",
+            "reason": f"extreme cpu load: {cpu}%"
+        })
+    elif cpu > 70:
+        logger.warning(f"CPU load moderate: {cpu}%")
 
-    for node_name, data in node_metrics.items():
-        cpu = data.get("cpu", 0)
-        if cpu > CPU_THRESHOLD:
-            anomalies.append({"service": f"node:{node_name}", "issue": "high_cpu", "detail": f"{cpu}%"})
-
-    save_json(ANOMALIES_JSON, anomalies)
+    output = {"issues": issues}
+    save_json(ANOMALIES_JSON, output)
+    if issues:
+        logger.info(f"Detected {len(issues)} issues.")
 
 if __name__ == "__main__":
-    wrap_agent("anomaly", detect_anomalies)
+    wrap_agent("anomaly", classify_anomalies)
