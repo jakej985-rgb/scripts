@@ -21,7 +21,7 @@ services:
     container_name: tattoo-db
     environment:
       POSTGRES_USER: tattoo
-      POSTGRES_PASSWORD: ink123
+      POSTGRES_PASSWORD: ${TATTOO_DB_PASSWORD}
       POSTGRES_DB: tattooapp
     volumes:
       - /mnt/tattoo/db:/var/lib/postgresql/data

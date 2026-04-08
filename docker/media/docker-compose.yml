@@ -7,8 +7,8 @@ services:
     environment:
       - VPN_SERVICE_PROVIDER=private internet access
       - VPN_TYPE=openvpn
-      - OPENVPN_USER=p9481123
-      - OPENVPN_PASSWORD=7zcYzm4KMu
+      - OPENVPN_USER=${VPN_USER}
+      - OPENVPN_PASSWORD=${VPN_PASSWORD}
       - SERVER_REGIONS=US East
       - FIREWALL_VPN_INPUT_PORTS=8080,6881
     labels:

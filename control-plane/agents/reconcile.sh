@@ -108,13 +108,18 @@ for svc in $defined; do
 done
 
 # =========================
-# DRIFT DETECTION (FIXED)
+# DRIFT DETECTION (CORRECTED)
 # =========================
 for c in $running; do
+  # Extract service base name (e.g. radarr-1 -> radarr)
   base=$(echo $c | sed 's/-[0-9]\+$//')
 
-  if ! echo "$defined" | grep -q "^$base$"; then
-    echo "[DRIFT] Unknown container: $c" | tee -a $LOG
+  # Check if the BASE service is defined AND enabled
+  is_defined=$(echo "$defined" | grep -xc "$base")
+  
+  if [ "$is_defined" -eq 0 ]; then
+    echo "[DRIFT] Rogue container detected: $c" | tee -a $LOG
+    # Optional logic: Stop rogue container if STRICT=true
   fi
 done
 

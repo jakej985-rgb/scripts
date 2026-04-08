@@ -31,14 +31,14 @@ for node in $CONTROL_NODES; do
     
     # Check if node is alive
     if [ "$host" = "localhost" ]; then
-        ping_ok=true
+        ping_ok=0
     else
-        ping -c 1 -W 1 $(echo $host | cut -d'@' -f2) >/dev/null 2>&1
+        ping -c 1 -W 1 $(echo $host | cut -d'@' -f2 | cut -d':' -f1) >/dev/null 2>&1
         ping_ok=$?
     fi
 
     if [ $ping_ok -eq 0 ]; then
-        echo $node > $LEADER_FILE
+        echo "$node" > "$LEADER_FILE"
         break
     fi
 done
