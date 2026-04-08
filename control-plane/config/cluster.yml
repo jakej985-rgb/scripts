@@ -2,9 +2,9 @@ nodes:
   control:
     host: localhost
     role: control
-  # node1:
-  #   host: 192.168.1.11
-  #   role: worker
+  control-backup:
+    host: 192.168.1.13
+    role: control
 
 services:
   traefik:
@@ -12,6 +12,7 @@ services:
     enabled: true
     replicas: 1
 
+  # --- Media Stack ---
   radarr:
     stack: media
     enabled: true
@@ -21,7 +22,6 @@ services:
       enabled: true
       min: 1
       max: 3
-      cpu_threshold: 70
     scheduling:
       strategy: spread
 
@@ -34,9 +34,6 @@ services:
       enabled: true
       min: 1
       max: 2
-      cpu_threshold: 75
-    scheduling:
-      strategy: spread
 
   qbittorrent:
     stack: media
@@ -48,6 +45,57 @@ services:
     enabled: true
     port: 9696
 
+  bazarr:
+    stack: media
+    enabled: true
+    port: 6767
+
+  komga:
+    stack: media
+    enabled: true
+    port: 25600
+
+  jellyseerr:
+    stack: media
+    enabled: true
+    port: 5055
+
+  homepage:
+    stack: media
+    enabled: true
+    port: 3000
+
+  autobrr:
+    stack: media
+    enabled: true
+    port: 7474
+
+  recyclarr:
+    stack: media
+    enabled: true
+
+  maintainerr:
+    stack: media
+    enabled: true
+    port: 6246
+
+  tdarr:
+    stack: media
+    enabled: true
+    port: 8265
+
+  glances:
+    stack: media
+    enabled: true
+    port: 61208
+
+  flaresolverr:
+    stack: media
+    enabled: true
+    port: 8191
+
+  # --- Apps Stack ---
   tattoo-app:
     stack: apps
     enabled: true
+    port: 3001
