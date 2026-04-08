@@ -1,7 +1,10 @@
 import json
 import os
 import shutil
+import time
 from typing import Any, Union
+
+SCHEMA_VERSION = "1.2.0"
 
 def load_json(path: str, default: Any = None) -> Any:
     """Safe JSON load with robust fallback and existence check"""
@@ -22,8 +25,17 @@ def load_json(path: str, default: Any = None) -> Any:
         return default
 
 def save_json(path: str, data: Any) -> bool:
-    """Atomic write to JSON file with error protection"""
+    """Atomic write to JSON file with schema metadata injection (Batch 8 T5)"""
     tmp_path = f"{path}.tmp"
+    
+    # Inject metadata if data is a dict
+    if isinstance(data, dict):
+        data["_m3tal_metadata"] = {
+            "version": SCHEMA_VERSION,
+            "updated_at": int(time.time()),
+            "host": os.getenv("HOSTNAME", "localhost")
+        }
+
     try:
         # Create directory if it doesn't exist
         os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -36,7 +48,7 @@ def save_json(path: str, data: Any) -> bool:
             
         os.replace(tmp_path, path)
         return True
-    except Exception as e:
+    except Exception:
         if os.path.exists(tmp_path):
             try:
                 os.remove(tmp_path)

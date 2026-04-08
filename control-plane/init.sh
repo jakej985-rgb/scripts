@@ -102,6 +102,6 @@ fi
 # -----------------------------
 # Optional permissions (safe)
 # -----------------------------
-chmod -R 775 "$BASE_DIR/control-plane/state" 2>/dev/null || true
+chmod -R 750 "$BASE_DIR/control-plane/state" 2>/dev/null || true
 
 echo "[INIT] Done."

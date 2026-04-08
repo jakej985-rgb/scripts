@@ -2,6 +2,7 @@ import sys
 import os
 import time
 import socket
+import signal
 from typing import Callable, Any
 
 # Root addition for utils
@@ -13,6 +14,18 @@ from utils.logger import get_logger
 
 logger = get_logger("guards")
 HEALTH_SUBDIR = os.path.join(STATE_DIR, "health")
+
+# Batch 8 T1: Graceful Shutdown
+_SHUTDOWN_SIGNALED = False
+
+def handle_signal(signum, frame):
+    global _SHUTDOWN_SIGNALED
+    logger.info(f"Received signal {signum}. Requesting graceful shutdown...")
+    _SHUTDOWN_SIGNALED = True
+
+# Register signals
+signal.signal(signal.SIGTERM, handle_signal)
+signal.signal(signal.SIGINT, handle_signal)
 
 def is_leader():
     if not os.path.exists(LEADER_TXT):
@@ -36,14 +49,19 @@ def update_agent_health(agent_name: str, success: bool, error_msg: str = None):
         "last_failure": now if not success else 0,
         "status": "healthy" if success else "failing",
         "error": error_msg,
-        "timestamp": now
+        "timestamp": now,
+        "shutdown": _SHUTDOWN_SIGNALED
     }
     
-    # We don't read-modify-write here. Each agent owns its file.
     save_json(path, stats)
 
 def wrap_agent(agent_name: str, func: Callable[[], Any]):
     agent_logger = get_logger(agent_name)
+    
+    if _SHUTDOWN_SIGNALED:
+        agent_logger.info(f"Agent {agent_name} skipping: Shutdown in progress.")
+        return
+
     if not is_leader():
         agent_logger.debug(f"Skipping {agent_name}: Follower mode.")
         return
