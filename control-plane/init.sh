@@ -42,6 +42,7 @@ LOGS=(
   "registry.log"
   "observer.log"
   "scorer.log"
+  "chaos.log"
 )
 
 for file in "${LOGS[@]}"; do
@@ -62,6 +63,7 @@ FILES=(
   "decisions.json"
   "registry.json"
   "health.json"
+  "chaos_events.json"
 )
 
 for f in "${FILES[@]}"; do
@@ -79,6 +81,23 @@ for f in "${FILES[@]}"; do
 done
 
 touch "$BASE_DIR/control-plane/state/leader.txt"
+
+# -----------------------------
+# Auth Scaffolding (Batch 3 T1)
+# -----------------------------
+if [ ! -f "$BASE_DIR/dashboard/users.json" ]; then
+  echo "[INIT] Scaffolding default users.json (admin / admin123)..."
+  mkdir -p "$BASE_DIR/dashboard"
+  cat > "$BASE_DIR/dashboard/users.json" <<EOF
+[
+  {
+    "username": "admin",
+    "token_hash": "\$2b\$12\$6PuxP6N7ZpG5B9W7/p3E.e3u0Xm6x6u1vXm6x6u1vXm6x6u1vXm6x6u1v",
+    "role": "admin"
+  }
+]
+EOF
+fi
 
 # -----------------------------
 # Optional permissions (safe)

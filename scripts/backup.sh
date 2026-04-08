@@ -10,16 +10,27 @@ else
 fi
 # <<< AUTO-ROOT
 
+# Standardize destination and handle spaces safely
 DEST="${DATA_DIR:-/mnt}/backups/docker-configs"
-DATE=$(date +%F)
+DATE=$(date +%Y-%m-%d_%H%M)
 
+echo "[BACKUP] Starting backup to $DEST..."
 mkdir -p "$DEST"
 
-tar -czf "$DEST/backup-$DATE.tar.gz" \
-  "$REPO_ROOT/docker" \
-  "$REPO_ROOT/control-plane/config" 2>/dev/null
+# Ensure we include config and docker stacks
+# We use -C to change directory into REPO_ROOT for cleaner archive paths
+tar -czf "$DEST/backup-$DATE.tar.gz" -C "$REPO_ROOT" \
+  "docker" \
+  "control-plane/config" \
+  "control-plane/state/registry.json" \
+  --exclude="*.log" 2>/dev/null
 
-# keep last 4
-ls -tp "$DEST" | grep '\.tar\.gz' | tail -n +5 | xargs -I {} rm -- "$DEST/{}"
-
-echo "[BACKUP] $(date) completed"
+if [ $? -eq 0 ]; then
+    echo "[OK] Backup created: backup-$DATE.tar.gz"
+    
+    # Retention: keep last 5 backups, safer cleanup pattern
+    ls -t "$DEST"/backup-*.tar.gz 2>/dev/null | tail -n +6 | xargs -r rm --
+    echo "[BACKUP] Retention cleanup complete."
+else
+    echo "[ERROR] Backup failed!"
+fi

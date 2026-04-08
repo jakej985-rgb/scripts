@@ -1,8 +1,6 @@
 #!/bin/bash
 
 # M3TAL Supervisor - Reliable Control Plane Launcher
-# Follows AGENT_PLAN.md Supervisor Model
-
 # >>> AUTO-ROOT (antigravity)
 if git rev-parse --show-toplevel > /dev/null 2>&1; then
   REPO_ROOT="$(git rev-parse --show-toplevel)"
@@ -22,6 +20,10 @@ run_agent() {
   local name=$1
   local script=$2
   local interpreter=$3
+  
+  # Tracking for backoff (Batch 3 T6)
+  local crash_count=0
+  local last_crash=0
 
   while true; do
     echo "[$(date '+%H:%M:%S')] Starting $name..."
@@ -31,19 +33,24 @@ run_agent() {
         bash "$script" >> "$LOG_DIR/$name.log" 2>&1
     fi
 
-    # Exit code check for graceful stops vs crashes
     exit_code=$?
+    now=$(date +%s)
+    
     if [ $exit_code -eq 0 ]; then
-        echo "[$(date '+%H:%M:%S')] $name exited normally. Sleeping 2s..."
+        crash_count=0 # Reset on success
         sleep 2
     else
-        echo "[$(date '+%H:%M:%S')] CRASH: $name exited with $exit_code. Restarting in 5s..."
-        sleep 5
+        # Backoff logic
+        ((crash_count++))
+        wait_time=$(( 5 * crash_count ))
+        [ $wait_time -gt 60 ] && wait_time=60 # Cap at 60s
+        
+        echo "[$(date '+%H:%M:%S')] CRASH: $name (Count: $crash_count). Restarting in ${wait_time}s..."
+        sleep "$wait_time"
     fi
   done
 }
 
-# Launching agents in background
 echo "[$(date '+%H:%M:%S')] Supervisor launching Agents..."
 
 # Core Pipeline
@@ -57,7 +64,7 @@ run_agent reconcile "$BASE_DIR/agents/reconcile.py" python &
 # Periodic/Maintenance
 run_agent scheduler "$BASE_DIR/agents/scheduler.py" python &
 run_agent scorer "$BASE_DIR/agents/health_score.py" python &
+run_agent chaos "$BASE_DIR/agents/chaos_test.py" python &
 
-echo "[$(date '+%H:%M:%S')] All agents running. Supervisor waiting..."
-
+echo "[$(date '+%H:%M:%S')] All agents running."
 wait
