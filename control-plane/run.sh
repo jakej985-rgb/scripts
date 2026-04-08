@@ -12,6 +12,7 @@ while true; do
   bash control-plane/agents/anomaly-agent.sh
   bash control-plane/agents/decision-engine.sh
   bash control-plane/agents/reconcile.sh
+  bash control-plane/agents/registry.sh
 
   sleep 20
 done

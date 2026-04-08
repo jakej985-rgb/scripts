@@ -16,6 +16,7 @@ services:
     stack: media
     enabled: true
     replicas: 1
+    port: 7878
     autoscale:
       enabled: true
       min: 1
@@ -28,6 +29,7 @@ services:
     stack: media
     enabled: true
     replicas: 1
+    port: 8989
     autoscale:
       enabled: true
       min: 1
@@ -39,10 +41,12 @@ services:
   qbittorrent:
     stack: media
     enabled: true
+    port: 8080
 
   prowlarr:
     stack: media
     enabled: true
+    port: 9696
 
   tattoo-app:
     stack: apps
