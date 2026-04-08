@@ -64,19 +64,19 @@ Sometimes you need to look at the containers directly.
 
 If an agent is failing, you can run it manually in the foreground to see the error output:
 
-**Check Monitor**
+### Check Monitor
 
 ```bash
 python3 control-plane/agents/monitor.py
 ```
 
-**Check Metrics**
+### Check Metrics
 
 ```bash
 python3 control-plane/agents/metrics.py
 ```
 
-**Check Reconciler**
+### Check Reconciler
 
 ```bash
 python3 control-plane/agents/reconcile.py
