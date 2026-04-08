@@ -1,821 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>M3TAL Control Plane</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg-deep: #0a0e1a;
-      --bg-card: rgba(15, 20, 40, 0.7);
-      --bg-card-hover: rgba(20, 28, 55, 0.85);
-      --border: rgba(100, 120, 255, 0.12);
-      --border-glow: rgba(100, 140, 255, 0.3);
-      --text-primary: #e8ecf4;
-      --text-secondary: #8892a8;
-      --text-muted: #505a70;
-      --accent-blue: #6c8cff;
-      --accent-cyan: #38d9e8;
-      --accent-green: #34d399;
-      --accent-amber: #f59e0b;
-      --accent-red: #ef4444;
-      --accent-purple: #a78bfa;
-      --gradient-hero: linear-gradient(135deg, #6c8cff 0%, #38d9e8 50%, #a78bfa 100%);
-      --shadow-card: 0 4px 24px rgba(0,0,0,0.4), 0 1px 4px rgba(100,140,255,0.06);
-      --shadow-glow: 0 0 30px rgba(100,140,255,0.15);
-      --radius: 16px;
-      --radius-sm: 10px;
-      --font-body: 'Inter', -apple-system, sans-serif;
-      --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-    }
-
-    html { font-size: 15px; }
-
-    body {
-      font-family: var(--font-body);
-      background: var(--bg-deep);
-      color: var(--text-primary);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background:
-        radial-gradient(ellipse 600px 400px at 15% 20%, rgba(108,140,255,0.08) 0%, transparent 70%),
-        radial-gradient(ellipse 500px 500px at 85% 75%, rgba(167,139,250,0.06) 0%, transparent 70%),
-        radial-gradient(ellipse 400px 300px at 50% 50%, rgba(56,217,232,0.04) 0%, transparent 70%);
-      pointer-events: none; z-index: 0;
-      animation: meshFloat 20s ease-in-out infinite alternate;
-    }
-    @keyframes meshFloat {
-      0%   { transform: translate(0, 0) scale(1); }
-      50%  { transform: translate(-20px, 15px) scale(1.02); }
-      100% { transform: translate(10px, -10px) scale(0.98); }
-    }
-
-    .app { position: relative; z-index: 1; max-width: 1440px; margin: 0 auto; padding: 2rem; }
-
-    /* ─── Header ─── */
-    .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
-    .header-left { display: flex; align-items: center; gap: 1rem; }
-    .logo {
-      width: 48px; height: 48px; background: var(--gradient-hero); border-radius: 14px;
-      display: grid; place-items: center; font-size: 1.4rem;
-      box-shadow: 0 0 20px rgba(108,140,255,0.3);
-      animation: logoPulse 3s ease-in-out infinite;
-    }
-    @keyframes logoPulse { 0%,100% { box-shadow: 0 0 20px rgba(108,140,255,0.3); } 50% { box-shadow: 0 0 35px rgba(108,140,255,0.5); } }
-    .header h1 { font-size: 1.6rem; font-weight: 800; background: var(--gradient-hero); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: -0.5px; }
-    .header-right { display: flex; align-items: center; gap: 1.2rem; }
-    .status-badge { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 1rem; background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.25); border-radius: 100px; font-size: 0.8rem; font-weight: 600; color: var(--accent-green); text-transform: uppercase; letter-spacing: 0.5px; }
-    .status-dot { width: 8px; height: 8px; background: var(--accent-green); border-radius: 50%; animation: statusPulse 2s infinite; }
-    @keyframes statusPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-    .last-update { font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); }
-
-    /* ─── Nav Tabs ─── */
-    .nav-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
-    .nav-tab {
-      padding: 0.5rem 1.2rem; border-radius: 100px; font-size: 0.8rem; font-weight: 600;
-      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
-      color: var(--text-secondary); cursor: pointer; transition: all 0.2s;
-      text-transform: uppercase; letter-spacing: 0.5px;
-    }
-    .nav-tab:hover { background: rgba(255,255,255,0.08); border-color: var(--border-glow); color: var(--text-primary); }
-    .nav-tab.active { background: rgba(108,140,255,0.15); border-color: var(--accent-blue); color: var(--accent-blue); }
-    .tab-page { display: none; }
-    .tab-page.active { display: block; }
-
-    /* ─── Grid ─── */
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem; }
-    .grid .card.full-width { grid-column: 1 / -1; }
-
-    /* ─── Cards ─── */
-    .card {
-      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 1.5rem; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      box-shadow: var(--shadow-card); transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
-      animation: cardIn 0.4s ease-out both;
-    }
-    .card:hover { border-color: var(--border-glow); box-shadow: var(--shadow-card), var(--shadow-glow); transform: translateY(-2px); }
-    @keyframes cardIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-
-    .card-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.2rem; }
-    .card-icon { width: 36px; height: 36px; border-radius: var(--radius-sm); display: grid; place-items: center; font-size: 1rem; }
-    .card-icon.blue   { background: rgba(108,140,255,0.15); }
-    .card-icon.cyan   { background: rgba(56,217,232,0.15); }
-    .card-icon.green  { background: rgba(52,211,153,0.15); }
-    .card-icon.amber  { background: rgba(245,158,11,0.15); }
-    .card-icon.red    { background: rgba(239,68,68,0.15); }
-    .card-icon.purple { background: rgba(167,139,250,0.15); }
-    .card-title { font-size: 0.95rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.2px; }
-    .card-subtitle { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; }
-
-    /* ─── Data Rows ─── */
-    .data-rows { display: flex; flex-direction: column; gap: 0.5rem; }
-    .data-row {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.02);
-      border-radius: var(--radius-sm); border: 1px solid transparent;
-      transition: background 0.2s, border-color 0.2s; gap: 0.5rem;
-    }
-    .data-row:hover { background: rgba(255,255,255,0.04); border-color: var(--border); }
-    .data-row-name { font-family: var(--font-mono); font-size: 0.85rem; font-weight: 500; color: var(--text-primary); flex: 1; }
-    .data-row-value { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary); }
-    .data-row-actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
-
-    /* ─── Tags ─── */
-    .tag { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.2rem 0.6rem; border-radius: 100px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
-    .tag-dot { width: 6px; height: 6px; border-radius: 50%; }
-    .tag.healthy    { background: rgba(52,211,153,0.12); color: var(--accent-green); }
-    .tag.healthy .tag-dot { background: var(--accent-green); }
-    .tag.unhealthy  { background: rgba(239,68,68,0.12); color: var(--accent-red); }
-    .tag.unhealthy .tag-dot { background: var(--accent-red); }
-    .tag.warning    { background: rgba(245,158,11,0.12); color: var(--accent-amber); }
-    .tag.warning .tag-dot { background: var(--accent-amber); }
-    .tag.restart    { background: rgba(108,140,255,0.12); color: var(--accent-blue); }
-    .tag.restart .tag-dot { background: var(--accent-blue); }
-    .tag.alert      { background: rgba(167,139,250,0.12); color: var(--accent-purple); }
-    .tag.alert .tag-dot { background: var(--accent-purple); }
-
-    /* ─── Buttons ─── */
-    .btn {
-      padding: 0.3rem 0.7rem; border-radius: 8px; font-size: 0.7rem; font-weight: 600;
-      border: 1px solid; cursor: pointer; transition: all 0.2s; font-family: var(--font-body);
-      text-transform: uppercase; letter-spacing: 0.3px;
-    }
-    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-    .btn-restart { background: rgba(108,140,255,0.1); border-color: rgba(108,140,255,0.3); color: var(--accent-blue); }
-    .btn-restart:hover:not(:disabled) { background: rgba(108,140,255,0.25); }
-    .btn-stop { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.3); color: var(--accent-red); }
-    .btn-stop:hover:not(:disabled) { background: rgba(239,68,68,0.25); }
-    .btn-start { background: rgba(52,211,153,0.1); border-color: rgba(52,211,153,0.3); color: var(--accent-green); }
-    .btn-start:hover:not(:disabled) { background: rgba(52,211,153,0.25); }
-    .btn-approve { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.3); color: var(--accent-amber); padding: 0.5rem 1.5rem; font-size: 0.8rem; }
-    .btn-approve:hover:not(:disabled) { background: rgba(245,158,11,0.25); }
-
-    /* ─── Log Area ─── */
-    .log-area {
-      font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.7; color: var(--text-secondary);
-      max-height: 320px; overflow-y: auto; padding: 1rem;
-      background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); border: 1px solid var(--border);
-    }
-    .log-area::-webkit-scrollbar { width: 6px; }
-    .log-area::-webkit-scrollbar-track { background: transparent; }
-    .log-area::-webkit-scrollbar-thumb { background: var(--border-glow); border-radius: 3px; }
-    .log-line { padding: 0.15rem 0; border-bottom: 1px solid rgba(255,255,255,0.02); }
-    .log-line:last-child { border-bottom: none; }
-    .log-line .log-ts { color: var(--text-muted); }
-    .log-line .log-action { color: var(--accent-cyan); }
-    .log-line .log-alert { color: var(--accent-amber); }
-
-    /* ─── Meters ─── */
-    .meter-row { display: flex; align-items: center; gap: 0.8rem; padding: 0.5rem 0; }
-    .meter-label { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-secondary); min-width: 120px; }
-    .meter-bar { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
-    .meter-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
-    .meter-fill.green  { background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan)); }
-    .meter-fill.amber  { background: linear-gradient(90deg, var(--accent-amber), var(--accent-red)); }
-    .meter-fill.red    { background: linear-gradient(90deg, var(--accent-red), #ff2d55); }
-    .meter-count { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); min-width: 30px; text-align: right; }
-
-    /* ─── Metrics Bars ─── */
-    .metric-row { display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 0.8rem; background: rgba(255,255,255,0.02); border-radius: var(--radius-sm); margin-bottom: 0.4rem; }
-    .metric-name { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-primary); min-width: 140px; }
-    .metric-bar-wrap { flex: 1; display: flex; align-items: center; gap: 0.6rem; }
-    .metric-bar { flex: 1; height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
-    .metric-bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s; }
-    .metric-bar-fill.cpu { background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan)); }
-    .metric-bar-fill.mem { background: linear-gradient(90deg, var(--accent-purple), var(--accent-red)); }
-    .metric-val { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); min-width: 50px; text-align: right; }
-
-    /* ─── Chart ─── */
-    .chart-container { position: relative; height: 280px; margin-top: 1rem; }
-    .chart-select { background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 8px; padding: 0.4rem 0.8rem; color: var(--text-primary); font-family: var(--font-mono); font-size: 0.8rem; outline: none; }
-    .chart-select option { background: var(--bg-deep); color: var(--text-primary); }
-
-    /* ─── Empty State ─── */
-    .empty { text-align: center; padding: 2rem 1rem; color: var(--text-muted); font-size: 0.85rem; }
-    .empty-icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
-
-    /* ─── AI Block ─── */
-    .ai-block {
-      padding: 1rem; background: rgba(167,139,250,0.06); border: 1px solid rgba(167,139,250,0.15);
-      border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.8rem;
-      line-height: 1.7; color: var(--text-secondary); max-height: 240px; overflow-y: auto; white-space: pre-wrap;
-    }
-
-    /* ─── Toast ─── */
-    .toast-container { position: fixed; top: 1.5rem; right: 1.5rem; z-index: 999; display: flex; flex-direction: column; gap: 0.5rem; }
-    .toast {
-      padding: 0.8rem 1.2rem; border-radius: var(--radius-sm); font-size: 0.82rem; font-weight: 600;
-      backdrop-filter: blur(20px); border: 1px solid; animation: toastIn 0.3s ease-out, toastOut 0.3s ease-in 2.7s forwards;
-    }
-    .toast-success { background: rgba(52,211,153,0.15); border-color: rgba(52,211,153,0.3); color: var(--accent-green); }
-    .toast-error { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.3); color: var(--accent-red); }
-    @keyframes toastIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
-    @keyframes toastOut { to { opacity: 0; transform: translateX(40px); } }
-
-    /* ─── Cluster ─── */
-    .cluster-node { margin-bottom: 1rem; }
-    .cluster-node-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; }
-    .cluster-node-name { font-weight: 700; font-size: 0.9rem; }
-
-    /* ─── Forms ─── */
-    .form-row { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; margin-bottom: 0.8rem; }
-    .form-input {
-      background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 8px;
-      padding: 0.5rem 0.8rem; color: var(--text-primary); font-family: var(--font-mono);
-      font-size: 0.82rem; outline: none; flex: 1; min-width: 200px;
-      transition: border-color 0.2s;
-    }
-    .form-input:focus { border-color: var(--accent-blue); }
-    .form-input::placeholder { color: var(--text-muted); }
-    .btn-deploy { background: rgba(56,217,232,0.1); border-color: rgba(56,217,232,0.3); color: var(--accent-cyan); padding: 0.5rem 1.2rem; }
-    .btn-deploy:hover:not(:disabled) { background: rgba(56,217,232,0.25); }
-    .btn-update { background: rgba(167,139,250,0.1); border-color: rgba(167,139,250,0.3); color: var(--accent-purple); }
-    .btn-update:hover:not(:disabled) { background: rgba(167,139,250,0.25); }
-
-    /* ─── Responsive ─── */
-    @media (max-width: 900px) {
-      .grid { grid-template-columns: 1fr; }
-      .app { padding: 1rem; }
-      .header { flex-direction: column; align-items: flex-start; gap: 1rem; }
-      .nav-tabs { gap: 0.3rem; }
-    }
-  </style>
-  <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M3TAL | Autonomous Control Plane</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
-  <div class="app">
-    <!-- Toast notifications -->
-    <div class="toast-container" id="toasts"></div>
-
-    <!-- Header -->
-    <header class="header">
-      <div class="header-left">
-        <div class="logo">⚡</div>
-        <div>
-          <h1>M3TAL Control Plane</h1>
-          <div class="card-subtitle" style="margin-top:2px">v7 — Container Orchestration Platform</div>
+<body class="dark-mode">
+    <nav class="glass-nav">
+        <div class="logo">M3TAL<span>PRO</span></div>
+        <div class="nav-links">
+            <a href="#" class="active">Dashboard</a>
+            <a href="#">Fleet</a>
+            <a href="#">Intelligence</a>
+            <a href="/logout" class="logout-btn">Logout</a>
         </div>
-      </div>
-      <div class="header-right">
-        <div class="status-badge"><span class="status-dot"></span> Online</div>
-        <div class="last-update" id="lastUpdate">--</div>
-      </div>
-    </header>
-
-    <!-- Nav Tabs -->
-    <nav class="nav-tabs">
-      <div class="nav-tab active" data-tab="overview">📦 Overview</div>
-      <div class="nav-tab" data-tab="metrics">📊 Metrics</div>
-      <div class="nav-tab" data-tab="intelligence">🧠 Intelligence</div>
-      <div class="nav-tab" data-tab="logs">📜 Logs</div>
-      <div class="nav-tab" data-tab="orchestration">⚙️ Orchestration</div>
-      <div class="nav-tab" data-tab="cluster">🌐 Cluster</div>
     </nav>
 
-    <!-- ═══ TAB: OVERVIEW ═══ -->
-    <div class="tab-page active" id="tab-overview">
-      <div class="grid">
-
-        <!-- Containers + Control -->
-        <div class="card full-width" id="containersCard">
-          <div class="card-header">
-            <div class="card-icon blue">📦</div>
-            <div style="flex:1">
-              <div class="card-title">Containers</div>
-              <div class="card-subtitle">Monitor Agent · Control Panel</div>
+    <main class="dashboard-container">
+        <!-- Header Section -->
+        <header class="hero-section">
+            <div class="system-status">
+                <h1>Autonomous <span class="gradient-text">Orchestration</span></h1>
+                <p id="system-verdict">System Status: <span class="status-pill loading">Computing...</span></p>
             </div>
-            <button class="btn btn-approve" id="approveBtn" onclick="approveActions()">⚡ Approve Pending</button>
-          </div>
-          <div class="data-rows" id="containerRows">
-            <div class="empty"><div class="empty-icon">📦</div>Waiting for data…</div>
-          </div>
-        </div>
-
-        <!-- Analysis -->
-        <div class="card">
-          <div class="card-header">
-            <div class="card-icon cyan">🧠</div>
-            <div><div class="card-title">Analysis</div><div class="card-subtitle">Analyzer Agent</div></div>
-          </div>
-          <div class="data-rows" id="analysisRows">
-            <div class="empty"><div class="empty-icon">✅</div>No issues detected</div>
-          </div>
-        </div>
-
-        <!-- Actions Queue -->
-        <div class="card">
-          <div class="card-header">
-            <div class="card-icon green">⚖️</div>
-            <div><div class="card-title">Actions Queue</div><div class="card-subtitle">Decision Engine</div></div>
-          </div>
-          <div class="data-rows" id="actionRows">
-            <div class="empty"><div class="empty-icon">🛑</div>No actions queued</div>
-          </div>
-        </div>
-
-        <!-- Anomalies (v3.1) -->
-        <div class="card">
-          <div class="card-header">
-            <div class="card-icon red">🔥</div>
-            <div><div class="card-title">Anomalies</div><div class="card-subtitle">v3.1 · CPU / MEM Detection</div></div>
-          </div>
-          <div class="data-rows" id="anomalyRows">
-            <div class="empty"><div class="empty-icon">✅</div>No anomalies</div>
-          </div>
-        </div>
-
-        <!-- Dependencies (v3.2) -->
-        <div class="card">
-          <div class="card-header">
-            <div class="card-icon amber">🔗</div>
-            <div><div class="card-title">Dependencies</div><div class="card-subtitle">v3.2 · Container Graph</div></div>
-          </div>
-          <div class="data-rows" id="depRows">
-            <div class="empty"><div class="empty-icon">✅</div>All dependencies healthy</div>
-          </div>
-        </div>
-
-        <!-- Retry Tracking -->
-        <div class="card">
-          <div class="card-header">
-            <div class="card-icon amber">🔁</div>
-            <div><div class="card-title">Retry Tracking</div><div class="card-subtitle">Safety Layer</div></div>
-          </div>
-          <div id="retryMeters">
-            <div class="empty"><div class="empty-icon">🔒</div>No retries recorded</div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- ═══ TAB: METRICS ═══ -->
-    <div class="tab-page" id="tab-metrics">
-      <div class="grid">
-
-        <!-- Live Metrics -->
-        <div class="card full-width">
-          <div class="card-header">
-            <div class="card-icon blue">📊</div>
-            <div><div class="card-title">Live Metrics</div><div class="card-subtitle">v3.1 · Docker Stats</div></div>
-          </div>
-          <div id="metricsArea"></div>
-        </div>
-
-        <!-- Time-Series Chart (v4.1) -->
-        <div class="card full-width">
-          <div class="card-header">
-            <div class="card-icon purple">📈</div>
-            <div style="flex:1"><div class="card-title">CPU History</div><div class="card-subtitle">v4.1 · Time-Series</div></div>
-            <select class="chart-select" id="chartSelect" onchange="loadChart(this.value)">
-              <option value="">Select container…</option>
-            </select>
-          </div>
-          <div class="chart-container"><canvas id="cpuChart"></canvas></div>
-        </div>
-
-        <!-- Disk Usage -->
-        <div class="card full-width">
-          <div class="card-header">
-            <div class="card-icon red">💾</div>
-            <div><div class="card-title">Disk Usage</div><div class="card-subtitle">System Health</div></div>
-          </div>
-          <div class="log-area" id="diskArea" style="max-height:180px">
-            <div class="empty"><div class="empty-icon">💾</div>Waiting…</div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- ═══ TAB: INTELLIGENCE ═══ -->
-    <div class="tab-page" id="tab-intelligence">
-      <div class="grid">
-
-        <!-- AI Recommendations -->
-        <div class="card full-width">
-          <div class="card-header">
-            <div class="card-icon purple">🤖</div>
-            <div><div class="card-title">AI Recommendations</div><div class="card-subtitle">v3 · Safe AI Layer (read-only)</div></div>
-          </div>
-          <div class="ai-block" id="aiBlock">
-            <div class="empty"><div class="empty-icon">🧠</div>AI agent not active yet</div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- ═══ TAB: LOGS ═══ -->
-    <div class="tab-page" id="tab-logs">
-      <div class="grid">
-        <div class="card full-width">
-          <div class="card-header">
-            <div class="card-icon green">📜</div>
-            <div><div class="card-title">Action History</div><div class="card-subtitle">Last 50 entries</div></div>
-          </div>
-          <div class="log-area" id="logArea" style="max-height:600px">
-            <div class="empty"><div class="empty-icon">📜</div>No actions logged yet</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ═══ TAB: ORCHESTRATION ═══ -->
-    <div class="tab-page" id="tab-orchestration">
-      <div class="grid">
-
-        <!-- Deploy Container (v6) -->
-        <div class="card full-width">
-          <div class="card-header">
-            <div class="card-icon cyan">🚀</div>
-            <div><div class="card-title">Deploy Container</div><div class="card-subtitle">v6 · Auto-Placement Engine</div></div>
-          </div>
-          <div class="form-row">
-            <input class="form-input" id="deployImage" placeholder="Image (e.g. lscr.io/linuxserver/radarr)">
-            <input class="form-input" id="deployNode" placeholder="Node (auto)" style="max-width:160px">
-            <button class="btn btn-deploy" onclick="deployContainer()">🚀 Deploy</button>
-          </div>
-        </div>
-
-        <!-- Rolling Update (v6.2) -->
-        <div class="card full-width">
-          <div class="card-header">
-            <div class="card-icon purple">🔄</div>
-            <div><div class="card-title">Rolling Update</div><div class="card-subtitle">v6.2 · Zero-Downtime</div></div>
-          </div>
-          <div class="form-row">
-            <input class="form-input" id="updateName" placeholder="Container name to update">
-            <button class="btn btn-update" onclick="rollingUpdate()">🔄 Update</button>
-          </div>
-        </div>
-
-        <!-- Scaling Log -->
-        <div class="card">
-          <div class="card-header">
-            <div class="card-icon green">📈</div>
-            <div><div class="card-title">Scaling Events</div><div class="card-subtitle">v6.1 · Auto-Scale Log</div></div>
-          </div>
-          <div class="log-area" id="scalingLog" style="max-height:200px">
-            <div class="empty"><div class="empty-icon">📈</div>No scaling events</div>
-          </div>
-        </div>
-
-        <!-- Reconcile Log -->
-        <div class="card">
-          <div class="card-header">
-            <div class="card-icon blue">📦</div>
-            <div><div class="card-title">Reconciliation</div><div class="card-subtitle">v7 · Declarative State</div></div>
-          </div>
-          <div class="log-area" id="reconcileLog" style="max-height:200px">
-            <div class="empty"><div class="empty-icon">📦</div>No reconcile events</div>
-          </div>
-        </div>
-
-        <!-- Scheduler Log -->
-        <div class="card full-width">
-          <div class="card-header">
-            <div class="card-icon amber">⏰</div>
-            <div><div class="card-title">Scheduler</div><div class="card-subtitle">v5.2 · Job Execution Log</div></div>
-          </div>
-          <div class="log-area" id="schedulerLog" style="max-height:200px">
-            <div class="empty"><div class="empty-icon">⏰</div>No scheduled jobs run</div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- ═══ TAB: CLUSTER ═══ -->
-    <div class="tab-page" id="tab-cluster">
-      <div class="grid">
-        <div class="card full-width">
-          <div class="card-header">
-            <div class="card-icon cyan">🌐</div>
-            <div><div class="card-title">Cluster Nodes</div><div class="card-subtitle">v5.1 · Auto-Discovery + Heartbeat</div></div>
-          </div>
-          <div id="clusterArea">
-            <div class="empty"><div class="empty-icon">🌐</div>Loading cluster status…</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <script>
-    // ── Tab System ──
-    document.querySelectorAll('.nav-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-page').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
-        if (tab.dataset.tab === 'cluster') loadCluster();
-      });
-    });
-
-    // ── Toast ──
-    function toast(msg, type = 'success') {
-      const el = document.createElement('div');
-      el.className = `toast toast-${type}`;
-      el.textContent = msg;
-      document.getElementById('toasts').appendChild(el);
-      setTimeout(() => el.remove(), 3000);
-    }
-
-    // ── API Actions ──
-    async function containerAction(action, name) {
-      try {
-        const res = await fetch(`/api/${action}/${name}`, { method: 'POST' });
-        if (res.ok) { toast(`${action} → ${name}`); poll(); }
-        else toast(`Failed: ${res.status}`, 'error');
-      } catch(e) { toast('Connection error', 'error'); }
-    }
-
-    async function approveActions() {
-      try {
-        const res = await fetch('/api/approve', { method: 'POST' });
-        if (res.ok) { toast('Pending actions approved'); poll(); }
-        else toast(`Failed: ${res.status}`, 'error');
-      } catch(e) { toast('Connection error', 'error'); }
-    }
-
-    // ── Render Helpers ──
-    function classifyStatus(s) {
-      s = s.toLowerCase();
-      if (s.includes('unhealthy')) return 'unhealthy';
-      if (s.includes('restarting')) return 'warning';
-      if (s.includes('up')) return 'healthy';
-      return 'warning';
-    }
-
-    function renderContainers(data) {
-      const el = document.getElementById('containerRows');
-      if (!data.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">📦</div>No containers</div>'; return; }
-      el.innerHTML = data.map(line => {
-        const parts = line.split(/\s+/);
-        const name = parts[0] || '';
-        const status = parts.slice(1).join(' ') || '';
-        const cls = classifyStatus(status);
-        return `<div class="data-row">
-          <span class="data-row-name">${name}</span>
-          <span class="tag ${cls}"><span class="tag-dot"></span>${status || 'unknown'}</span>
-          <div class="data-row-actions">
-            <button class="btn btn-restart" onclick="containerAction('restart','${name}')">Restart</button>
-            <button class="btn btn-stop" onclick="containerAction('stop','${name}')">Stop</button>
-            <button class="btn btn-start" onclick="containerAction('start','${name}')">Start</button>
-          </div>
-        </div>`;
-      }).join('');
-    }
-
-    function renderAnalysis(data) {
-      const el = document.getElementById('analysisRows');
-      if (!data.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">✅</div>No issues</div>'; return; }
-      el.innerHTML = data.map(l => {
-        const [name, issue] = l.split(/\s+/);
-        const cls = issue === 'CRASH_LOOP' ? 'unhealthy' : 'warning';
-        return `<div class="data-row"><span class="data-row-name">${name}</span><span class="tag ${cls}"><span class="tag-dot"></span>${issue}</span></div>`;
-      }).join('');
-    }
-
-    function renderActions(data) {
-      const el = document.getElementById('actionRows');
-      if (!data.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">🛑</div>No actions</div>'; return; }
-      el.innerHTML = data.map(l => {
-        const parts = l.split(/\s+/);
-        const [name, action] = [parts[0], parts[1]];
-        let cls = 'warning';
-        if (action === 'RESTART') cls = 'restart';
-        if (action === 'ALERT' || action?.startsWith('ALERT_')) cls = 'alert';
-        return `<div class="data-row"><span class="data-row-name">${name}</span><span class="tag ${cls}"><span class="tag-dot"></span>${parts.slice(1).join(' ')}</span></div>`;
-      }).join('');
-    }
-
-    function renderAnomalies(data) {
-      const el = document.getElementById('anomalyRows');
-      if (!data.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">✅</div>No anomalies</div>'; return; }
-      el.innerHTML = data.map(l => {
-        const parts = l.split(/\s+/);
-        const [name, issue, val] = [parts[0], parts[1], parts[2] || ''];
-        const cls = issue === 'HIGH_CPU' ? 'warning' : 'unhealthy';
-        return `<div class="data-row"><span class="data-row-name">${name}</span><span class="tag ${cls}"><span class="tag-dot"></span>${issue} ${val}</span></div>`;
-      }).join('');
-    }
-
-    function renderDeps(data) {
-      const el = document.getElementById('depRows');
-      if (!data.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">✅</div>All healthy</div>'; return; }
-      el.innerHTML = data.map(l => {
-        const parts = l.split(/\s+/);
-        return `<div class="data-row"><span class="data-row-name">${parts[0]}</span><span class="tag unhealthy"><span class="tag-dot"></span>${parts[1]} → ${parts[2]}</span></div>`;
-      }).join('');
-    }
-
-    function renderRetries(retries) {
-      const el = document.getElementById('retryMeters');
-      const keys = Object.keys(retries);
-      if (!keys.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">🔒</div>No retries</div>'; return; }
-      el.innerHTML = keys.map(name => {
-        const count = retries[name]; const pct = Math.min((count / 3) * 100, 100);
-        const cls = count >= 3 ? 'red' : count >= 2 ? 'amber' : 'green';
-        return `<div class="meter-row"><span class="meter-label">${name}</span><div class="meter-bar"><div class="meter-fill ${cls}" style="width:${pct}%"></div></div><span class="meter-count">${count}/3</span></div>`;
-      }).join('');
-    }
-
-    function renderMetrics(data) {
-      const el = document.getElementById('metricsArea');
-      if (!data.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">📊</div>Waiting…</div>'; return; }
-      el.innerHTML = data.map(l => {
-        const parts = l.split(/\s+/);
-        const name = parts[0] || '';
-        const cpu = parseFloat((parts[1] || '0').replace('%', ''));
-        const mem = parts.slice(2).join(' ');
-        const cpuCls = cpu > 80 ? 'background: linear-gradient(90deg, var(--accent-red), #ff2d55)' : '';
-        return `<div class="metric-row">
-          <span class="metric-name">${name}</span>
-          <div class="metric-bar-wrap">
-            <div class="metric-bar"><div class="metric-bar-fill cpu" style="width:${Math.min(cpu,100)}%;${cpuCls}"></div></div>
-            <span class="metric-val">${cpu}%</span>
-          </div>
-          <span class="metric-val" style="min-width:100px;text-align:right">${mem}</span>
-        </div>`;
-      }).join('');
-    }
-
-    function renderDisk(data) {
-      const el = document.getElementById('diskArea');
-      if (!data.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">💾</div>Waiting…</div>'; return; }
-      el.innerHTML = data.map(l => `<div class="log-line">${l}</div>`).join('');
-    }
-
-    function renderLogs(data) {
-      const el = document.getElementById('logArea');
-      if (!data.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">📜</div>No logs yet</div>'; return; }
-      el.innerHTML = data.map(l => {
-        let cls = 'log-ts';
-        if (l.includes('Restarted') || l.includes('Started') || l.includes('Stopped')) cls = 'log-action';
-        if (l.includes('ALERT') || l.includes('AI')) cls = 'log-alert';
-        return `<div class="log-line"><span class="${cls}">${l}</span></div>`;
-      }).join('');
-      el.scrollTop = el.scrollHeight;
-    }
-
-    function renderAI(data) {
-      const el = document.getElementById('aiBlock');
-      if (!data.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">🧠</div>AI not active</div>'; return; }
-      el.textContent = data.join('\n');
-    }
-
-    // ── Chart (v4.1) ──
-    let cpuChartInstance = null;
-
-    async function loadContainerList() {
-      try {
-        const res = await fetch('/api/metrics/containers');
-        const names = await res.json();
-        const sel = document.getElementById('chartSelect');
-        const currentVal = sel.value;
-        const opts = names.map(n => `<option value="${n}" ${n === currentVal ? 'selected' : ''}>${n}</option>`);
-        sel.innerHTML = '<option value="">Select container…</option>' + opts.join('');
-      } catch(e) {}
-    }
-
-    async function loadChart(name) {
-      if (!name) return;
-      try {
-        const res = await fetch(`/api/metrics/${name}`);
-        const data = await res.json();
-        if (cpuChartInstance) cpuChartInstance.destroy();
-
-        const ctx = document.getElementById('cpuChart').getContext('2d');
-        cpuChartInstance = new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: data.map(d => new Date(d.time * 1000).toLocaleTimeString()),
-            datasets: [
-              { label: 'CPU %', data: data.map(d => d.cpu), borderColor: '#6c8cff', backgroundColor: 'rgba(108,140,255,0.1)', fill: true, tension: 0.3 },
-              { label: 'MEM (MiB)', data: data.map(d => d.mem), borderColor: '#a78bfa', backgroundColor: 'rgba(167,139,250,0.1)', fill: true, tension: 0.3, yAxisID: 'y1' }
-            ]
-          },
-          options: {
-            responsive: true, maintainAspectRatio: false,
-            plugins: { legend: { labels: { color: '#8892a8', font: { family: "'JetBrains Mono'" } } } },
-            scales: {
-              x: { ticks: { color: '#505a70', maxTicksLimit: 15 }, grid: { color: 'rgba(255,255,255,0.04)' } },
-              y: { ticks: { color: '#505a70' }, grid: { color: 'rgba(255,255,255,0.04)' }, title: { display: true, text: 'CPU %', color: '#6c8cff' } },
-              y1: { position: 'right', ticks: { color: '#505a70' }, grid: { display: false }, title: { display: true, text: 'MEM MiB', color: '#a78bfa' } }
-            }
-          }
-        });
-      } catch(e) { console.error('Chart error', e); }
-    }
-
-    // ── Cluster (v5) ──
-    async function loadCluster() {
-      const el = document.getElementById('clusterArea');
-      try {
-        const res = await fetch('/api/cluster');
-        const data = await res.json();
-        const nodes = Object.entries(data);
-        if (!nodes.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">🌐</div>No nodes configured</div>'; return; }
-        el.innerHTML = nodes.map(([name, info]) => {
-          const statusCls = info.status === 'online' ? 'healthy' : 'unhealthy';
-          const containers = (info.containers || []).filter(c => c);
-          return `<div class="cluster-node">
-            <div class="cluster-node-header">
-              <span class="tag ${statusCls}"><span class="tag-dot"></span>${info.status}</span>
-              <span class="cluster-node-name">${name}</span>
+            <div class="health-card">
+                <div class="health-score-ring">
+                    <svg viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="45" class="bg"></circle>
+                        <circle cx="50" cy="50" r="45" class="meter" id="health-meter"></circle>
+                    </svg>
+                    <div class="score-text">
+                        <span id="health-score">0</span>%
+                    </div>
+                </div>
+                <p>Global Stability Index</p>
             </div>
-            ${containers.length ? '<div class="data-rows">' + containers.map(c => `<div class="data-row"><span class="data-row-name">${c}</span></div>`).join('') + '</div>' : '<div class="empty" style="padding:0.5rem">No containers reported</div>'}
-          </div>`;
-        }).join('');
-      } catch(e) {
-        el.innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div>Failed to load cluster</div>';
-      }
-    }
+        </header>
 
-    // ── Deploy + Update (v6) ──
-    async function deployContainer() {
-      const image = document.getElementById('deployImage').value;
-      const node = document.getElementById('deployNode').value || 'auto';
-      if (!image) { toast('Image required', 'error'); return; }
-      try {
-        const res = await fetch('/api/deploy', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-          body: `image=${encodeURIComponent(image)}&node=${encodeURIComponent(node)}`
-        });
-        if (res.ok) { toast(`Deployed ${image}`); document.getElementById('deployImage').value = ''; poll(); }
-        else { const d = await res.json(); toast(d.error || 'Failed', 'error'); }
-      } catch(e) { toast('Connection error', 'error'); }
-    }
+        <!-- Stats Grid -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <label>CPU Usage</label>
+                <div class="val" id="cpu-val">0.0%</div>
+                <div class="progress-bar"><div class="fill" id="cpu-fill"></div></div>
+            </div>
+            <div class="stat-card">
+                <label>Memory Usage</label>
+                <div class="val" id="mem-val">0.0 GB</div>
+                <div class="progress-bar"><div class="fill" id="mem-fill"></div></div>
+            </div>
+            <div class="stat-card">
+                <label>Nodes Active</label>
+                <div class="val" id="nodes-val">1</div>
+                <div class="small-text">Masters Detected</div>
+            </div>
+        </section>
 
-    async function rollingUpdate() {
-      const name = document.getElementById('updateName').value;
-      if (!name) { toast('Container name required', 'error'); return; }
-      toast(`Rolling update: ${name}…`);
-      try {
-        const res = await fetch(`/api/rolling_update/${name}`, { method: 'POST' });
-        const d = await res.json();
-        if (res.ok) { toast(`Updated ${name}`); poll(); }
-        else { toast(d.error || 'Update failed', 'error'); }
-      } catch(e) { toast('Connection error', 'error'); }
-    }
+        <!-- Main Workspace -->
+        <div class="workspace-grid">
+            <!-- Container Fleet -->
+            <section class="fleet-section glass-panel">
+                <div class="panel-header">
+                    <h2>Container Fleet</h2>
+                    <span class="pulse-icon"></span>
+                </div>
+                <div id="container-list" class="container-list">
+                    <!-- Dynamic Content -->
+                </div>
+            </section>
 
-    function renderSubLog(data, elId) {
-      const el = document.getElementById(elId);
-      if (!data || !data.length) { return; }
-      el.innerHTML = data.map(l => {
-        let cls = l.includes('UP') || l.includes('created') || l.includes('started') ? 'log-action' : l.includes('DOWN') || l.includes('removed') ? 'log-alert' : 'log-ts';
-        return `<div class="log-line"><span class="${cls}">${l}</span></div>`;
-      }).join('');
-    }
+            <!-- Anomalies & Events -->
+            <section class="events-section glass-panel">
+                <div class="panel-header">
+                    <h2>Intelligence Feed</h2>
+                </div>
+                <div id="anomaly-feed" class="anomaly-feed">
+                    <!-- Intelligence events -->
+                </div>
+            </section>
+        </div>
+    </main>
 
-    // ── Polling ──
-    async function poll() {
-      try {
-        const res = await fetch('/api/state');
-        const d = await res.json();
-        renderContainers(d.containers);
-        renderAnalysis(d.analysis);
-        renderActions(d.actions);
-        renderAnomalies(d.anomalies || []);
-        renderDeps(d.deps || []);
-        renderRetries(d.retries);
-        renderMetrics(d.metrics || []);
-        renderDisk(d.disk);
-        renderLogs(d.logs);
-        renderAI(d.ai_recs);
-        renderSubLog(d.scaling_log, 'scalingLog');
-        renderSubLog(d.reconcile_log, 'reconcileLog');
-        renderSubLog(d.scheduler_log, 'schedulerLog');
-        document.getElementById('lastUpdate').textContent = 'Updated ' + new Date(d.timestamp * 1000).toLocaleTimeString();
-      } catch (e) { console.error('Poll failed', e); }
-    }
-
-    // ── WebSockets (v7.1) ──
-    const socket = io();
-    socket.on("metrics", (msg) => {
-      const lines = msg.data.trim().split('\n').filter(Boolean);
-      renderMetrics(lines);
-    });
-
-    poll();
-    loadContainerList();
-    setInterval(poll, 5000);
-    setInterval(loadContainerList, 30000);
-  </script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>
