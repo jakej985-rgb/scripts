@@ -79,6 +79,7 @@ def append_history(system, containers):
              if len(all_lines) > MAX_HISTORY_ENTRIES:
                  logger.info("Rotating metrics-history.csv")
                  with open(HISTORY_CSV, "w") as f:
+                     f.write(header) # Preserve header
                      f.writelines(all_lines[-MAX_HISTORY_ENTRIES:])
     except Exception as e:
         logger.error(f"Failed to write history: {e}")

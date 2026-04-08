@@ -69,6 +69,11 @@ def main():
 
     # 5. Security (Auto-gen tokens if 'secret' or 'replace_me')
     print(f"{BOLD}--- [5] Security & Access ---{END}")
+    if current_env.get("DASHBOARD_SECRET", "replace_me") == "replace_me":
+        new_val = secrets.token_hex(32)
+        print(f"Generated new Persistent Session Secret (DASHBOARD_SECRET)")
+        new_env["DASHBOARD_SECRET"] = new_val
+
     for token_key in ["ADMIN_TOKEN", "OPS_TOKEN", "VIEW_TOKEN"]:
         current_val = current_env.get(token_key, "")
         if current_val in ["secret", "replace_me", ""]:
@@ -86,12 +91,12 @@ def main():
             
             # Sort keys into categories for readability
             categories = {
-                "SYSTEM": ["PUID", "PGID", "TZ", "MASTER_IP", "DOMAIN", "DATA_DIR"],
+                "SYSTEM": ["PUID", "PGID", "TZ", "MASTER_IP", "DASHBOARD_PORT", "HTTP_PORT", "DOMAIN", "DATA_DIR"],
                 "VPN": ["VPN_USER", "VPN_PASSWORD"],
                 "AI": ["OLLAMA_URL", "AI_API_KEY"],
                 "NOTIFY": ["TELEGRAM_TOKEN", "TELEGRAM_CHAT_ID"],
                 "DB": ["TATTOO_DB_PASSWORD"],
-                "AUTH": ["ADMIN_TOKEN", "OPS_TOKEN", "VIEW_TOKEN"]
+                "AUTH": ["DASHBOARD_SECRET", "ADMIN_TOKEN", "OPS_TOKEN", "VIEW_TOKEN"]
             }
 
             for cat, keys in categories.items():
