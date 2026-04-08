@@ -3,8 +3,15 @@
 # RECONCILE AGENT - Enforcer as per Task 6
 # Reads decisions.json (actions) and registry.json (source of truth)
 
-BASE_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
-STATE_DIR="$BASE_DIR/control-plane/state"
+# >>> AUTO-ROOT (antigravity)
+if git rev-parse --show-toplevel > /dev/null 2>&1; then
+  REPO_ROOT="$(git rev-parse --show-toplevel)"
+else
+  REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+fi
+# <<< AUTO-ROOT
+
+STATE_DIR="$REPO_ROOT/control-plane/state"
 LOG="$STATE_DIR/logs/reconcile.log"
 DECISIONS="$STATE_DIR/decisions.json"
 REGISTRY="$STATE_DIR/registry.json"

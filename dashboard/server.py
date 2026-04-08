@@ -211,11 +211,31 @@ def api_state():
     reconcile_log = read_file(f"{LOGS}/reconcile.log")[-20:]
     scheduler_log = read_file(f"{LOGS}/scheduler.log")[-20:]
 
-    # Read json states fallback gracefully
+    # Read json states — handles both proper JSON arrays and NDJSON fallback
     def parse_json(path):
+        if not os.path.exists(path):
+            return []
         try:
             with open(path) as f:
-                return [json.loads(line) if line.startswith('{') else json.loads(f.read()) for line in f if line.strip()]
+                content = f.read().strip()
+            if not content:
+                return []
+            data = json.loads(content)
+            if isinstance(data, list):
+                return data
+            return [data]
+        except json.JSONDecodeError:
+            # NDJSON fallback: one JSON object per line
+            results = []
+            try:
+                with open(path) as f:
+                    for line in f:
+                        line = line.strip()
+                        if line:
+                            results.append(json.loads(line))
+            except Exception:
+                pass
+            return results
         except Exception:
             return []
 
@@ -468,6 +488,10 @@ def deploy_container():
 
     if not image:
         return jsonify({"error": "image required"}), 400
+
+    # CRIT-04: Validate image against allowlist before deploying anywhere
+    if not validate_image(image):
+        return jsonify({"error": "image not in allowlist"}), 403
 
     if prefer_node != "auto":
         # Deploy to specific node

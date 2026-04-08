@@ -1,5 +1,6 @@
 {
-  "admin": {"password": "***REDACTED***", "role": "admin"},
-  "ops": {"password": "***REDACTED***", "role": "operator"},
-  "view": {"password": "***REDACTED***", "role": "viewer"}
+    "admin": {
+        "token_hash": "$2b$12$REPLACE_WITH_BCRYPT_HASH_AT_INSTALL_TIME",
+        "role": "admin"
+    }
 }

@@ -3,7 +3,15 @@
 # M3TAL Supervisor - Reliable Control Plane Launcher
 # Follows AGENT_PLAN.md Supervisor Model
 
-BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
+# >>> AUTO-ROOT (antigravity)
+if git rev-parse --show-toplevel > /dev/null 2>&1; then
+  REPO_ROOT="$(git rev-parse --show-toplevel)"
+else
+  REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+fi
+# <<< AUTO-ROOT
+
+BASE_DIR="$REPO_ROOT/control-plane"
 STATE_DIR="$BASE_DIR/state"
 LOG_DIR="$STATE_DIR/logs"
 

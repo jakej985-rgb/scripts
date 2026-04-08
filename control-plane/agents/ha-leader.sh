@@ -1,9 +1,16 @@
 #!/bin/bash
 
 # HA-leader.sh - Distributed Leader Election (Minimalist Raft-like behavior)
-BASE_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
-CLUSTER="$BASE_DIR/control-plane/config/cluster.yml"
-STATE_DIR="$BASE_DIR/control-plane/state"
+# >>> AUTO-ROOT (antigravity)
+if git rev-parse --show-toplevel > /dev/null 2>&1; then
+  REPO_ROOT="$(git rev-parse --show-toplevel)"
+else
+  REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+fi
+# <<< AUTO-ROOT
+
+CLUSTER="$REPO_ROOT/control-plane/config/cluster.yml"
+STATE_DIR="$REPO_ROOT/control-plane/state"
 LEADER_FILE="$STATE_DIR/leader.txt"
 MY_NODE=$(hostname) 
 
@@ -13,24 +20,21 @@ CONTROL_NODES=$(yq e '.nodes | with_entries(select(.value.role == "control")) | 
 for node in $CONTROL_NODES; do
     host=$(yq e ".nodes.$node.host" "$CLUSTER")
     
-    # Check if node is alive
+    # HIGH-06: Fix leader election — use proper reachability checks
     if [ "$host" = "localhost" ]; then
-        ping_ok=0
-    else
-        ping -c 1 -W 1 $(echo "$host" | cut -d'@' -f2 | cut -d':' -f1) >/dev/null 2>&1
-        ping_ok=$?
-    fi
-
-    if [ $ping_ok -eq 0 ]; then
         echo "$node" > "$LEADER_FILE"
         break
+    else
+        ip=$(echo "$host" | cut -d'@' -f2 | cut -d':' -f1)
+        if ping -c 1 -W 1 "$ip" >/dev/null 2>&1; then
+            echo "$node" > "$LEADER_FILE"
+            break
+        fi
     fi
 done
 
-CURRENT_LEADER=$(cat "$LEADER_FILE")
+CURRENT_LEADER=$(cat "$LEADER_FILE" 2>/dev/null || echo "")
 if [ "$CURRENT_LEADER" != "$MY_NODE" ] && [[ "$MY_NODE" != "localhost"* ]]; then
-    # Note: This basic logic needs refinement for specific hostnames,
-    # but for now it follows the 'First Active' rule.
     echo "[HA] I am Follower. Leader is $CURRENT_LEADER"
     exit 1 
 else

@@ -37,8 +37,8 @@ Monitor → Analyzer → Decision Engine → Action Agent
 ## 🚀 Quick Start
 
 ```bash
-git clone https://github.com/jakej985-rgb/M3tal-Control-Plane.git
-cd M3tal-Control-Plane
+git clone https://github.com/jakej985-rgb/M3tal-Media-Server.git
+cd M3tal-Media-Server
 
 chmod +x install.sh
 ./install.sh

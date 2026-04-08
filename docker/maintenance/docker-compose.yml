@@ -7,9 +7,9 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command:
-      --label-enable
-      --cleanup
-      --interval
+      - "--label-enable"
+      - "--cleanup"
+      - "--interval"
       - "600"
     environment:
       - TZ=America/Denver
@@ -35,16 +35,15 @@ services:
 
   dashboard:
     image: python:3.11-slim
-    container_name: m3tal-dashboard
+    container_name: m3tal-dashboard-maintenance
     restart: unless-stopped
     volumes:
       - /docker:/docker
       - /var/run/docker.sock:/var/run/docker.sock
     working_dir: /docker/dashboard
     command: >
-      sh -c "pip install --quiet flask requests && python server.py"
+      sh -c "pip install --quiet flask flask-socketio requests bcrypt && python server.py"
     ports:
       - "8888:8080"
     environment:
       - TZ=America/Denver
-

@@ -96,6 +96,6 @@ services:
 
   # --- Apps Stack ---
   tattoo-app:
-    stack: apps
+    stack: apps/tattoo-app
     enabled: true
     port: 3001

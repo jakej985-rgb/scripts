@@ -1,10 +1,17 @@
 #!/bin/bash
 
 # scheduler.sh - Decides node placement based on least-loaded strategy
-BASE_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
-CLUSTER="$BASE_DIR/control-plane/config/cluster.yml"
+# >>> AUTO-ROOT (antigravity)
+if git rev-parse --show-toplevel > /dev/null 2>&1; then
+  REPO_ROOT="$(git rev-parse --show-toplevel)"
+else
+  REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+fi
+# <<< AUTO-ROOT
+
+CLUSTER="$REPO_ROOT/control-plane/config/cluster.yml"
 # Consume the normalized metrics as per plan
-METRICS="$BASE_DIR/control-plane/state/normalized_metrics.json"
+METRICS="$REPO_ROOT/control-plane/state/normalized_metrics.json"
 
 svc=$1
 nodes=$(yq e '.nodes | keys | .[]' "$CLUSTER")
@@ -18,7 +25,8 @@ for node in $nodes; do
   # Default to 0 if metrics are missing
   if [ "$cpu" = "null" ] || [ -z "$cpu" ]; then cpu=0; fi
 
-  if (( $(echo "$cpu < $lowest_cpu" | bc -l) )); then
+  # HIGH-07: Use awk instead of bc for float comparison (bc not always installed)
+  if awk "BEGIN{exit !($cpu < $lowest_cpu)}"; then
     lowest_cpu=$cpu
     best_node=$node
   fi

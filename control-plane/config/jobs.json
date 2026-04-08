@@ -1,7 +1,7 @@
 [
   {
     "name": "backup",
-    "command": "/docker/agents/backup-agent.sh",
+    "command": "bash scripts/backup.sh",
     "schedule": "0 3 * * *",
     "node": "local"
   },
