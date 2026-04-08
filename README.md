@@ -30,6 +30,11 @@ For a detailed beginner guide, see [Getting Started](docs/GET_STARTED.md).
 git clone https://github.com/jakej985-rgb/M3tal-Media-Server.git
 cd M3tal-Media-Server
 chmod +x install.sh
+
+# Recommended: Create a virtual environment
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
 ./install.sh
 ```
 
