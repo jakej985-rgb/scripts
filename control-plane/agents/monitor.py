@@ -3,8 +3,8 @@ import json
 import sys
 import os
 
-# Add parent dir to path for utils
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Add current dir to path for utils
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from utils.paths import METRICS_JSON
 from utils.state import save_json
