@@ -6,7 +6,9 @@ BASE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 
 echo "[INIT] Running self-healing setup..."
 
-# Required directories
+# -----------------------------
+# Directories
+# -----------------------------
 DIRS=(
   "$BASE_DIR/control-plane/state"
   "$BASE_DIR/control-plane/state/logs"
@@ -21,7 +23,9 @@ for dir in "${DIRS[@]}"; do
   fi
 done
 
-# Required log files
+# -----------------------------
+# Log files
+# -----------------------------
 LOGS=(
   "$BASE_DIR/control-plane/state/logs/loop.log"
   "$BASE_DIR/control-plane/state/logs/metrics.log"
@@ -35,7 +39,20 @@ for file in "${LOGS[@]}"; do
   fi
 done
 
-# Fix permissions (important for Docker + mounted drives)
-chmod -R 775 "$BASE_DIR/control-plane/state"
+# -----------------------------
+# Leader file (YOUR FIX)
+# -----------------------------
+LEADER_FILE="$BASE_DIR/control-plane/state/leader.txt"
+
+if [ ! -f "$LEADER_FILE" ]; then
+  echo "[INIT] Creating leader file"
+  touch "$LEADER_FILE"
+  echo "none" > "$LEADER_FILE"
+fi
+
+# -----------------------------
+# Optional permissions (safe)
+# -----------------------------
+chmod -R 775 "$BASE_DIR/control-plane/state" 2>/dev/null || true
 
 echo "[INIT] Done."
