@@ -1,321 +1,100 @@
-# 🤖 M3tal Media Server – AI Execution Plan
+# 🤖 M3TAL Media Server — Production Agent Plan (v1.2.0)
 
 ## 🎯 Objective
 
-Convert system from:
+Transform the M3TAL Media Server from a fragile container stack into a **Fully Autonomous, Self-Healing Cloud-Native Orchestration Plane**.
 
-* Script-based execution
-
-Into:
-
-* Stateful, self-healing control plane
-* Deterministic agent system
-* Autonomous Docker recovery engine
+The system now operates on a distributed state-machine model where intelligence is decoupled from enforcement, and reliability is ensured via atomic JSON contracts.
 
 ---
 
-# 🧠 GLOBAL RULES (MANDATORY)
+## 🏛️ CORE ARCHITECTURE
 
-1. **All agents must be idempotent**
-2. **No agent creates missing state files**
-3. **All state lives in:**
+### 🌏 Distributed Leadership
 
-   ```
-   control-plane/state/
-   ```
-4. **All containers must use `/mnt`**
-5. **All actions must be logged**
-6. **Prefer simple + reliable over complex**
+* **Agent**: `leader.py`
+* **Logic**: Uses a priority-based election model (defined in `cluster.yml`) and unique node identity (Host+IP) to ensure only one node acts as the **Active Primary**.
+* **Enforcement**: All agents use `utils/guards.py` to check `leader.txt` before execution.
 
----
+### 💾 Atomic State Management
 
-# 📦 REQUIRED STATE STRUCTURE
+* **Path**: `control-plane/state/`
+* **Access**: All agents use `utils/state.py` for atomic "write-then-rename" operations to prevent JSON corruption during crashes.
+* **Isolation**: No agent shares an output file (Single Writer Pattern).
 
-```
-control-plane/state/
-  leader.txt
-  health.json
-  metrics.json
-  decisions.json
-  registry.json
-```
+### 👮 Standardized Supervisor
+
+* **Agent**: `run.sh`
+* **Logic**: Continuous background supervisor with **exponential backoff** crash protection.
+* **Reliability**: Signals and exit codes (0/1) are used to distinguish between healthy Standby (Follower) and actual process failure.
 
 ---
 
-# ⚙️ PHASE 1 — CORE STABILITY (DO FIRST)
+## ⚙️ IMPLEMENTATION STATUS
 
-## ✅ Task 1: Build init.sh (State Bootstrap)
+### ✅ PHASE 1 — FOUNDATION (COMPLETE)
 
-### Requirements
+* **[COMPLETED]** `init.sh`: Self-healing state scaffolding and default user provisioning (`admin/admin123`).
+* **[COMPLETED]** `utils/paths.py`: Absolute path determinism (AUTO-ROOT pattern).
+* **[COMPLETED]** `utils/logger.py`: Standardized logging with 10MB/3-file rotation.
 
-* Create:
+### ✅ PHASE 2 — PERCEPTION & INTELLIGENCE (COMPLETE)
 
-  * `control-plane/state/`
-  * `logs/`
-* Ensure files exist:
+* **[COMPLETED]** `registry.py`: Dynamic discovery. Scans `docker/` for compose files; no manual container lists.
+* **[COMPLETED]** `monitor.py`: High-frequency health polling into segmented state files.
+* **[COMPLETED]** `metrics.py`: Deep telemetry (CPU, Mem, Net I/O, Block I/O) for system and containers.
 
-  * leader.txt
-  * health.json
-  * metrics.json
-  * decisions.json
-  * registry.json
-* Set permissions:
+### ✅ PHASE 3 — COGNITION & DECISION (COMPLETE)
 
-  ```bash
-  sudo chown -R 1000:1000 .
-  ```
+* **[COMPLETED]** `anomaly.py`: Classification logic using deep metrics and health feedback.
+* **[COMPLETED]** `scaling.py`: Autonomous horizontal scaling based on CPU thresholds with persistent 5m cooldowns.
+* **[COMPLETED]** `decision.py`: Action planning with stateful cooldowns to prevent "flapping" or restart storms.
 
-### Success Criteria
+### ✅ PHASE 4 — ENFORCEMENT & HARDENING (COMPLETE)
 
-* No script fails due to missing files
-
----
-
-## ✅ Task 2: Replace run.sh with Supervisor
-
-### Requirements
-
-* Must:
-
-  * Launch all agents
-  * Restart on crash
-  * Log output per agent
-  * Never exit
-
-### Implementation
-
-```bash
-#!/bin/bash
-
-BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
-LOG_DIR="$BASE_DIR/logs"
-mkdir -p "$LOG_DIR"
-
-run_agent() {
-  local name=$1
-  local script=$2
-
-  while true; do
-    echo "[RUN] $name"
-    bash "$script" >> "$LOG_DIR/$name.log" 2>&1
-
-    echo "[CRASH] $name restarting in 5s"
-    sleep 5
-  done
-}
-
-run_agent monitor "$BASE_DIR/control-plane/agents/monitor.py" python &
-run_agent metrics "$BASE_DIR/control-plane/agents/metrics.py" python &
-run_agent anomaly "$BASE_DIR/control-plane/agents/anomaly.py" python &
-run_agent decision "$BASE_DIR/control-plane/agents/decision.py" python &
-run_agent reconcile "$BASE_DIR/control-plane/agents/reconcile.sh" bash &
-run_agent registry "$BASE_DIR/control-plane/agents/registry.py" python &
-
-wait
-```
-
-### Success Criteria
-
-* Killing any agent → it restarts automatically
+* **[COMPLETED]** `reconcile.py`: Enforcer agent for `start/stop/restart/scale` actions + Dependency Enforcement.
+* **[COMPLETED]** `health_score.py`: Consolidated aggregator that calculates stability scores and TTR (Time-To-Recovery).
+* **[COMPLETED]** `chaos_test.py`: Destructive resilience tester that logs events for TTR analysis.
 
 ---
 
-## ✅ Task 3: Enforce Data Contracts
+## 🛡️ SECURITY & RELIABILITY LOCKS
 
-Each agent MUST:
-
-| Agent     | Writes                   | Reads                |
-| --------- | ------------------------ | -------------------- |
-| monitor   | health.json              | docker               |
-| metrics   | metrics.json             | system               |
-| anomaly   | decisions.json (issues)  | health + metrics     |
-| decision  | decisions.json (actions) | decisions            |
-| reconcile | none                     | decisions + registry |
-| registry  | registry.json            | static config        |
-
-### Rule
-
-👉 One file per agent (no overlap)
+| Feature | Protection |
+| :--- | :--- |
+| **Credential Scrub** | 100% of historical leaked passwords removed via destructive rewrite. |
+| **Auth** | Dashboard uses BCrypt token-based authentication (Role: admin, operator, viewer). |
+| **Shell Hardening** | Removed `shell=True` and implemented strict `ALLOWED_IMAGES` allowlisting. |
+| **Disk Safety** | Automatic log rotation and idempotent `backup.sh` with retention logic. |
+| **Path Safety** | No hardcoded paths; all components resolve relative to git toplevel. |
 
 ---
 
-# ⚙️ PHASE 2 — INTELLIGENCE LAYER
+## 🔮 FUTURE ROADMAP (PHASE 11+)
 
-## ✅ Task 4: Build Anomaly Classification
+### 📡 Phase 11: Global Distributed Registry
 
-### Input
+* **Implement Gossip protocol** (e.g., Memberlist) for agents to share `registry.json` across nodes without a central DB.
+* **Broadcast node heartbeats** to the Dashboard in real-time.
 
-* health.json
-* metrics.json
+### 🧠 Phase 12: Predictable Scaling (AI Feedback)
 
-### Output (decisions.json)
+* **Integrate simple linear regression** to predict scaling needs *before* the threshold is hit (Predictive Scaling).
+* **Implement "Global Load Balancing"** — if one node is saturated, `decision.py` moves workload metadata to another.
 
-```json
-{
-  "issues": [
-    {
-      "type": "recoverable",
-      "target": "qbittorrent",
-      "reason": "container stopped"
-    }
-  ]
-}
-```
+### 🎨 Phase 13: Dashboard Evolution
 
-### Required Types
-
-* transient
-* recoverable
-* critical
-* misconfig
+* **Move from Flask/HTML** to a React/Next.js "Admin Center" with real-time WebSocket metrics visualization.
+* **Add a "Chaos Center" UI** to trigger specific file corruptions for live resilience training.
 
 ---
 
-## ✅ Task 5: Decision Engine
+## 🏁 DEFINITION OF DONE
 
-### Input
+The system is considered healthy if:
 
-* issues
-
-### Output
-
-```json
-{
-  "actions": [
-    {
-      "type": "restart",
-      "target": "qbittorrent"
-    }
-  ]
-}
-```
-
-### Add MUST-HAVE
-
-* cooldown system:
-
-  * prevent restart loops
-  * track last action timestamps
-
----
-
-# ⚙️ PHASE 3 — SELF-HEALING
-
-## ✅ Task 6: Reconcile Agent (Enforcer)
-
-### Responsibilities
-
-* Enforce actual system state
-
-### Required Actions
-
-```bash
-docker restart <container>
-docker start <container>
-docker stop <container>
-```
-
-### Rules
-
-* Idempotent
-* Logged
-* Safe retries
-
----
-
-## ✅ Task 7: Registry Agent
-
-### Output
-
-```json
-{
-  "containers": [
-    "qbittorrent",
-    "radarr",
-    "sonarr",
-    "tdarr"
-  ],
-  "paths": {
-    "root": "/mnt",
-    "downloads": "/mnt/downloads",
-    "media": "/mnt/media"
-  }
-}
-```
-
-### Purpose
-
-👉 Single source of truth
-
----
-
-# 💾 STORAGE ENFORCEMENT (CRITICAL)
-
-ALL containers must use:
-
-```yaml
-volumes:
-  - /mnt:/mnt
-```
-
-### Required Paths
-
-| Service     | Path           |
-| ----------- | -------------- |
-| qBittorrent | /mnt/downloads |
-| Radarr      | /mnt/media     |
-| Sonarr      | /mnt/media     |
-
-### Success Criteria
-
-* Moves are instant (no copy)
-* No duplicate files in downloads
-
----
-
-# 🔁 EXECUTION LOOP
-
-```
-init → supervisor
-   ↓
-monitor → health.json
-metrics → metrics.json
-anomaly → issues
-decision → actions
-reconcile → fix system
-   ↺ loop forever
-```
-
----
-
-# ⚠️ GUARDRAILS
-
-* ❌ No hardcoded paths outside `/mnt`
-* ❌ No silent failures
-* ❌ No agent-to-agent direct calls
-* ✅ Everything via state files
-* ✅ Everything logged
-
----
-
-# 🚀 PHASE 4 — ADVANCED (OPTIONAL)
-
-## Add:
-
-* event log (`events.log`)
-* restart cooldown tracking
-* container dependency graph
-* alert system (Discord/webhook)
-
----
-
-# ✅ DEFINITION OF DONE
-
-System must:
-
-* Detect stopped container
-* Classify issue correctly
-* Decide proper action
-* Restart container automatically
-* Avoid restart loops
-* Maintain filesystem consistency
+1. **Registry** reflects all active Docker volumes and containers.
+2. **Leader** is established and visible in `leader.txt`.
+3. **Health Score** is > 85% with no persistent "Stalled" agents.
+4. **TTR** for container restarts is < 15 seconds.
+5. **Scaling** occurs within 60s of sustained high load.

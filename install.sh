@@ -91,6 +91,17 @@ check_and_install "jq" "check_cmd jq" "sudo apt-get install -y jq"
 check_and_install "yq" "check_cmd yq" "sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq && sudo chmod +x /usr/local/bin/yq"
 
 # -------------------------------
+# PYTHON DEPENDENCIES
+# -------------------------------
+log "=== Installing Python dependencies ==="
+if [ -f "requirements.txt" ]; then
+  pip3 install -r requirements.txt || warn "pip install failed"
+else
+  # Fallback for old versions or manual runs
+  pip3 install Flask Flask-SocketIO requests bcrypt PyYAML eventlet || warn "pip install failed"
+fi
+
+# -------------------------------
 # TEMP CLONE
 # -------------------------------
 
