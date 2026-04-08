@@ -15,25 +15,33 @@ This guide covers the transition from the legacy script-based orchestration to t
 ## 🚀 Migration Steps
 
 ### 1. Repository Alignment
+
 Ensure you are in the repository root. M3TAL now uses **AUTO-ROOT** detection, so paths are resolved relative to the git directory.
 
 ### 2. Dependency Update
+
 The new Python agents require additional libraries (`PyYAML`, `bcrypt`, `Flask-SocketIO`).
+
 ```bash
 pip3 install -r requirements.txt
 ```
 
 ### 3. Cleanup Legacy Cron
+
 Remove any old crontab entries that were manually triggering scripts like `auto-heal.sh` or `metrics.sh`. These are now handled by the persistent `run.sh` supervisor.
 
 ### 4. Initialize State
+
 Run the new initialization script to scaffold the directory structure and provision the default admin user:
+
 ```bash
 bash control-plane/init.sh
 ```
 
 ### 5. Launch the Supervisor
+
 Start the new control plane:
+
 ```bash
 bash control-plane/run.sh
 ```
@@ -53,4 +61,5 @@ bash control-plane/run.sh
 ---
 
 ## ⚠️ Important Note
+
 **Configuration Volume**: Ensure your Docker containers are using the standardized `/mnt` mount point for persistent data. v1.2.0 agents enforce this mount for all monitored services to ensure portable storage.
