@@ -33,6 +33,8 @@ chmod +x install.sh
 
 # Recommended: Create a virtual environment
 python3 -m venv venv
+# On Windows (PowerShell), you may need to run this first:
+# Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 ./install.sh
