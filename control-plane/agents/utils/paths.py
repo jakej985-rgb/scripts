@@ -9,16 +9,19 @@ STATE_DIR = os.path.join(BASE_DIR, "control-plane", "state")
 LOG_DIR = os.path.join(STATE_DIR, "logs")
 CONFIG_DIR = os.path.join(BASE_DIR, "control-plane", "config")
 
-# State Files
+# State Files (Standardized via AGENT_PLAN.md)
+LEADER_TXT = os.path.join(STATE_DIR, "leader.txt")
+HEALTH_JSON = os.path.join(STATE_DIR, "health.json")
 METRICS_JSON = os.path.join(STATE_DIR, "metrics.json")
-NORMALIZED_METRICS_JSON = os.path.join(STATE_DIR, "normalized_metrics.json")
 ANOMALIES_JSON = os.path.join(STATE_DIR, "anomalies.json")
 DECISIONS_JSON = os.path.join(STATE_DIR, "decisions.json")
-HEALTH_JSON = os.path.join(STATE_DIR, "agent-health.json")
+REGISTRY_JSON = os.path.join(STATE_DIR, "registry.json")
+COOLDOWNS_JSON = os.path.join(STATE_DIR, "cooldowns.json")
 
-# Config Files
-CLUSTER_YML = os.path.join(CONFIG_DIR, "cluster.yml")
+# Legacy/Extra paths
+NORMALIZED_METRICS_JSON = os.path.join(STATE_DIR, "normalized_metrics.json")
 TRAEFIK_DYNAMIC_YML = os.path.join(STATE_DIR, "traefik-dynamic.yml")
+CLUSTER_YML = os.path.join(CONFIG_DIR, "cluster.yml")
 
 def ensure_dirs():
     for d in [STATE_DIR, LOG_DIR, CONFIG_DIR]:
