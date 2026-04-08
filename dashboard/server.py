@@ -46,6 +46,8 @@ def validate_container(name):
         abort(404, "container not found")
 
 app = Flask(__name__)
+# Batch 6 T4: Secure session key
+app.secret_key = os.environ.get("SECRET_KEY", os.urandom(24))
 socketio = SocketIO(app)
 
 STATE = os.environ.get("STATE_DIR", "control-plane/state")
@@ -328,21 +330,23 @@ def metrics_api(name):
     history = f"{STATE}/metrics-history.csv"
     data = []
     if os.path.exists(history):
-        with open(history) as f:
-            reader = csv.reader(f)
-            for row in reader:
+        # Batch 6 T2: Efficiently tail the history file
+        try:
+            cmd = ["tail", "-n", "1000", history]
+            out = subprocess.check_output(cmd, text=True).strip().split("\n")
+            for line in out:
+                row = line.split(",")
                 if len(row) < 4: continue
                 ts, container, cpu, mem = row[0], row[1], row[2], row[3]
                 if container == name:
-                    try:
-                        data.append({
-                            "time": int(ts),
-                            "cpu": float(cpu),
-                            "mem": float(mem)
-                        })
-                    except ValueError:
-                        continue
-    return jsonify(data[-100:])
+                    data.append({
+                        "time": int(ts),
+                        "cpu": float(cpu),
+                        "mem": float(mem)
+                    })
+        except:
+             pass
+    return jsonify(data[-200:])
 
 @app.route("/api/metrics/containers")
 @requires_auth("viewer")
@@ -654,13 +658,14 @@ def update(name):
 def stream_metrics():
     while True:
         try:
-            if os.path.exists(f"{STATE}/metrics.txt"):
-                with open(f"{STATE}/metrics.txt", "r") as f:
-                    data = f.read()
-                socketio.emit("metrics", {"data": data})
+            path = f"{STATE}/metrics.json"
+            if os.path.exists(path):
+                with open(path, "r") as f:
+                    data = json.load(f)
+                socketio.emit("metrics", data)
         except Exception:
             pass
-        time.sleep(2)
+        time.sleep(5)
 
 threading.Thread(target=stream_metrics, daemon=True).start()
 

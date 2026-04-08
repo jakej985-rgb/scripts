@@ -7,65 +7,75 @@ import time
 # Add current dir to path for utils
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from utils.paths import METRICS_JSON
+from utils.paths import METRICS_JSON, STATE_DIR
 from utils.state import save_json
 from utils.guards import wrap_agent
 from utils.logger import get_logger
 
 logger = get_logger("metrics")
+HISTORY_CSV = os.path.join(STATE_DIR, "metrics-history.csv")
+MAX_HISTORY_ENTRIES = 5000 
 
 def get_system_metrics():
-    metrics = {
-        "cpu": 0.0,
-        "mem": 0.0,
-        "timestamp": int(time.time())
-    }
-    
+    metrics = {"cpu": 0.0, "mem": 0.0, "timestamp": int(time.time())}
     try:
-        # CPU
         if sys.platform != "win32":
             cpu_cmd = "grep 'cpu ' /proc/stat | awk '{print ($2+$4)*100/($2+$4+$5)}'"
             res = subprocess.run(cpu_cmd, shell=True, capture_output=True, text=True)
             metrics["cpu"] = round(float(res.stdout.strip()), 2) if res.stdout.strip() else 0.0
-            
-            # Memory
             mem_cmd = "free | grep Mem | awk '{print $3/$2 * 100.0}'"
             res = subprocess.run(mem_cmd, shell=True, capture_output=True, text=True)
             metrics["mem"] = round(float(res.stdout.strip()), 2) if res.stdout.strip() else 0.0
-    except Exception as e:
-        logger.error(f"Failed to get system metrics: {e}")
-        
+    except: pass
     return metrics
 
 def get_container_metrics():
     container_stats = []
     try:
-        # Get stats for all running containers
         cmd = ["docker", "stats", "--no-stream", "--format", "{{json .}}"]
         result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-        
         for line in result.stdout.strip().split('\n'):
             if line:
                 raw = json.loads(line)
-                # Clean up percentage strings (e.g. "1.23%" -> 1.23)
-                cpu_p = float(raw.get("CPUPerc", "0").replace("%", ""))
-                mem_p = float(raw.get("MemPerc", "0").replace("%", ""))
-                
                 container_stats.append({
                     "name": raw.get("Name"),
-                    "cpu": cpu_p,
-                    "mem": mem_p,
+                    "cpu": float(raw.get("CPUPerc", "0").replace("%", "")),
+                    "mem": float(raw.get("MemPerc", "0").replace("%", "")),
                     "mem_usage": raw.get("MemUsage"),
-                    "net_io": raw.get("NetIO"),
-                    "block_io": raw.get("BlockIO")
                 })
     except Exception as e:
-        logger.error(f"Failed to get container metrics: {e}")
-        
+        logger.error(f"Failed to get container stats: {e}")
     return container_stats
 
+def append_history(system, containers):
+    """Batch 6 T1: Append metrics to history CSV with rotation."""
+    ts = system["timestamp"]
+    lines = []
+    
+    # Write system summary
+    lines.append(f"{ts},host,{system['cpu']},{system['mem']}\n")
+    
+    # Write container individual metrics
+    for c in containers:
+        lines.append(f"{ts},{c['name']},{c['cpu']},{c['mem']}\n")
+        
+    try:
+        with open(HISTORY_CSV, "a") as f:
+            f.writelines(lines)
+            
+        # Optional: truncate at threshold to prevent disk sprawl
+        # This keeps the last X lines
+        if ts % 600 == 0: # Every 10 min prune
+             with open(HISTORY_CSV, "r") as f:
+                 all_lines = f.readlines()
+             if len(all_lines) > MAX_HISTORY_ENTRIES:
+                 logger.info("Rotating metrics-history.csv")
+                 with open(HISTORY_CSV, "w") as f:
+                     f.writelines(all_lines[-MAX_HISTORY_ENTRIES:])
+    except Exception as e:
+        logger.error(f"Failed to write history: {e}")
+
 def collect_all_metrics():
-    """Phase 1: Deep Metrics as per Audit Batch 2 T4."""
     system = get_system_metrics()
     containers = get_container_metrics()
     
@@ -73,14 +83,12 @@ def collect_all_metrics():
         "system": system,
         "containers": containers,
         "timestamp": system["timestamp"],
-        # Legacy field for backward compatibility with anomaly.py
         "cpu": system["cpu"] 
     }
     
     if save_json(METRICS_JSON, data):
-        logger.info(f"Captured metrics for {len(containers)} containers.")
-    else:
-        logger.error("Failed to save metrics.json")
+        append_history(system, containers)
+        logger.info(f"Captured metrics and history.")
 
 if __name__ == "__main__":
     wrap_agent("metrics", collect_all_metrics)
