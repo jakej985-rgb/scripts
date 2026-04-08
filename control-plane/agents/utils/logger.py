@@ -1,21 +1,32 @@
 import logging
 import os
-from .paths import LOGS_DIR
+import sys
+from .paths import LOG_DIR
 
 def get_logger(name):
+    # Standardize logger to avoid duplicate handlers if called multiple times
     logger = logging.getLogger(name)
+    if logger.handlers:
+        return logger
+        
     logger.setLevel(logging.INFO)
     
-    if not logger.handlers:
-        log_file = os.path.join(LOGS_DIR, f"{name}.log")
-        handler = logging.FileHandler(log_file)
-        formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(name)s: %(message)s')
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
-        
-        # Also log to console for development
-        console = logging.StreamHandler()
-        console.setFormatter(formatter)
-        logger.addHandler(console)
+    # Standard Format: Timestamp [LEVEL] Agent: Message
+    formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(name)s: %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+    
+    # File Handler
+    try:
+        os.makedirs(LOG_DIR, exist_ok=True)
+        log_file = os.path.join(LOG_DIR, f"{name}.log")
+        fh = logging.FileHandler(log_file)
+        fh.setFormatter(formatter)
+        logger.addHandler(fh)
+    except Exception as e:
+        print(f"Failed to initialize file logger for {name}: {e}")
+
+    # Console Handler (Stdout for run.sh capture)
+    ch = logging.StreamHandler(sys.stdout)
+    ch.setFormatter(formatter)
+    logger.addHandler(ch)
         
     return logger
