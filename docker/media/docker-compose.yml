@@ -82,8 +82,6 @@ services:
   bazarr:
     image: lscr.io/linuxserver/bazarr
     container_name: bazarr
-    ports:
-      - 6767:6767
     volumes:
       - /docker/configs/bazarr:/config
       - /mnt:/data
@@ -92,8 +90,6 @@ services:
   komga:
     image: gotson/komga
     container_name: komga
-    ports:
-      - 25600:25600
     volumes:
       - /docker/configs/komga:/config
       - /mnt:/data
@@ -102,8 +98,6 @@ services:
   jellyseerr:
     image: fallenbagel/jellyseerr:latest
     container_name: jellyseerr
-    ports:
-      - 5055:5055
     volumes:
       - /docker/configs/jellyseerr:/app/config
     restart: unless-stopped
@@ -111,8 +105,6 @@ services:
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
-    ports:
-      - 3000:3000
     volumes:
       - /docker/configs/homepage:/app/config
       - /mnt/disk1:/disk1
@@ -125,8 +117,6 @@ services:
   autobrr:
     image: ghcr.io/autobrr/autobrr:latest
     container_name: autobrr
-    ports:
-      - 7474:7474
     volumes:
       - /docker/configs/autobrr:/config
     restart: unless-stopped
@@ -141,8 +131,6 @@ services:
   maintainerr:
     image: ghcr.io/maintainerr/maintainerr:latest
     container_name: maintainerr
-    ports:
-      - 6246:6246
     volumes:
       - /docker/configs/maintainerr:/opt/data
     restart: unless-stopped
@@ -150,9 +138,6 @@ services:
   tdarr:
     image: ghcr.io/haveagitgat/tdarr:latest
     container_name: tdarr
-    ports:
-      - 8265:8265
-      - 8266:8266
     volumes:
       - /docker/configs/tdarr:/app/config
       - /docker/configs/tdarr:/app/logs
@@ -162,8 +147,6 @@ services:
   glances:
     image: nicolargo/glances:latest-full
     container_name: glances
-    ports:
-      - 61208:61208
     pid: host
     command: glances -w
     volumes:
