@@ -220,7 +220,7 @@ def api_state():
             return []
 
     return jsonify({
-        "containers": parse_json(f"{STATE}/state.json"),
+        "containers": parse_json(f"{STATE}/metrics.json"), # monitor.sh now outputs to metrics.json
         "analysis": [l.strip() for l in analysis],
         "decisions": parse_json(f"{STATE}/decisions.json"),
         "disk": [l.strip() for l in disk],
@@ -230,7 +230,7 @@ def api_state():
         "ai_recs": [l.strip() for l in ai_recs],
         "anomalies": parse_json(f"{STATE}/anomalies.json"),
         "deps": [l.strip() for l in deps],
-        "metrics": [l.strip() for l in metrics],
+        "metrics": parse_json(f"{STATE}/normalized_metrics.json"), # metrics.sh now outputs normalized_metrics.json
         "scaling_log": [l.strip() for l in scaling_log],
         "reconcile_log": [l.strip() for l in reconcile_log],
         "scheduler_log": [l.strip() for l in scheduler_log],
