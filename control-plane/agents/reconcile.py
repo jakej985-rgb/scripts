@@ -7,7 +7,7 @@ import time
 # Add current dir to path for utils
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from utils.paths import DECISIONS_JSON, REGISTRY_JSON, DOCKER_DIR, CONFIG_DIR, HEALTH_JSON
+from utils.paths import DECISIONS_JSON, REGISTRY_JSON, DOCKER_DIR, CONFIG_DIR, HEALTH_JSON, STATE_DIR
 from utils.state import load_json, save_json
 from utils.guards import wrap_agent
 from utils.logger import get_logger
@@ -103,15 +103,21 @@ def reconcile():
     # 1. Dependency Enforcement First
     enforce_dependencies()
     
-    # 2. Process Decisions
+    # 2. Process Decisions (from decision.py)
     decisions = load_json(DECISIONS_JSON, default={"actions": []})
     actions = decisions.get("actions", [])
+    
+    # 2b. Merge scaling actions (from scaling.py — Audit fix 2.3)
+    scaling_file = os.path.join(STATE_DIR, "scaling_actions.json")
+    scaling_data = load_json(scaling_file, default={"actions": []})
+    actions.extend(scaling_data.get("actions", []))
     
     if actions:
         logger.info(f"Processing {len(actions)} actions...")
         for action in actions:
             perform_action(action)
         save_json(DECISIONS_JSON, {"actions": []})
+        save_json(scaling_file, {"actions": []})
         
     # 3. Storage Enforcement
     check_storage_enforcement()

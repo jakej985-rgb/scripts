@@ -73,13 +73,6 @@ def main():
         new_val = secrets.token_hex(32)
         print(f"Generated new Persistent Session Secret (DASHBOARD_SECRET)")
         new_env["DASHBOARD_SECRET"] = new_val
-
-    for token_key in ["ADMIN_TOKEN", "OPS_TOKEN", "VIEW_TOKEN"]:
-        current_val = current_env.get(token_key, "")
-        if current_val in ["secret", "replace_me", ""]:
-            new_val = secrets.token_urlsafe(32)
-            print(f"Generated new {token_key}: {GREEN}{new_val}{END}")
-            new_env[token_key] = new_val
     print("")
 
     # Write to .env
@@ -91,12 +84,12 @@ def main():
             
             # Sort keys into categories for readability
             categories = {
-                "SYSTEM": ["PUID", "PGID", "TZ", "MASTER_IP", "DASHBOARD_PORT", "HTTP_PORT", "DOMAIN", "DATA_DIR"],
+                "SYSTEM": ["PUID", "PGID", "TZ", "MASTER_IP", "DASHBOARD_PORT", "HTTP_PORT", "DOMAIN", "DATA_DIR", "CONFIG_DIR"],
                 "VPN": ["VPN_USER", "VPN_PASSWORD"],
                 "AI": ["OLLAMA_URL", "AI_API_KEY"],
                 "NOTIFY": ["TELEGRAM_TOKEN", "TELEGRAM_CHAT_ID"],
                 "DB": ["TATTOO_DB_PASSWORD"],
-                "AUTH": ["DASHBOARD_SECRET", "ADMIN_TOKEN", "OPS_TOKEN", "VIEW_TOKEN"]
+                "AUTH": ["DASHBOARD_SECRET"]
             }
 
             for cat, keys in categories.items():

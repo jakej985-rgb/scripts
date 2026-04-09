@@ -7,11 +7,21 @@ control-plane/state/normalized_metrics.json
 control-plane/state/health.json
 control-plane/state/cooldowns.json
 control-plane/state/scaling.json
+control-plane/state/scaling_actions.json
+control-plane/state/scaling_cooldowns.json
+control-plane/state/health_report.json
+control-plane/state/chaos_events.json
+control-plane/state/last_prune.json
 control-plane/state/registry.json
 control-plane/state/metrics-history.csv
 control-plane/state/traefik-dynamic.yml
 control-plane/state/leader.txt
-control-plane/state/logs/*.log
+control-plane/state/logs/
+control-plane/state/locks/
+control-plane/state/health/
+control-plane/state/tmp/
+control-plane/state/retries/
+control-plane/state/cooldowns/
 
 # Secrets
 .env
@@ -21,6 +31,8 @@ dashboard/users.json
 *.log
 __pycache__/
 *.pyc
+venv/
+.venv/
 
 # State keep file (allow empty dir to be tracked)
 !control-plane/state/.keep

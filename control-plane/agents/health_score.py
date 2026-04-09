@@ -8,6 +8,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from utils.paths import STATE_DIR, HEALTH_REPORT_JSON
 from utils.state import load_json, save_json
+from utils.guards import wrap_agent
 from utils.logger import get_logger
 
 logger = get_logger("scorer")
@@ -24,7 +25,6 @@ MONITORED_FILES = [
 
 CHAOS_EVENTS_JSON = os.path.join(STATE_DIR, "chaos_events.json")
 MAX_RECOVERY_TIME = 15
-CHECK_INTERVAL = 5
 
 file_timer = {}
 recovery_metrics = {"total_events": 0, "avg_ttr": 0, "failures": 0}
@@ -122,10 +122,5 @@ def calculate_health():
     })
 
 if __name__ == "__main__":
-    logger.info("Health Scorer Active (Aggregator Mode)")
-    try:
-        while True:
-            calculate_health()
-            time.sleep(CHECK_INTERVAL)
-    except Exception as e:
-        logger.critical(f"Health Scorer CRASHED: {e}")
+    # Now uses wrap_agent for proper lock/shutdown/health integration (Audit fix 2.2)
+    wrap_agent("scorer", calculate_health)

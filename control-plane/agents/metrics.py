@@ -71,9 +71,19 @@ def append_history(system, containers):
         with open(HISTORY_CSV, "a") as f:
             f.writelines(lines)
             
-        # Optional: truncate at threshold to prevent disk sprawl
-        # This keeps the last X lines
-        if ts % 600 == 0: # Every 10 min prune
+        # Persistent rotation check — every 10 minutes (Audit fix 2.5)
+        last_prune_file = os.path.join(STATE_DIR, "last_prune.json")
+        last_prune_data = {}
+        if os.path.exists(last_prune_file):
+            try:
+                import json as _json
+                with open(last_prune_file, 'r') as pf:
+                    last_prune_data = _json.loads(pf.read().strip() or '{}')
+            except:
+                pass
+        last_prune_ts = last_prune_data.get("ts", 0)
+
+        if ts - last_prune_ts > 600:
              with open(HISTORY_CSV, "r") as f:
                  all_lines = f.readlines()
              if len(all_lines) > MAX_HISTORY_ENTRIES:
@@ -81,6 +91,13 @@ def append_history(system, containers):
                  with open(HISTORY_CSV, "w") as f:
                      f.write(header) # Preserve header
                      f.writelines(all_lines[-MAX_HISTORY_ENTRIES:])
+             # Update last prune timestamp
+             try:
+                 import json as _json
+                 with open(last_prune_file, 'w') as pf:
+                     _json.dump({"ts": ts}, pf)
+             except:
+                 pass
     except Exception as e:
         logger.error(f"Failed to write history: {e}")
 

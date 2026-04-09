@@ -171,7 +171,7 @@ class TestStateSaveJson:
         save_json(path, {"test": True})
         loaded = load_json(path)
         assert "_m3tal_metadata" in loaded
-        assert loaded["_m3tal_metadata"]["version"] == "1.2.0"
+        assert loaded["_m3tal_metadata"]["version"] == "1.3.0"
 
     def test_save_no_tmp_file_left(self, tmp_path):
         from utils.state import save_json

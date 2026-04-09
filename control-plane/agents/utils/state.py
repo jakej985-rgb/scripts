@@ -1,10 +1,9 @@
 import json
 import os
-import shutil
 import time
-from typing import Any, Union
+from typing import Any
 
-SCHEMA_VERSION = "1.2.0"
+SCHEMA_VERSION = "1.3.0"
 
 def load_json(path: str, default: Any = None) -> Any:
     """Safe JSON load with robust fallback and existence check"""

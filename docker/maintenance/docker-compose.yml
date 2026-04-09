@@ -31,18 +31,18 @@ services:
       - "9443:9443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /docker/configs/portainer:/data
+      - ${CONFIG_DIR:-/docker/configs}/portainer:/data
 
   dashboard:
     image: python:3.11-slim
     container_name: m3tal-dashboard-maintenance
     restart: unless-stopped
     volumes:
-      - /docker:/docker
+      - ${REPO_ROOT:-/docker}:/docker
       - /var/run/docker.sock:/var/run/docker.sock
     working_dir: /docker/dashboard
     command: >
-      sh -c "pip install --quiet flask flask-socketio requests bcrypt && python server.py"
+      sh -c "pip install --quiet -r /docker/requirements.txt && python server.py"
     ports:
       - "8888:8080"
     environment:

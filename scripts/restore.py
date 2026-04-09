@@ -29,7 +29,12 @@ def restore(archive_path: Path, target_dir: Path) -> bool:
     print(f"[RESTORE] Extracting {archive_path.name}...")
     try:
         with tarfile.open(archive_path, "r:gz") as tar:
-            tar.extractall(path=target_dir)
+            # Path traversal protection (Audit fix 1.4)
+            try:
+                tar.extractall(path=target_dir, filter='data')
+            except TypeError:
+                # Python < 3.12 fallback
+                tar.extractall(path=target_dir)
         return True
     except Exception as e:
         print(f"[ERROR] Restore failed: {e}")

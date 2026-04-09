@@ -5,13 +5,14 @@ import time
 # Add current dir to path for utils
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from utils.paths import METRICS_JSON, STATE_DIR, DECISIONS_JSON
+from utils.paths import METRICS_JSON, STATE_DIR
 from utils.state import load_json, save_json
 from utils.guards import wrap_agent
 from utils.logger import get_logger
 
 logger = get_logger("scaling")
 SCALING_CONFIG = os.path.join(STATE_DIR, "scaling.json")
+SCALING_ACTIONS = os.path.join(STATE_DIR, "scaling_actions.json")
 
 # Batch 5 T4: Persistent cooldown state
 COOLDOWN_FILE = os.path.join(STATE_DIR, "scaling_cooldowns.json")
@@ -29,7 +30,6 @@ def evaluate_scaling():
     container_metrics = metrics.get("containers", [])
     stats = {c.get("name"): c for c in container_metrics}
     
-    decisions = load_json(DECISIONS_JSON, default={"actions": []})
     new_actions = []
     now = int(time.time())
     
@@ -64,10 +64,13 @@ def evaluate_scaling():
             cooldowns[service] = now
 
     if new_actions:
-        decisions["actions"].extend(new_actions)
-        save_json(DECISIONS_JSON, decisions)
+        # Write to own state file to avoid racing with decision.py (Audit fix 2.3)
+        save_json(SCALING_ACTIONS, {"actions": new_actions})
         save_json(COOLDOWN_FILE, cooldowns)
         logger.info(f"Issued {len(new_actions)} scaling actions.")
+    else:
+        # Clear stale scaling actions
+        save_json(SCALING_ACTIONS, {"actions": []})
 
 if __name__ == "__main__":
     wrap_agent("scaling", evaluate_scaling)

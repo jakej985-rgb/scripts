@@ -124,7 +124,7 @@ def get_registry():
 @app.route('/healthz')
 def health_check():
     """Liveness probe for external uptime monitors (Batch 16 T2)"""
-    return jsonify({"status": "ready", "version": "1.2.0"}), 200
+    return jsonify({"status": "ready", "version": "1.3.0"}), 200
 
 @app.route('/api/metrics/history')
 @login_required()
@@ -134,23 +134,30 @@ def get_metrics_history():
         return jsonify([])
     
     try:
-        # Use tail command via subprocess (fastest way to read end of large CSV)
-        import subprocess
-        # Get last 200 entries
-        output = subprocess.check_output(['tail', '-n', '200', METRICS_HISTORY_CSV], 
-                                       stderr=subprocess.DEVNULL).decode('utf-8')
+        # Pure-Python tail for cross-platform support (Audit fix 2.6)
+        with open(METRICS_HISTORY_CSV, 'r') as f:
+            all_lines = f.readlines()
+        
+        # Skip header line, get last 200 data lines
+        data_lines = [l for l in all_lines if l.strip() and not l.startswith('timestamp,')]
+        recent = data_lines[-200:]
         
         results = []
-        for line in output.splitlines():
+        for line in recent:
             parts = line.strip().split(',')
-            if len(parts) >= 3:
-                results.append({
-                    "timestamp": parts[0],
-                    "cpu": float(parts[1]),
-                    "mem": float(parts[2])
-                })
+            # CSV format: timestamp,name,cpu,mem (4 columns — Audit fix 2.7)
+            if len(parts) >= 4:
+                try:
+                    results.append({
+                        "timestamp": parts[0],
+                        "name": parts[1],
+                        "cpu": float(parts[2]),
+                        "mem": float(parts[3])
+                    })
+                except (ValueError, IndexError):
+                    continue
         return jsonify(results)
-    except:
+    except Exception:
         return jsonify([])
 
 # -------------------------------

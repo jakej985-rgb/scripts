@@ -69,7 +69,10 @@ check_and_install() {
   fi
 }
 
-sudo apt-get update -y
+# Only run apt-get on Debian/Ubuntu (Audit fix 3.5)
+if command -v apt-get >/dev/null 2>&1; then
+  sudo apt-get update -y
+fi
 
 check_and_install "git" "check_cmd git" "sudo apt-get install -y git"
 check_and_install "curl" "check_cmd curl" "sudo apt-get install -y curl"
@@ -204,8 +207,13 @@ sudo chown -R $USER:$USER "$INSTALL_DIR"
 # -------------------------------
 
 log "=== Applying domain config ==="
-# Recursive find to catch multi-stack architecture (Batch 14 T2)
-find "$REPO_ROOT/docker" -type f -name "*.yml" -exec sed -i "s/\.local/.$DOMAIN/g" {} \;
+# Set REPO_ROOT and source .env for DOMAIN (Audit fix 3.4)
+REPO_ROOT="$INSTALL_DIR"
+source "$INSTALL_DIR/.env" 2>/dev/null || true
+if [ -n "$DOMAIN" ] && [ "$DOMAIN" != "local" ]; then
+  # Recursive find to catch multi-stack architecture (Batch 14 T2)
+  find "$REPO_ROOT/docker" -type f -name "*.yml" -exec sed -i "s/\.local/.$DOMAIN/g" {} \;
+fi
 
 # -------------------------------
 # FINAL CHECK
