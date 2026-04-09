@@ -6,7 +6,7 @@ from typing import Any
 SCHEMA_VERSION = "1.3.0"
 
 def load_json(path: str, default: Any = None) -> Any:
-    """Safe JSON load with robust fallback and existence check"""
+    """Safe JSON load with robust fallback and type consistency check"""
     if default is None:
         default = {}
     
@@ -18,7 +18,13 @@ def load_json(path: str, default: Any = None) -> Any:
             content = f.read().strip()
             if not content:
                 return default
-            return json.loads(content)
+            data = json.loads(content)
+            
+            # Audit fix 2.12: Enforce type consistency with default
+            if default is not None and type(data) != type(default):
+                return default
+                
+            return data
     except (json.JSONDecodeError, IOError, UnicodeDecodeError):
         # If corrupted, return default rather than crash
         return default

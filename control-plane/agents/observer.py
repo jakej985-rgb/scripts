@@ -19,7 +19,7 @@ def aggregate_events():
     
     # Audit fix 2.15: implementation of log scavenging
     for file in os.listdir(LOG_DIR):
-        if file.endswith(".log"):
+        if file.endswith(".log") and file != "observer.log":
             agent_name = file.replace(".log", "")
             path = os.path.join(LOG_DIR, file)
             try:
@@ -27,6 +27,9 @@ def aggregate_events():
                     # Only check the last 100 lines to avoid overhead
                     lines = collections.deque(f, maxlen=100)
                     for line in lines:
+                        # Audit fix 2.15: exclude [ERROR] found inside observer's own detected messages
+                        if "Critical Event detected" in line:
+                            continue
                         if "[ERROR]" in line or "[CRASH]" in line:
                             logger.warning(f"Critical Event detected in {agent_name}: {line.strip()}")
             except Exception as e:
