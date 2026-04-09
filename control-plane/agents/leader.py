@@ -1,14 +1,12 @@
 import sys
 import os
 import socket
-import time
 
 # Add current dir to path for utils
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from utils.paths import CLUSTER_YML, LEADER_TXT
-from utils.state import load_json
-from utils.guards import wrap_agent
+from utils.identity import get_local_identity, is_local_host, normalize_host_identifier
 from utils.logger import get_logger
 
 logger = get_logger("leader")
@@ -45,36 +43,38 @@ def elect_leader():
         return
 
     my_id = get_node_identity()
-    
+    my_identity = get_local_identity()
+
     # Priority order: first node in list is primary
     primary_node = control_nodes[0]
     primary_cfg = nodes[primary_node]
     primary_host = primary_cfg.get("host", "")
-    
+    primary_identity = normalize_host_identifier(primary_host)
+
     # Check if primary is reachable or is US
     is_primary_up = False
-    if "localhost" in primary_host or socket.gethostname() in primary_host:
+    if is_local_host(primary_identity):
         is_primary_up = True
+        leader_identity = my_identity
     else:
         # Ping check for remote primary
-        ip = primary_host.split("@")[-1].split(":")[0] if "@" in primary_host else primary_host
         try:
             # Simple socket connect to test reachability
-            socket.create_connection((ip, 22), timeout=1)
+            socket.create_connection((primary_identity, 22), timeout=1).close()
             is_primary_up = True
         except:
             is_primary_up = False
 
-    leader_name = primary_node if is_primary_up else socket.gethostname()
-    
+        leader_identity = primary_identity if is_primary_up else my_identity
+
     with open(LEADER_TXT, "w") as f:
-        f.write(leader_name)
-    
-    if leader_name == socket.gethostname() or "localhost" in leader_name:
+        f.write(leader_identity)
+
+    if is_local_host(leader_identity):
         logger.info(f"Identity: {my_id} | STATUS: [LEADER]")
         sys.exit(0) # Success code for run_agent to continue
     else:
-        logger.info(f"Identity: {my_id} | STATUS: [FOLLOWER] (Leader: {leader_name})")
+        logger.info(f"Identity: {my_id} | STATUS: [FOLLOWER] (Leader: {leader_identity})")
         sys.exit(1) # Error code for run_agent to sleep/skip
 
 if __name__ == "__main__":

@@ -34,7 +34,7 @@ The system now operates on a distributed state-machine model where intelligence 
 
 ### ✅ PHASE 1 — FOUNDATION (COMPLETE)
 
-* **[COMPLETED]** `init.sh`: Self-healing state scaffolding and default user provisioning (`admin/admin123`).
+* **[COMPLETED]** `init.sh`: Self-healing state scaffolding with interactive admin credential setup and managed password reset support.
 * **[COMPLETED]** `utils/paths.py`: Absolute path determinism (AUTO-ROOT pattern).
 * **[COMPLETED]** `utils/logger.py`: Standardized logging with 10MB/3-file rotation.
 

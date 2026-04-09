@@ -14,7 +14,7 @@ import platform
 import shutil
 import subprocess
 import sys
-import tempfile
+import uuid
 from pathlib import Path
 
 # --- ANSI Colors --------------------------------------------------------------
@@ -28,6 +28,12 @@ END = "\033[0m"
 
 WARNINGS: list[str] = []
 REPO_URL = "https://github.com/jakej985-rgb/M3tal-Media-Server.git"
+PRESERVED_MERGE_PATHS = (
+    Path(".env"),
+    Path("dashboard") / "users.json",
+    Path("control-plane") / "state",
+    Path("control-plane") / "config",
+)
 
 
 def log(msg: str) -> None:
@@ -108,32 +114,78 @@ def check_and_install_deps(os_type: str, auto_install: bool) -> None:
 
 # --- Repo Setup ---------------------------------------------------------------
 
+def remove_path(path: Path) -> None:
+    if path.is_dir():
+        shutil.rmtree(path)
+    else:
+        path.unlink()
+
+
+def create_staging_dir(parent_dir: Path, prefix: str) -> Path:
+    base_dir = parent_dir if parent_dir.exists() else Path.cwd()
+    while True:
+        candidate = base_dir / f".{prefix}-{uuid.uuid4().hex[:8]}"
+        try:
+            candidate.mkdir(parents=True, exist_ok=False)
+            return candidate
+        except FileExistsError:
+            continue
+
+
+def merge_install_tree(source_dir: Path, install_dir: Path) -> None:
+    preserve_stash = create_staging_dir(install_dir.parent, "m3tal-preserve")
+
+    try:
+        for relative_path in PRESERVED_MERGE_PATHS:
+            src = install_dir / relative_path
+            if not src.exists():
+                continue
+
+            stashed_path = preserve_stash / relative_path
+            stashed_path.parent.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(src), str(stashed_path))
+
+        for item in source_dir.iterdir():
+            dest = install_dir / item.name
+            if dest.exists():
+                remove_path(dest)
+
+            if item.is_dir():
+                shutil.copytree(item, dest)
+            else:
+                shutil.copy2(item, dest)
+
+        for relative_path in PRESERVED_MERGE_PATHS:
+            stashed_path = preserve_stash / relative_path
+            if not stashed_path.exists():
+                continue
+
+            dest = install_dir / relative_path
+            if dest.exists():
+                remove_path(dest)
+
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(stashed_path), str(dest))
+    finally:
+        shutil.rmtree(preserve_stash, ignore_errors=True)
+
+
 def setup_repo(install_dir: Path) -> bool:
     """Clone the repo into a temp dir, then move/merge into install_dir."""
     log(f"\n{BOLD}=== Repository Setup ==={END}")
 
     if install_dir.exists():
         log(f"\nInstall directory exists: {install_dir}")
-        log("  1) Merge (safe — preserves .env and state)")
+        log("  1) Merge (safe — preserves .env, users, state, and config)")
         log("  2) Replace (fresh install)")
         log("  3) Cancel")
         action = ask("Select", "1")
 
         if action == "1":
             log("[MERGE] Updating install...")
-            tmp_dir = Path(tempfile.mkdtemp(prefix="m3tal-"))
+            tmp_dir = create_staging_dir(install_dir.parent, "m3tal-clone")
             subprocess.run(["git", "clone", REPO_URL, str(tmp_dir)], check=True)
-            # Copy new files, skip .env and state
-            for item in tmp_dir.iterdir():
-                dest = install_dir / item.name
-                if item.name in (".env", "control-plane"):
-                    continue  # Preserve user config and state
-                if item.is_dir():
-                    if dest.exists():
-                        shutil.rmtree(dest)
-                    shutil.copytree(item, dest)
-                else:
-                    shutil.copy2(item, dest)
+            merge_install_tree(tmp_dir, install_dir)
             shutil.rmtree(tmp_dir)
             return True
 

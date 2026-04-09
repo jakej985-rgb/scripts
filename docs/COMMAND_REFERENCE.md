@@ -13,6 +13,7 @@ Run these from the repository root directory.
 | **Install/Setup** | `./install.sh` |
 | **Start Control Plane** | `bash control-plane/run.sh` |
 | **Reset State Machine** | `bash control-plane/init.sh` |
+| **Reset Admin Password** | `python scripts/manage_users.py --reset-admin` |
 | **Backup Everything** | `bash scripts/backup.sh` |
 | **Restore from Backup** | `bash scripts/restore.sh` |
 

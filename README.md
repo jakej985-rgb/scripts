@@ -47,9 +47,9 @@ python3 install.py
 
 Open your browser to `http://YOUR_SERVER_IP:8080`.
 
-* **Default Username**: `admin`
-* **Default Password**: `admin123`
-* *⚠️ Please change your password immediately in the dashboard!*
+* **Username**: `admin`
+* **Password**: the admin password you chose during the interactive setup
+* *⚠️ If you need to rotate or recover the admin password later, run `python scripts/manage_users.py --reset-admin`.*
 
 ---
 

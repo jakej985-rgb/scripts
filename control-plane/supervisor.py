@@ -10,10 +10,10 @@ Launches all autonomous agents as child processes with:
   - Per-agent log routing
 """
 
-import os
 import signal
 import subprocess
 import sys
+import threading
 import time
 from pathlib import Path
 
@@ -48,6 +48,18 @@ AGENTS = [
 # --- Globals ------------------------------------------------------------------
 _shutdown = False
 _children: list[subprocess.Popen] = []
+_children_lock = threading.Lock()
+
+
+def _register_child(proc: subprocess.Popen) -> None:
+    with _children_lock:
+        _children.append(proc)
+
+
+def _unregister_child(proc: subprocess.Popen) -> None:
+    with _children_lock:
+        if proc in _children:
+            _children.remove(proc)
 
 
 def _handle_signal(signum, _frame):
@@ -55,7 +67,9 @@ def _handle_signal(signum, _frame):
     ts = time.strftime("%H:%M:%S")
     print(f"[{ts}] Supervisor received signal {signum}. Shutting down...")
     _shutdown = True
-    for proc in _children:
+    with _children_lock:
+        children = list(_children)
+    for proc in children:
         try:
             proc.terminate()
         except OSError:
@@ -104,14 +118,23 @@ def run_agent(name: str, script: str) -> None:
 
         try:
             with open(log_path, "a") as log_file:
-                proc = subprocess.run(
+                proc = subprocess.Popen(
                     [PYTHON, str(AGENTS_DIR / script)],
                     stdout=log_file,
                     stderr=subprocess.STDOUT,
-                    timeout=300,  # 5-minute safety timeout per cycle
                 )
-                exit_code = proc.returncode
+                _register_child(proc)
+                try:
+                    exit_code = proc.wait(timeout=300)  # 5-minute safety timeout per cycle
+                finally:
+                    _unregister_child(proc)
         except subprocess.TimeoutExpired:
+            try:
+                proc.terminate()
+                proc.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                proc.wait(timeout=5)
             exit_code = 1
             ts2 = time.strftime("%H:%M:%S")
             print(f"[{ts2}] TIMEOUT: {name}. Forcing restart...")
@@ -137,8 +160,6 @@ def run_agent(name: str, script: str) -> None:
 # --- Main Entry ---------------------------------------------------------------
 
 def main() -> None:
-    global _children
-
     # 0. Docker liveness
     if not wait_for_docker():
         sys.exit(1)
@@ -153,8 +174,6 @@ def main() -> None:
     print(f"[{ts}] Supervisor launching agents...")
 
     # 2. Launch leader first, wait for election to settle
-    import threading
-
     threads: list[threading.Thread] = []
 
     for name, script, is_leader in AGENTS:

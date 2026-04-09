@@ -24,17 +24,41 @@ def find_latest_backup(backup_dir: Path) -> Path | None:
     return backups[0] if backups else None
 
 
+def get_safe_members(tar: tarfile.TarFile, target_dir: Path) -> list[tarfile.TarInfo]:
+    """Validate archive members before extraction."""
+    safe_members: list[tarfile.TarInfo] = []
+    target_root = target_dir.resolve()
+
+    for member in tar.getmembers():
+        member_path = Path(member.name)
+        if member_path.is_absolute():
+            raise ValueError(f"Refusing to restore absolute path: {member.name}")
+
+        if any(part == ".." for part in member_path.parts):
+            raise ValueError(f"Refusing to restore path traversal member: {member.name}")
+
+        if member.issym() or member.islnk():
+            raise ValueError(f"Refusing to restore link member: {member.name}")
+
+        if member.ischr() or member.isblk() or member.isfifo() or member.isdev():
+            raise ValueError(f"Refusing to restore special file: {member.name}")
+
+        resolved_member = (target_root / member_path).resolve(strict=False)
+        if os.path.commonpath([str(target_root), str(resolved_member)]) != str(target_root):
+            raise ValueError(f"Refusing to restore outside target directory: {member.name}")
+
+        safe_members.append(member)
+
+    return safe_members
+
+
 def restore(archive_path: Path, target_dir: Path) -> bool:
     """Extract a backup archive into the target directory."""
     print(f"[RESTORE] Extracting {archive_path.name}...")
     try:
         with tarfile.open(archive_path, "r:gz") as tar:
-            # Path traversal protection (Audit fix 1.4)
-            try:
-                tar.extractall(path=target_dir, filter='data')
-            except TypeError:
-                # Python < 3.12 fallback
-                tar.extractall(path=target_dir)
+            safe_members = get_safe_members(tar, target_dir)
+            tar.extractall(path=target_dir, members=safe_members)
         return True
     except Exception as e:
         print(f"[ERROR] Restore failed: {e}")

@@ -14,6 +14,7 @@ services:
     restart: unless-stopped
     environment:
       - TZ=America/Denver
+      - DASHBOARD_SECRET=${DASHBOARD_SECRET}
       - STATE_DIR=/docker/state
       - USERS_FILE=/app/users.json
     labels:

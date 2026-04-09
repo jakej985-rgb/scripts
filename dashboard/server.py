@@ -1,11 +1,17 @@
 import os
 import json
 import secrets
+from pathlib import Path
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, join_room
 from functools import wraps
-import bcrypt
-import eventlet
+
+from auth import load_users, resolve_users_path, verify_password
+
+try:
+    import eventlet  # type: ignore
+except Exception:
+    eventlet = None
 
 # AUTO-ROOT pattern for path safety
 def get_repo_root():
@@ -17,8 +23,10 @@ def get_repo_root():
         return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 REPO_ROOT = get_repo_root()
-STATE_DIR = os.path.join(REPO_ROOT, "control-plane", "state")
-USERS_JSON = os.path.join(os.path.dirname(os.path.abspath(__file__)), "users.json")
+STATE_DIR = os.getenv("STATE_DIR") or os.path.join(REPO_ROOT, "control-plane", "state")
+USERS_JSON = os.fspath(resolve_users_path(Path(__file__).resolve().parent))
+ASYNC_MODE = "eventlet" if eventlet is not None else "threading"
+AUTHENTICATED_ROOM = "authenticated-clients"
 
 # Core state paths
 HEALTH_JSON = os.path.join(STATE_DIR, "health.json")
@@ -31,8 +39,8 @@ REGISTRY_JSON = os.path.join(STATE_DIR, "registry.json")
 METRICS_HISTORY_CSV = os.path.join(STATE_DIR, "metrics-history.csv")
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv("DASHBOARD_SECRET", secrets.token_hex(32))
-socketio = SocketIO(app, async_mode='eventlet', cors_allowed_origins="*")
+app.config['SECRET_KEY'] = os.getenv("DASHBOARD_SECRET") or secrets.token_hex(32)
+socketio = SocketIO(app, async_mode=ASYNC_MODE)
 
 # Simple Role-Based Access Control (Batch 3 T1)
 def login_required(role=None):
@@ -46,15 +54,6 @@ def login_required(role=None):
             return f(*args, **kwargs)
         return decorated_function
     return decorator
-
-def load_users():
-    if not os.path.exists(USERS_JSON):
-        return []
-    try:
-        with open(USERS_JSON, 'r') as f:
-            return json.load(f)
-    except:
-        return []
 
 def load_json_safe(path, default=None):
     if default is None: default = {}
@@ -81,10 +80,10 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
         
-        users = load_users()
+        users = load_users(users_path=USERS_JSON)
         user = next((u for u in users if u['username'] == username), None)
         
-        if user and bcrypt.checkpw(password.encode('utf-8'), user['token_hash'].encode('utf-8')):
+        if user and password and verify_password(password, user['token_hash']):
             session['username'] = username
             session['role'] = user.get('role', 'viewer')
             return redirect(url_for('index'))
@@ -166,19 +165,27 @@ def get_metrics_history():
 
 @socketio.on('connect')
 def handle_connect():
+    if 'username' not in session:
+        return False
+
+    join_room(AUTHENTICATED_ROOM)
     emit('status', {'msg': 'Connected to M3TAL Control Plane'})
+
+def emit_metrics_update():
+    metrics = load_json_safe(METRICS_JSON)
+    socketio.emit('metrics_update', metrics, to=AUTHENTICATED_ROOM)
 
 def background_metrics_stream():
     """Push real-time metric updates to all connected clients."""
     while True:
         socketio.sleep(2)
-        metrics = load_json_safe(METRICS_JSON)
-        socketio.emit('metrics_update', metrics)
+        emit_metrics_update()
 
-# Start background stream in eventlet
-eventlet.spawn(background_metrics_stream)
+
+def start_background_tasks():
+    socketio.start_background_task(background_metrics_stream)
 
 if __name__ == '__main__':
     port = int(os.getenv("DASHBOARD_PORT", 8080))
-    # Using eventlet for WebSocket support
+    start_background_tasks()
     socketio.run(app, host='0.0.0.0', port=port)

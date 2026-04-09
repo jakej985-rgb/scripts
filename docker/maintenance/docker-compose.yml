@@ -47,3 +47,6 @@ services:
       - "8888:8080"
     environment:
       - TZ=America/Denver
+      - DASHBOARD_SECRET=${DASHBOARD_SECRET}
+      - STATE_DIR=/docker/control-plane/state
+      - USERS_FILE=/docker/dashboard/users.json

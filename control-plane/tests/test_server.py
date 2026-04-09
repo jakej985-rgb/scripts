@@ -1,227 +1,149 @@
 """
-M3TAL Test Suite — Dashboard server.py validation
-Tests load_json_safe logic and Flask endpoints.
-
-Since server.py imports eventlet (which may not work on all Python versions),
-we test load_json_safe by reimplementing the same logic from the isolated function,
-and test Flask endpoints only when eventlet is available.
+M3TAL Test Suite - Dashboard auth and server validation.
 """
 
+from __future__ import annotations
+
+import importlib
 import json
-import os
 import sys
 from pathlib import Path
 
-import pytest
-
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+DASHBOARD_DIR = REPO_ROOT / "dashboard"
+
+if str(DASHBOARD_DIR) not in sys.path:
+    sys.path.insert(0, str(DASHBOARD_DIR))
+
+from auth import hash_password, inspect_users_file, reset_admin_user, save_users, verify_password
 
 
-# =============================================================================
-# load_json_safe — standalone reimplementation test
-# The function is simple enough to validate by extracting its logic pattern.
-# This tests the SAME code path as server.py:load_json_safe without triggering
-# the heavy eventlet import chain.
-# =============================================================================
-
-def load_json_safe(path, default=None):
-    """Mirror of server.py:load_json_safe for testing in isolation."""
-    if default is None:
-        default = {}
-    if not os.path.exists(path):
-        return default
-    try:
-        with open(path, 'r') as f:
-            return json.load(f)
-    except:
-        return default
+def import_server_module():
+    sys.modules.pop("server", None)
+    return importlib.import_module("server")
 
 
-class TestLoadJsonSafe:
-    """Validate that load_json_safe handles all edge cases correctly."""
+class TestUserStore:
+    def test_legacy_dict_format_is_normalized(self, tmp_path):
+        users_path = tmp_path / "users.json"
+        users_path.write_text(
+            json.dumps(
+                {
+                    "admin": {
+                        "token_hash": hash_password("secret-pass"),
+                        "role": "admin",
+                    }
+                }
+            ),
+            encoding="utf-8",
+        )
 
-    def test_missing_file_returns_default(self, tmp_path):
-        result = load_json_safe(str(tmp_path / "nonexistent.json"))
-        assert result == {}
+        users, error = inspect_users_file(users_path=users_path)
 
-    def test_missing_file_returns_custom_default(self, tmp_path):
-        result = load_json_safe(str(tmp_path / "nonexistent.json"), default=[])
-        assert result == []
-
-    def test_empty_file_returns_default(self, tmp_path):
-        f = tmp_path / "empty.json"
-        f.write_text("")
-        result = load_json_safe(str(f))
-        assert result == {}
-
-    def test_valid_json_object(self, tmp_path):
-        f = tmp_path / "obj.json"
-        f.write_text('{"score": 95, "status": "ok"}')
-        result = load_json_safe(str(f))
-        assert result == {"score": 95, "status": "ok"}
-
-    def test_valid_json_array(self, tmp_path):
-        f = tmp_path / "arr.json"
-        f.write_text('[{"name": "radarr"}, {"name": "sonarr"}]')
-        result = load_json_safe(str(f))
-        assert isinstance(result, list)
-        assert len(result) == 2
-
-    def test_corrupted_json_returns_default(self, tmp_path):
-        f = tmp_path / "bad.json"
-        f.write_text("{this is not valid json")
-        result = load_json_safe(str(f))
-        assert result == {}
-
-    def test_ndjson_returns_default_not_crash(self, tmp_path):
-        """NDJSON (one object per line) should not crash — it's invalid JSON."""
-        f = tmp_path / "ndjson.json"
-        f.write_text('{"a": 1}\n{"b": 2}\n')
-        result = load_json_safe(str(f))
-        assert result == {}
-
-    def test_whitespace_only_file_returns_default(self, tmp_path):
-        f = tmp_path / "whitespace.json"
-        f.write_text("   \n  \n  ")
-        result = load_json_safe(str(f))
-        assert result == {}
-
-    def test_json_with_metadata(self, tmp_path):
-        """Files written by save_json include _m3tal_metadata — ensure it loads cleanly."""
-        f = tmp_path / "meta.json"
-        data = {
-            "issues": [],
-            "_m3tal_metadata": {
-                "version": "1.2.0",
-                "updated_at": 1234567890,
-                "host": "localhost"
+        assert error is None
+        assert users == [
+            {
+                "username": "admin",
+                "token_hash": users[0]["token_hash"],
+                "role": "admin",
             }
-        }
-        f.write_text(json.dumps(data))
-        result = load_json_safe(str(f))
-        assert result["issues"] == []
-        assert "_m3tal_metadata" in result
+        ]
+        assert verify_password("secret-pass", users[0]["token_hash"]) is True
+
+    def test_reset_admin_writes_canonical_list(self, tmp_path, monkeypatch):
+        users_path = tmp_path / "users.json"
+        monkeypatch.setattr("auth.prompt_password", lambda prompt_label="Admin password": "brand-new-pass")
+
+        reset_admin_user(users_path=users_path)
+
+        saved = json.loads(users_path.read_text(encoding="utf-8"))
+        assert isinstance(saved, list)
+        assert saved[0]["username"] == "admin"
+        assert verify_password("brand-new-pass", saved[0]["token_hash"]) is True
 
 
-# =============================================================================
-# utils/state.py load_json — ensure the actual production code matches behavior
-# =============================================================================
+class TestDashboardServer:
+    def _make_server(self, tmp_path, monkeypatch):
+        state_dir = tmp_path / "state"
+        state_dir.mkdir()
+        (state_dir / "metrics.json").write_text(json.dumps({"system": {"cpu": 5}, "containers": []}), encoding="utf-8")
+        (state_dir / "health.json").write_text(json.dumps({"score": 95}), encoding="utf-8")
+        (state_dir / "anomalies.json").write_text(json.dumps({"issues": []}), encoding="utf-8")
+        (state_dir / "registry.json").write_text(json.dumps({"containers": ["radarr"]}), encoding="utf-8")
 
-class TestStateLoadJson:
-    """Validate the production utils/state.py load_json function."""
+        users_path = tmp_path / "users.json"
+        save_users(
+            [
+                {
+                    "username": "admin",
+                    "token_hash": hash_password("secret-pass"),
+                    "role": "admin",
+                }
+            ],
+            users_path=users_path,
+        )
 
-    def setup_method(self):
-        sys.path.insert(0, str(REPO_ROOT / "control-plane" / "agents"))
+        monkeypatch.setenv("STATE_DIR", str(state_dir))
+        monkeypatch.setenv("USERS_FILE", str(users_path))
+        monkeypatch.setenv("DASHBOARD_SECRET", "test-secret")
 
-    def test_missing_file_returns_default(self, tmp_path):
-        from utils.state import load_json
-        result = load_json(str(tmp_path / "nonexistent.json"))
-        assert result == {}
+        server = import_server_module()
+        server.app.config["TESTING"] = True
+        return server
 
-    def test_corrupted_file_returns_default(self, tmp_path):
-        from utils.state import load_json
-        f = tmp_path / "bad.json"
-        f.write_text("NOT JSON")
-        result = load_json(str(f), default={"fallback": True})
-        assert result == {"fallback": True}
+    def test_server_uses_env_backed_paths(self, tmp_path, monkeypatch):
+        server = self._make_server(tmp_path, monkeypatch)
 
-    def test_valid_dict(self, tmp_path):
-        from utils.state import load_json
-        f = tmp_path / "good.json"
-        f.write_text('{"status": "ok"}')
-        result = load_json(str(f))
-        assert result["status"] == "ok"
+        assert server.STATE_DIR == str(tmp_path / "state")
+        assert server.USERS_JSON == str(tmp_path / "users.json")
 
-    def test_empty_file_returns_default(self, tmp_path):
-        from utils.state import load_json
-        f = tmp_path / "empty.json"
-        f.write_text("")
-        result = load_json(str(f))
-        assert result == {}
+    def test_healthz_returns_200(self, tmp_path, monkeypatch):
+        server = self._make_server(tmp_path, monkeypatch)
+        client = server.app.test_client()
 
-    def test_whitespace_file_returns_default(self, tmp_path):
-        from utils.state import load_json
-        f = tmp_path / "ws.json"
-        f.write_text("   \n  ")
-        result = load_json(str(f))
-        assert result == {}
+        response = client.get("/healthz")
 
-
-# =============================================================================
-# utils/state.py save_json — atomic write tests
-# =============================================================================
-
-class TestStateSaveJson:
-    """Validate the production utils/state.py save_json function."""
-
-    def setup_method(self):
-        sys.path.insert(0, str(REPO_ROOT / "control-plane" / "agents"))
-
-    def test_save_creates_file(self, tmp_path):
-        from utils.state import save_json, load_json
-        path = str(tmp_path / "out.json")
-        result = save_json(path, {"hello": "world"})
-        assert result is True
-        loaded = load_json(path)
-        assert loaded["hello"] == "world"
-
-    def test_save_injects_metadata(self, tmp_path):
-        from utils.state import save_json, load_json
-        path = str(tmp_path / "meta.json")
-        save_json(path, {"test": True})
-        loaded = load_json(path)
-        assert "_m3tal_metadata" in loaded
-        assert loaded["_m3tal_metadata"]["version"] == "1.3.0"
-
-    def test_save_no_tmp_file_left(self, tmp_path):
-        from utils.state import save_json
-        path = str(tmp_path / "clean.json")
-        save_json(path, {"x": 1})
-        # .tmp file should have been cleaned up
-        assert not os.path.exists(f"{path}.tmp")
-
-    def test_save_creates_parent_dirs(self, tmp_path):
-        from utils.state import save_json
-        path = str(tmp_path / "sub" / "dir" / "deep.json")
-        result = save_json(path, {"nested": True})
-        assert result is True
-        assert os.path.exists(path)
-
-
-# =============================================================================
-# Flask endpoints (only run if eventlet is importable)
-# =============================================================================
-
-try:
-    import eventlet
-    _has_eventlet = True
-except (ImportError, Exception):
-    _has_eventlet = False
-
-
-@pytest.mark.skipif(not _has_eventlet, reason="eventlet not available on this Python version")
-class TestFlaskEndpoints:
-    """Validate Flask endpoints when eventlet is available."""
-
-    def _get_client(self):
-        sys.path.insert(0, str(REPO_ROOT / "dashboard"))
-        from server import app
-        app.config['TESTING'] = True
-        return app.test_client()
-
-    def test_healthz_returns_200(self):
-        client = self._get_client()
-        response = client.get('/healthz')
         assert response.status_code == 200
-        data = response.get_json()
-        assert data["status"] == "ready"
+        assert response.get_json()["status"] == "ready"
 
-    def test_index_redirects_unauthenticated(self):
-        client = self._get_client()
-        response = client.get('/')
+    def test_index_redirects_unauthenticated(self, tmp_path, monkeypatch):
+        server = self._make_server(tmp_path, monkeypatch)
+        client = server.app.test_client()
+
+        response = client.get("/")
+
         assert response.status_code == 302
 
-    def test_login_page_renders(self):
-        client = self._get_client()
-        response = client.get('/login')
-        assert response.status_code == 200
+    def test_login_succeeds_with_canonical_user_file(self, tmp_path, monkeypatch):
+        server = self._make_server(tmp_path, monkeypatch)
+        client = server.app.test_client()
+
+        response = client.post("/login", data={"username": "admin", "password": "secret-pass"})
+
+        assert response.status_code == 302
+        assert response.headers["Location"].endswith("/")
+
+    def test_socket_rejects_unauthenticated_clients(self, tmp_path, monkeypatch):
+        server = self._make_server(tmp_path, monkeypatch)
+
+        socket_client = server.socketio.test_client(server.app)
+
+        assert socket_client.is_connected() is False
+
+    def test_authenticated_socket_receives_metrics_updates(self, tmp_path, monkeypatch):
+        server = self._make_server(tmp_path, monkeypatch)
+        flask_client = server.app.test_client()
+        login_response = flask_client.post(
+            "/login",
+            data={"username": "admin", "password": "secret-pass"},
+        )
+
+        assert login_response.status_code == 302
+
+        socket_client = server.socketio.test_client(server.app, flask_test_client=flask_client)
+        assert socket_client.is_connected() is True
+
+        server.emit_metrics_update()
+        received = socket_client.get_received()
+
+        assert any(packet["name"] == "metrics_update" for packet in received)

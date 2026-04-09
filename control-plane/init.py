@@ -24,6 +24,11 @@ TMP_DIR = STATE_DIR / "tmp"
 AGENTS_DIR = BASE_DIR / "control-plane" / "agents"
 DASHBOARD_DIR = BASE_DIR / "dashboard"
 
+if str(DASHBOARD_DIR) not in sys.path:
+    sys.path.insert(0, str(DASHBOARD_DIR))
+
+from auth import inspect_users_file, reset_admin_user, resolve_users_path
+
 # --- Directory tree -----------------------------------------------------------
 
 REQUIRED_DIRS = [
@@ -50,28 +55,22 @@ REQUIRED_LOGS = [
     "supervisor.log",
 ]
 
-# --- State files (JSON) — reset to [] if missing or corrupted ----------------
+# --- State files (JSON) ------------------------------------------------------
 
-STATE_FILES = [
-    "metrics.json",
-    "normalized_metrics.json",
-    "anomalies.json",
-    "decisions.json",
-    "registry.json",
-    "health.json",
-    "chaos_events.json",
-    "cooldowns.json",
-]
-
-# --- Default admin user scaffold ---------------------------------------------
-
-DEFAULT_USERS = [
-    {
-        "username": "admin",
-        "token_hash": "$2b$12$6PuxP6N7ZpG5B9W7/p3E.e3u0Xm6x6u1vXm6x6u1vXm6x6u1vXm6x6u1v",
-        "role": "admin",
-    }
-]
+STATE_FILE_DEFAULTS = {
+    "metrics.json": {"system": {}, "containers": [], "timestamp": 0, "cpu": 0},
+    "normalized_metrics.json": {},
+    "anomalies.json": {"issues": []},
+    "decisions.json": {"actions": []},
+    "registry.json": {"containers": []},
+    "health.json": {},
+    "health_report.json": {},
+    "chaos_events.json": [],
+    "cooldowns.json": {},
+    "scaling_actions.json": {"actions": []},
+    "scaling_cooldowns.json": {},
+    "last_prune.json": {"ts": 0},
+}
 
 
 def log(msg: str) -> None:
@@ -95,21 +94,22 @@ def scaffold_logs() -> None:
             path.touch()
 
 
+def write_state_default(path: Path, default_data: object) -> None:
+    path.write_text(f"{json.dumps(default_data, indent=2)}\n", encoding="utf-8")
+
+
 def scaffold_state_files() -> None:
-    """Ensure state JSON files exist and are valid JSON.
-    If missing → create with [].
-    If corrupted → reset to [].
-    """
-    for name in STATE_FILES:
+    """Ensure state JSON files exist and are valid JSON with agent-safe defaults."""
+    for name, default_data in STATE_FILE_DEFAULTS.items():
         path = STATE_DIR / name
         if not path.exists():
-            path.write_text("[]")
+            write_state_default(path, default_data)
             log(f"Recreated {name}")
         else:
             try:
-                json.loads(path.read_text())
+                json.loads(path.read_text(encoding="utf-8"))
             except (json.JSONDecodeError, ValueError):
-                path.write_text("[]")
+                write_state_default(path, default_data)
                 log(f"Reset corrupted {name}")
 
     # leader.txt — always ensure it exists
@@ -119,13 +119,27 @@ def scaffold_state_files() -> None:
         log("Created leader.txt")
 
 
-def scaffold_users() -> None:
-    """Create default dashboard users.json if it doesn't exist."""
-    users_path = DASHBOARD_DIR / "users.json"
-    if not users_path.exists():
-        log("Scaffolding default users.json (admin / admin123)...")
-        DASHBOARD_DIR.mkdir(parents=True, exist_ok=True)
-        users_path.write_text(json.dumps(DEFAULT_USERS, indent=2))
+def scaffold_users(interactive: bool | None = None) -> None:
+    """Ensure dashboard credentials exist without recreating insecure defaults."""
+    users_path = resolve_users_path(DASHBOARD_DIR)
+    _, error = inspect_users_file(users_path=users_path)
+    if error is None:
+        return
+
+    if interactive is None:
+        interactive = sys.stdin.isatty()
+
+    DASHBOARD_DIR.mkdir(parents=True, exist_ok=True)
+
+    if not interactive:
+        raise RuntimeError(
+            f"Dashboard admin is not configured ({error}). "
+            "Run `python scripts/manage_users.py --reset-admin` from an interactive terminal."
+        )
+
+    log(f"Dashboard users file is {error}. Starting interactive admin setup...")
+    reset_admin_user(users_path=users_path)
+    log(f"Created {users_path.name} with a newly prompted admin password.")
 
 
 def harden_permissions() -> None:
@@ -142,13 +156,13 @@ def harden_permissions() -> None:
         pass  # Best-effort; non-fatal
 
 
-def run(dry_run: bool = False) -> None:
+def run(dry_run: bool = False, interactive: bool | None = None) -> None:
     """Execute the full init sequence."""
     log("Running self-healing setup...")
     scaffold_dirs()
     scaffold_logs()
     scaffold_state_files()
-    scaffold_users()
+    scaffold_users(interactive=interactive)
     if not dry_run:
         harden_permissions()
     log("Done.")

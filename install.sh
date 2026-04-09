@@ -136,7 +136,12 @@ if [ -d "$INSTALL_DIR" ]; then
   case $ACTION in
     1)
       log "[MERGE] Updating install"
-      rsync -a --exclude '.env' --exclude 'control-plane/state' "$TMP_DIR"/ "$INSTALL_DIR"/
+      rsync -a \
+        --exclude '.env' \
+        --exclude 'dashboard/users.json' \
+        --exclude 'control-plane/state' \
+        --exclude 'control-plane/config' \
+        "$TMP_DIR"/ "$INSTALL_DIR"/
       ;;
     2)
       BACKUP_DIR="$INSTALL_DIR-backup-$(date +%s)"

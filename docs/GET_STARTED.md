@@ -58,12 +58,12 @@ Once installed, M3TAL provides a web interface to see what's happening.
 
 1. **Open your browser** and go to `http://YOUR_SERVER_IP:8080`.
 
-2. **Log in** with the default credentials:
+2. **Log in** with the admin credentials you created during setup:
 
    * **Username**: `admin`
-   * **Password**: `admin123`
+   * **Password**: the admin password you chose during the interactive setup
 
-3. **Change your password**: Go to the settings/profile section (or edit `dashboard/users.json`) to secure your account.
+3. **Recover or rotate your password if needed**: Run `python scripts/manage_users.py --reset-admin` from an interactive terminal.
 
 ---
 

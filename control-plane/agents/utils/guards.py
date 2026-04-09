@@ -1,7 +1,6 @@
 import sys
 import os
 import time
-import socket
 import signal
 from typing import Callable, Any
 
@@ -9,7 +8,8 @@ from typing import Callable, Any
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from utils.paths import STATE_DIR, LEADER_TXT
-from utils.state import load_json, save_json
+from utils.identity import is_local_host
+from utils.state import save_json
 from utils.logger import get_logger
 
 logger = get_logger("guards")
@@ -34,8 +34,7 @@ def is_leader():
     try:
         with open(LEADER_TXT, 'r') as f:
             leader_name = f.read().strip()
-        my_name = socket.gethostname()
-        return leader_name == my_name or leader_name == "localhost"
+        return is_local_host(leader_name)
     except:
         return True
 
