@@ -36,8 +36,8 @@ services:
       - PGID=1000
       - WEBUI_PORT=8080
     volumes:
-      - /docker/configs/qbittorrent:/config
-      - /mnt:/data
+      - ${CONFIG_DIR:-/docker/configs}/qbittorrent:/config
+      - ${DATA_DIR:-/mnt}:/data
     restart: unless-stopped
 
   radarr:
@@ -58,8 +58,8 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - /docker/configs/radarr:/config
-      - /mnt:/data
+      - ${CONFIG_DIR:-/docker/configs}/radarr:/config
+      - ${DATA_DIR:-/mnt}:/data
     restart: unless-stopped
 
   sonarr:
@@ -80,8 +80,8 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - /docker/configs/sonarr:/config
-      - /mnt:/data
+      - ${CONFIG_DIR:-/docker/configs}/sonarr:/config
+      - ${DATA_DIR:-/mnt}:/data
 
     restart: unless-stopped
 
@@ -94,8 +94,8 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - /docker/configs/bazarr:/config
-      - /mnt:/data
+      - ${CONFIG_DIR:-/docker/configs}/bazarr:/config
+      - ${DATA_DIR:-/mnt}:/data
     restart: unless-stopped
 
   komga:
@@ -107,8 +107,8 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - /docker/configs/komga:/config
-      - /mnt:/data
+      - ${CONFIG_DIR:-/docker/configs}/komga:/config
+      - ${DATA_DIR:-/mnt}:/data
     restart: unless-stopped
 
   jellyseerr:
@@ -120,16 +120,16 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - /docker/configs/jellyseerr:/app/config
+      - ${CONFIG_DIR:-/docker/configs}/jellyseerr:/app/config
     restart: unless-stopped
 
   homepage:
     image: ghcr.io/gethomepage/homepage:v0.8
     container_name: homepage
     volumes:
-      - /docker/configs/homepage:/app/config
-      - /mnt/disk1:/disk1
-      - /mnt/downloads:/downloads
+      - ${CONFIG_DIR:-/docker/configs}/homepage:/app/config
+      - ${DATA_DIR:-/mnt}/disk1:/disk1
+      - ${DATA_DIR:-/mnt}/downloads:/downloads
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     environment:
       - HOMEPAGE_ALLOWED_HOSTS=*
@@ -139,30 +139,30 @@ services:
     image: ghcr.io/autobrr/autobrr:v1.39
     container_name: autobrr
     volumes:
-      - /docker/configs/autobrr:/config
+      - ${CONFIG_DIR:-/docker/configs}/autobrr:/config
     restart: unless-stopped
 
   recyclarr:
     image: ghcr.io/recyclarr/recyclarr
     container_name: recyclarr
     volumes:
-      - /docker/configs/recyclarr:/config
+      - ${CONFIG_DIR:-/docker/configs}/recyclarr:/config
     restart: unless-stopped
 
   maintainerr:
     image: ghcr.io/maintainerr/maintainerr:v2.0
     container_name: maintainerr
     volumes:
-      - /docker/configs/maintainerr:/opt/data
+      - ${CONFIG_DIR:-/docker/configs}/maintainerr:/opt/data
     restart: unless-stopped
 
   tdarr:
     image: ghcr.io/haveagitgat/tdarr:2.0
     container_name: tdarr
     volumes:
-      - /docker/configs/tdarr:/app/config
-      - /docker/configs/tdarr:/app/logs
-      - /mnt/disk1:/data
+      - ${CONFIG_DIR:-/docker/configs}/tdarr:/app/config
+      - ${CONFIG_DIR:-/docker/configs}/tdarr:/app/logs
+      - ${DATA_DIR:-/mnt}/disk1:/data
     restart: unless-stopped
 
   glances:
@@ -193,7 +193,7 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - /docker/configs/prowlarr:/config
+      - ${CONFIG_DIR:-/docker/configs}/prowlarr:/config
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.local`)"

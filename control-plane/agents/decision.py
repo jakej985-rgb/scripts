@@ -53,7 +53,7 @@ def decide():
     save_json(COOLDOWNS_JSON, new_cooldowns)
     
     if actions:
-        logger.info(f"Decidied on {len(actions)} actions.")
+        logger.info(f"Decided on {len(actions)} actions.")
 
 if __name__ == "__main__":
     wrap_agent("decision", decide)
