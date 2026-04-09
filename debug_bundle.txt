@@ -1,0 +1,240 @@
+M3TAL SYSTEM DEBUG BUNDLE
+Generated: 2026-04-09 15:41:05
+Repo Root: C:\Users\jakej\Documents\GitHub\M3tal-Media-Server
+================================================================================
+
+--- CORE STATE ---
+[LEADER]: none
+
+================================================================================
+
+--- ATTACHMENT: anomaly.log ---
+ (Showing last 76 lines)
+
+2026-04-09 12:39:31 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:39:31 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:39:31 [ERROR] anomaly: Invalid metrics_data type: <class 'list'>
+2026-04-09 12:39:31 [ERROR] anomaly: Invalid metrics_data type: <class 'list'>
+2026-04-09 12:39:31 [WARNING] anomaly: System health degraded: WARNING (Score: 65%)
+2026-04-09 12:39:31 [WARNING] anomaly: System health degraded: WARNING (Score: 65%)
+2026-04-09 12:39:31 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 12:39:31 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 12:39:36 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:39:36 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:39:36 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
+2026-04-09 12:39:36 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
+2026-04-09 12:39:36 [INFO] anomaly: Identified 1 anomalies.
+2026-04-09 12:39:36 [INFO] anomaly: Identified 1 anomalies.
+2026-04-09 12:39:36 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 12:39:36 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 12:39:41 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:39:41 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:39:41 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-09 12:39:41 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-09 12:39:42 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 12:39:42 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 12:39:47 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:39:47 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:39:47 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-09 12:39:47 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-09 12:39:47 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 12:39:47 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 12:39:52 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:39:52 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:39:52 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-09 12:39:52 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-09 12:39:52 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 12:39:52 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 12:39:57 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:39:57 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:39:57 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-09 12:39:57 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-09 12:39:57 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 12:39:57 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 12:40:02 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:40:02 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:40:02 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-09 12:40:02 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-09 12:40:02 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 12:40:02 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 12:40:07 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:40:07 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:40:07 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-09 12:40:07 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-09 12:40:07 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 12:40:07 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 12:40:12 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:40:12 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:40:12 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-09 12:40:12 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-09 12:40:13 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 12:40:13 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 12:40:18 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:40:18 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:40:18 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-09 12:40:18 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-09 12:40:18 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 12:40:18 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 12:40:23 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:40:23 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:40:23 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-09 12:40:23 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-09 12:40:23 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 12:40:23 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 12:40:28 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:40:28 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 12:40:28 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-09 12:40:28 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-09 12:40:28 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 12:40:28 [INFO] anomaly: --- Finished anomaly Successfully ---
+
+----------------------------------------
+
+--- ATTACHMENT: chaos.log ---
+ (Showing last 2 lines)
+
+2026-04-08 12:20:32 [INFO] chaos: Chaos Test Agent Active (Interval: 30s)
+2026-04-08 12:20:32 [INFO] chaos: Monitoring state files in: C:\Users\jakej\Documents\GitHub\M3tal-Media-Server\control-plane\state
+
+----------------------------------------
+
+--- ATTACHMENT: decision.log ---
+ (Showing last 0 lines)
+
+
+----------------------------------------
+
+--- ATTACHMENT: guards.log ---
+ (Showing last 0 lines)
+
+
+----------------------------------------
+
+--- ATTACHMENT: leader.log ---
+ (Showing last 3 lines)
+
+2026-04-08 23:40:05 [INFO] leader: Identity: test-host@127.0.0.1 | STATUS: [FOLLOWER] (Leader: test-host)
+2026-04-08 23:46:02 [INFO] leader: Identity: test-host@127.0.0.1 | STATUS: [LEADER]
+2026-04-08 23:47:48 [INFO] leader: Identity: test-host@127.0.0.1 | STATUS: [LEADER]
+
+----------------------------------------
+
+--- ATTACHMENT: loop.log ---
+ (Showing last 2 lines)
+
+[BOOT] Tue Apr  7 08:14:49 PM PDT 2026
+[LOOP] Tue Apr  7 08:14:49 PM PDT 2026
+
+----------------------------------------
+
+--- ATTACHMENT: metrics.log ---
+ (Showing last 68 lines)
+
+2026-04-09 12:39:31 [INFO] metrics: --- Starting metrics ---
+2026-04-09 12:39:31 [INFO] metrics: --- Starting metrics ---
+2026-04-09 12:39:31 [INFO] metrics: Captured metrics and history.
+2026-04-09 12:39:31 [INFO] metrics: Captured metrics and history.
+2026-04-09 12:39:31 [INFO] metrics: --- Finished metrics Successfully ---
+2026-04-09 12:39:31 [INFO] metrics: --- Finished metrics Successfully ---
+2026-04-09 12:39:37 [INFO] metrics: --- Starting metrics ---
+2026-04-09 12:39:37 [INFO] metrics: --- Starting metrics ---
+2026-04-09 12:39:37 [INFO] metrics: Captured metrics and history.
+2026-04-09 12:39:37 [INFO] metrics: Captured metrics and history.
+2026-04-09 12:39:37 [INFO] metrics: --- Finished metrics Successfully ---
+2026-04-09 12:39:37 [INFO] metrics: --- Finished metrics Successfully ---
+2026-04-09 12:39:42 [INFO] metrics: --- Starting metrics ---
+2026-04-09 12:39:42 [INFO] metrics: --- Starting metrics ---
+2026-04-09 12:39:43 [INFO] metrics: Captured metrics and history.
+2026-04-09 12:39:43 [INFO] metrics: Captured metrics and history.
+2026-04-09 12:39:43 [INFO] metrics: --- Finished metrics Successfully ---
+2026-04-09 12:39:43 [INFO] metrics: --- Finished metrics Successfully ---
+2026-04-09 12:39:48 [INFO] metrics: --- Starting metrics ---
+2026-04-09 12:39:48 [INFO] metrics: --- Starting metrics ---
+2026-04-09 12:39:49 [INFO] metrics: Captured metrics and history.
+2026-04-09 12:39:49 [INFO] metrics: Captured metrics and history.
+2026-04-09 12:39:49 [INFO] metrics: --- Finished metrics Successfully ---
+2026-04-09 12:39:49 [INFO] metrics: --- Finished metrics Successfully ---
+2026-04-09 12:39:54 [INFO] metrics: --- Starting metrics ---
+2026-04-09 12:39:54 [INFO] metrics: --- Starting metrics ---
+2026-04-09 12:39:54 [INFO] metrics: Captured metrics and history.
+2026-04-09 12:39:54 [INFO] metrics: Captured metrics and history.
+2026-04-09 12:39:54 [INFO] metrics: --- Finished metrics Successfully ---
+2026-04-09 12:39:54 [INFO] metrics: --- Finished metrics Successfully ---
+2026-04-09 12:39:59 [INFO] metrics: --- Starting metrics ---
+2026-04-09 12:39:59 [INFO] metrics: --- Starting metrics ---
+2026-04-09 12:40:00 [INFO] metrics: Rotating metrics-history.csv
+2026-04-09 12:40:00 [INFO] metrics: Rotating metrics-history.csv
+2026-04-09 12:40:00 [INFO] metrics: Captured metrics and history.
+2026-04-09 12:40:00 [INFO] metrics: Captured metrics and history.
+2026-04-09 12:40:00 [INFO] metrics: --- Finished metrics Successfully ---
+2026-04-09 12:40:00 [INFO] metrics: --- Finished metrics Successfully ---
+2026-04-09 12:40:05 [INFO] metrics: --- Starting metrics ---
+2026-04-09 12:40:05 [INFO] metrics: --- Starting metrics ---
+2026-04-09 12:40:06 [INFO] metrics: Captured metrics and history.
+2026-04-09 12:40:06 [INFO] metrics: Captured metrics and history.
+2026-04-09 12:40:06 [INFO] metrics: --- Finished metrics Successfully ---
+2026-04-09 12:40:06 [INFO] metrics: --- Finished metrics Successfully ---
+2026-04-09 12:40:11 [INFO] metrics: --- Starting metrics ---
+2026-04-09 12:40:11 [INFO] metrics: --- Starting metrics ---
+2026-04-09 12:40:11 [INFO] metrics: Captured metrics and history.
+2026-04-09 12:40:11 [INFO] metrics: Captured metrics and history.
+2026-04-09 12:40:11 [INFO] metrics: --- Finished metrics Successfully ---
+2026-04-09 12:40:11 [INFO] metrics: --- Finished metrics Successfully ---
+2026-04-09 12:40:17 [INFO] metrics: --- Starting metrics ---
+2026-04-09 12:40:17 [INFO] metrics: --- Starting metrics ---
+2026-04-09 12:40:17 [INFO] metrics: Captured metrics and history.
+2026-04-09 12:40:17 [INFO] metrics: Captured metrics and history.
+2026-04-09 12:40:17 [INFO] metrics: --- Finished metrics Successfully ---
+2026-04-09 12:40:17 [INFO] metrics: --- Finished metrics Successfully ---
+2026-04-09 12:40:22 [INFO] metrics: --- Starting metrics ---
+2026-04-09 12:40:22 [INFO] metrics: --- Starting metrics ---
+2026-04-09 12:40:23 [INFO] metrics: Captured metrics and history.
+2026-04-09 12:40:23 [INFO] metrics: Captured metrics and history.
+2026-04-09 12:40:23 [INFO] metrics: --- Finished metrics Successfully ---
+2026-04-09 12:40:23 [INFO] metrics: --- Finished metrics Successfully ---
+2026-04-09 12:40:28 [INFO] metrics: --- Starting metrics ---
+2026-04-09 12:40:28 [INFO] metrics: --- Starting metrics ---
+2026-04-09 12:40:28 [INFO] metrics: Captured metrics and history.
+2026-04-09 12:40:28 [INFO] metrics: Captured metrics and history.
+2026-04-09 12:40:28 [INFO] metrics: --- Finished metrics Successfully ---
+2026-04-09 12:40:28 [INFO] metrics: --- Finished metrics Successfully ---
+
+----------------------------------------
+
+--- ATTACHMENT: monitor.log ---
+ (Showing last 0 lines)
+
+
+----------------------------------------
+
+--- ATTACHMENT: observer.log ---
+ (Showing last 0 lines)
+
+
+----------------------------------------
+
+--- ATTACHMENT: reconcile.log ---
+ (Showing last 1 lines)
+
+
+
+----------------------------------------
+
+--- ATTACHMENT: registry.log ---
+ (Showing last 0 lines)
+
+
+----------------------------------------
+
+--- ATTACHMENT: scorer.log ---
+ (Showing last 0 lines)
+
+
+----------------------------------------
+
+--- ATTACHMENT: supervisor.log ---
+ (Showing last 0 lines)
+
+
+----------------------------------------
+
