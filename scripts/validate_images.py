@@ -114,12 +114,12 @@ def validate_images(pull=False, fix=False):
     print(f"{BLUE}{BOLD}[REX] Scanning for Docker images...{END}")
     
     image_entries = []
-    for root, dirs, files in os.walk(DOCKER_DIR):
-        for file in files:
-            if file.endswith('.yml') or file.endswith('.yaml'):
-                if "example" in file.lower(): continue
-                full_path = os.path.join(root, file)
-                image_entries.extend(get_images_from_compose(full_path))
+    # Use Path.rglob for pure path iteration
+    for ext in ['*.yml', '*.yaml']:
+        for path in DOCKER_DIR.rglob(ext):
+            if "example" in str(path).lower(): 
+                continue
+            image_entries.extend(get_images_from_compose(path))
 
     if not image_entries:
         print(f"{YELLOW}[REX] No images found to validate.{END}")

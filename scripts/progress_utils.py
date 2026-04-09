@@ -22,12 +22,22 @@ class Spinner:
     def _spin(self):
         idx = 0
         while not self._stop_event.is_set():
-            sys.stdout.write(f"\r  {BLUE}{self.chars[idx]}{END} {self.message}...")
-            sys.stdout.flush()
-            idx = (idx + 1) % len(self.chars)
-            time.sleep(0.12)
-        sys.stdout.write("\r" + " " * (len(self.message) + 10) + "\r")
+            try:
+                # Clear line and print
+                sys.stdout.write(f"\r  {BLUE}{self.chars[idx]}{END} {self.message}...")
+                sys.stdout.flush()
+                idx = (idx + 1) % len(self.chars)
+                time.sleep(0.12)
+            except Exception:
+                # If stdout fails (e.g. broken pipe or encoding), stop spinning silently
+                break
+        # Final cleanup line
+        sys.stdout.write("\r" + " " * (len(self.message) + 20) + "\r")
         sys.stdout.flush()
+
+    def set_message(self, message: str):
+        """Update the spinner message while running."""
+        self.message = message
 
     def start(self):
         if not sys.stdout.isatty():

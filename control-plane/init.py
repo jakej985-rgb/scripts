@@ -14,7 +14,6 @@ import sys
 from pathlib import Path
 
 # --- Context Anchoring --------------------------------------------------------
-# CORE: All internal paths derive from these two anchors
 BASE_DIR = Path(__file__).resolve().parent  # control-plane/
 REPO_ROOT = BASE_DIR.parent
 
@@ -45,10 +44,9 @@ TMP_DIR = STATE_DIR / "tmp"
 AGENTS_DIR = BASE_DIR / "agents"
 DASHBOARD_DIR = REPO_ROOT / "dashboard"
 SCRIPTS_DIR = REPO_ROOT / "scripts"
-DOCKER_MEDIA_DIR = REPO_ROOT / "docker" / "media"
+DOCKER_DIR = REPO_ROOT / "docker" / "media"
 
 # --- Directory tree -----------------------------------------------------------
-
 REQUIRED_DIRS = [
     STATE_DIR,
     LOG_DIR,
@@ -56,8 +54,8 @@ REQUIRED_DIRS = [
     HEALTH_DIR,
     TMP_DIR,
     AGENTS_DIR,
-    BASE_DIR / "docker" / "media",
-    BASE_DIR / "scripts",
+    DOCKER_DIR,
+    SCRIPTS_DIR,
 ]
 
 # --- Log files ---------------------------------------------------------------
@@ -167,27 +165,17 @@ def harden_permissions() -> None:
     if sys.platform == "win32":
         return  # chmod is not meaningful on Windows
     try:
-        for root, dirs, files in os.walk(STATE_DIR):
-            for d in dirs:
-                os.chmod(os.path.join(root, d), stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP)
-            for f in files:
-                os.chmod(os.path.join(root, f), stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP)
-    except OSError:
+        # Step through all files/dirs in STATE_DIR
+        for path in STATE_DIR.rglob("*"):
+            if path.is_dir():
+                path.chmod(stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP)
+            else:
+                path.chmod(stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP)
+    except Exception:
         pass  # Best-effort; non-fatal
 
 
-# --- Directory tree -----------------------------------------------------------
-
-REQUIRED_DIRS = [
-    STATE_DIR,
-    LOG_DIR,
-    LOCK_DIR,
-    HEALTH_DIR,
-    TMP_DIR,
-    AGENTS_DIR,
-    DOCKER_MEDIA_DIR,
-    SCRIPTS_DIR,
-]
+# --- Execution ----------------------------------------------------------------
 import subprocess
 
 def run(dry_run: bool = False, interactive: bool | None = None) -> None:
@@ -198,7 +186,7 @@ def run(dry_run: bool = False, interactive: bool | None = None) -> None:
         return
     os.environ["INIT_ALREADY_RUN"] = "1"
 
-    log("🚀 Starting M3TAL Self-Healing Orchestrator...")
+    log("Starting M3TAL Self-Healing Orchestrator...")
     
     # 0.1 Heartbeat System
     hb = Heartbeat() if 'Heartbeat' in globals() and Heartbeat else None
@@ -260,7 +248,7 @@ def run(dry_run: bool = False, interactive: bool | None = None) -> None:
                 log("FATAL: Final image verification failed.")
                 sys.exit(1)
 
-        log("✨ System initialization complete.")
+        log("System initialization complete.")
     
         # Step 8: Startup Hand-off
         if "--start" in sys.argv:

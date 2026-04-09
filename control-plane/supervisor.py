@@ -40,7 +40,7 @@ except ImportError:
 STATE_DIR = BASE_DIR / "state"
 LOG_DIR = STATE_DIR / "logs"
 AGENTS_DIR = BASE_DIR / "agents"
-DOCKER_MEDIA_DIR = REPO_ROOT / "docker" / "media"
+DOCKER_DIR = REPO_ROOT / "docker" / "media"
 
 PYTHON = sys.executable  # Use the same interpreter that launched us
 
@@ -104,18 +104,25 @@ def wait_for_docker(max_retries: int = 30, interval: float = 4.0) -> bool:
     spinner = Spinner("Waiting for Docker socket")
     if spinner: spinner.start()
     
+    use_shell = os.name == "nt"  # Windows often needs shell=True for docker shims
+    
     for attempt in range(1, max_retries + 1):
+        if spinner:
+            spinner.set_message(f"Waiting for Docker socket (Attempt {attempt}/{max_retries})")
+            
         try:
             result = subprocess.run(
                 ["docker", "ps"],
                 capture_output=True,
                 timeout=10,
+                shell=use_shell
             )
             if result.returncode == 0:
                 if spinner: spinner.stop(success=True, final_msg="Docker is ready")
                 return True
         except (subprocess.TimeoutExpired, FileNotFoundError):
             pass
+            
         if _shutdown_event.is_set():
             if spinner: spinner.stop(success=False)
             return False
