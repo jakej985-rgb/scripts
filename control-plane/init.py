@@ -173,7 +173,8 @@ def run(dry_run: bool = False, interactive: bool | None = None) -> None:
 
     if validate_images:
         do_pull = "--pull" in sys.argv
-        if not validate_images(pull=do_pull):
+        do_fix = "--fix" in sys.argv
+        if not validate_images(pull=do_pull, fix=do_fix):
             # Non-blocking for now in init, just warning, 
             # or blocking if user wants strict mode.
             # User request said "Block deployment", so we block.
