@@ -1,3 +1,5 @@
+import subprocess
+import json
 import sys
 import os
 import time
@@ -85,13 +87,11 @@ def append_history(system, containers):
         # Persistent rotation check — every 10 minutes (Audit fix 2.5)
         last_prune_file = os.path.join(STATE_DIR, "last_prune.json")
         last_prune_data = {}
-        if os.path.exists(last_prune_file):
-            try:
-                import json as _json
-                with open(last_prune_file, 'r') as pf:
-                    last_prune_data = _json.loads(pf.read().strip() or '{}')
-            except:
-                pass
+        try:
+            with open(last_prune_file, 'r') as pf:
+                last_prune_data = json.loads(pf.read().strip() or '{}')
+        except:
+            pass
         last_prune_ts = last_prune_data.get("ts", 0)
 
         if ts - last_prune_ts > 600:
@@ -110,9 +110,8 @@ def append_history(system, containers):
                          f.writelines(all_lines)
              # Update last prune timestamp
              try:
-                 import json as _json
                  with open(last_prune_file, 'w') as pf:
-                     _json.dump({"ts": ts}, pf)
+                     json.dump({"ts": ts}, pf)
              except:
                  pass
     except Exception as e:

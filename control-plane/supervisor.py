@@ -46,7 +46,7 @@ AGENTS = [
 ]
 
 # --- Globals ------------------------------------------------------------------
-_shutdown = False
+_shutdown_event = threading.Event()
 _children: list[subprocess.Popen] = []
 _children_lock = threading.Lock()
 
@@ -63,10 +63,9 @@ def _unregister_child(proc: subprocess.Popen) -> None:
 
 
 def _handle_signal(signum, _frame):
-    global _shutdown
     ts = time.strftime("%H:%M:%S")
     print(f"[{ts}] Supervisor received signal {signum}. Shutting down...")
-    _shutdown = True
+    _shutdown_event.set()
     with _children_lock:
         children = list(_children)
     for proc in children:
@@ -97,7 +96,7 @@ def wait_for_docker(max_retries: int = 30, interval: float = 4.0) -> bool:
                 return True
         except (subprocess.TimeoutExpired, FileNotFoundError):
             pass
-        if _shutdown:
+        if _shutdown_event.is_set():
             return False
         time.sleep(interval)
 
@@ -112,7 +111,7 @@ def run_agent(name: str, script: str) -> None:
     crash_count = 0
     log_path = LOG_DIR / f"{name}.log"
 
-    while not _shutdown:
+    while not _shutdown_event.is_set():
         ts = time.strftime("%H:%M:%S")
         print(f"[{ts}] Starting {name}...")
 
@@ -143,7 +142,7 @@ def run_agent(name: str, script: str) -> None:
             ts2 = time.strftime("%H:%M:%S")
             print(f"[{ts2}] ERROR: {name}: {e}")
 
-        if _shutdown:
+        if _shutdown_event.is_set():
             break
 
         if exit_code == 0:
@@ -190,10 +189,10 @@ def main() -> None:
 
     # 3. Wait for shutdown signal
     try:
-        while not _shutdown:
+        while not _shutdown_event.is_set():
             time.sleep(1)
     except KeyboardInterrupt:
-        _shutdown = True
+        _shutdown_event.set()
 
     # 4. Join all agent threads (Audit fix 2.6)
     ts = time.strftime("%H:%M:%S")
