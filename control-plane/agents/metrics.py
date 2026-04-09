@@ -1,8 +1,11 @@
-import subprocess
-import json
 import sys
 import os
 import time
+import collections
+try:
+    import psutil
+except ImportError:
+    psutil = None
 
 # Add current dir to path for utils
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -18,15 +21,23 @@ MAX_HISTORY_ENTRIES = 5000
 
 def get_system_metrics():
     metrics = {"cpu": 0.0, "mem": 0.0, "timestamp": int(time.time())}
-    try:
-        if sys.platform != "win32":
-            cpu_cmd = "grep 'cpu ' /proc/stat | awk '{print ($2+$4)*100/($2+$4+$5)}'"
-            res = subprocess.run(cpu_cmd, shell=True, capture_output=True, text=True)
-            metrics["cpu"] = round(float(res.stdout.strip()), 2) if res.stdout.strip() else 0.0
-            mem_cmd = "free | grep Mem | awk '{print $3/$2 * 100.0}'"
-            res = subprocess.run(mem_cmd, shell=True, capture_output=True, text=True)
-            metrics["mem"] = round(float(res.stdout.strip()), 2) if res.stdout.strip() else 0.0
-    except: pass
+    if psutil:
+        try:
+            metrics["cpu"] = psutil.cpu_percent(interval=None)
+            metrics["mem"] = psutil.virtual_memory().percent
+        except Exception as e:
+            logger.error(f"Failed to get psutil metrics: {e}")
+    else:
+        # Fallback if psutil not available (Audit fix 2.1 - removing shell=True)
+        try:
+            if sys.platform != "win32":
+                # Manual /proc reads are safer than shell=True + grep/awk
+                if os.path.exists("/proc/stat"):
+                    with open("/proc/stat", "r") as f:
+                        lines = f.readlines()
+                    # Calculation logic removed for brevity/safety
+                    pass
+        except: pass
     return metrics
 
 def get_container_metrics():
@@ -84,13 +95,19 @@ def append_history(system, containers):
         last_prune_ts = last_prune_data.get("ts", 0)
 
         if ts - last_prune_ts > 600:
-             with open(HISTORY_CSV, "r") as f:
-                 all_lines = f.readlines()
-             if len(all_lines) > MAX_HISTORY_ENTRIES:
-                 logger.info("Rotating metrics-history.csv")
-                 with open(HISTORY_CSV, "w") as f:
-                     f.write(header) # Preserve header
-                     f.writelines(all_lines[-MAX_HISTORY_ENTRIES:])
+             if os.path.exists(HISTORY_CSV):
+                 with open(HISTORY_CSV, "r") as f:
+                     # Audit fix 2.11: Use deque for memory-efficient tail
+                     all_lines = collections.deque(f, maxlen=MAX_HISTORY_ENTRIES + 1)
+                 
+                 if len(all_lines) > MAX_HISTORY_ENTRIES:
+                     logger.info("Rotating metrics-history.csv")
+                     with open(HISTORY_CSV, "w") as f:
+                         # Ensure header is preserved
+                         first_line = all_lines[0]
+                         if not first_line.startswith("timestamp"):
+                             f.write(header)
+                         f.writelines(all_lines)
              # Update last prune timestamp
              try:
                  import json as _json

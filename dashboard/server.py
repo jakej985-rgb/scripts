@@ -185,7 +185,8 @@ def background_metrics_stream():
 def start_background_tasks():
     socketio.start_background_task(background_metrics_stream)
 
+start_background_tasks() # Audit fix 2.3 — Start outside main for Docker/WSGI visibility
+
 if __name__ == '__main__':
     port = int(os.getenv("DASHBOARD_PORT", 8080))
-    start_background_tasks()
     socketio.run(app, host='0.0.0.0', port=port)

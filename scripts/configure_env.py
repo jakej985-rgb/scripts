@@ -2,6 +2,7 @@
 import os
 import secrets
 import sys
+from datetime import datetime
 
 # ANSI colors for nice UI
 GREEN = "\033[92m"
@@ -46,6 +47,7 @@ def main():
     new_env["DASHBOARD_PORT"] = get_input("Dashboard UI Port", current_env.get("DASHBOARD_PORT", "8080"))
     new_env["HTTP_PORT"] = get_input("HTTP Gateway Port (80)", current_env.get("HTTP_PORT", "80"))
     new_env["DATA_DIR"] = get_input("Global Data Directory", current_env.get("DATA_DIR", "/mnt"))
+    new_env["CONFIG_DIR"] = get_input("Global Configuration Directory", current_env.get("CONFIG_DIR", "/docker/configs"))
     new_env["DOMAIN"] = get_input("Local Domain (for Traefik)", current_env.get("DOMAIN", "local"))
     print("")
 
@@ -80,7 +82,7 @@ def main():
     try:
         with open(ENV_FILE, 'w') as f:
             f.write("# M3TAL Generated Environment File\n")
-            f.write(f"# Updated at: {os.popen('date').read().strip()}\n\n")
+            f.write(f"# Updated at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
             
             # Sort keys into categories for readability
             categories = {

@@ -1,6 +1,7 @@
 import sys
 import os
 import time
+import collections
 
 # Add current dir to path for utils
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -16,11 +17,20 @@ def aggregate_events():
     # This agent scans agent logs and generates a unified event stream
     logger.info("Watching system logs for critical events...")
     
-    # Implementation detail: scan LOG_DIR for [ERROR] or [CRASH]
+    # Audit fix 2.15: implementation of log scavenging
     for file in os.listdir(LOG_DIR):
         if file.endswith(".log"):
-            # Simple check for errors in the last few lines (conceptual)
-            pass
+            agent_name = file.replace(".log", "")
+            path = os.path.join(LOG_DIR, file)
+            try:
+                with open(path, "r") as f:
+                    # Only check the last 100 lines to avoid overhead
+                    lines = collections.deque(f, maxlen=100)
+                    for line in lines:
+                        if "[ERROR]" in line or "[CRASH]" in line:
+                            logger.warning(f"Critical Event detected in {agent_name}: {line.strip()}")
+            except Exception as e:
+                logger.error(f"Failed to scan log {file}: {e}")
 
 if __name__ == "__main__":
     # Observer runs on all nodes — now uses wrap_agent for proper

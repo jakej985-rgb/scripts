@@ -4,6 +4,7 @@ requests>=2.31.0,<3.0.0
 bcrypt>=4.1.0,<4.2.0
 PyYAML>=6.0.0,<7.0.0
 eventlet>=0.33.0,<0.34.0
+psutil>=5.9.0
 
 # Testing & CI
 pytest>=8.0.0

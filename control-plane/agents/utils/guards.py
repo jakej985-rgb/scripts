@@ -105,6 +105,10 @@ def wrap_agent(agent_name: str, func: Callable[[], Any]):
         func()
         update_agent_health(agent_name, success=True)
         agent_logger.info(f"--- Finished {agent_name} Successfully ---")
+    except Exception as e:
+        agent_logger.error(f"Agent {agent_name} failed: {e}", exc_info=True)
+        update_agent_health(agent_name, success=False, error_msg=str(e))
+        raise
     finally:
         release_lock(agent_name)
         if _SHUTDOWN_SIGNALED:

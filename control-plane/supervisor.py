@@ -177,7 +177,8 @@ def main() -> None:
     threads: list[threading.Thread] = []
 
     for name, script, is_leader in AGENTS:
-        t = threading.Thread(target=run_agent, args=(name, script), daemon=True, name=f"agent-{name}")
+        # Audit fix 2.6: Do not use daemon threads. Join them on shutdown.
+        t = threading.Thread(target=run_agent, args=(name, script), daemon=False, name=f"agent-{name}")
         threads.append(t)
         t.start()
 
@@ -192,7 +193,13 @@ def main() -> None:
         while not _shutdown:
             time.sleep(1)
     except KeyboardInterrupt:
-        pass
+        _shutdown = True
+
+    # 4. Join all agent threads (Audit fix 2.6)
+    ts = time.strftime("%H:%M:%S")
+    print(f"[{ts}] Waiting for agent threads to exit...")
+    for t in threads:
+        t.join(timeout=5)
 
     ts = time.strftime("%H:%M:%S")
     print(f"[{ts}] Supervisor shutdown complete.")

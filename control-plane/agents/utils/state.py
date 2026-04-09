@@ -27,8 +27,9 @@ def save_json(path: str, data: Any) -> bool:
     """Atomic write to JSON file with schema metadata injection (Batch 8 T5)"""
     tmp_path = f"{path}.tmp"
     
-    # Inject metadata if data is a dict
+    # Inject metadata if data is a dict (Audit fix 2.12 - use safe copy)
     if isinstance(data, dict):
+        data = data.copy()
         data["_m3tal_metadata"] = {
             "version": SCHEMA_VERSION,
             "updated_at": int(time.time()),

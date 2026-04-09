@@ -75,7 +75,7 @@ def elect_leader():
         sys.exit(0) # Success code for run_agent to continue
     else:
         logger.info(f"Identity: {my_id} | STATUS: [FOLLOWER] (Leader: {leader_identity})")
-        sys.exit(1) # Error code for run_agent to sleep/skip
+        sys.exit(0) # Audit fix 2.10 — Use 0 for follower to avoid crash backoff
 
 if __name__ == "__main__":
     elect_leader()

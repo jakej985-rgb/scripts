@@ -109,8 +109,6 @@ def calculate_health():
     
     # Export global health for API (backward compatibility)
     # The monitor_containers.json is merged here for dashboard consumption
-    monitor_containers = agent_health.get("monitor_containers", {})
-    save_json(os.path.join(STATE_DIR, "health.json"), monitor_containers)
 
     save_json(HEALTH_REPORT_JSON, {
         "score": score,
