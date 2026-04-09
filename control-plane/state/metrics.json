@@ -1,1 +1,15 @@
-[]
+{
+    "system": {
+        "cpu": 50.0,
+        "mem": 7.8,
+        "timestamp": 1775763628
+    },
+    "containers": [],
+    "timestamp": 1775763628,
+    "cpu": 50.0,
+    "_m3tal_metadata": {
+        "version": "1.3.0",
+        "updated_at": 1775763628,
+        "host": "localhost"
+    }
+}
