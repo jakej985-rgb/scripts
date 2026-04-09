@@ -29,7 +29,6 @@ For a detailed beginner guide, see [Getting Started](docs/GET_STARTED.md).
 ```bash
 git clone https://github.com/jakej985-rgb/M3tal-Media-Server.git
 cd M3tal-Media-Server
-chmod +x install.sh
 
 # Recommended: Create a virtual environment
 python3 -m venv venv
@@ -37,7 +36,11 @@ python3 -m venv venv
 # Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-./install.sh
+# Cross-platform installer (recommended)
+python3 install.py
+
+# Or on Linux/macOS only:
+# bash install.sh
 ```
 
 ### 2. Login

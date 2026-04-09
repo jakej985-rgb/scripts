@@ -1,5 +1,23 @@
 # Changelog
 
+## v1.3.0 (2026-04-09) — Cross-Platform Hardening
+
+* **Shell → Python Migration:**
+  * Converted `init.sh` → `init.py` (eliminates `jq` dependency).
+  * Converted `run.sh` → `supervisor.py` (threaded process manager with backoff).
+  * Converted `backup.sh` → `backup.py` (uses `tarfile` stdlib, no `tar` binary needed).
+  * Converted `restore.sh` → `restore.py` (cross-platform DR).
+  * Created `install.py` with multi-OS detection (Debian/Fedora/Arch/macOS/Windows).
+  * All `.sh` files retained as thin shims for backward compatibility.
+* **CI/CD:**
+  * Added `windows-latest` runner to GitHub Actions for cross-platform validation.
+  * Added `--dry-run` smoke tests for init and backup.
+* **Testing:**
+  * Expanded test suite: init scaffolding, JSON corruption reset, user provisioning, backup retention.
+* **Cleanup:**
+  * Created `deprecated/README.md` for legacy v1 shell scripts.
+  * Zero non-Python runtime dependencies outside of Docker itself.
+
 ## v1.2.0 (2026-04-08)
 
 * **Autonomous Orchestration:**

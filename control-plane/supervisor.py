@@ -1,0 +1,183 @@
+#!/usr/bin/env python3
+"""
+M3TAL Supervisor — Reliable, Cross-Platform Agent Process Manager
+v1.3.0 — Python replacement for run.sh
+
+Launches all autonomous agents as child processes with:
+  - Exponential backoff on crash (max 60s)
+  - Docker socket liveness check before launch
+  - SIGTERM / SIGINT graceful shutdown
+  - Per-agent log routing
+"""
+
+import os
+import signal
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+# Resolve repo root
+REPO_ROOT = Path(__file__).resolve().parent.parent
+BASE_DIR = REPO_ROOT / "control-plane"
+AGENTS_DIR = BASE_DIR / "agents"
+STATE_DIR = BASE_DIR / "state"
+LOG_DIR = STATE_DIR / "logs"
+
+PYTHON = sys.executable  # Use the same interpreter that launched us
+
+# --- Agent Registry -----------------------------------------------------------
+# (name, script_path_relative_to_AGENTS_DIR, is_leader_tier)
+AGENTS = [
+    # Tier 0 — Leader election (runs first, others wait)
+    ("leader",    "leader.py",       True),
+    # Tier 1 — Core pipeline
+    ("registry",  "registry.py",     False),
+    ("monitor",   "monitor.py",      False),
+    ("metrics",   "metrics.py",      False),
+    ("scaling",   "scaling.py",      False),
+    ("anomaly",   "anomaly.py",      False),
+    ("decision",  "decision.py",     False),
+    ("reconcile", "reconcile.py",    False),
+    # Tier 2 — Maintenance / health (runs on all nodes)
+    ("scorer",    "health_score.py", False),
+    ("observer",  "observer.py",     False),
+    # ("chaos",   "chaos_test.py",   False),  # Intentionally disabled in prod
+]
+
+# --- Globals ------------------------------------------------------------------
+_shutdown = False
+_children: list[subprocess.Popen] = []
+
+
+def _handle_signal(signum, _frame):
+    global _shutdown
+    ts = time.strftime("%H:%M:%S")
+    print(f"[{ts}] Supervisor received signal {signum}. Shutting down...")
+    _shutdown = True
+    for proc in _children:
+        try:
+            proc.terminate()
+        except OSError:
+            pass
+
+
+signal.signal(signal.SIGTERM, _handle_signal)
+signal.signal(signal.SIGINT, _handle_signal)
+
+
+# --- Docker Liveness ---------------------------------------------------------
+
+def wait_for_docker(max_retries: int = 30, interval: float = 4.0) -> bool:
+    """Block until the Docker socket is responsive or timeout."""
+    print("[CHECK] Waiting for Docker socket...")
+    for attempt in range(1, max_retries + 1):
+        try:
+            result = subprocess.run(
+                ["docker", "ps"],
+                capture_output=True,
+                timeout=10,
+            )
+            if result.returncode == 0:
+                print("[CHECK] Docker is ready.")
+                return True
+        except (subprocess.TimeoutExpired, FileNotFoundError):
+            pass
+        if _shutdown:
+            return False
+        time.sleep(interval)
+
+    print("[FATAL] Docker not found after 2 minutes. Exiting.")
+    return False
+
+
+# --- Agent Runner -------------------------------------------------------------
+
+def run_agent(name: str, script: str) -> None:
+    """Run a single agent in a supervised loop with exponential backoff."""
+    crash_count = 0
+    log_path = LOG_DIR / f"{name}.log"
+
+    while not _shutdown:
+        ts = time.strftime("%H:%M:%S")
+        print(f"[{ts}] Starting {name}...")
+
+        try:
+            with open(log_path, "a") as log_file:
+                proc = subprocess.run(
+                    [PYTHON, str(AGENTS_DIR / script)],
+                    stdout=log_file,
+                    stderr=subprocess.STDOUT,
+                    timeout=300,  # 5-minute safety timeout per cycle
+                )
+                exit_code = proc.returncode
+        except subprocess.TimeoutExpired:
+            exit_code = 1
+            ts2 = time.strftime("%H:%M:%S")
+            print(f"[{ts2}] TIMEOUT: {name}. Forcing restart...")
+        except Exception as e:
+            exit_code = 1
+            ts2 = time.strftime("%H:%M:%S")
+            print(f"[{ts2}] ERROR: {name}: {e}")
+
+        if _shutdown:
+            break
+
+        if exit_code == 0:
+            crash_count = 0
+            time.sleep(5)  # Main loop interval
+        else:
+            crash_count += 1
+            wait_time = min(5 * crash_count, 60)
+            ts2 = time.strftime("%H:%M:%S")
+            print(f"[{ts2}] CRASH: {name}. Backoff {wait_time}s...")
+            time.sleep(wait_time)
+
+
+# --- Main Entry ---------------------------------------------------------------
+
+def main() -> None:
+    global _children
+
+    # 0. Docker liveness
+    if not wait_for_docker():
+        sys.exit(1)
+
+    # 1. Run init
+    ts = time.strftime("%H:%M:%S")
+    print(f"[{ts}] Running init.py...")
+    init_script = BASE_DIR / "init.py"
+    subprocess.run([PYTHON, str(init_script)], check=True)
+
+    ts = time.strftime("%H:%M:%S")
+    print(f"[{ts}] Supervisor launching agents...")
+
+    # 2. Launch leader first, wait for election to settle
+    import threading
+
+    threads: list[threading.Thread] = []
+
+    for name, script, is_leader in AGENTS:
+        t = threading.Thread(target=run_agent, args=(name, script), daemon=True, name=f"agent-{name}")
+        threads.append(t)
+        t.start()
+
+        if is_leader:
+            time.sleep(2)  # Wait for leader election
+
+    ts = time.strftime("%H:%M:%S")
+    print(f"[{ts}] All agents running.")
+
+    # 3. Wait for shutdown signal
+    try:
+        while not _shutdown:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        pass
+
+    ts = time.strftime("%H:%M:%S")
+    print(f"[{ts}] Supervisor shutdown complete.")
+
+
+if __name__ == "__main__":
+    main()
