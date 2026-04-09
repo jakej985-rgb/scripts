@@ -10,6 +10,7 @@ Launches all autonomous agents as child processes with:
   - Per-agent log routing
 """
 
+import os
 import signal
 import subprocess
 import sys
