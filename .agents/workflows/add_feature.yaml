@@ -1,0 +1,11 @@
+trigger: "add_feature"
+
+steps:
+  - agent: architect
+  - agent: backend
+  - agent: frontend
+    optional: true
+  - agent: qa
+  - agent: security
+  - agent: devops
+  - agent: observability
