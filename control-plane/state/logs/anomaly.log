@@ -1,76 +1,468 @@
-2026-04-09 12:39:31 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:39:31 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:39:31 [ERROR] anomaly: Invalid metrics_data type: <class 'list'>
-2026-04-09 12:39:31 [ERROR] anomaly: Invalid metrics_data type: <class 'list'>
-2026-04-09 12:39:31 [WARNING] anomaly: System health degraded: WARNING (Score: 65%)
-2026-04-09 12:39:31 [WARNING] anomaly: System health degraded: WARNING (Score: 65%)
-2026-04-09 12:39:31 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 12:39:31 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 12:39:36 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:39:36 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:39:36 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
-2026-04-09 12:39:36 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
-2026-04-09 12:39:36 [INFO] anomaly: Identified 1 anomalies.
-2026-04-09 12:39:36 [INFO] anomaly: Identified 1 anomalies.
-2026-04-09 12:39:36 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 12:39:36 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 12:39:41 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:39:41 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:39:41 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
-2026-04-09 12:39:41 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
-2026-04-09 12:39:42 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 12:39:42 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 12:39:47 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:39:47 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:39:47 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
-2026-04-09 12:39:47 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
-2026-04-09 12:39:47 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 12:39:47 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 12:39:52 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:39:52 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:39:52 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
-2026-04-09 12:39:52 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
-2026-04-09 12:39:52 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 12:39:52 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 12:39:57 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:39:57 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:39:57 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
-2026-04-09 12:39:57 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
-2026-04-09 12:39:57 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 12:39:57 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 12:40:02 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:40:02 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:40:02 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
-2026-04-09 12:40:02 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
-2026-04-09 12:40:02 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 12:40:02 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 12:40:07 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:40:07 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:40:07 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
-2026-04-09 12:40:07 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
-2026-04-09 12:40:07 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 12:40:07 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 12:40:12 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:40:12 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:40:12 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
-2026-04-09 12:40:12 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
-2026-04-09 12:40:13 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 12:40:13 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 12:40:18 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:40:18 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:40:18 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
-2026-04-09 12:40:18 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
-2026-04-09 12:40:18 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 12:40:18 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 12:40:23 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:40:23 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:40:23 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
-2026-04-09 12:40:23 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
-2026-04-09 12:40:23 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 12:40:23 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 12:40:28 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:40:28 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 12:40:28 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
-2026-04-09 12:40:28 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
-2026-04-09 12:40:28 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 12:40:28 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:35:35 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:35:35 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:35:35 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-09 14:35:35 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-09 14:35:36 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:35:36 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:35:41 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:35:41 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:35:41 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
+2026-04-09 14:35:41 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
+2026-04-09 14:35:41 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:35:41 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:35:46 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:35:46 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:35:46 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:35:46 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:35:46 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:35:46 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:35:51 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:35:51 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:35:51 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:35:51 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:35:51 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:35:51 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:35:56 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:35:56 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:35:56 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:35:56 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:35:56 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:35:56 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:36:01 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:36:01 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:36:01 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:36:01 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:36:03 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:36:03 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:36:08 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:36:08 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:36:08 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:36:08 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:36:08 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:36:08 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:36:13 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:36:13 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:36:13 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:36:13 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:36:13 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:36:13 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:36:19 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:36:19 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:36:19 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:36:19 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:36:19 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:36:19 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:36:24 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:36:24 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:36:24 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:36:24 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:36:25 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:36:25 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:36:30 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:36:30 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:36:30 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:36:30 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:36:30 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:36:30 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:36:35 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:36:35 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:36:35 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:36:35 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:36:35 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:36:35 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:36:41 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:36:41 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:36:41 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:36:41 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:36:41 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:36:41 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:36:46 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:36:46 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:36:46 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:36:46 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:36:46 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:36:46 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:36:51 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:36:51 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:36:51 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:36:51 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:36:51 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:36:51 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:36:56 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:36:56 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:36:56 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:36:56 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:36:56 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:36:56 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:01 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:01 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:01 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:01 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:01 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:01 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:06 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:06 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:06 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:06 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:06 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:06 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:12 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:12 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:12 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:12 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:12 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:12 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:17 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:17 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:17 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:17 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:17 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:17 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:22 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:22 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:22 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:22 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:22 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:22 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:27 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:27 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:27 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:27 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:27 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:27 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:32 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:32 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:32 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:32 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:32 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:32 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:37 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:37 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:37 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:37 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:37 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:37 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:43 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:43 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:43 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:43 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:43 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:43 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:48 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:48 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:48 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:48 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:48 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:48 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:53 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:53 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:53 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:53 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:53 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:53 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:58 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:58 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:37:58 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:58 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:37:58 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:37:58 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:38:03 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:38:03 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:38:03 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:38:03 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:38:03 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:38:03 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:38:08 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:38:08 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:38:08 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:38:08 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:38:08 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:38:08 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:38:14 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:38:14 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:38:14 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:38:14 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:38:14 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:38:14 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:38:19 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:38:19 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:38:19 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:38:19 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:38:19 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:38:19 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:38:24 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:38:24 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:38:24 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:38:24 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:38:24 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:38:24 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:38:29 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:38:29 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:38:29 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:38:29 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:38:29 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:38:29 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:38:34 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:38:34 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:38:34 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:38:34 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:38:34 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:38:34 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:38:39 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:38:39 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:38:39 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:38:39 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:38:39 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:38:39 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:38:44 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:38:44 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:38:44 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:38:44 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:38:44 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:38:44 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:38:50 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:38:50 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:38:50 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:38:50 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:38:50 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:38:50 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:38:55 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:38:55 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:38:55 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:38:55 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:38:55 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:38:55 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:00 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:00 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:00 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:00 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:00 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:00 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:05 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:05 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:05 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:05 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:05 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:05 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:10 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:10 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:10 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:10 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:10 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:10 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:15 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:15 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:15 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:15 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:15 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:15 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:21 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:21 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:21 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:21 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:21 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:21 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:26 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:26 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:26 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:26 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:26 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:26 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:31 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:31 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:31 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:31 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:31 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:31 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:36 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:36 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:36 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:36 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:36 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:36 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:41 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:41 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:41 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:41 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:41 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:41 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:46 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:46 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:46 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:46 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:46 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:46 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:51 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:51 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:51 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:51 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:52 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:52 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:57 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:57 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:39:57 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:57 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:39:57 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:39:57 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:02 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:02 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:02 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:02 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:02 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:02 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:07 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:07 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:07 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:07 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:07 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:07 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:12 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:12 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:12 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:12 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:12 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:12 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:17 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:17 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:17 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:17 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:17 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:17 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:22 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:22 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:22 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:22 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:23 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:23 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:28 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:28 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:28 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:28 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:28 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:28 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:33 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:33 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:33 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:33 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:33 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:33 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:38 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:38 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:38 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:38 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:38 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:38 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:43 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:43 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:43 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:43 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:43 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:43 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:48 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:48 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:48 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:48 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:48 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:48 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:53 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:53 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:53 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:53 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:54 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:54 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:59 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:59 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:40:59 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:59 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:40:59 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:40:59 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:41:04 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:41:04 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:41:04 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:41:04 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:41:04 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:41:04 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:41:09 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:41:09 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:41:09 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:41:09 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:41:09 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:41:09 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:41:14 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:41:14 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:41:14 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:41:14 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:41:14 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:41:14 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:41:19 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:41:19 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:41:19 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:41:19 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:41:19 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:41:19 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:41:25 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:41:25 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:41:25 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:41:25 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:41:25 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:41:25 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:41:30 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:41:30 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:41:30 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:41:30 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:41:30 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:41:30 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:41:35 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:41:35 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:41:35 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:41:35 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:41:35 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:41:35 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:41:40 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:41:40 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:41:40 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:41:40 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:41:40 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:41:40 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:41:45 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:41:45 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:41:45 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:41:45 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:41:45 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:41:45 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:41:50 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:41:50 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:41:50 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:41:50 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:41:50 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:41:50 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:41:55 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:41:55 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:41:55 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:41:55 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:41:56 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:41:56 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:42:01 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:42:01 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:42:01 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:42:01 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:42:01 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:42:01 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:42:06 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:42:06 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:42:06 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:42:06 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:42:06 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:42:06 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:54:32 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:54:32 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:54:32 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:54:32 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-09 14:54:32 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:54:32 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:54:38 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:54:38 [INFO] anomaly: --- Starting anomaly ---
+2026-04-09 14:54:38 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
+2026-04-09 14:54:38 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
+2026-04-09 14:54:38 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-09 14:54:38 [INFO] anomaly: --- Finished anomaly Successfully ---

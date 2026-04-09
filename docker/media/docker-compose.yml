@@ -112,7 +112,7 @@ services:
     restart: unless-stopped
 
   jellyseerr:
-    image: fallenbagel/jellyseerr:1.7
+    image: fallenbagel/jellyseerr:latest
     container_name: jellyseerr
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5055"]
@@ -124,7 +124,7 @@ services:
     restart: unless-stopped
 
   homepage:
-    image: ghcr.io/gethomepage/homepage:v0.8
+    image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
     volumes:
       - ${CONFIG_DIR:-/docker/configs}/homepage:/app/config
@@ -150,14 +150,14 @@ services:
     restart: unless-stopped
 
   maintainerr:
-    image: ghcr.io/maintainerr/maintainerr:v2.0
+    image: ghcr.io/maintainerr/maintainerr:latest
     container_name: maintainerr
     volumes:
       - ${CONFIG_DIR:-/docker/configs}/maintainerr:/opt/data
     restart: unless-stopped
 
   tdarr:
-    image: ghcr.io/haveagitgat/tdarr:2.0
+    image: ghcr.io/haveagitgat/tdarr:latest
     container_name: tdarr
     volumes:
       - ${CONFIG_DIR:-/docker/configs}/tdarr:/app/config
@@ -166,7 +166,7 @@ services:
     restart: unless-stopped
 
   glances:
-    image: nicolargo/glances:3.4
+    image: nicolargo/glances:latest
     container_name: glances
     pid: host
     command: glances -w
