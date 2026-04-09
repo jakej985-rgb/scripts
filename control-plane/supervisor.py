@@ -167,28 +167,34 @@ def run_agent(name: str, script: str) -> None:
 # --- Main Entry ---------------------------------------------------------------
 
 def main() -> None:
-    # 0. Rex Guardrail: Check environment integrity
-    if validate_env:
-        valid, _ = validate_env(interactive=True)
-        if not valid:
-            sys.exit(1)
+    # 0. Context Guard
+    os.environ["INIT_ALREADY_RUN"] = "0"
 
-    # 0.1. Rex Guardrail: Check image availability
-    if validate_images:
-        # Pre-flight is local-only by default for speed, unless --pull-images is passed
-        do_pull = "--pull-images" in sys.argv
-        if not validate_images(pull=do_pull):
-            sys.exit(1)
-
-    # 0.2. Docker liveness
+    # 1. Docker liveness
     if not wait_for_docker():
         sys.exit(1)
 
-    # 1. Run init
+    # 2. Run Self-Healing Orchestrator (init.py)
     ts = time.strftime("%H:%M:%S")
-    print(f"[{ts}] Running init.py...")
-    init_script = BASE_DIR / "init.py"
-    subprocess.run([PYTHON, str(init_script)], check=True)
+    print(f"[{ts}] Launching orchestrator (init.py)...")
+    
+    init_args = [PYTHON, "init.py"]
+    
+    # Pass repair flags if requested
+    if "--pull-images" in sys.argv:
+        init_args.extend(["--pull", "--fix"])
+        
+    try:
+        # Rex Fix Plan: Enforce correct context (cwd + env)
+        subprocess.run(
+            init_args, 
+            cwd=str(BASE_DIR), 
+            env=os.environ.copy(), 
+            check=True
+        )
+    except subprocess.CalledProcessError:
+        print("[FATAL] Orchestration failed. System not healthy for startup.")
+        sys.exit(1)
 
     ts = time.strftime("%H:%M:%S")
     print(f"[{ts}] Supervisor launching agents...")

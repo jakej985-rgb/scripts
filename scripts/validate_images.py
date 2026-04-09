@@ -7,15 +7,15 @@ import re
 from pathlib import Path
 
 # Resolve repo root
-REPO_ROOT = Path(__file__).resolve().parent.parent
-sys.path.append(str(REPO_ROOT / "scripts"))
+BASE_DIR = Path(__file__).resolve().parent
+REPO_ROOT = BASE_DIR.parent
+DOCKER_DIR = REPO_ROOT / "docker"
 
+sys.path.append(str(REPO_ROOT / "scripts"))
 try:
     from validate_env import YELLOW, RED, GREEN, BLUE, BOLD, END
 except ImportError:
     YELLOW, RED, GREEN, BLUE, BOLD, END = ("", "", "", "", "", "")
-
-DOCKER_DIR = REPO_ROOT / "docker"
 
 # Rex Auto-Fixer: Known repository remaps
 # Maps short-hand image names to full registry paths

@@ -168,8 +168,29 @@ def harden_permissions() -> None:
 
 import subprocess
 
+# Rex Fix Plan: Absolute Path Anchoring
+BASE_DIR = Path(__file__).resolve().parent
+REPO_ROOT = BASE_DIR.parent
+DOCKER_DIR = REPO_ROOT / "docker" / "media"
+
 def run(dry_run: bool = False, interactive: bool | None = None) -> None:
     """Core Orchestrator: filesystem → env → image → validation → startup"""
+    
+    # 0. Recursion Guard
+    if os.environ.get("INIT_ALREADY_RUN") == "1":
+        log("Skipping duplicate initialization run.")
+        return
+    os.environ["INIT_ALREADY_RUN"] = "1"
+
+    # 0.1 Context Debug
+    log(f"DEBUG: CWD = {os.getcwd()}")
+    log(f"DEBUG: BASE_DIR = {BASE_DIR}")
+    
+    # 0.2 Context Validation
+    if not DOCKER_DIR.exists():
+        log(f"FATAL: Docker directory missing: {DOCKER_DIR}")
+        sys.exit(1)
+
     log("🚀 Starting M3TAL Self-Healing Orchestrator...")
     
     # 1-2. Scaffolding (Filesystem + Files)
