@@ -13,29 +13,39 @@ import stat
 import sys
 from pathlib import Path
 
-# Resolve repo root: 2 levels up from control-plane/init.py
-REPO_ROOT = Path(__file__).resolve().parent.parent
-sys.path.append(str(REPO_ROOT / "scripts"))
+# --- Context Anchoring --------------------------------------------------------
+# CORE: All internal paths derive from these two anchors
+BASE_DIR = Path(__file__).resolve().parent  # control-plane/
+REPO_ROOT = BASE_DIR.parent
+
+# Add support directories to system path for local imports
+for path in [REPO_ROOT / "scripts", REPO_ROOT / "dashboard"]:
+    if str(path) not in sys.path:
+        sys.path.insert(0, str(path))
+
 try:
     from validate_env import validate_env
     from validate_images import validate_images
+    from progress_utils import log_step, Heartbeat, Spinner
 except ImportError:
     validate_env = None
     validate_images = None
+    log_step = lambda s, t, m: print(f"[{s}/{t}] {m}")
+    Heartbeat = None
+    Spinner = None
 
-BASE_DIR = REPO_ROOT
-STATE_DIR = BASE_DIR / "control-plane" / "state"
+from auth import inspect_users_file, reset_admin_user, resolve_users_path
+
+# --- Path System --------------------------------------------------------------
+STATE_DIR = BASE_DIR / "state"
 LOG_DIR = STATE_DIR / "logs"
 LOCK_DIR = STATE_DIR / "locks"
 HEALTH_DIR = STATE_DIR / "health"
 TMP_DIR = STATE_DIR / "tmp"
-AGENTS_DIR = BASE_DIR / "control-plane" / "agents"
-DASHBOARD_DIR = BASE_DIR / "dashboard"
-
-if str(DASHBOARD_DIR) not in sys.path:
-    sys.path.insert(0, str(DASHBOARD_DIR))
-
-from auth import inspect_users_file, reset_admin_user, resolve_users_path
+AGENTS_DIR = BASE_DIR / "agents"
+DASHBOARD_DIR = REPO_ROOT / "dashboard"
+SCRIPTS_DIR = REPO_ROOT / "scripts"
+DOCKER_MEDIA_DIR = REPO_ROOT / "docker" / "media"
 
 # --- Directory tree -----------------------------------------------------------
 
@@ -166,82 +176,109 @@ def harden_permissions() -> None:
         pass  # Best-effort; non-fatal
 
 
-import subprocess
+# --- Directory tree -----------------------------------------------------------
 
-# Rex Fix Plan: Absolute Path Anchoring
-BASE_DIR = Path(__file__).resolve().parent
-REPO_ROOT = BASE_DIR.parent
-DOCKER_DIR = REPO_ROOT / "docker" / "media"
+REQUIRED_DIRS = [
+    STATE_DIR,
+    LOG_DIR,
+    LOCK_DIR,
+    HEALTH_DIR,
+    TMP_DIR,
+    AGENTS_DIR,
+    DOCKER_MEDIA_DIR,
+    SCRIPTS_DIR,
+]
+import subprocess
 
 def run(dry_run: bool = False, interactive: bool | None = None) -> None:
     """Core Orchestrator: filesystem → env → image → validation → startup"""
     
     # 0. Recursion Guard
     if os.environ.get("INIT_ALREADY_RUN") == "1":
-        log("Skipping duplicate initialization run.")
         return
     os.environ["INIT_ALREADY_RUN"] = "1"
 
-    # 0.1 Context Debug
-    log(f"DEBUG: CWD = {os.getcwd()}")
-    log(f"DEBUG: BASE_DIR = {BASE_DIR}")
-    
-    # 0.2 Context Validation
-    if not DOCKER_DIR.exists():
-        log(f"FATAL: Docker directory missing: {DOCKER_DIR}")
-        sys.exit(1)
-
     log("🚀 Starting M3TAL Self-Healing Orchestrator...")
     
-    # 1-2. Scaffolding (Filesystem + Files)
-    scaffold_dirs()
-    scaffold_logs()
-    scaffold_state_files()
-    scaffold_users(interactive=interactive)
-    if not dry_run:
-        harden_permissions()
+    # 0.1 Heartbeat System
+    hb = Heartbeat() if 'Heartbeat' in globals() and Heartbeat else None
+    if hb: hb.start()
 
-    # 3-4. Env Preflight
-    if validate_env:
-        log("Checking environment integrity...")
-        valid, missing = validate_env(interactive=True)
-        if not valid:
-            log("Core environment missing. Run 'python scripts/configure_env.py' to fix.")
-            sys.exit(1)
-
-    # 5. Image Validation (Stage 1: Non-blocking Audit)
-    if validate_images:
-        log("Stage 1: Auditing Docker images...")
-        all_ok = validate_images(pull=False)
+    try:
+        # 0.2 Context Debug
+        log(f"DEBUG: CWD = {os.getcwd()}")
+        log(f"DEBUG: BASE_DIR = {BASE_DIR}")
         
-        # 6. Image Auto-Fix (Stage 2: pulls + repairs if needed)
-        if not all_ok:
-            log("Image issues detected. Attempting autonomous repair...")
-            # Automatically try to repair (pull=True, fix=True)
-            repair_ok = validate_images(pull=True, fix=True)
-            
-            # 7. Final Image Validation (Stage 3: Blocking)
-            if not repair_ok:
-                log("FATAL: Image validation failed after autonomous repair attempt.")
-                sys.exit(1)
-            log("Image repair complete.")
-        else:
-            log("All images verified.")
-
-    log("✨ System initialization complete.")
-    
-    # 8. Start System (Optional Hand-off)
-    if "--start" in sys.argv:
-        log("Handing off control to supervisor.py...")
-        try:
-            # We use subprocess.run so we can see the supervisor output
-            supervisor_script = BASE_DIR / "control-plane" / "supervisor.py"
-            subprocess.run([sys.executable, str(supervisor_script)], check=True)
-        except KeyboardInterrupt:
-            log("Supervisor terminated by user.")
-        except Exception as e:
-            log(f"Supervisor failed: {e}")
+        # 0.3 Context Validation
+        if not DOCKER_DIR.exists():
+            log(f"FATAL: Docker directory missing: {DOCKER_DIR}")
             sys.exit(1)
+
+        # Step 1: Filesystem
+        log_step(1, 8, "Initializing system directories")
+        scaffold_dirs()
+        
+        # Step 2: Critical Scaffolding
+        log_step(2, 8, "Scaffolding state files and identity baseline")
+        scaffold_logs()
+        scaffold_state_files()
+        scaffold_users(interactive=interactive)
+        if not dry_run:
+            harden_permissions()
+
+        # Step 3: Environment Audit
+        log_step(3, 8, "Auditing environment integrity")
+        if validate_env:
+            valid, _ = validate_env(interactive=True)
+            if not valid:
+                log("Core environment missing. Run 'python scripts/configure_env.py' to fix.")
+                sys.exit(1)
+
+        # Step 4: Environment Context
+        log_step(4, 8, "Standardizing environment context")
+
+        # Step 5: Image Audit
+        log_step(5, 8, "Auditing Docker image availability")
+        if validate_images:
+            all_ok = validate_images(pull=False)
+            
+            # Step 6: Image Repair (Stage 2)
+            log_step(6, 8, "Autonomous image repair and correction")
+            if not all_ok:
+                log("Image issues detected. Attempting autonomous repair...")
+                repair_ok = validate_images(pull=True, fix=True)
+                if not repair_ok:
+                    log("FATAL: Image validation failed after autonomous repair attempt.")
+                    sys.exit(1)
+                log("Image repair complete.")
+            else:
+                log("No image repairs required.")
+
+            # Step 7: Final Enforcement
+            log_step(7, 8, "Final infrastructure enforcement")
+            if not validate_images(pull=False):
+                log("FATAL: Final image verification failed.")
+                sys.exit(1)
+
+        log("✨ System initialization complete.")
+    
+        # Step 8: Startup Hand-off
+        if "--start" in sys.argv:
+            log_step(8, 8, "Supervisor hand-off")
+            log("Handing off control to supervisor.py...")
+            try:
+                supervisor_script = BASE_DIR / "supervisor.py"
+                subprocess.run([sys.executable, str(supervisor_script)], check=True)
+            except KeyboardInterrupt:
+                log("Supervisor terminated by user.")
+            except Exception as e:
+                log(f"Supervisor failed: {e}")
+                sys.exit(1)
+        else:
+            log_step(8, 8, "Ready for manual startup")
+
+    finally:
+        if hb: hb.stop()
 
 def run_cli():
     dry = "--dry-run" in sys.argv

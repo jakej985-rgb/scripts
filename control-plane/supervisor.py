@@ -18,20 +18,29 @@ import threading
 import time
 from pathlib import Path
 
-# Resolve repo root
-REPO_ROOT = Path(__file__).resolve().parent.parent
-sys.path.append(str(REPO_ROOT / "scripts"))
+# --- Context Anchoring --------------------------------------------------------
+BASE_DIR = Path(__file__).resolve().parent  # control-plane/
+REPO_ROOT = BASE_DIR.parent
+
+# Add support directories to system path
+for path in [REPO_ROOT / "scripts", REPO_ROOT / "dashboard"]:
+    if str(path) not in sys.path:
+        sys.path.append(str(path))
+
 try:
     from validate_env import validate_env
     from validate_images import validate_images
+    from progress_utils import Spinner
 except ImportError:
     validate_env = None
     validate_images = None
+    Spinner = None
 
-BASE_DIR = REPO_ROOT / "control-plane"
-AGENTS_DIR = BASE_DIR / "agents"
+# --- Path System --------------------------------------------------------------
 STATE_DIR = BASE_DIR / "state"
 LOG_DIR = STATE_DIR / "logs"
+AGENTS_DIR = BASE_DIR / "agents"
+DOCKER_MEDIA_DIR = REPO_ROOT / "docker" / "media"
 
 PYTHON = sys.executable  # Use the same interpreter that launched us
 
@@ -92,7 +101,9 @@ signal.signal(signal.SIGINT, _handle_signal)
 
 def wait_for_docker(max_retries: int = 30, interval: float = 4.0) -> bool:
     """Block until the Docker socket is responsive or timeout."""
-    print("[CHECK] Waiting for Docker socket...")
+    spinner = Spinner("Waiting for Docker socket")
+    if spinner: spinner.start()
+    
     for attempt in range(1, max_retries + 1):
         try:
             result = subprocess.run(
@@ -101,15 +112,16 @@ def wait_for_docker(max_retries: int = 30, interval: float = 4.0) -> bool:
                 timeout=10,
             )
             if result.returncode == 0:
-                print("[CHECK] Docker is ready.")
+                if spinner: spinner.stop(success=True, final_msg="Docker is ready")
                 return True
         except (subprocess.TimeoutExpired, FileNotFoundError):
             pass
         if _shutdown_event.is_set():
+            if spinner: spinner.stop(success=False)
             return False
         time.sleep(interval)
 
-    print("[FATAL] Docker not found after 2 minutes. Exiting.")
+    if spinner: spinner.stop(success=False, final_msg="Docker not found after 2 minutes")
     return False
 
 
