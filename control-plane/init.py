@@ -46,6 +46,8 @@ REQUIRED_DIRS = [
     HEALTH_DIR,
     TMP_DIR,
     AGENTS_DIR,
+    BASE_DIR / "docker" / "media",
+    BASE_DIR / "scripts",
 ]
 
 # --- Log files ---------------------------------------------------------------
@@ -120,11 +122,11 @@ def scaffold_state_files() -> None:
                 write_state_default(path, default_data)
                 log(f"Reset corrupted {name}")
 
-    # leader.txt — always ensure it exists
+    # leader.txt — always ensure it exists and has a baseline
     leader_path = STATE_DIR / "leader.txt"
-    if not leader_path.exists():
-        leader_path.touch()
-        log("Created leader.txt")
+    if not leader_path.exists() or leader_path.stat().st_size == 0:
+        leader_path.write_text("none\n", encoding="utf-8")
+        log("Initialized leader.txt with 'none'")
 
 
 def scaffold_users(interactive: bool | None = None) -> None:
@@ -164,32 +166,65 @@ def harden_permissions() -> None:
         pass  # Best-effort; non-fatal
 
 
+import subprocess
+
 def run(dry_run: bool = False, interactive: bool | None = None) -> None:
-    """Execute the full init sequence."""
-    if validate_env:
-        valid, _ = validate_env(interactive=True)
-        if not valid:
-            sys.exit(1)
-
-    if validate_images:
-        do_pull = "--pull" in sys.argv
-        do_fix = "--fix" in sys.argv
-        if not validate_images(pull=do_pull, fix=do_fix):
-            # Non-blocking for now in init, just warning, 
-            # or blocking if user wants strict mode.
-            # User request said "Block deployment", so we block.
-            sys.exit(1)
-
-    log("Running self-healing setup...")
+    """Core Orchestrator: filesystem → env → image → validation → startup"""
+    log("🚀 Starting M3TAL Self-Healing Orchestrator...")
+    
+    # 1-2. Scaffolding (Filesystem + Files)
     scaffold_dirs()
     scaffold_logs()
     scaffold_state_files()
     scaffold_users(interactive=interactive)
     if not dry_run:
         harden_permissions()
-    log("Done.")
 
+    # 3-4. Env Preflight
+    if validate_env:
+        log("Checking environment integrity...")
+        valid, missing = validate_env(interactive=True)
+        if not valid:
+            log("Core environment missing. Run 'python scripts/configure_env.py' to fix.")
+            sys.exit(1)
 
-if __name__ == "__main__":
+    # 5. Image Validation (Stage 1: Non-blocking Audit)
+    if validate_images:
+        log("Stage 1: Auditing Docker images...")
+        all_ok = validate_images(pull=False)
+        
+        # 6. Image Auto-Fix (Stage 2: pulls + repairs if needed)
+        if not all_ok:
+            log("Image issues detected. Attempting autonomous repair...")
+            # Automatically try to repair (pull=True, fix=True)
+            repair_ok = validate_images(pull=True, fix=True)
+            
+            # 7. Final Image Validation (Stage 3: Blocking)
+            if not repair_ok:
+                log("FATAL: Image validation failed after autonomous repair attempt.")
+                sys.exit(1)
+            log("Image repair complete.")
+        else:
+            log("All images verified.")
+
+    log("✨ System initialization complete.")
+    
+    # 8. Start System (Optional Hand-off)
+    if "--start" in sys.argv:
+        log("Handing off control to supervisor.py...")
+        try:
+            # We use subprocess.run so we can see the supervisor output
+            supervisor_script = BASE_DIR / "control-plane" / "supervisor.py"
+            subprocess.run([sys.executable, str(supervisor_script)], check=True)
+        except KeyboardInterrupt:
+            log("Supervisor terminated by user.")
+        except Exception as e:
+            log(f"Supervisor failed: {e}")
+            sys.exit(1)
+
+def run_cli():
     dry = "--dry-run" in sys.argv
     run(dry_run=dry)
+
+if __name__ == "__main__":
+    run_cli()
