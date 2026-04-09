@@ -15,6 +15,12 @@ from pathlib import Path
 
 # Resolve repo root: 2 levels up from control-plane/init.py
 REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.append(str(REPO_ROOT / "scripts"))
+try:
+    from validate_env import validate_env
+except ImportError:
+    validate_env = None
+
 BASE_DIR = REPO_ROOT
 STATE_DIR = BASE_DIR / "control-plane" / "state"
 LOG_DIR = STATE_DIR / "logs"
@@ -158,6 +164,11 @@ def harden_permissions() -> None:
 
 def run(dry_run: bool = False, interactive: bool | None = None) -> None:
     """Execute the full init sequence."""
+    if validate_env:
+        valid, _ = validate_env(interactive=True)
+        if not valid:
+            sys.exit(1)
+
     log("Running self-healing setup...")
     scaffold_dirs()
     scaffold_logs()

@@ -16,6 +16,19 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ENV_FILE = os.path.join(REPO_ROOT, ".env")
 EXAMPLE_FILE = os.path.join(REPO_ROOT, ".env.example")
 
+# Rex Guardrail: Required variables for system integrity
+REQUIRED_VARS = [
+    "MASTER_IP",
+    "DASHBOARD_PORT",
+    "HTTP_PORT",
+    "DATA_DIR",
+    "CONFIG_DIR",
+    "DOMAIN",
+    "VPN_USER",
+    "VPN_PASSWORD",
+    "DASHBOARD_SECRET"
+]
+
 def get_input(prompt, default=None):
     if default:
         user_input = input(f"{prompt} [{YELLOW}{default}{END}]: ").strip()

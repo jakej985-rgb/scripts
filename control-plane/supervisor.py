@@ -19,6 +19,12 @@ from pathlib import Path
 
 # Resolve repo root
 REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.append(str(REPO_ROOT / "scripts"))
+try:
+    from validate_env import validate_env
+except ImportError:
+    validate_env = None
+
 BASE_DIR = REPO_ROOT / "control-plane"
 AGENTS_DIR = BASE_DIR / "agents"
 STATE_DIR = BASE_DIR / "state"
@@ -159,7 +165,13 @@ def run_agent(name: str, script: str) -> None:
 # --- Main Entry ---------------------------------------------------------------
 
 def main() -> None:
-    # 0. Docker liveness
+    # 0. Rex Guardrail: Check environment integrity
+    if validate_env:
+        valid, _ = validate_env(interactive=True)
+        if not valid:
+            sys.exit(1)
+
+    # 0.1. Docker liveness
     if not wait_for_docker():
         sys.exit(1)
 
