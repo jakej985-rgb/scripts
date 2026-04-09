@@ -22,8 +22,10 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.append(str(REPO_ROOT / "scripts"))
 try:
     from validate_env import validate_env
+    from validate_images import validate_images
 except ImportError:
     validate_env = None
+    validate_images = None
 
 BASE_DIR = REPO_ROOT / "control-plane"
 AGENTS_DIR = BASE_DIR / "agents"
@@ -171,7 +173,14 @@ def main() -> None:
         if not valid:
             sys.exit(1)
 
-    # 0.1. Docker liveness
+    # 0.1. Rex Guardrail: Check image availability
+    if validate_images:
+        # Pre-flight is local-only by default for speed, unless --pull-images is passed
+        do_pull = "--pull-images" in sys.argv
+        if not validate_images(pull=do_pull):
+            sys.exit(1)
+
+    # 0.2. Docker liveness
     if not wait_for_docker():
         sys.exit(1)
 

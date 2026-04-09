@@ -18,8 +18,10 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.append(str(REPO_ROOT / "scripts"))
 try:
     from validate_env import validate_env
+    from validate_images import validate_images
 except ImportError:
     validate_env = None
+    validate_images = None
 
 BASE_DIR = REPO_ROOT
 STATE_DIR = BASE_DIR / "control-plane" / "state"
@@ -167,6 +169,14 @@ def run(dry_run: bool = False, interactive: bool | None = None) -> None:
     if validate_env:
         valid, _ = validate_env(interactive=True)
         if not valid:
+            sys.exit(1)
+
+    if validate_images:
+        do_pull = "--pull" in sys.argv
+        if not validate_images(pull=do_pull):
+            # Non-blocking for now in init, just warning, 
+            # or blocking if user wants strict mode.
+            # User request said "Block deployment", so we block.
             sys.exit(1)
 
     log("Running self-healing setup...")
