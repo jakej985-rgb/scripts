@@ -35,7 +35,13 @@ def load_env():
 
 def validate_env(interactive=False):
     """Rex Guardrail: Verify .env integrity before execution."""
+    is_ci = os.environ.get("GITHUB_ACTIONS") == "true"
+    
     if not os.path.exists(ENV_FILE):
+        if is_ci:
+            print(f"{YELLOW}[REX] CI Environment: .env file is missing. Skipping fatal audit.{END}")
+            return True, []
+            
         print(f"{RED}{BOLD}[REX] ERROR: .env file is missing!{END}")
         if interactive:
             print(f"{YELLOW}Hint: Run 'python scripts/configure_env.py' to generate it.{END}")

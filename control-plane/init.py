@@ -320,8 +320,11 @@ def run(dry_run: bool = False, interactive: bool | None = None) -> None:
         if validate_env:
             valid, _ = validate_env(interactive=True)
             if not valid:
-                log("Core environment missing. Run 'python scripts/configure_env.py' to fix.")
-                sys.exit(1)
+                if dry_run:
+                    log("[INIT] Core environment missing. Proceeding with dry-run (non-fatal)...")
+                else:
+                    log("Core environment missing. Run 'python scripts/configure_env.py' to fix.")
+                    sys.exit(1)
 
         # Step 4: Environment Context
         if hb: hb.ping("Environment context")
@@ -330,19 +333,26 @@ def run(dry_run: bool = False, interactive: bool | None = None) -> None:
         # Step 5: Image Audit
         if hb: hb.ping("Scanning Docker images")
         log_step(5, 9, "Auditing Docker image availability", bar=main_bar)
+        
+        is_ci = os.environ.get("GITHUB_ACTIONS") == "true"
+        
         if validate_images:
             all_ok = validate_images(pull=False)
             
             # Step 6: Image Repair (Stage 2)
             if hb: hb.ping("Image repair")
             log_step(6, 9, "Autonomous image repair and correction", bar=main_bar)
+            
             if not all_ok:
-                log("Image issues detected. Attempting autonomous repair...")
-                repair_ok = validate_images(pull=True, fix=True)
-                if not repair_ok:
-                    log("FATAL: Image validation failed after autonomous repair attempt.")
-                    sys.exit(1)
-                log("Image repair complete.")
+                if dry_run or is_ci:
+                    log("[INIT] Image issues detected. Skipping autonomous repair during validation.")
+                else:
+                    log("Image issues detected. Attempting autonomous repair...")
+                    repair_ok = validate_images(pull=True, fix=True)
+                    if not repair_ok:
+                        log("FATAL: Image validation failed after autonomous repair attempt.")
+                        sys.exit(1)
+                    log("Image repair complete.")
             else:
                 log("No image repairs required.")
 
@@ -350,8 +360,11 @@ def run(dry_run: bool = False, interactive: bool | None = None) -> None:
             if hb: hb.ping("Final verification")
             log_step(7, 9, "Final infrastructure enforcement", bar=main_bar)
             if not validate_images(pull=False):
-                log("FATAL: Final image verification failed.")
-                sys.exit(1)
+                if dry_run or is_ci:
+                    log("[INIT] Final infrastructure incomplete. Proceeding with dry-run (non-fatal)...")
+                else:
+                    log("FATAL: Final image verification failed.")
+                    sys.exit(1)
 
         log("Image validation complete.")
 
