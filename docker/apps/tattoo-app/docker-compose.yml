@@ -10,8 +10,12 @@ services:
       - sh
       - -c
       - 'npm install && npm start'
-    ports:
-      -  "3001:3000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tattoo.rule=Host(`tattoo.${DOMAIN}`)"
+      - "traefik.http.services.tattoo.loadbalancer.server.port=3000"
+    networks:
+      - m3tal
     depends_on:
       - db
     restart: unless-stopped
