@@ -84,6 +84,8 @@ class TestInit:
         dashboard = tmp_path / "dashboard"
         users_path = dashboard / "users.json"
 
+        # Rex Fix: Force CI detection to False so we can test the real scaffolding path
+        monkeypatch.setenv("GITHUB_ACTIONS", "false")
         monkeypatch.setattr(init_module, "DASHBOARD_DIR", dashboard)
         monkeypatch.setattr(init_module, "resolve_users_path", lambda *_args, **_kwargs: users_path)
 
@@ -107,6 +109,8 @@ class TestInit:
         dashboard = tmp_path / "dashboard"
         users_path = dashboard / "users.json"
 
+        # Rex Fix: Force CI detection to False so we can test the real scaffolding paths
+        monkeypatch.setenv("GITHUB_ACTIONS", "false")
         monkeypatch.setattr(init_module, "DASHBOARD_DIR", dashboard)
         monkeypatch.setattr(init_module, "resolve_users_path", lambda *_args, **_kwargs: users_path)
 
