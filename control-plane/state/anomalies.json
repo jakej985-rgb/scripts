@@ -1,8 +1,34 @@
 {
-    "issues": [],
+    "issues": [
+        {
+            "type": "recoverable",
+            "target": "m3tal-dashboard",
+            "reason": "container stopped"
+        },
+        {
+            "type": "recoverable",
+            "target": "m3tal-dashboard-maintenance",
+            "reason": "container stopped"
+        },
+        {
+            "type": "recoverable",
+            "target": "tattoo-api",
+            "reason": "container missing from host"
+        },
+        {
+            "type": "recoverable",
+            "target": "tattoo-db",
+            "reason": "container missing from host"
+        },
+        {
+            "type": "recoverable",
+            "target": "watchtower",
+            "reason": "container stopped"
+        }
+    ],
     "_m3tal_metadata": {
         "version": "1.3.0",
-        "updated_at": 1775780606,
-        "host": "localhost"
+        "updated_at": 1775788498,
+        "host": "1e688f7701c9"
     }
 }

@@ -4,7 +4,7 @@ import os
 # Add current dir to path for utils
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON
+from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
 from utils.state import load_json, save_json
 from utils.guards import wrap_agent
 from utils.logger import get_logger
@@ -40,9 +40,9 @@ def classify_issue(health_data, metrics_data, report_data=None):
             })
         elif status == "missing":
             issues.append({
-                "type": "critical",
+                "type": "recoverable",
                 "target": name,
-                "reason": "container definition missing or not created"
+                "reason": "container missing from host"
             })
 
     # 2. System Load (Now using deep metrics)
@@ -82,7 +82,7 @@ def classify_issue(health_data, metrics_data, report_data=None):
     return issues
 
 def analyze():
-    health_data = load_json(HEALTH_JSON, default={})
+    health_data = load_json(CONTAINER_HEALTH_JSON, default={})
     metrics_data = load_json(METRICS_JSON, default={})
     report_data = load_json(HEALTH_REPORT_JSON, default={})
     

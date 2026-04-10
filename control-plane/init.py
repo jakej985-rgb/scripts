@@ -218,16 +218,21 @@ def launch_compose_stacks(hb=None) -> None:
             capture_output=True, shell=use_shell
         )
     except Exception:
-        pass  # Network may already exist — that's fine
+        pass  # Network may already exist
 
-    for stack_name, stack_dir in COMPOSE_STACKS:
+    # Initialize a sub-progress bar for the stacks
+    stack_count = len(COMPOSE_STACKS)
+    stack_bar = ProgressBar(stack_count, prefix="  Stacks", width=20)
+
+    for i, (stack_name, stack_dir) in enumerate(COMPOSE_STACKS, 1):
         compose_file = stack_dir / "docker-compose.yml"
         if not compose_file.exists():
             log(f"  Skipping {stack_name}: no docker-compose.yml found")
             continue
 
         if hb: hb.ping(f"Launching {stack_name}")
-        log(f"  Launching stack: {stack_name} ...")
+        stack_bar.update(i - 1, f"Starting {stack_name}...")
+        
         cmd = [
             "docker", "compose",
             "-f", str(compose_file),
@@ -240,19 +245,22 @@ def launch_compose_stacks(hb=None) -> None:
                 capture_output=True,
                 text=True,
                 shell=use_shell,
-                timeout=120
+                timeout=180 # Increased timeout for heavy maintenance stacks
             )
             if result.returncode == 0:
                 log(f"  ✅ {stack_name} — UP")
-                if hb: hb.ping(f"{stack_name} started")
+                if hb: hb.ping(f"{stack_name} ready")
+                stack_bar.update(i, f"Finished {stack_name}")
             else:
-                # Non-fatal: log but keep going so other stacks still start
                 stderr_snippet = (result.stderr or "").strip()[:200]
                 log(f"  ⚠️  {stack_name} — WARNING: {stderr_snippet}")
+                stack_bar.update(i, f"Partial {stack_name}")
         except subprocess.TimeoutExpired:
-            log(f"  ⚠️  {stack_name} — TIMEOUT after 120s (skipping)")
+            log(f"  ⚠️  {stack_name} — TIMEOUT after 180s")
+            stack_bar.update(i, f"Timeout {stack_name}")
         except Exception as e:
             log(f"  ⚠️  {stack_name} — ERROR: {e}")
+            stack_bar.update(i, f"Error {stack_name}")
 
 def run(dry_run: bool = False, interactive: bool | None = None) -> None:
     """Core Orchestrator: filesystem → env → image → validation → startup"""

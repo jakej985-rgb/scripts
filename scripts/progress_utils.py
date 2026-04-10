@@ -4,6 +4,22 @@ import time
 import threading
 from typing import Optional
 
+# Batch 16 Hardening: Force UTF-8 for Windows console resilience
+if sys.stdout.encoding.lower() != 'utf-8':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except (AttributeError, Exception):
+        pass
+
+def safe_print(msg: str):
+    """Prints with a fallback for encoding issues (Batch 16)."""
+    try:
+        print(msg)
+    except UnicodeEncodeError:
+        # Fallback for old Windows consoles
+        safe_msg = msg.encode('ascii', 'replace').decode('ascii')
+        print(safe_msg)
+
 # Colors
 GREEN = "\033[92m"
 YELLOW = "\033[93m"
@@ -53,7 +69,7 @@ class Spinner:
         
         symbol = f"{GREEN}✔{END}" if success else f"{RED}✘{END}"
         msg = final_msg or self.message
-        print(f"  {symbol} {msg}")
+        safe_print(f"  {symbol} {msg}")
 
 class ProgressBar:
     def __init__(self, total: int, prefix: str = "", width: int = 30):
@@ -106,7 +122,7 @@ class Heartbeat:
                 # Clear line and move to start
                 sys.stdout.write("\r" + " " * 80 + "\r")
                 sys.stdout.flush()
-            print(message)
+            safe_print(message)
 
     def _pulse(self):
         while not self._stop_event.is_set():
@@ -137,6 +153,6 @@ class Heartbeat:
 
 def log_step(step: int, total: int, message: str, bar: Optional[ProgressBar] = None):
     prefix = f"{BLUE}{BOLD}[INIT] Step {step}/{total}:{END}"
-    print(f"\n{prefix} {message}")
+    safe_print(f"\n{prefix} {message}")
     if bar:
         bar.update(step, "")

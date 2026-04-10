@@ -31,10 +31,16 @@ def plan_action(issues, cooldowns):
             if now - last_action_time < COOLDOWN_PERIOD:
                 continue
                 
+            # Differentiate between restart (stopped) and redeploy (missing)
+            action_type = "restart"
+            reason = issue.get("reason", "")
+            if "missing" in reason:
+                action_type = "redeploy"
+                
             actions.append({
-                "type": "restart",
+                "type": action_type,
                 "target": target,
-                "reason": issue.get("reason")
+                "reason": reason
             })
             new_cooldowns[target] = now
             

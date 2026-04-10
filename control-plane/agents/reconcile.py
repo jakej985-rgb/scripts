@@ -7,7 +7,7 @@ import time
 # Add current dir to path for utils
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from utils.paths import DECISIONS_JSON, REGISTRY_JSON, DOCKER_DIR, CONFIG_DIR, HEALTH_JSON, STATE_DIR
+from utils.paths import DECISIONS_JSON, REGISTRY_JSON, DOCKER_DIR, CONFIG_DIR, HEALTH_JSON, STATE_DIR, REPO_ROOT
 from utils.state import load_json, save_json
 from utils.guards import wrap_agent
 from utils.logger import get_logger
@@ -40,6 +40,9 @@ def perform_action(action):
     if a_type == "scale":
         return perform_scale(action)
         
+    if a_type == "redeploy":
+        return perform_redeploy(action)
+        
     cmd = ["docker", a_type, target]
     if a_type not in ["restart", "start", "stop"]:
         logger.warning(f"Unsupported action type: {a_type}")
@@ -69,6 +72,35 @@ def perform_scale(action):
                         return True
                 except:
                     continue
+    return False
+
+def perform_redeploy(action):
+    target = action.get("target")
+    logger.info(f"Attempting to redeploy missing service: {target}")
+    
+    # Scan for the compose file that owns this service
+    # Batch 16 Hardening: Ensure we use --env-file if .env exists
+    env_file = os.path.join(REPO_ROOT, ".env")
+    env_arg = ["--env-file", env_file] if os.path.exists(env_file) else []
+    
+    for root, dirs, files in os.walk(DOCKER_DIR):
+        for file in files:
+            if file.endswith('.yml') or file.endswith('.yaml'):
+                full_path = os.path.join(root, file)
+                try:
+                    # Check if service exists in this file
+                    res = subprocess.run(["docker", "compose", "-f", full_path, "config", "--services"], 
+                                         capture_output=True, text=True)
+                    if res.returncode == 0 and target in res.stdout.splitlines():
+                        logger.info(f"Found {target} in {full_path}. Redeploying...")
+                        cmd = ["docker", "compose", "-f", full_path] + env_arg + ["up", "-d", target]
+                        subprocess.run(cmd, check=True)
+                        return True
+                except Exception as e:
+                    logger.error(f"Error checking compose file {full_path}: {e}")
+                    continue
+    
+    logger.error(f"Could not find compose context for service: {target}")
     return False
 
 def enforce_dependencies():
