@@ -11,6 +11,7 @@ from utils.guards import wrap_agent
 from utils.logger import get_logger
 
 logger = get_logger("observer")
+_seen_events: set[str] = set()
 
 def aggregate_events():
     """Phase 2: Observer Agent as per Audit Batch 4 T5."""
@@ -31,6 +32,12 @@ def aggregate_events():
                         if "Critical Event detected" in line:
                             continue
                         if "[ERROR]" in line or "[CRASH]" in line:
+                            fingerprint = f"{agent_name}:{line.strip()[-80:]}"
+                            if fingerprint in _seen_events:
+                                continue
+                            _seen_events.add(fingerprint)
+                            if len(_seen_events) > 500:
+                                _seen_events.clear()
                             logger.warning(f"Critical Event detected in {agent_name}: {line.strip()}")
             except Exception as e:
                 logger.error(f"Failed to scan log {file}: {e}")

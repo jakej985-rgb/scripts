@@ -4,7 +4,6 @@ Tests the Python replacements for the shell scripts.
 """
 
 import json
-import os
 import signal
 import sys
 import tarfile
@@ -125,14 +124,11 @@ class TestBackup:
     def test_prune_keeps_n_backups(self, tmp_path):
         """Pruning removes archives beyond the retention limit."""
         from backup import prune_old_backups
-        import time
 
         # Create 7 fake backup files
         for i in range(7):
-            f = tmp_path / f"backup-2026-01-0{i+1}_0000.tar.gz"
+            f = tmp_path / f"backup-2026-01-{i+1:02d}_0000.tar.gz"
             f.write_bytes(b"fake")
-            # Stagger mtime so sorting works
-            os.utime(f, (time.time() + i, time.time() + i))
 
         prune_old_backups(tmp_path, keep=5)
         remaining = list(tmp_path.glob("backup-*.tar.gz"))
@@ -145,9 +141,10 @@ class TestRestore:
 
         archive_path = tmp_path / "backup.tar.gz"
         with tarfile.open(archive_path, "w:gz") as tar:
-            payload = tmp_path / "payload.txt"
-            payload.write_text("pwnd")
-            tar.add(payload, arcname="../outside.txt")
+            info = tarfile.TarInfo(name="escape.txt")
+            info.type = tarfile.SYMTYPE
+            info.linkname = "../../etc/passwd"
+            tar.addfile(info)
 
         target = tmp_path / "restore-target"
         target.mkdir()
@@ -214,10 +211,7 @@ class TestLeaderAndSupervisor:
         monkeypatch.setattr(leader_module, "get_node_identity", lambda: "test-host@127.0.0.1")
         monkeypatch.setattr(leader_module, "is_local_host", lambda host: host in {"localhost", "test-host"})
 
-        with pytest.raises(SystemExit) as exc:
-            leader_module.elect_leader()
-
-        assert exc.value.code == 0
+        leader_module.elect_leader()
         assert leader_file.read_text() == "test-host"
 
     def test_handle_signal_terminates_registered_children(self, monkeypatch):
@@ -231,12 +225,14 @@ class TestLeaderAndSupervisor:
                 self.terminated = True
 
         fake_proc = FakeProc()
-        monkeypatch.setattr(supervisor_module, "_children", [fake_proc])
-        monkeypatch.setattr(supervisor_module, "_shutdown", False)
+        with supervisor_module._children_lock:
+            supervisor_module._children.clear()
+            supervisor_module._children.append(fake_proc)
+        supervisor_module._shutdown_event.clear()
 
         supervisor_module._handle_signal(signal.SIGTERM, None)
 
-        assert supervisor_module._shutdown is True
+        assert supervisor_module._shutdown_event.is_set() is True
         assert fake_proc.terminated is True
 
 
@@ -278,6 +274,13 @@ class TestAnomalyClassification:
 
         issues = classify_issue(health, metrics)
         assert len(issues) == 0
+
+    def test_classify_issue_rejects_list_metrics(self):
+        sys.path.insert(0, str(REPO_ROOT / "control-plane" / "agents"))
+        from anomaly import classify_issue
+
+        issues = classify_issue({"radarr": {"status": "online"}}, [])
+        assert issues == []
 
 
 class TestDecisionCooldown:

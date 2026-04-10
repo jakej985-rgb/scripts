@@ -62,7 +62,11 @@ def create_backup(dest: Path, repo_root: Path) -> Path | None:
 
 def prune_old_backups(dest: Path, keep: int = KEEP_BACKUPS) -> None:
     """Remove old backups beyond the retention limit."""
-    backups = sorted(dest.glob("backup-*.tar.gz"), key=lambda p: p.stat().st_mtime, reverse=True)
+    backups = sorted(
+        dest.glob("backup-*.tar.gz"),
+        key=lambda p: (p.name, p.stat().st_mtime),
+        reverse=True,
+    )
     for old in backups[keep:]:
         old.unlink()
         print(f"[PRUNE] Removed {old.name}")
