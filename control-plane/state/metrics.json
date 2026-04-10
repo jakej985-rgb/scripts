@@ -2,14 +2,14 @@
     "system": {
         "cpu": 0.0,
         "mem": 0.0,
-        "timestamp": 1775788494
+        "timestamp": 1775791861
     },
     "containers": [
         {
             "name": "portainer",
             "cpu": 0.0,
             "mem": 0.27,
-            "mem_usage": "20.98MiB / 7.729GiB"
+            "mem_usage": "21.16MiB / 7.729GiB"
         },
         {
             "name": "m3tal-dashboard-maintenance",
@@ -19,9 +19,9 @@
         },
         {
             "name": "dozzle",
-            "cpu": 0.0,
+            "cpu": 0.08,
             "mem": 0.24,
-            "mem_usage": "18.96MiB / 7.729GiB"
+            "mem_usage": "18.89MiB / 7.729GiB"
         },
         {
             "name": "watchtower",
@@ -33,55 +33,55 @@
             "name": "maintainerr",
             "cpu": 0.0,
             "mem": 1.63,
-            "mem_usage": "128.8MiB / 7.729GiB"
+            "mem_usage": "129.1MiB / 7.729GiB"
         },
         {
             "name": "tdarr",
-            "cpu": 1.68,
-            "mem": 1.23,
-            "mem_usage": "97.52MiB / 7.729GiB"
+            "cpu": 1.52,
+            "mem": 1.25,
+            "mem_usage": "99.07MiB / 7.729GiB"
         },
         {
             "name": "radarr",
-            "cpu": 0.09,
-            "mem": 1.32,
-            "mem_usage": "104.5MiB / 7.729GiB"
+            "cpu": 0.07,
+            "mem": 1.33,
+            "mem_usage": "105.1MiB / 7.729GiB"
         },
         {
             "name": "prowlarr",
             "cpu": 0.08,
-            "mem": 1.25,
-            "mem_usage": "99.01MiB / 7.729GiB"
+            "mem": 1.26,
+            "mem_usage": "99.75MiB / 7.729GiB"
         },
         {
             "name": "glances",
-            "cpu": 1.17,
+            "cpu": 0.63,
             "mem": 0.89,
-            "mem_usage": "70.66MiB / 7.729GiB"
+            "mem_usage": "70.51MiB / 7.729GiB"
         },
         {
             "name": "sonarr",
-            "cpu": 0.07,
-            "mem": 1.01,
-            "mem_usage": "79.66MiB / 7.729GiB"
+            "cpu": 0.09,
+            "mem": 1.36,
+            "mem_usage": "107.5MiB / 7.729GiB"
         },
         {
             "name": "bazarr",
-            "cpu": 0.16,
-            "mem": 2.11,
-            "mem_usage": "167.3MiB / 7.729GiB"
+            "cpu": 0.13,
+            "mem": 2.12,
+            "mem_usage": "167.7MiB / 7.729GiB"
         },
         {
             "name": "komga",
-            "cpu": 0.28,
-            "mem": 5.24,
-            "mem_usage": "414.5MiB / 7.729GiB"
+            "cpu": 0.23,
+            "mem": 5.4,
+            "mem_usage": "427.3MiB / 7.729GiB"
         },
         {
             "name": "jellyseerr",
             "cpu": 0.0,
             "mem": 2.02,
-            "mem_usage": "159.7MiB / 7.729GiB"
+            "mem_usage": "159.8MiB / 7.729GiB"
         },
         {
             "name": "recyclarr",
@@ -92,38 +92,38 @@
         {
             "name": "autobrr",
             "cpu": 0.0,
-            "mem": 0.17,
-            "mem_usage": "13.16MiB / 7.729GiB"
+            "mem": 0.18,
+            "mem_usage": "14.17MiB / 7.729GiB"
         },
         {
             "name": "homepage",
-            "cpu": 0.01,
-            "mem": 1.25,
-            "mem_usage": "98.57MiB / 7.729GiB"
+            "cpu": 3.4,
+            "mem": 1.27,
+            "mem_usage": "100.3MiB / 7.729GiB"
         },
         {
             "name": "qbittorrent",
-            "cpu": 0.07,
+            "cpu": 0.06,
             "mem": 0.27,
-            "mem_usage": "21.59MiB / 7.729GiB"
+            "mem_usage": "21.73MiB / 7.729GiB"
         },
         {
             "name": "traefik",
-            "cpu": 0.0,
+            "cpu": 0.25,
             "mem": 0.29,
-            "mem_usage": "22.84MiB / 7.729GiB"
+            "mem_usage": "22.92MiB / 7.729GiB"
         },
         {
             "name": "gluetun",
-            "cpu": 0.08,
+            "cpu": 9.11,
             "mem": 1.09,
-            "mem_usage": "86.24MiB / 7.729GiB"
+            "mem_usage": "86.27MiB / 7.729GiB"
         },
         {
             "name": "flaresolverr",
             "cpu": 0.01,
             "mem": 0.64,
-            "mem_usage": "50.74MiB / 7.729GiB"
+            "mem_usage": "50.71MiB / 7.729GiB"
         },
         {
             "name": "m3tal-dashboard",
@@ -133,16 +133,16 @@
         },
         {
             "name": "m3tal-agents",
-            "cpu": 1.08,
-            "mem": 1.48,
-            "mem_usage": "117.3MiB / 7.729GiB"
+            "cpu": 1.05,
+            "mem": 1.51,
+            "mem_usage": "119.3MiB / 7.729GiB"
         }
     ],
-    "timestamp": 1775788494,
+    "timestamp": 1775791861,
     "cpu": 0.0,
     "_m3tal_metadata": {
         "version": "1.3.0",
-        "updated_at": 1775788497,
+        "updated_at": 1775791864,
         "host": "1e688f7701c9"
     }
 }

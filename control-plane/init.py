@@ -164,11 +164,17 @@ def scaffold_state_files() -> None:
         log("Initialized leader.txt with 'none'")
 
 
-def scaffold_users(interactive: bool | None = None) -> None:
+def scaffold_users(interactive: bool | None = None, allow_missing: bool = False) -> None:
     """Ensure dashboard credentials exist without recreating insecure defaults."""
     users_path = resolve_users_path(DASHBOARD_DIR)
     _, error = inspect_users_file(users_path=users_path)
     if error is None:
+        return
+
+    # In CI environments or dry-runs, we skip the fatal error to allow automation
+    is_ci = os.environ.get("GITHUB_ACTIONS") == "true"
+    if allow_missing or is_ci:
+        log(f"Headless/CI session detected: Skipping mandatory admin setup ({error}).")
         return
 
     if interactive is None:
@@ -304,7 +310,7 @@ def run(dry_run: bool = False, interactive: bool | None = None) -> None:
         log_step(2, 9, "Scaffolding state files and identity baseline", bar=main_bar)
         scaffold_logs()
         scaffold_state_files()
-        scaffold_users(interactive=interactive)
+        scaffold_users(interactive=interactive, allow_missing=dry_run)
         if not dry_run:
             harden_permissions()
 
