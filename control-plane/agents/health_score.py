@@ -99,8 +99,10 @@ def calculate_health():
     # 3. Pipeline Integrity
     decision_path = os.path.join(STATE_DIR, "decisions.json")
     if os.path.exists(decision_path):
-        age = now - os.path.getmtime(decision_path)
-        if age > 60:
+        decision_data = load_json(decision_path, default={})
+        meta_ts = decision_data.get("_m3tal_metadata", {}).get("updated_at", 0)
+        age = now - meta_ts if meta_ts else 999
+        if age > 120:
             file_issues.append("Pipeline Stall: decisions.json is stale")
             score -= 20
 

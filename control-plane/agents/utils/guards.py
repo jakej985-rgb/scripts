@@ -49,24 +49,38 @@ def acquire_lock(agent_name: str) -> bool:
             with open(lock_file, 'r') as f:
                 old_pid = int(f.read().strip())
             
-            # Audit fix 2.12: Use psutil for robust process check if available
+            alive = False
             try:
                 import psutil
                 if psutil.pid_exists(old_pid):
                     proc = psutil.Process(old_pid)
                     # Safety check: ensure it's actually a python/agent process
                     if proc.is_running() and "python" in proc.name().lower():
-                        return False
+                        alive = True
             except (ImportError, Exception):
                 # Fallback to os.kill(0) if psutil fails or is missing
                 if hasattr(os, 'kill'):
                     try:
                         os.kill(old_pid, 0)
-                        return False # Still alive
+                        alive = True
                     except OSError:
-                        pass # Stale lock
+                        alive = False
+                else:
+                    # Windows without psutil: assume stale
+                    alive = False
+
+            if alive:
+                return False
+
+            try:
+                os.remove(lock_file)
+            except OSError:
+                pass
         except (ValueError, OSError):
-            pass # Stale lock or Windows fallback
+            try:
+                os.remove(lock_file)
+            except OSError:
+                pass
             
     with open(lock_file, 'w') as f:
         f.write(str(os.getpid()))

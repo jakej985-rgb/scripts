@@ -44,8 +44,10 @@ def get_safe_members(tar: tarfile.TarFile, target_dir: Path) -> list[tarfile.Tar
             raise ValueError(f"Refusing to restore special file: {member.name}")
 
         resolved_member = (target_root / member_path).resolve(strict=False)
-        if os.path.commonpath([str(target_root), str(resolved_member)]) != str(target_root):
-            raise ValueError(f"Refusing to restore outside target directory: {member.name}")
+        try:
+            resolved_member.relative_to(target_root)
+        except ValueError as exc:
+            raise ValueError(f"Refusing to restore outside target directory: {member.name}") from exc
 
         safe_members.append(member)
 
