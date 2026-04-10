@@ -97,31 +97,39 @@ def update_agent_health(agent_name: str, success: bool, error_msg: str = None):
     
     save_json(path, stats)
 
-def wrap_agent(agent_name: str, func: Callable[[], Any]):
+def wrap_agent(agent_name: str, func: Callable[[], Any], interval: int = 10):
+    """Batch 16 T1: Persistent Agent Wrapper with internal looping and signal handling."""
     agent_logger = get_logger(agent_name)
     
-    if _SHUTDOWN_SIGNALED:
-        agent_logger.info(f"Agent {agent_name} skipping: Shutdown in progress.")
-        return
-
-    if not is_leader():
-        agent_logger.debug(f"Skipping {agent_name}: Follower mode.")
-        return
-
     if not acquire_lock(agent_name):
         agent_logger.warning(f"Agent {agent_name} already running (lock active). Exiting.")
         return
 
     try:
-        agent_logger.info(f"--- Starting {agent_name} ---")
-        func()
-        update_agent_health(agent_name, success=True)
-        agent_logger.info(f"--- Finished {agent_name} Successfully ---")
-    except Exception as e:
-        agent_logger.error(f"Agent {agent_name} failed: {e}", exc_info=True)
-        update_agent_health(agent_name, success=False, error_msg=str(e))
-        raise
+        agent_logger.info(f"--- Agent {agent_name} Persistent Loop Started ---")
+        
+        while not _SHUTDOWN_SIGNALED:
+            if not is_leader():
+                # Follower mode: sleep and check again later
+                time.sleep(interval)
+                continue
+
+            try:
+                # Execution tick
+                func()
+                update_agent_health(agent_name, success=True)
+            except Exception as e:
+                agent_logger.error(f"Agent {agent_name} tick failed: {e}", exc_info=True)
+                update_agent_health(agent_name, success=False, error_msg=str(e))
+                # Exponential-ish backoff on error would be here, 
+                # but we rely on the loop interval for now.
+
+            # Sleep until next tick
+            for _ in range(interval):
+                if _SHUTDOWN_SIGNALED:
+                    break
+                time.sleep(1)
+
+        agent_logger.info(f"--- Agent {agent_name} Shutdown Cleanly ---")
     finally:
         release_lock(agent_name)
-        if _SHUTDOWN_SIGNALED:
-            agent_logger.info(f"Agent {agent_name} released lock for shutdown.")

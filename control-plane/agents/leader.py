@@ -72,10 +72,22 @@ def elect_leader():
 
     if is_local_host(leader_identity):
         logger.info(f"Identity: {my_id} | STATUS: [LEADER]")
-        sys.exit(0) # Success code for run_agent to continue
     else:
         logger.info(f"Identity: {my_id} | STATUS: [FOLLOWER] (Leader: {leader_identity})")
-        sys.exit(0) # Audit fix 2.10 — Use 0 for follower to avoid crash backoff
+
+def run_leader_cycle():
+    """Batch 16 T1: Persistent Leader Election Loop."""
+    logger.info("--- Leader Agent Persistent Loop Started ---")
+    while True:
+        try:
+            elect_leader()
+        except Exception as e:
+            logger.error(f"Election cycle failed: {e}")
+        
+        # Check for shutdown signal file or similar? 
+        # For now, 10s election interval.
+        time.sleep(10)
 
 if __name__ == "__main__":
-    elect_leader()
+    import time
+    run_leader_cycle()

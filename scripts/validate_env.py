@@ -15,6 +15,24 @@ except ImportError:
     ENV_FILE = os.path.join(REPO_ROOT, ".env")
     YELLOW, RED, GREEN, BOLD, END = ("", "", "", "", "")
 
+def load_env():
+    """Autonomous Environment Loader: Inject .env into os.environ if not already present."""
+    if not os.path.exists(ENV_FILE):
+        return
+    
+    with open(ENV_FILE, 'r', encoding='utf-8', errors='replace') as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            
+            key, val = line.split("=", 1)
+            key = key.strip()
+            val = val.strip().strip('"').strip("'") # Handle quoted values
+            
+            if key and key not in os.environ:
+                os.environ[key] = val
+
 def validate_env(interactive=False):
     """Rex Guardrail: Verify .env integrity before execution."""
     if not os.path.exists(ENV_FILE):
@@ -24,7 +42,8 @@ def validate_env(interactive=False):
         return False, []
 
     missing = []
-    with open(ENV_FILE, 'r') as f:
+    # Rex Fix: Force UTF-8 for cross-platform emoji support (.env contains icons)
+    with open(ENV_FILE, 'r', encoding='utf-8', errors='replace') as f:
         content = f.read()
         for var in REQUIRED_VARS:
             if f"{var}=" not in content:

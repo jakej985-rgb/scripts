@@ -23,11 +23,15 @@ for path in [REPO_ROOT / "scripts", REPO_ROOT / "dashboard"]:
         sys.path.insert(0, str(path))
 
 try:
-    from validate_env import validate_env
+    from validate_env import validate_env, load_env
     from validate_images import validate_images
-    from progress_utils import log_step, Heartbeat, Spinner
+    from progress_utils import (
+        log_step, Heartbeat, Spinner, ProgressBar,
+        BOLD, END, BLUE, CYAN, DIM, GREEN, RED, YELLOW
+    )
 except ImportError:
     validate_env = None
+    load_env = None
     validate_images = None
     log_step = lambda s, t, m: print(f"[{s}/{t}] {m}")
     Heartbeat = None
@@ -45,6 +49,15 @@ AGENTS_DIR = BASE_DIR / "agents"
 DASHBOARD_DIR = REPO_ROOT / "dashboard"
 SCRIPTS_DIR = REPO_ROOT / "scripts"
 DOCKER_DIR = REPO_ROOT / "docker" / "media"
+DOCKER_ROOT = REPO_ROOT / "docker"
+
+# --- Compose Stacks (launch order matters) ------------------------------------
+COMPOSE_STACKS = [
+    ("routing",     DOCKER_ROOT / "routing"),
+    ("core",        DOCKER_ROOT / "core"),
+    ("media",       DOCKER_ROOT / "media"),
+    ("maintenance", DOCKER_ROOT / "maintenance"),
+]
 
 # --- Directory tree -----------------------------------------------------------
 REQUIRED_DIRS = [
@@ -91,9 +104,23 @@ STATE_FILE_DEFAULTS = {
 }
 
 
-def log(msg: str) -> None:
-    print(f"[INIT] {msg}")
+def log(msg):
+    """Centralized logger that is heartbeat-aware to prevent terminal collisions."""
+    hb = globals().get('CURRENT_HB')
+    if hb:
+        hb.log(f"{BOLD}[INIT]{END} {msg}")
+    else:
+        print(f"{BOLD}[INIT]{END} {msg}")
 
+def log_step(step: int, total: int, message: str, bar=None):
+    prefix = f"{BLUE}{BOLD}[INIT] Step {step}/{total}:{END}"
+    if hb := globals().get('CURRENT_HB'):
+        hb.log(f"\n{prefix} {message}")
+    else:
+        print(f"\n{prefix} {message}")
+    
+    if bar:
+        bar.update(step, message)
 
 def scaffold_dirs() -> None:
     """Create all required directories if they don't exist."""
@@ -178,6 +205,55 @@ def harden_permissions() -> None:
 # --- Execution ----------------------------------------------------------------
 import subprocess
 
+
+def launch_compose_stacks(hb=None) -> None:
+    """Bring up all Docker Compose stacks in dependency order."""
+    env_file = REPO_ROOT / ".env"
+    use_shell = os.name == "nt"
+
+    # Ensure the shared Docker network exists
+    try:
+        subprocess.run(
+            ["docker", "network", "create", "m3tal"],
+            capture_output=True, shell=use_shell
+        )
+    except Exception:
+        pass  # Network may already exist — that's fine
+
+    for stack_name, stack_dir in COMPOSE_STACKS:
+        compose_file = stack_dir / "docker-compose.yml"
+        if not compose_file.exists():
+            log(f"  Skipping {stack_name}: no docker-compose.yml found")
+            continue
+
+        if hb: hb.ping(f"Launching {stack_name}")
+        log(f"  Launching stack: {stack_name} ...")
+        cmd = [
+            "docker", "compose",
+            "-f", str(compose_file),
+            "--env-file", str(env_file),
+            "up", "-d", "--remove-orphans"
+        ]
+        try:
+            result = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                shell=use_shell,
+                timeout=120
+            )
+            if result.returncode == 0:
+                log(f"  ✅ {stack_name} — UP")
+                if hb: hb.ping(f"{stack_name} started")
+            else:
+                # Non-fatal: log but keep going so other stacks still start
+                stderr_snippet = (result.stderr or "").strip()[:200]
+                log(f"  ⚠️  {stack_name} — WARNING: {stderr_snippet}")
+        except subprocess.TimeoutExpired:
+            log(f"  ⚠️  {stack_name} — TIMEOUT after 120s (skipping)")
+        except Exception as e:
+            log(f"  ⚠️  {stack_name} — ERROR: {e}")
+
 def run(dry_run: bool = False, interactive: bool | None = None) -> None:
     """Core Orchestrator: filesystem → env → image → validation → startup"""
     
@@ -188,9 +264,17 @@ def run(dry_run: bool = False, interactive: bool | None = None) -> None:
 
     log("Starting M3TAL Self-Healing Orchestrator...")
     
+    # Pre-flight: Autonomous Env Injection
+    if load_env:
+        load_env()
+    
     # 0.1 Heartbeat System
     hb = Heartbeat() if 'Heartbeat' in globals() and Heartbeat else None
+    globals()['CURRENT_HB'] = hb
     if hb: hb.start()
+
+    # Initialize persistent progress bar as per USER Request
+    main_bar = ProgressBar(9, prefix=f"{BOLD}[INIT]{END}")
 
     try:
         # 0.2 Context Debug
@@ -203,11 +287,13 @@ def run(dry_run: bool = False, interactive: bool | None = None) -> None:
             sys.exit(1)
 
         # Step 1: Filesystem
-        log_step(1, 8, "Initializing system directories")
+        if hb: hb.ping("Initializing directories")
+        log_step(1, 9, "Initializing system directories", bar=main_bar)
         scaffold_dirs()
         
         # Step 2: Critical Scaffolding
-        log_step(2, 8, "Scaffolding state files and identity baseline")
+        if hb: hb.ping("Scaffolding state")
+        log_step(2, 9, "Scaffolding state files and identity baseline", bar=main_bar)
         scaffold_logs()
         scaffold_state_files()
         scaffold_users(interactive=interactive)
@@ -215,7 +301,8 @@ def run(dry_run: bool = False, interactive: bool | None = None) -> None:
             harden_permissions()
 
         # Step 3: Environment Audit
-        log_step(3, 8, "Auditing environment integrity")
+        if hb: hb.ping("Auditing environment")
+        log_step(3, 9, "Auditing environment integrity", bar=main_bar)
         if validate_env:
             valid, _ = validate_env(interactive=True)
             if not valid:
@@ -223,15 +310,18 @@ def run(dry_run: bool = False, interactive: bool | None = None) -> None:
                 sys.exit(1)
 
         # Step 4: Environment Context
-        log_step(4, 8, "Standardizing environment context")
+        if hb: hb.ping("Environment context")
+        log_step(4, 9, "Standardizing environment context", bar=main_bar)
 
         # Step 5: Image Audit
-        log_step(5, 8, "Auditing Docker image availability")
+        if hb: hb.ping("Scanning Docker images")
+        log_step(5, 9, "Auditing Docker image availability", bar=main_bar)
         if validate_images:
             all_ok = validate_images(pull=False)
             
             # Step 6: Image Repair (Stage 2)
-            log_step(6, 8, "Autonomous image repair and correction")
+            if hb: hb.ping("Image repair")
+            log_step(6, 9, "Autonomous image repair and correction", bar=main_bar)
             if not all_ok:
                 log("Image issues detected. Attempting autonomous repair...")
                 repair_ok = validate_images(pull=True, fix=True)
@@ -243,16 +333,28 @@ def run(dry_run: bool = False, interactive: bool | None = None) -> None:
                 log("No image repairs required.")
 
             # Step 7: Final Enforcement
-            log_step(7, 8, "Final infrastructure enforcement")
+            if hb: hb.ping("Final verification")
+            log_step(7, 9, "Final infrastructure enforcement", bar=main_bar)
             if not validate_images(pull=False):
                 log("FATAL: Final image verification failed.")
                 sys.exit(1)
 
+        log("Image validation complete.")
+
+        # Step 8: Launch Docker Compose Stacks
+        if not dry_run:
+            if hb: hb.ping("Launching compose stacks")
+            log_step(8, 9, "Launching Docker Compose stacks", bar=main_bar)
+            launch_compose_stacks(hb=hb)
+        else:
+            log_step(8, 9, "Skipping stack launch (dry-run)", bar=main_bar)
+
         log("System initialization complete.")
     
-        # Step 8: Startup Hand-off
+        # Step 9: Startup Hand-off
         if "--start" in sys.argv:
-            log_step(8, 8, "Supervisor hand-off")
+            if hb: hb.ping("Handing off to supervisor")
+            log_step(9, 9, "Supervisor hand-off", bar=main_bar)
             log("Handing off control to supervisor.py...")
             try:
                 supervisor_script = BASE_DIR / "supervisor.py"
@@ -263,7 +365,7 @@ def run(dry_run: bool = False, interactive: bool | None = None) -> None:
                 log(f"Supervisor failed: {e}")
                 sys.exit(1)
         else:
-            log_step(8, 8, "Ready for manual startup")
+            log_step(9, 9, "Ready for manual startup", bar=main_bar)
 
     finally:
         if hb: hb.stop()

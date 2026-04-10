@@ -28,7 +28,7 @@ for path in [REPO_ROOT / "scripts", REPO_ROOT / "dashboard"]:
         sys.path.append(str(path))
 
 try:
-    from validate_env import validate_env
+    from validate_env import validate_env, load_env
     from validate_images import validate_images
     from progress_utils import Spinner
 except ImportError:
@@ -144,7 +144,7 @@ def run_agent(name: str, script: str) -> None:
         print(f"[{ts}] Starting {name}...")
 
         try:
-            with open(log_path, "a") as log_file:
+            with open(log_path, "a", encoding="utf-8") as log_file:
                 proc = subprocess.Popen(
                     [PYTHON, str(AGENTS_DIR / script)],
                     stdout=log_file,
@@ -152,19 +152,9 @@ def run_agent(name: str, script: str) -> None:
                 )
                 _register_child(proc)
                 try:
-                    exit_code = proc.wait(timeout=300)  # 5-minute safety timeout per cycle
+                    exit_code = proc.wait()  # Agents are persistent — no timeout
                 finally:
                     _unregister_child(proc)
-        except subprocess.TimeoutExpired:
-            try:
-                proc.terminate()
-                proc.wait(timeout=10)
-            except subprocess.TimeoutExpired:
-                proc.kill()
-                proc.wait(timeout=5)
-            exit_code = 1
-            ts2 = time.strftime("%H:%M:%S")
-            print(f"[{ts2}] TIMEOUT: {name}. Forcing restart...")
         except Exception as e:
             exit_code = 1
             ts2 = time.strftime("%H:%M:%S")
@@ -175,12 +165,12 @@ def run_agent(name: str, script: str) -> None:
 
         if exit_code == 0:
             crash_count = 0
-            time.sleep(5)  # Main loop interval
+            time.sleep(5)  # Agent exited cleanly, restart after brief pause
         else:
             crash_count += 1
             wait_time = min(5 * crash_count, 60)
             ts2 = time.strftime("%H:%M:%S")
-            print(f"[{ts2}] CRASH: {name}. Backoff {wait_time}s...")
+            print(f"[{ts2}] CRASH: {name} (exit {exit_code}). Backoff {wait_time}s...")
             time.sleep(wait_time)
 
 
@@ -188,6 +178,8 @@ def run_agent(name: str, script: str) -> None:
 
 def main() -> None:
     # 0. Context Guard
+    if load_env:
+        load_env()
     os.environ["INIT_ALREADY_RUN"] = "0"
 
     # 1. Docker liveness

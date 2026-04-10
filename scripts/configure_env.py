@@ -40,7 +40,7 @@ def load_current_env():
     source_file = ENV_FILE if os.path.exists(ENV_FILE) else EXAMPLE_FILE
     
     if os.path.exists(source_file):
-        with open(source_file, 'r') as f:
+        with open(source_file, 'r', encoding='utf-8') as f:
             for line in f:
                 if "=" in line and not line.startswith("#"):
                     key, val = line.strip().split("=", 1)
@@ -93,7 +93,7 @@ def main():
     # Write to .env
     print(f"{BOLD}Writing configuration to .env...{END}")
     try:
-        with open(ENV_FILE, 'w') as f:
+        with open(ENV_FILE, 'w', encoding='utf-8') as f:
             f.write("# M3TAL Generated Environment File\n")
             f.write(f"# Updated at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
             

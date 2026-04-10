@@ -9,6 +9,8 @@ GREEN = "\033[92m"
 YELLOW = "\033[93m"
 RED = "\033[91m"
 BLUE = "\033[94m"
+CYAN = "\033[96m"
+DIM = "\033[2m"
 BOLD = "\033[1m"
 END = "\033[0m"
 
@@ -17,21 +19,18 @@ class Spinner:
         self.message = message
         self._stop_event = threading.Event()
         self._thread: Optional[threading.Thread] = None
-        self.chars = ["|", "/", "-", "\\"]
+        self.chars = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
 
     def _spin(self):
         idx = 0
         while not self._stop_event.is_set():
             try:
-                # Clear line and print
-                sys.stdout.write(f"\r  {BLUE}{self.chars[idx]}{END} {self.message}...")
+                sys.stdout.write(f"\r  {CYAN}{self.chars[idx]}{END} {self.message}...")
                 sys.stdout.flush()
                 idx = (idx + 1) % len(self.chars)
-                time.sleep(0.12)
+                time.sleep(0.08)
             except Exception:
-                # If stdout fails (e.g. broken pipe or encoding), stop spinning silently
                 break
-        # Final cleanup line
         sys.stdout.write("\r" + " " * (len(self.message) + 20) + "\r")
         sys.stdout.flush()
 
@@ -41,7 +40,7 @@ class Spinner:
 
     def start(self):
         if not sys.stdout.isatty():
-            print(f"  [INIT] {self.message}...")
+            print(f"  [WAIT] {self.message}...")
             return
         self._stop_event.clear()
         self._thread = threading.Thread(target=self._spin, daemon=True)
@@ -52,14 +51,13 @@ class Spinner:
         if self._thread:
             self._thread.join()
         
-        if sys.stdout.isatty():
-            symbol = f"{GREEN}V{END}" if success else f"{RED}X{END}"
-            msg = final_msg or self.message
-            print(f"  {symbol} {msg}")
+        symbol = f"{GREEN}✔{END}" if success else f"{RED}✘{END}"
+        msg = final_msg or self.message
+        print(f"  {symbol} {msg}")
 
 class ProgressBar:
     def __init__(self, total: int, prefix: str = "", width: int = 30):
-        self.total = total
+        self.total = max(total, 1)
         self.prefix = prefix
         self.width = width
         self.current = 0
@@ -71,28 +69,58 @@ class ProgressBar:
             
         percent = 100 * (current / float(self.total))
         filled = int(self.width * current // self.total)
-        bar = "█" * filled + "-" * (self.width - filled)
+        bar = "█" * filled + "░" * (self.width - filled)
         
-        sys.stdout.write(f"\r  {self.prefix} [{bar}] {percent:.1f}% {suffix}")
+        # Ensure we move to a fresh line for the progress bar so it persists under the header
+        sys.stdout.write(f"\r  {self.prefix} {CYAN}[{bar}]{END} {percent:.0f}% {DIM}{suffix}{END}")
         sys.stdout.flush()
         if current >= self.total:
             sys.stdout.write("\n")
 
+def _format_elapsed(seconds: int) -> str:
+    if seconds < 60:
+        return f"{seconds}s"
+    m, s = divmod(seconds, 60)
+    return f"{m}m {s}s"
+
 class Heartbeat:
-    def __init__(self, interval: int = 15):
+    """Inactivity counter that handles synchronized printing to avoid line collisions."""
+    def __init__(self, interval: int = 1):
         self.interval = interval
         self._stop_event = threading.Event()
         self._thread: Optional[threading.Thread] = None
+        self._last_activity = time.time()
+        self._last_label = "Initializing"
+        self._lock = threading.Lock()
+
+    def ping(self, label: str = ""):
+        with self._lock:
+            self._last_activity = time.time()
+            if label:
+                self._last_label = label
+
+    def log(self, message: str):
+        """Thread-safe log that clears the heartbeat line before printing."""
+        with self._lock:
+            if sys.stdout.isatty():
+                # Clear line and move to start
+                sys.stdout.write("\r" + " " * 80 + "\r")
+                sys.stdout.flush()
+            print(message)
 
     def _pulse(self):
-        last_pulse = time.time()
         while not self._stop_event.is_set():
-            if time.time() - last_pulse >= self.interval:
-                ts = time.strftime("%H:%M:%S")
-                sys.stdout.write(f"\n{YELLOW}[HEARTBEAT] {ts}: System is still working...{END}\n")
-                sys.stdout.flush()
-                last_pulse = time.time()
-            time.sleep(1)
+            with self._lock:
+                elapsed = int(time.time() - self._last_activity)
+                label = self._last_label
+                
+                if sys.stdout.isatty():
+                    idle_str = _format_elapsed(elapsed)
+                    # Use DIM and spaces to pad out the line to prevent ghost characters
+                    sys.stdout.write(f"\r  {DIM}⏳ {label} — idle {idle_str}{END}       ")
+                    sys.stdout.flush()
+            
+            time.sleep(self.interval)
 
     def start(self):
         self._stop_event.clear()
@@ -103,7 +131,12 @@ class Heartbeat:
         self._stop_event.set()
         if self._thread:
             self._thread.join()
+        if sys.stdout.isatty():
+            sys.stdout.write("\r" + " " * 80 + "\r")
+            sys.stdout.flush()
 
-def log_step(step: int, total: int, message: str):
+def log_step(step: int, total: int, message: str, bar: Optional[ProgressBar] = None):
     prefix = f"{BLUE}{BOLD}[INIT] Step {step}/{total}:{END}"
     print(f"\n{prefix} {message}")
+    if bar:
+        bar.update(step, "")

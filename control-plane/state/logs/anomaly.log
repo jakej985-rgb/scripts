@@ -466,3 +466,75 @@
 2026-04-09 14:54:38 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
 2026-04-09 14:54:38 [INFO] anomaly: --- Finished anomaly Successfully ---
 2026-04-09 14:54:38 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-10 00:47:31 [INFO] anomaly: --- Starting anomaly ---
+2026-04-10 00:47:32 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-10 00:47:38 [INFO] anomaly: --- Starting anomaly ---
+2026-04-10 00:47:39 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-10 00:47:44 [INFO] anomaly: --- Starting anomaly ---
+2026-04-10 00:47:45 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-10 00:47:50 [INFO] anomaly: --- Starting anomaly ---
+2026-04-10 00:47:52 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-10 00:47:58 [INFO] anomaly: --- Starting anomaly ---
+2026-04-10 00:47:58 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-10 00:48:04 [INFO] anomaly: --- Starting anomaly ---
+2026-04-10 00:48:05 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-10 00:48:10 [INFO] anomaly: --- Starting anomaly ---
+2026-04-10 00:48:11 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-10 00:48:16 [INFO] anomaly: --- Starting anomaly ---
+2026-04-10 00:48:17 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-10 00:48:22 [INFO] anomaly: --- Starting anomaly ---
+2026-04-10 00:48:23 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-10 00:48:29 [INFO] anomaly: --- Starting anomaly ---
+2026-04-10 00:48:29 [INFO] anomaly: --- Finished anomaly Successfully ---
+2026-04-10 01:09:35 [INFO] anomaly: --- Agent anomaly Persistent Loop Started ---
+2026-04-10 01:09:35 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:09:46 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
+2026-04-10 01:09:58 [WARNING] anomaly: System health degraded: CRITICAL (Score: 45%)
+2026-04-10 01:10:09 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-10 01:10:20 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:10:30 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:10:40 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:10:50 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:11:00 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:11:11 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:11:21 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:11:32 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:11:44 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:11:55 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:12:06 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:12:41 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:12:52 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:13:03 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:13:14 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:13:25 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:13:36 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:13:52 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:14:08 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:14:19 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:14:30 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:14:43 [INFO] anomaly: --- Agent anomaly Persistent Loop Started ---
+2026-04-10 01:14:44 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:14:55 [INFO] guards: Received signal 2. Requesting graceful shutdown...
+2026-04-10 01:19:44 [INFO] anomaly: --- Agent anomaly Persistent Loop Started ---
+2026-04-10 01:19:44 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:19:56 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
+2026-04-10 01:20:07 [WARNING] anomaly: System health degraded: CRITICAL (Score: 30%)
+2026-04-10 01:20:18 [WARNING] anomaly: System health degraded: CRITICAL (Score: 45%)
+2026-04-10 01:20:29 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-10 01:20:40 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-10 01:20:51 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-10 01:21:02 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:21:13 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:21:24 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:21:34 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:21:45 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:21:56 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:22:06 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:22:18 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:22:29 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:22:40 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:22:51 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:23:04 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:23:15 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:23:26 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 01:23:36 [INFO] guards: Received signal 2. Requesting graceful shutdown...

@@ -86,7 +86,7 @@ services:
     restart: unless-stopped
 
   bazarr:
-    image: lscr.io/linuxserver/bazarr
+    image: lscr.io/linuxserver/bazarr:latest
     container_name: bazarr
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:6767"]
@@ -112,7 +112,7 @@ services:
     restart: unless-stopped
 
   jellyseerr:
-    image: fallenbagel/jellyseerr:latest
+    image: fallenbagel/jellyseerr
     container_name: jellyseerr
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5055"]

@@ -1,15 +1,130 @@
 {
     "system": {
-        "cpu": 22.2,
-        "mem": 8.1,
-        "timestamp": 1775765769
+        "cpu": 0.0,
+        "mem": 0.0,
+        "timestamp": 1775780610
     },
-    "containers": [],
-    "timestamp": 1775765769,
-    "cpu": 22.2,
+    "containers": [
+        {
+            "name": "portainer",
+            "cpu": 0.0,
+            "mem": 0.2,
+            "mem_usage": "16.01MiB / 7.729GiB"
+        },
+        {
+            "name": "m3tal-dashboard-maintenance",
+            "cpu": 2.35,
+            "mem": 0.48,
+            "mem_usage": "38.16MiB / 7.729GiB"
+        },
+        {
+            "name": "dozzle",
+            "cpu": 0.19,
+            "mem": 0.18,
+            "mem_usage": "14.31MiB / 7.729GiB"
+        },
+        {
+            "name": "watchtower",
+            "cpu": 0.75,
+            "mem": 0.07,
+            "mem_usage": "5.258MiB / 7.729GiB"
+        },
+        {
+            "name": "qbittorrent",
+            "cpu": 0.08,
+            "mem": 0.69,
+            "mem_usage": "54.81MiB / 7.729GiB"
+        },
+        {
+            "name": "tdarr",
+            "cpu": 2.72,
+            "mem": 0.52,
+            "mem_usage": "41.14MiB / 7.729GiB"
+        },
+        {
+            "name": "maintainerr",
+            "cpu": 2.16,
+            "mem": 0.82,
+            "mem_usage": "64.84MiB / 7.729GiB"
+        },
+        {
+            "name": "bazarr",
+            "cpu": 72.62,
+            "mem": 1.44,
+            "mem_usage": "114MiB / 7.729GiB"
+        },
+        {
+            "name": "sonarr",
+            "cpu": 5.6,
+            "mem": 1.11,
+            "mem_usage": "88.16MiB / 7.729GiB"
+        },
+        {
+            "name": "prowlarr",
+            "cpu": 1.99,
+            "mem": 1.6,
+            "mem_usage": "126.5MiB / 7.729GiB"
+        },
+        {
+            "name": "radarr",
+            "cpu": 16.47,
+            "mem": 1.86,
+            "mem_usage": "147.1MiB / 7.729GiB"
+        },
+        {
+            "name": "jellyseerr",
+            "cpu": 0.0,
+            "mem": 2.14,
+            "mem_usage": "169.5MiB / 7.729GiB"
+        },
+        {
+            "name": "komga",
+            "cpu": 42.26,
+            "mem": 1.88,
+            "mem_usage": "148.9MiB / 7.729GiB"
+        },
+        {
+            "name": "homepage",
+            "cpu": 1.99,
+            "mem": 0.91,
+            "mem_usage": "72.02MiB / 7.729GiB"
+        },
+        {
+            "name": "autobrr",
+            "cpu": 0.0,
+            "mem": 0.21,
+            "mem_usage": "16.46MiB / 7.729GiB"
+        },
+        {
+            "name": "recyclarr",
+            "cpu": 0.0,
+            "mem": 0.07,
+            "mem_usage": "5.406MiB / 7.729GiB"
+        },
+        {
+            "name": "flaresolverr",
+            "cpu": 2.19,
+            "mem": 1.1,
+            "mem_usage": "87.07MiB / 7.729GiB"
+        },
+        {
+            "name": "gluetun",
+            "cpu": 10.05,
+            "mem": 1.0,
+            "mem_usage": "79.18MiB / 7.729GiB"
+        },
+        {
+            "name": "glances",
+            "cpu": 0.69,
+            "mem": 0.89,
+            "mem_usage": "70.47MiB / 7.729GiB"
+        }
+    ],
+    "timestamp": 1775780610,
+    "cpu": 0.0,
     "_m3tal_metadata": {
         "version": "1.3.0",
-        "updated_at": 1775765770,
+        "updated_at": 1775780612,
         "host": "localhost"
     }
 }

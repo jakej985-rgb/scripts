@@ -24,7 +24,8 @@ KNOWN_REMAPS = {
     "maintainerr": "ghcr.io/maintainerr/maintainerr",
     "flaresolverr": "ghcr.io/flaresolverr/flaresolverr",
     "gluetun": "qmcgaw/gluetun",
-    "tdarr": "ghcr.io/haveagitgat/tdarr"
+    "tdarr": "ghcr.io/haveagitgat/tdarr",
+    "komga": "gotson/komga:latest"
 }
 
 FALLBACK_TAGS = ["latest", "stable", ""]
@@ -32,7 +33,7 @@ FALLBACK_TAGS = ["latest", "stable", ""]
 def get_images_from_compose(file_path):
     results = []
     try:
-        with open(file_path, 'r') as f:
+        with open(file_path, 'r', encoding='utf-8') as f:
             data = yaml.safe_load(f)
             if data and 'services' in data:
                 for service_name, config in data['services'].items():
@@ -45,12 +46,12 @@ def get_images_from_compose(file_path):
 
 def patch_compose_file(file_path, old_image, new_image):
     try:
-        with open(file_path, 'r') as f:
+        with open(file_path, 'r', encoding='utf-8') as f:
             content = f.read()
         pattern = re.compile(rf'image:\s*["\']?{re.escape(old_image)}["\']?')
         new_content = pattern.sub(f'image: {new_image}', content)
         if content != new_content:
-            with open(file_path, 'w') as f:
+            with open(file_path, 'w', encoding='utf-8') as f:
                 f.write(new_content)
             return True
     except Exception:
@@ -58,32 +59,28 @@ def patch_compose_file(file_path, old_image, new_image):
     return False
 
 def pull_image_with_progress(image, pbar: ProgressBar = None):
-    """Run docker pull and stream status."""
     cmd = ["docker", "pull", image]
-    try:
-        process = subprocess.Popen(
-            cmd, 
-            stdout=subprocess.PIPE, 
-            stderr=subprocess.STDOUT, 
-            text=True,
-            bufsize=1,
-            universal_newlines=True
-        )
-        
-        # We don't have true % from docker pull easily here without complicated parsing,
-        # but we can show that we're active.
-        if pbar:
-            pbar.update(pbar.current, f"(Pulling {image}...)")
-            
-        output = []
-        for line in process.stdout:
-            # Optionally log specific pull status layers here if needed
-            output.append(line)
-            
-        process.wait()
-        return process.returncode == 0, "".join(output)
-    except Exception as e:
-        return False, str(e)
+    if pbar:
+        pbar.update(pbar.current, f"(Pulling {image}...)")
+    else:
+        print(f"  {BLUE}---> Pulling {image}...{END}")
+
+    # Enforce tag-aware pulls to avoid ambiguity
+    if ":" not in image:
+        image = f"{image}:latest"
+        cmd = ["docker", "pull", image]
+
+    process = subprocess.Popen(
+        cmd, 
+        stdout=sys.stdout, 
+        stderr=subprocess.PIPE, # Capture stderr for error reporting
+        text=True,
+        bufsize=1,
+        universal_newlines=True
+    )
+    
+    _, stderr = process.communicate()
+    return process.returncode == 0, stderr
 
 def attempt_heal(image, pbar: ProgressBar = None):
     base_name = image.split(':')[0] if ':' in image else image
@@ -138,6 +135,8 @@ def validate_images(pull=False, fix=False):
     for idx, image in enumerate(unique_images, 1):
         if pbar:
             pbar.update(idx - 1, f"({image})")
+        else:
+            print(f"  {BLUE}[{idx}/{total_imgs}]{END} Checking {image}...")
             
         inspect_cmd = ["docker", "image", "inspect", image]
         result = subprocess.run(inspect_cmd, capture_output=True)
