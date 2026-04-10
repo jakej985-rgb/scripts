@@ -26,7 +26,8 @@ REQUIRED_VARS = [
     "DOMAIN",
     "VPN_USER",
     "VPN_PASSWORD",
-    "DASHBOARD_SECRET"
+    "DASHBOARD_SECRET",
+    "CF_TUNNEL_TOKEN"
 ]
 
 def get_input(prompt, default=None):
@@ -61,7 +62,7 @@ def main():
     new_env["HTTP_PORT"] = get_input("HTTP Gateway Port (80)", current_env.get("HTTP_PORT", "80"))
     new_env["DATA_DIR"] = get_input("Global Data Directory", current_env.get("DATA_DIR", "/mnt"))
     new_env["CONFIG_DIR"] = get_input("Global Configuration Directory", current_env.get("CONFIG_DIR", "/docker/configs"))
-    new_env["DOMAIN"] = get_input("Local Domain (for Traefik)", current_env.get("DOMAIN", "local"))
+    new_env["DOMAIN"] = get_input("Public Domain (m3tal-media-server.xyz)", current_env.get("DOMAIN", "m3tal-media-server.xyz"))
     print("")
 
     # 2. VPN Setup
@@ -99,7 +100,7 @@ def main():
             
             # Sort keys into categories for readability
             categories = {
-                "SYSTEM": ["PUID", "PGID", "TZ", "MASTER_IP", "DASHBOARD_PORT", "HTTP_PORT", "DOMAIN", "DATA_DIR", "CONFIG_DIR"],
+                "SYSTEM": ["PUID", "PGID", "TZ", "MASTER_IP", "DASHBOARD_PORT", "HTTP_PORT", "DOMAIN", "DATA_DIR", "CONFIG_DIR", "CF_TUNNEL_TOKEN"],
                 "VPN": ["VPN_USER", "VPN_PASSWORD"],
                 "AI": ["OLLAMA_URL", "AI_API_KEY"],
                 "NOTIFY": ["TELEGRAM_TOKEN", "TELEGRAM_CHAT_ID"],

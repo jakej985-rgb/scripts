@@ -19,7 +19,7 @@ services:
       - USERS_FILE=/app/users.json
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.dashboard.rule=Host(`m3tal.local`)"
+      - "traefik.http.routers.dashboard.rule=Host(`m3tal.m3tal-media-server.xyz`)"
       - "traefik.http.services.dashboard.loadbalancer.server.port=8080"
     networks:
       - m3tal

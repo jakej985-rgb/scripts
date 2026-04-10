@@ -1,3 +1,4 @@
+
 services:
 
   watchtower:
@@ -13,25 +14,35 @@ services:
       - "600"
     environment:
       - TZ=America/Denver
+    networks:
+      - m3tal
 
   dozzle:
     image: amir20/dozzle
     container_name: dozzle
     restart: unless-stopped
-    ports:
-      - "9999:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dozzle.rule=Host(`logs.m3tal-media-server.xyz`)"
+      - "traefik.http.services.dozzle.loadbalancer.server.port=8080"
+    networks:
+      - m3tal
 
   portainer:
     image: portainer/portainer-ce
     container_name: portainer
     restart: unless-stopped
-    ports:
-      - "9443:9443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${CONFIG_DIR:-/docker/configs}/portainer:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portainer.rule=Host(`portainer.m3tal-media-server.xyz`)"
+      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+    networks:
+      - m3tal
 
   dashboard:
     image: python:3.11-slim
@@ -43,10 +54,18 @@ services:
     working_dir: /docker/dashboard
     command: >
       sh -c "pip install --quiet -r /docker/requirements.txt && python server.py"
-    ports:
-      - "8888:8080"
     environment:
       - TZ=America/Denver
       - DASHBOARD_SECRET=${DASHBOARD_SECRET}
       - STATE_DIR=/docker/control-plane/state
       - USERS_FILE=/docker/dashboard/users.json
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard-maint.rule=Host(`m3tal-maint.m3tal-media-server.xyz`)"
+      - "traefik.http.services.dashboard-maint.loadbalancer.server.port=8080"
+    networks:
+      - m3tal
+
+networks:
+  m3tal:
+    external: true

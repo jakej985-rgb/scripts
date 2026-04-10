@@ -60,6 +60,7 @@ AGENTS = [
     # Tier 2 — Maintenance / health (runs on all nodes)
     ("scorer",    "health_score.py", False),
     ("observer",  "observer.py",     False),
+    ("tunnel",    "tunnel.py",       False),
     # ("chaos",   "chaos_test.py",   False),  # Intentionally disabled in prod
 ]
 

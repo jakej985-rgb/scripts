@@ -19,7 +19,7 @@ services:
       - FIREWALL_VPN_INPUT_PORTS=8080,6881
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.qbittorrent.rule=Host(`qbittorrent.local`)"
+      - "traefik.http.routers.qbittorrent.rule=Host(`qbittorrent.m3tal-media-server.xyz`)"
       - "traefik.http.services.qbittorrent.loadbalancer.server.port=8080"
     networks:
       - m3tal
@@ -45,7 +45,7 @@ services:
     container_name: radarr
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.radarr.rule=Host(`radarr.local`)"
+      - "traefik.http.routers.radarr.rule=Host(`radarr.m3tal-media-server.xyz`)"
       - "traefik.http.services.radarr.loadbalancer.server.port=7878"
       - "traefik.http.services.radarr.loadbalancer.healthcheck.path=/api/v3/system/status"
       - "traefik.http.services.radarr.loadbalancer.healthcheck.interval=10s"
@@ -67,7 +67,7 @@ services:
     container_name: sonarr
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.sonarr.rule=Host(`sonarr.local`)"
+      - "traefik.http.routers.sonarr.rule=Host(`sonarr.m3tal-media-server.xyz`)"
       - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
       - "traefik.http.services.sonarr.loadbalancer.healthcheck.path=/api/v3/system/status"
       - "traefik.http.services.sonarr.loadbalancer.healthcheck.interval=10s"
@@ -196,7 +196,7 @@ services:
       - ${CONFIG_DIR:-/docker/configs}/prowlarr:/config
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.local`)"
+      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.m3tal-media-server.xyz`)"
       - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
     networks:
       - m3tal
@@ -209,7 +209,7 @@ services:
       - LOG_LEVEL=info
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.flaresolverr.rule=Host(`flaresolverr.local`)"
+      - "traefik.http.routers.flaresolverr.rule=Host(`flaresolverr.m3tal-media-server.xyz`)"
       - "traefik.http.services.flaresolverr.loadbalancer.server.port=8191"
     networks:
       - m3tal
