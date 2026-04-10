@@ -10,7 +10,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 DOCKER_DIR = REPO_ROOT / "docker"
 
 # Stacks to shut down in order (most dependent last)
-STACKS = ["media", "apps", "core", "maintenance", "routing"]
+STACKS = ["core", "media", "apps", "maintenance", "routing"]
 
 # ANSI colors for nice UI
 GREEN = "\033[92m"
