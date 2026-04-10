@@ -1,6 +1,12 @@
 {
-  "score": 100,
-  "verdict": "PASS",
-  "issues": [],
-  "timestamp": 1775675496.2162032
+    "status": "healthy",
+    "timestamp": 1775862477,
+    "mode": "startup",
+    "details": {
+        "filesystem": "ok",
+        "logs": "ok",
+        "state": "ok",
+        "docker": "ok",
+        "auth": "ok"
+    }
 }

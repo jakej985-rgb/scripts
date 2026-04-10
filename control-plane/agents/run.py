@@ -47,6 +47,7 @@ AGENTS = [
     ("scorer",    "health_score.py", False),
     ("observer",  "observer.py",     False),
     ("tunnel",    "tunnel.py",       False),
+    ("healer",    "healer.py",       False),
     # ("chaos",   "chaos_test.py",   False),  # Intentionally disabled in prod
 ]
 
