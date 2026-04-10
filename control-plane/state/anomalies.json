@@ -2,6 +2,11 @@
     "issues": [
         {
             "type": "recoverable",
+            "target": "m3tal-dashboard",
+            "reason": "container stopped"
+        },
+        {
+            "type": "recoverable",
             "target": "m3tal-dashboard-maintenance",
             "reason": "container stopped"
         },
@@ -23,7 +28,7 @@
     ],
     "_m3tal_metadata": {
         "version": "1.3.0",
-        "updated_at": 1775807498,
+        "updated_at": 1775807594,
         "host": "1e688f7701c9"
     }
 }
