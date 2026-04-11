@@ -60,6 +60,23 @@ STATE_FILE_DEFAULTS = {
     "last_prune.json": {"ts": 0},
 }
 
+# --- Internal Helpers ---------------------------------------------------------
+def load_env() -> Dict[str, str]:
+    """Surgically load .env file into a dictionary for subprocess propagation."""
+    env = os.environ.copy()
+    env_path = REPO_ROOT / ".env"
+    if env_path.exists():
+        with open(env_path, "r", encoding="utf-8") as f:
+            for line in f:
+                if "=" in line and not line.startswith("#"):
+                    k, v = line.strip().split("=", 1)
+                    env[k] = v
+    # Force REPO_ROOT for Docker
+    env["REPO_ROOT"] = str(REPO_ROOT)
+    return env
+
+GLOBAL_ENV = load_env()
+
 # --- State Management ---------------------------------------------------------
 SYSTEM_STATUS = {
     "filesystem": "unknown",

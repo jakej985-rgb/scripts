@@ -8,7 +8,9 @@ import subprocess
 import os
 import sys
 import time
+import json
 from pathlib import Path
+from typing import Dict, Any, Optional
 
 # Fix for imports
 BASE_DIR = Path(__file__).resolve().parent  # control-plane/
@@ -33,6 +35,23 @@ STACKS = [
     "maintenance", 
     "routing"
 ]
+
+# --- Internal Helpers ---------------------------------------------------------
+def load_env() -> Dict[str, str]:
+    """Surgically load .env file into a dictionary for subprocess propagation."""
+    env = os.environ.copy()
+    env_path = REPO_ROOT / ".env"
+    if env_path.exists():
+        with open(env_path, "r", encoding="utf-8") as f:
+            for line in f:
+                if "=" in line and not line.startswith("#"):
+                    k, v = line.strip().split("=", 1)
+                    env[k] = v
+    # Force REPO_ROOT for Docker
+    env["REPO_ROOT"] = str(REPO_ROOT)
+    return env
+
+GLOBAL_ENV = load_env()
 
 HB = Heartbeat()
 
@@ -81,7 +100,7 @@ def shutdown_stack(stack_name: str, bar: ProgressBar, current_step: int):
     
     # Pre-check: Is the stack actually up?
     ps_inspect = subprocess.run(["docker", "compose", "-f", str(compose_file), "ps", "--format", "json"],
-                                 capture_output=True, text=True, shell=use_shell)
+                                 capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)
     is_up = False
     if ps_inspect.returncode == 0 and ps_inspect.stdout.strip():
         # If ps returns any json objects, the stack has containers (even if exited)
@@ -94,7 +113,7 @@ def shutdown_stack(stack_name: str, bar: ProgressBar, current_step: int):
 
     # Identify containers before removal
     conf_cmd = ["docker", "compose", "-f", str(compose_file), "config", "--services"]
-    conf_res = subprocess.run(conf_cmd, capture_output=True, text=True, shell=use_shell)
+    conf_res = subprocess.run(conf_cmd, capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)
     expected_services = conf_res.stdout.strip().splitlines() if conf_res.returncode == 0 else []
     total_svc = len(expected_services)
     
@@ -105,13 +124,14 @@ def shutdown_stack(stack_name: str, bar: ProgressBar, current_step: int):
     try:
         # 1. Start deconstruction asynchronously
         proc = subprocess.Popen(["docker", "compose", "down", "--remove-orphans"], 
-                                cwd=str(stack_path), shell=use_shell, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                                cwd=str(stack_path), shell=use_shell, 
+                                stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, env=GLOBAL_ENV)
         
         # 2. Poll for removal immediately
         start_time = time.time()
         while time.time() - start_time < 120:
             ps_res = subprocess.run(["docker", "compose", "-f", str(compose_file), "ps", "--format", "json"],
-                                 capture_output=True, text=True, shell=use_shell)
+                                 capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)
             if ps_res.returncode == 0:
                 out = ps_res.stdout.strip()
                 ps_data = []
@@ -164,7 +184,8 @@ def main():
         HB.ping("Pruning network space")
         HB.log("Pruning dangling Docker networks...")
         try:
-            subprocess.run(["docker", "network", "prune", "-f"], check=False, shell=(os.name == "nt"), capture_output=True)
+            subprocess.run(["docker", "network", "prune", "-f"], check=False, 
+                         shell=(os.name == "nt"), env=GLOBAL_ENV, capture_output=True)
             HB.log("Global network space cleared", symbol="✔")
         except: pass
 

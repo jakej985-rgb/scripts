@@ -1,6 +1,6 @@
 {
     "status": "degraded",
-    "timestamp": 1775892146,
+    "timestamp": 1775892363,
     "mode": "startup",
     "details": {
         "filesystem": "ok",
