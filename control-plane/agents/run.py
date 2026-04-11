@@ -1,78 +1,61 @@
-#!/usr/bin/env python3
-"""
-M3TAL Agent Runner — Autonomous Process Manager
-v1.0.0 — Decoupled from supervisor.py
-
-Launches and loops all agents with exponential backoff and central log routing.
-"""
-
 import os
 import signal
 import subprocess
 import sys
 import threading
 import time
+import random
+import json
 from pathlib import Path
 
 # --- Path System Bootstrap ----------------------------------------------------
 AGENTS_DIR = Path(__file__).resolve().parent  # control-plane/agents/
 sys.path.append(str(AGENTS_DIR))
 
-from utils.paths import REPO_ROOT, CONTROL_PLANE, STATE_DIR, LOG_DIR, RESTARTS_JSON, ensure_dirs
+from utils.paths import REPO_ROOT, CONTROL_PLANE, AGENTS_DIR, LOG_DIR, RESTARTS_JSON, ensure_dirs, TIERS
 from utils.healing import atomic_write_json
-import json
+from utils.guards import acquire_lock, release_lock, is_pid_running
 
-BASE_DIR = CONTROL_PLANE
-
-# Add support directories to system path
-for path in [REPO_ROOT / "scripts", REPO_ROOT / "dashboard"]:
-    if str(path) not in sys.path:
-        sys.path.append(str(path))
-
-PYTHON = sys.executable  # Use the same interpreter that launched us
+PYTHON = sys.executable
 
 # --- Agent Registry -----------------------------------------------------------
-# (name, script_path_relative_to_AGENTS_DIR, is_leader_tier)
+# Sorted by Tier (Tier 1 first)
 AGENTS = [
-    # Tier 0 — Leader election (runs first, others wait)
-    ("leader",    "leader.py",       True),
-    # Tier 1 — Core pipeline
-    ("registry",  "registry.py",     False),
-    ("monitor",   "monitor.py",      False),
-    ("metrics",   "metrics.py",      False),
-    ("scaling",   "scaling.py",      False),
-    ("anomaly",   "anomaly.py",      False),
-    ("decision",  "decision.py",     False),
-    ("reconcile", "reconcile.py",    False),
-    # Tier 2 — Maintenance / health (runs on all nodes)
-    ("scorer",    "health_score.py", False),
-    ("observer",  "observer.py",     False),
-    ("tunnel",    "tunnel.py",       False),
-    ("healer",    "healer.py",       False),
-    ("notify",    "notify.py",       False),
-    # ("chaos",   "chaos_test.py",   False),  # Intentionally disabled in prod
+    ("leader",    "leader.py"),
+    ("registry",  "registry.py"),
+    ("monitor",   "monitor.py"),
+    ("metrics",   "metrics.py"),
+    ("scaling",   "scaling.py"),
+    ("anomaly",   "anomaly.py"),
+    ("decision",  "decision.py"),
+    ("reconcile", "reconcile.py"),
+    ("health_score", "health_score.py"),
+    ("observer",  "observer.py"),
+    ("tunnel",    "tunnel.py"),
+    ("healer",    "healer.py"),
+    ("notify",    "notify.py"),
 ]
+
+# --- Master Locking -----------------------------------------------------------
+RUNNER_LOCK = "agents_runner"
 
 # --- Globals ------------------------------------------------------------------
 _shutdown_event = threading.Event()
 _children: list[subprocess.Popen] = []
 _children_lock = threading.Lock()
 
-
 def _register_child(proc: subprocess.Popen) -> None:
     with _children_lock:
         _children.append(proc)
-
 
 def _unregister_child(proc: subprocess.Popen) -> None:
     with _children_lock:
         if proc in _children:
             _children.remove(proc)
 
-
 def _handle_signal(signum, _frame):
     ts = time.strftime("%H:%M:%S")
-    print(f"\n[{ts}] Agent Runner received signal {signum}. Shutting down agents...")
+    print(f"\n[{ts}] Agent Runner received signal {signum}. Shutting down...")
     _shutdown_event.set()
     with _children_lock:
         children = list(_children)
@@ -82,14 +65,10 @@ def _handle_signal(signum, _frame):
         except OSError:
             pass
 
-
 signal.signal(signal.SIGTERM, _handle_signal)
 signal.signal(signal.SIGINT, _handle_signal)
 
-
-# --- Agent Runner -------------------------------------------------------------
-
-# --- Stability Logic ----------------------------------------------------------
+# --- Restart & Stability ------------------------------------------------------
 
 def _get_restart_state() -> dict:
     if RESTARTS_JSON.exists():
@@ -100,28 +79,23 @@ def _get_restart_state() -> dict:
     return {}
 
 def _check_stability(name: str) -> bool:
-    """Returns True if agent is stable, False if it should be paused."""
     state = _get_restart_state()
     agent_data = state.get(name, {"count": 0, "last_fail": 0, "pause_until": 0})
     now = time.time()
 
-    # 1. Reset if stable for > 10 minutes
     if now - agent_data["last_fail"] > 600:
         agent_data["count"] = 0
     
-    # 2. Check if currently in a pause window
     if now < agent_data["pause_until"]:
         return False
     
     return True
 
 def _record_failure(name: str):
-    """Records a failure and triggers backoff if unstable."""
     state = _get_restart_state()
     agent_data = state.get(name, {"count": 0, "last_fail": 0, "pause_until": 0})
     now = time.time()
 
-    # Reset counter if last fail was long ago
     if now - agent_data["last_fail"] > 600:
         agent_data["count"] = 1
     else:
@@ -132,14 +106,17 @@ def _record_failure(name: str):
     # Stability Guard: 5 fails in 60s -> 5m pause
     if agent_data["count"] >= 5 and (now - agent_data["last_fail"] < 60):
         ts = time.strftime("%H:%M:%S")
-        print(f"[{ts}] STABILITY_WARNING: {name} unstable. Pausing for 5m.")
+        print(f"[{ts}] STABILITY_CRITICAL: {name} unstable (5 fails in 60s). Pausing for 5m.")
         agent_data["pause_until"] = now + 300
     
     state[name] = agent_data
     atomic_write_json(RESTARTS_JSON, state)
 
 def run_agent(name: str, script: str) -> None:
-    """Run a single agent in a supervised loop with adaptive backoff."""
+    """Run a single agent in a supervised loop with jittered backoff."""
+    env = os.environ.copy()
+    env["M3TAL_ORCHESTRATOR"] = "1"
+    
     while not _shutdown_event.is_set():
         if not _check_stability(name):
             time.sleep(10)
@@ -155,88 +132,79 @@ def run_agent(name: str, script: str) -> None:
                     [PYTHON, str(AGENTS_DIR / script)],
                     stdout=log_file,
                     stderr=subprocess.STDOUT,
+                    env=env
                 )
                 _register_child(proc)
                 try:
-                    # Rex Fix Plan: Agents are persistent — no timeout
                     exit_code = proc.wait()
                 finally:
                     _unregister_child(proc)
         except Exception as e:
             exit_code = 1
-            ts2 = time.strftime("%H:%M:%S")
-            print(f"[{ts2}] ERROR: {name}: {e}")
+            print(f"[{time.strftime('%H:%M:%S')}] ERROR: {name}: {e}")
 
         if _shutdown_event.is_set():
             break
 
         if exit_code != 0:
             _record_failure(name)
-            # Audit fix 2.7: True exponential backoff
-            state = _get_restart_state()
-            fail_count = state.get(name, {}).get("count", 1)
-            wait_time = min(2**fail_count, 30)
+            # Restart Backoff (V4): 10s base + 0-5s jitter
+            jitter = random.uniform(0, 5)
+            wait_time = 10 + jitter
             ts_err = time.strftime("%H:%M:%S")
-            print(f"[{ts_err}] {name} failed. Retrying in {wait_time}s...")
+            print(f"[{ts_err}] {name} failed. Retrying in {int(wait_time)}s...")
             time.sleep(wait_time)
         else:
             time.sleep(2)
-
 
 # --- Main Entry ---------------------------------------------------------------
 
 def main() -> None:
     ts = time.strftime("%H:%M:%S")
-    
-    # Audit fix 2.6: State Readiness (Step 6)
-    # Ensure all required state/log directories exist before launching agents
     ensure_dirs()
     
-    # Audit fix 2.5: Host vs Container Guard
-    # Prevent duplicate agents if the m3tal-runtime container is already active
-    # Skip this check if we are ALREADY inside the container
-    if os.getenv("IN_CONTAINER") != "true":
-        try:
-            use_shell = os.name == "nt"
-            check_cmd = ["docker", "ps", "--filter", "name=m3tal-runtime", "--filter", "status=running", "-q"]
-            res = subprocess.run(check_cmd, capture_output=True, text=True, shell=use_shell)
-            if res.returncode == 0 and res.stdout.strip():
-                print(f"[{ts}] ABORT: m3tal-runtime container is already running. Terminating host-side runner.")
-                sys.exit(0)
-        except Exception:
-            pass # Fallback to host-side execution if docker is inaccessible
+    # 1. Master Lock Enforcement
+    if not acquire_lock(RUNNER_LOCK):
+        print(f"[{ts}] ABORT: Another Agent Runner is already active.")
+        sys.exit(0)
 
     print(f"[{ts}] M3TAL Agent Runner launching...")
 
     threads: list[threading.Thread] = []
 
-    for name, script, is_leader in AGENTS:
-        # Audit fix 2.6: Do not use daemon threads. Join them on shutdown.
-        t = threading.Thread(target=run_agent, args=(name, script), daemon=False, name=f"agent-{name}")
+    # 2. Tiered Launching (Tier 1 first)
+    tier1 = [a for a in AGENTS if TIERS.get(a[0], 2) == 1]
+    tier2 = [a for a in AGENTS if TIERS.get(a[0], 2) == 2]
+
+    for name, script in tier1:
+        t = threading.Thread(target=run_agent, args=(name, script), name=f"agent-{name}")
         threads.append(t)
         t.start()
+        time.sleep(1) # Small stagger
 
-        if is_leader:
-            time.sleep(2)  # Wait for leader election
+    # Wait for Tier 1 to settle
+    time.sleep(3)
 
-    ts = time.strftime("%H:%M:%S")
-    print(f"[{ts}] All agents running.")
+    for name, script in tier2:
+        t = threading.Thread(target=run_agent, args=(name, script), name=f"agent-{name}")
+        threads.append(t)
+        t.start()
+        time.sleep(0.5)
 
-    # Wait for shutdown signal
+    print(f"[{time.strftime('%H:%M:%S')}] All agents launched.")
+
     try:
         while not _shutdown_event.is_set():
             time.sleep(1)
     except KeyboardInterrupt:
         _shutdown_event.set()
 
-    ts = time.strftime("%H:%M:%S")
-    print(f"[{ts}] Waiting for agent threads to exit...")
+    print(f"[{time.strftime('%H:%M:%S')}] Waiting for threads to exit...")
     for t in threads:
         t.join(timeout=5)
 
-    ts = time.strftime("%H:%M:%S")
-    print(f"[{ts}] Agent Runner shutdown complete.")
-
+    release_lock(RUNNER_LOCK)
+    print(f"[{time.strftime('%H:%M:%S')}] Agent Runner shutdown complete.")
 
 if __name__ == "__main__":
     main()

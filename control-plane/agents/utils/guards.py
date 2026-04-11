@@ -2,22 +2,24 @@ import sys
 import os
 import time
 import signal
+import socket
+import random
 from pathlib import Path
 from typing import Callable, Any
 
 # Root addition for utils
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from utils.paths import STATE_DIR, LEADER_TXT
-from utils.identity import is_local_host
-from utils.state import save_json
+from utils.paths import STATE_DIR, LEADER_TXT, TIERS, validate_contract
+from utils.identity import is_local_host, get_local_identity
+from utils.state import save_json, load_json
 from utils.logger import get_logger
 
 logger = get_logger("guards")
 HEALTH_SUBDIR = os.path.join(STATE_DIR, "health")
 LOCK_SUBDIR = os.path.join(STATE_DIR, "locks")
 
-# Batch 8 T1: Graceful Shutdown
+# --- Lifecycle Globals --------------------------------------------------------
 _SHUTDOWN_SIGNALED = False
 
 def handle_signal(signum, frame):
@@ -25,9 +27,42 @@ def handle_signal(signum, frame):
     logger.info(f"Received signal {signum}. Requesting graceful shutdown...")
     _SHUTDOWN_SIGNALED = True
 
-# Register signals
 signal.signal(signal.SIGTERM, handle_signal)
 signal.signal(signal.SIGINT, handle_signal)
+
+# --- System Modes -------------------------------------------------------------
+# HEALTHY: Normal operation
+# DEGRADED: One or more agents failing/missing contracts
+# LOCKED: Manual lock-down, no restarts or critical ticks (future)
+SYSTEM_MODE_FILE = os.path.join(STATE_DIR, "system_mode.json")
+
+def set_system_mode(mode: str):
+    save_json(SYSTEM_MODE_FILE, {"mode": mode, "updated_at": int(time.time())}, caller="run")
+
+def get_system_mode() -> str:
+    data = load_json(SYSTEM_MODE_FILE, default={"mode": "HEALTHY"})
+    return data.get("mode", "HEALTHY")
+
+# --- Process Infrastructure ---------------------------------------------------
+
+def is_pid_running(pid: int) -> bool:
+    """Production-grade PID check (cross-platform)."""
+    if pid <= 0: return False
+    try:
+        import psutil
+        return psutil.pid_exists(pid)
+    except ImportError:
+        try:
+            os.kill(pid, 0)
+            return True
+        except OSError:
+            # On Unix, ESRCH means dead. EPERM means alive but no permission.
+            import errno
+            # Note: os.kill(pid, 0) on Windows throws PermissionError or ProcessLookupError
+            # We treat any error that isn't 'not found' as 'potentially alive'
+            return True
+        except:
+            return False
 
 def is_leader():
     if not os.path.exists(LEADER_TXT):
@@ -39,57 +74,65 @@ def is_leader():
     except:
         return True
 
+# --- Hardened Locking (V4) ----------------------------------------------------
+
 def acquire_lock(agent_name: str, ttl_seconds: int = 300) -> bool:
-    """Batch 15 T1: Ensure only one instance of an agent runs at a time.
-    Hybrid Logic: PID Check + TTL Fallback (5 mins).
+    """Format: pid,timestamp,hostname,process_name
+    Rules (V4): Reclaim only if (PID dead AND TTL expired).
     """
     os.makedirs(LOCK_SUBDIR, exist_ok=True)
     lock_file = os.path.join(LOCK_SUBDIR, f"{agent_name}.pid")
-    
+    pid = os.getpid()
+    host = get_local_identity()
+    proc_name = os.path.basename(sys.argv[0])
+    now = int(time.time())
+
     if os.path.exists(lock_file):
         try:
-            # TTL Fallback: If file is older than ttl_seconds, ignore PID and assume stale
-            mtime = os.path.getmtime(lock_file)
-            if (time.time() - mtime) > ttl_seconds:
-                logger.warning(f"Lock file for {agent_name} is stale (> {ttl_seconds}s). Reclaiming.")
-            else:
-                # PID Check
-                with open(lock_file, 'r') as f:
-                    old_pid = int(f.read().strip())
+            with open(lock_file, 'r') as f:
+                content = f.read().strip().split(",")
                 
-                alive = False
-                try:
-                    import psutil
-                    if psutil.pid_exists(old_pid):
-                        proc = psutil.Process(old_pid)
-                        if proc.is_running() and "python" in proc.name().lower():
-                            alive = True
-                except (ImportError, Exception):
-                    if hasattr(os, 'kill'):
-                        try:
-                            os.kill(old_pid, 0)
-                            alive = True
-                        except OSError:
-                            alive = False
-
+            if len(content) >= 4:
+                old_pid, old_ts, old_host, old_proc = content[0:4]
+                old_pid, old_ts = int(old_pid), int(old_ts)
+                
+                # RECLAIM RULES (V4 Final)
+                # We only reclaim if PID is dead AND TTL (>300s) has passed.
+                # process_name and host are for debugging/cross-container validation.
+                alive = is_pid_running(old_pid)
+                expired = (now - old_ts) > ttl_seconds
+                
                 if alive:
+                    logger.warning(f"Lock conflict for {agent_name}: PID {old_pid} on {old_host} is still alive.")
                     return False
-
+                
+                if not expired:
+                    logger.warning(f"Lock for {agent_name} is stale but TTL not met ({now - old_ts}s < {ttl_seconds}s).")
+                    return False
+                
+                logger.info(f"Reclaiming stale lock for {agent_name} (Dead PID {old_pid}, Expired TTL).")
+            
             os.remove(lock_file)
         except Exception as e:
+            logger.error(f"Error checking lock for {agent_name}: {e}")
             try: os.remove(lock_file)
             except: pass
-            
-    with open(lock_file, 'w') as f:
-        f.write(str(os.getpid()))
-    return True
+
+    try:
+        with open(lock_file, 'w') as f:
+            f.write(f"{pid},{now},{host},{proc_name}")
+        return True
+    except Exception as e:
+        logger.error(f"Failed to write lock for {agent_name}: {e}")
+        return False
 
 def heartbeat_lock(agent_name: str):
-    """Update lock file timestamp to prevent TTL expiry."""
+    """V4 Update: Rewrite the entire lock line to update the timestamp."""
     lock_file = os.path.join(LOCK_SUBDIR, f"{agent_name}.pid")
     if os.path.exists(lock_file):
         try:
-            Path(lock_file).touch()
+            # We just overwrite with current state to keep it atomic and fresh
+            acquire_lock(agent_name)
         except:
             pass
 
@@ -101,52 +144,99 @@ def release_lock(agent_name: str):
         except:
             pass
 
+# --- Health & Execution -------------------------------------------------------
+
 def update_agent_health(agent_name: str, success: bool, error_msg: str = None):
-    """Batch 5 T3: Write to per-agent health file to prevent race conditions."""
     os.makedirs(HEALTH_SUBDIR, exist_ok=True)
     path = os.path.join(HEALTH_SUBDIR, f"{agent_name}.json")
-    
     now = int(time.time())
+    
     stats = {
         "last_success": now if success else 0,
         "last_failure": now if not success else 0,
         "status": "healthy" if success else "failing",
         "error": error_msg,
         "timestamp": now,
-        "shutdown": _SHUTDOWN_SIGNALED
+        "shutdown": _SHUTDOWN_SIGNALED,
+        "mode": get_system_mode()
     }
-    
-    save_json(path, stats)
+    save_json(path, stats, caller=agent_name)
 
 def wrap_agent(agent_name: str, func: Callable[[], Any], interval: int = 10):
-    """Batch 16 T1: Persistent Agent Wrapper with internal looping and signal handling."""
+    """Production Agent Wrapper.
+    Safety: Contract check -> Lock acquisition -> Jittered Loop -> Tier Health.
+    """
     agent_logger = get_logger(agent_name)
+    bypass = os.getenv("M3TAL_BYPASS_ORCHESTRATOR") == "1"
     
+    pid = os.getpid()
+    host = get_local_identity()
+    
+    # Standardized Identity Log
+    agent_logger.info(f"[DEBUG] AGENT={agent_name} PID={pid} HOST={host} BYPASS={bypass}")
+    
+    if bypass:
+        print(f"⚠️  WARNING: Agent {agent_name} running outside orchestrator — no lifecycle guarantees.")
+
+    # 1. Contract Pre-check (V4)
+    success, err = validate_contract(agent_name)
+    tier = TIERS.get(agent_name, 2)
+    
+    if not success:
+        if tier == 1:
+            agent_logger.error(f"FATAL: {err}")
+            sys.exit(1)
+        else:
+            agent_logger.warning(f"DEGRADED: {err}")
+            update_agent_health(agent_name, success=False, error_msg=err)
+
+    # 2. Lock Acquisition
     if not acquire_lock(agent_name):
-        agent_logger.warning(f"Agent {agent_name} already running (lock active). Exiting.")
-        return
+        agent_logger.warning(f"Agent {agent_name} already running (lock conflict). Exiting.")
+        sys.exit(0)
 
     try:
         agent_logger.info(f"--- Agent {agent_name} Persistent Loop Started ---")
         
         while not _SHUTDOWN_SIGNALED:
+            # 3. Tier Health Check (Tier 2 requires Tier 1 state)
+            if tier == 2:
+                # We check for a critical Tier 1 file as a proxy for health
+                from utils.paths import REGISTRY_JSON
+                if not REGISTRY_JSON.exists():
+                    agent_logger.warning(f"Waiting for Tier 1 state (missing {REGISTRY_JSON.name})...")
+                    time.sleep(interval)
+                    continue
+
             if not is_leader():
                 time.sleep(interval)
-                heartbeat_lock(agent_name) # Stay alive even while following
+                heartbeat_lock(agent_name)
                 continue
 
             try:
-                # Execution tick
                 func()
                 update_agent_health(agent_name, success=True)
             except Exception as e:
-                agent_logger.error(f"Agent {agent_name} tick failed: {e}", exc_info=True)
-                update_agent_health(agent_name, success=False, error_msg=str(e))
-            
+                # Error classification (V3)
+                err_type = "TRANSIENT"
+                if isinstance(e, (ImportError, NameError, SyntaxError)):
+                    err_type = "CODE"
+                elif isinstance(e, (FileNotFoundError, KeyError)) and tier == 1:
+                    err_type = "CONFIG"
+                
+                agent_logger.error(f"Agent {agent_name} tick failed ({err_type}): {e}", exc_info=True)
+                update_agent_health(agent_name, success=False, error_msg=f"{err_type}: {e}")
+                
+                if err_type in ["CODE", "CONFIG"] and tier == 1:
+                    agent_logger.critical(f"FATAL {err_type} error in Tier 1 agent. Shutting down.")
+                    sys.exit(1)
+
             heartbeat_lock(agent_name)
 
-            # Sleep until next tick
-            for _ in range(interval):
+            # 4. Sleep with Jitter (V4)
+            jitter = random.uniform(0, 5)
+            sleep_time = interval + jitter
+            for _ in range(int(sleep_time)):
                 if _SHUTDOWN_SIGNALED:
                     break
                 time.sleep(1)

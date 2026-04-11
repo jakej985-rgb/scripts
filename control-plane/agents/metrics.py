@@ -127,7 +127,7 @@ def collect_all_metrics():
         "cpu": system["cpu"] 
     }
     
-    if save_json(METRICS_JSON, data):
+    if save_json(METRICS_JSON, data, caller="metrics"):
         append_history(system, containers)
         logger.info(f"Captured metrics and history.")
 

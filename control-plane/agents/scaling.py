@@ -65,12 +65,12 @@ def evaluate_scaling():
 
     if new_actions:
         # Write to own state file to avoid racing with decision.py (Audit fix 2.3)
-        save_json(SCALING_ACTIONS, {"actions": new_actions})
-        save_json(COOLDOWN_FILE, cooldowns)
+        save_json(SCALING_ACTIONS, {"actions": new_actions}, caller="scaling")
+        save_json(COOLDOWN_FILE, cooldowns, caller="scaling")
         logger.info(f"Issued {len(new_actions)} scaling actions.")
     else:
         # Clear stale scaling actions
-        save_json(SCALING_ACTIONS, {"actions": []})
+        save_json(SCALING_ACTIONS, {"actions": []}, caller="scaling")
 
 if __name__ == "__main__":
     wrap_agent("scaling", evaluate_scaling)

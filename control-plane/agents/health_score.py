@@ -51,7 +51,7 @@ def update_ttr(file_name, duration):
             changed = True
             break
     if changed:
-        save_json(CHAOS_EVENTS_JSON, events)
+        save_json(CHAOS_EVENTS_JSON, events, caller="scorer")
 
 def aggregate_agent_health():
     """Batch 5 T3: Aggregate health from per-agent files."""
@@ -119,7 +119,7 @@ def calculate_health():
         "recovery": recovery_metrics,
         "agent_health": agent_health,
         "timestamp": int(now)
-    })
+    }, caller="scorer")
 
 if __name__ == "__main__":
     # Now uses wrap_agent for proper lock/shutdown/health integration (Audit fix 2.2)

@@ -1,9 +1,27 @@
 import json
 import os
 import time
+import errno
+from pathlib import Path
 from typing import Any
 
 SCHEMA_VERSION = "1.3.0"
+
+# --- File Ownership Registry --------------------------------------------------
+# This map defines which agent 'owns' (is allowed to write) which state file.
+# Used to detect and log concurrent write violations.
+OWNERS = {
+    "registry.json": "registry",
+    "monitor_containers.json": "monitor",
+    "metrics.json": "metrics",
+    "normalized_metrics.json": "metrics",
+    "anomalies.json": "anomaly",
+    "decisions.json": "decision",
+    "cooldowns.json": "decision",
+    "health_report.json": "health_score",
+    "notify_state.json": "notify",
+    "restarts.json": "run", # Managed by orchestrator
+}
 
 def load_json(path: str, default: Any = None) -> Any:
     """Safe JSON load with robust fallback and type consistency check"""
@@ -29,42 +47,64 @@ def load_json(path: str, default: Any = None) -> Any:
         # If corrupted, return default rather than crash
         return default
 
-def save_json(path: str, data: Any) -> bool:
-    """Atomic write to JSON file with schema metadata injection (Batch 8 T5)"""
+def save_json(path: str, data: Any, caller: str = "unknown") -> bool:
+    """Production-grade atomic write to JSON file.
+    Pattern: tempfile -> fsync -> rename.
+    Includes ownership validation and detailed error logging.
+    """
+    path_obj = Path(path)
+    filename = path_obj.name
+    
+    # 1. Ownership Validation
+    expected_owner = OWNERS.get(filename)
+    if expected_owner and caller != "unknown" and caller != expected_owner:
+        # We don't hard-fail here to allow emergency bypass, but we log a loud warning
+        from .logger import get_logger
+        get_logger("state").warning(f"OWNERSHIP_VIOLATION: Agent '{caller}' is writing to '{filename}' (Owned by '{expected_owner}')")
+
     tmp_path = f"{path}.tmp"
     
-    # Inject metadata if data is a dict (Audit fix 2.12 - use safe copy)
+    # Inject metadata if data is a dict
     if isinstance(data, dict):
         data = data.copy()
         data["_m3tal_metadata"] = {
             "version": SCHEMA_VERSION,
             "updated_at": int(time.time()),
-            "host": os.getenv("HOSTNAME", "localhost")
+            "host": os.getenv("HOSTNAME", "localhost"),
+            "writer": caller
         }
 
     try:
-        # Create directory if it doesn't exist (Audit fix 2.8: handle bare files)
-        parent = Path(path).parent
-        if str(parent) not in (".", ""):
-            parent.mkdir(parents=True, exist_ok=True)
+        # Ensure parent exists
+        path_obj.parent.mkdir(parents=True, exist_ok=True)
         
+        # Atomic Write Pattern (V3 final)
         with open(tmp_path, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=4)
-            # Ensure it's flushed to disk before move
             f.flush()
-            os.fsync(f.fileno())
+            os.fsync(f.fileno())  # Force OS buffer to disk
             
         os.replace(tmp_path, path)
         return True
-    except Exception:
+    except Exception as e:
+        from .logger import get_logger
+        err_msg = f"Failed to save {filename}"
+        if hasattr(e, 'errno'):
+            err_msg += f" [errno {e.errno}: {os.strerror(e.errno)}]"
+        
+        get_logger("state").error(f"{err_msg}: {e} (Path: {os.path.abspath(path)})")
+        
         if os.path.exists(tmp_path):
-            try:
-                os.remove(tmp_path)
-            except:
-                pass
+            try: os.remove(tmp_path)
+            except: pass
         return False
 
 def validate_state(path: str, expected_type: type = list) -> bool:
-    """Check if file exists and contains the expected data type"""
-    data = load_json(path)
-    return isinstance(data, expected_type)
+    """Check if file exists and contains valid, non-corrupted data of expected type."""
+    if not os.path.exists(path):
+        return False
+    try:
+        data = load_json(path)
+        return isinstance(data, expected_type) and bool(data)
+    except:
+        return False

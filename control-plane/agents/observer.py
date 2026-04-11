@@ -16,8 +16,7 @@ SEEN_EVENTS_JSON = os.path.join(STATE_DIR, "observer_seen.json")
 _seen_events: set[str] = set(load_json(SEEN_EVENTS_JSON, default=[]))
 
 def aggregate_events():
-    """Phase 2: Observer Agent as per Audit Batch 4 T5."""
-    global _seen_events
+    """Phase 2: Observer Agent — Scans logs and generates events."""
     # This agent scans agent logs and generates a unified event stream
     logger.info("Watching system logs for critical events...")
     
@@ -32,7 +31,7 @@ def aggregate_events():
                     lines = collections.deque(f, maxlen=100)
                     new_event = False
                     for line in lines:
-                        # Audit fix 2.15: exclude [ERROR] found inside observer's own detected messages
+                        # exclude [ERROR] found inside observer's own detected messages
                         if "Critical Event detected" in line:
                             continue
                         if "[ERROR]" in line or "[CRASH]" in line:
@@ -47,12 +46,13 @@ def aggregate_events():
                             if len(_seen_events) > 500:
                                 # Remove oldest 100 entries instead of clearing everything
                                 ordered = list(_seen_events)
-                                _seen_events = set(ordered[100:])
+                                _seen_events.clear()
+                                _seen_events.update(ordered[100:])
                                 
                             logger.warning(f"Critical Event detected in {agent_name}: {line.strip()}")
                     
                     if new_event:
-                        save_json(SEEN_EVENTS_JSON, list(_seen_events))
+                        save_json(SEEN_EVENTS_JSON, list(_seen_events), caller="observer")
 
             except Exception as e:
                 logger.error(f"Failed to scan log {file}: {e}")

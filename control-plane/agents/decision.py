@@ -55,8 +55,8 @@ def decide():
     
     actions, new_cooldowns = plan_action(issues_data.get("issues", []), cooldowns)
     
-    save_json(DECISIONS_JSON, {"actions": actions})
-    save_json(COOLDOWNS_JSON, new_cooldowns)
+    save_json(DECISIONS_JSON, {"actions": actions}, caller="decision")
+    save_json(COOLDOWNS_JSON, new_cooldowns, caller="decision")
     
     if actions:
         logger.info(f"Decided on {len(actions)} actions.")

@@ -153,15 +153,15 @@ def reconcile():
         logger.info(f"Processing {len(actions)} actions...")
         for action in actions:
             perform_action(action)
-        save_json(DECISIONS_JSON, {"actions": []})
-        save_json(scaling_file, {"actions": []})
+        save_json(DECISIONS_JSON, {"actions": []}, caller="reconcile")
+        save_json(scaling_file, {"actions": []}, caller="reconcile")
         
     # 3. Storage Enforcement (Time-gated to 5 mins - Audit fix 2.9)
     last_storage_file = os.path.join(STATE_DIR, "last_storage.json")
     last_st = load_json(last_storage_file, default={"ts": 0})
     if time.time() - last_st.get("ts", 0) > 300:
         check_storage_enforcement()
-        save_json(last_storage_file, {"ts": time.time()})
+        save_json(last_storage_file, {"ts": time.time()}, caller="reconcile")
     
     logger.info("Reconciliation cycle complete.")
 

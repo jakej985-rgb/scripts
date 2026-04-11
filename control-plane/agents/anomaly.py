@@ -95,7 +95,7 @@ def analyze():
     if report_data.get("verdict") in ["WARNING", "CRITICAL"]:
         logger.warning(f"System health degraded: {report_data.get('verdict')} (Score: {report_data.get('score')}%)")
 
-    save_json(ANOMALIES_JSON, {"issues": issues})
+    save_json(ANOMALIES_JSON, {"issues": issues}, caller="anomaly")
     if issues:
         logger.info(f"Identified {len(issues)} anomalies.")
 

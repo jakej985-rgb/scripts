@@ -118,7 +118,7 @@ def check_and_notify():
             del alerted_containers[container]
 
     state["alerted_containers"] = alerted_containers
-    save_json(NOTIFY_STATE_JSON, state)
+    save_json(NOTIFY_STATE_JSON, state, caller="notify")
 
 
 if __name__ == "__main__":
