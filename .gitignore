@@ -31,10 +31,16 @@ dashboard/users.json
 *.log
 __pycache__/
 *.pyc
+*.swp
+*.swo
 venv/
 .venv/
+.pytest_cache/
+.pytest_run_temp/
+.pytest_tmp/
+pytest_temp_*/
+pytest_tmp_*/
+codex-validate-*/
 
 # State keep file (allow empty dir to be tracked)
 !control-plane/state/.keep
-/control-plane/state
-/control-plane/state
