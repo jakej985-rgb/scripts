@@ -4,8 +4,9 @@ import sys
 import time
 from pathlib import Path
 
-# Add current dir to path for utils
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# --- Path System Bootstrap ----------------------------------------------------
+AGENTS_DIR = Path(__file__).resolve().parent  # control-plane/agents/
+sys.path.append(str(AGENTS_DIR))
 
 from utils.paths import REPO_ROOT, STATE_DIR, LOG_DIR, DOCKER_DIR
 from utils.guards import wrap_agent

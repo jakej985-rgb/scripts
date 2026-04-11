@@ -14,8 +14,11 @@ import threading
 import time
 from pathlib import Path
 
-# --- Context Anchoring --------------------------------------------------------
-from utils.paths import REPO_ROOT, CONTROL_PLANE, AGENTS_DIR, STATE_DIR, LOG_DIR, RESTARTS_JSON
+# --- Path System Bootstrap ----------------------------------------------------
+AGENTS_DIR = Path(__file__).resolve().parent  # control-plane/agents/
+sys.path.append(str(AGENTS_DIR))
+
+from utils.paths import REPO_ROOT, CONTROL_PLANE, STATE_DIR, LOG_DIR, RESTARTS_JSON
 from utils.healing import atomic_write_json
 import json
 

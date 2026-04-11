@@ -12,12 +12,17 @@ import subprocess
 from pathlib import Path
 from typing import Dict, Any, Optional
 
-# --- Path System --------------------------------------------------------------
-from utils.paths import REPO_ROOT, CONTROL_PLANE, AGENTS_DIR, STATE_DIR, LOG_DIR, SCRIPTS_DIR
-BASE_DIR = CONTROL_PLANE
+# --- Path System Bootstrap ----------------------------------------------------
+BASE_DIR = Path(__file__).resolve().parent  # control-plane/
+sys.path.append(str(BASE_DIR / "agents"))
 
-# Preflight Import
-sys.path.append(str(SCRIPTS_DIR))
+from utils.paths import REPO_ROOT, CONTROL_PLANE, AGENTS_DIR, STATE_DIR, LOG_DIR, SCRIPTS_DIR
+
+# Preflight & Script Pathing
+for path in [REPO_ROOT / "scripts", REPO_ROOT / "dashboard"]:
+    if str(path) not in sys.path:
+        sys.path.append(str(path))
+
 try:
     from preflight import run_preflight
 except ImportError:
@@ -331,9 +336,10 @@ def health_agent():
 
 # --- Main Orchestrator --------------------------------------------------------
 
-def run_init(repair_mode: bool = False) -> bool:
+def run_init(repair_scope: str = None) -> bool:
     """Main entry point: Orchestrates the entire bootstrap with preflight guarding."""
-    Header.show("M3TAL Self-Healing Init", f"Production Bootstrap — Repair: {repair_mode}")
+    repair_mode = bool(repair_scope)
+    Header.show("M3TAL Self-Healing Init", f"Production Bootstrap — Repair: {repair_scope or 'None'}")
     
     # 0. Preflight Gate
     if run_preflight:

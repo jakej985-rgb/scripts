@@ -9,6 +9,10 @@ import sys
 import time
 from pathlib import Path
 
+# --- Path System Bootstrap ----------------------------------------------------
+AGENTS_DIR = Path(__file__).resolve().parent  # control-plane/agents/
+sys.path.append(str(AGENTS_DIR))
+
 from utils.paths import REPO_ROOT, STATE_DIR, CONTROL_PLANE
 from utils.guards import wrap_agent
 from utils.healing import (
