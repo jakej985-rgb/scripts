@@ -12,27 +12,63 @@ from pathlib import Path
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from utils.paths import STATE_DIR, ANOMALIES_JSON, HEALTH_REPORT_JSON
+from utils.paths import STATE_DIR, ANOMALIES_JSON, HEALTH_REPORT_JSON, ENV_TELEGRAM_TOKEN, ENV_TELEGRAM_CHAT
 from utils.state import load_json, save_json
 from utils.guards import wrap_agent
 from utils.logger import get_logger
 
 logger = get_logger("notify")
 
-TELEGRAM_TOKEN   = os.getenv("TELEGRAM_TOKEN", "")
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
+TELEGRAM_TOKEN   = os.getenv(ENV_TELEGRAM_TOKEN, "")
+TELEGRAM_CHAT_ID = os.getenv(ENV_TELEGRAM_CHAT, "")
 NOTIFY_STATE_JSON = os.path.join(STATE_DIR, "notify_state.json")
 
-# Only alert when these verdicts are NEW (don't spam)
-ALERT_VERDICTS = {"WARNING", "CRITICAL"}
+def validate_telegram_env():
+    """Strict validation for Telegram credentials (Audit fix 4.1)."""
+    if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_ID:
+        logger.warning(f"Telegram credentials missing ({ENV_TELEGRAM_TOKEN} / {ENV_TELEGRAM_CHAT}).")
+        return False
+    
+    # 1. Whitespace check
+    if TELEGRAM_TOKEN.strip() != TELEGRAM_TOKEN or TELEGRAM_CHAT_ID.strip() != TELEGRAM_CHAT_ID:
+        logger.error("Telegram credentials contain hidden whitespace or newlines! Fix your .env.")
+        return False
+        
+    # 2. Length check (most tokens are >= 40 chars)
+    if len(TELEGRAM_TOKEN) < 40:
+        logger.error(f"Telegram token looks truncated (Length: {len(TELEGRAM_TOKEN)}).")
+        return False
+        
+    # 3. Quoted string check
+    if (TELEGRAM_TOKEN.startswith('"') and TELEGRAM_TOKEN.endswith('"')) or \
+       (TELEGRAM_TOKEN.startswith("'") and TELEGRAM_TOKEN.endswith("'")):
+        logger.error("Telegram token is wrapped in quotes. Remove them from your environment configuration.")
+        return False
 
-# Cooldown per alert type (seconds) — prevents duplicate spam
-ALERT_COOLDOWN = 300  # 5 minutes
+    masked = f"{TELEGRAM_TOKEN[:5]}...{TELEGRAM_TOKEN[-5:]}"
+    logger.info(f"Telegram Config Validated: Token={masked} (len={len(TELEGRAM_TOKEN)}), Chat={TELEGRAM_CHAT_ID}")
+    return True
 
+def test_telegram_connection():
+    """Proactive connection check (Audit fix 4.2)."""
+    if not TELEGRAM_TOKEN: return False
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/getMe"
+    try:
+        resp = requests.get(url, timeout=10)
+        if resp.status_code == 200:
+            data = resp.json()
+            bot_name = data.get("result", {}).get("username", "UnknownBot")
+            logger.info(f"Telegram Connection Verified: @{bot_name}")
+            return True
+        else:
+            logger.error(f"Telegram Connection FAILED ({resp.status_code}): {resp.text}")
+            return False
+    except Exception as e:
+        logger.error(f"Telegram Connection FAILED: {e}")
+        return False
 
 def send_telegram(message: str) -> bool:
     if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_ID:
-        logger.warning("Telegram credentials missing (TELEGRAM_TOKEN / TELEGRAM_CHAT_ID). Skipping.")
         return False
 
     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
@@ -47,6 +83,7 @@ def send_telegram(message: str) -> bool:
             logger.info("Telegram alert sent.")
             return True
         else:
+            # Audit fix: log full body for 401/403 debugging
             logger.error(f"Telegram API error {resp.status_code}: {resp.text}")
             return False
     except requests.exceptions.ConnectionError:
@@ -122,4 +159,8 @@ def check_and_notify():
 
 
 if __name__ == "__main__":
+    # Audit fix: proactive validation at boot
+    if validate_telegram_env():
+        test_telegram_connection()
+    
     wrap_agent("notify", check_and_notify, interval=30)

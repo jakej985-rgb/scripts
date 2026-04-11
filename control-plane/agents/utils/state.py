@@ -2,6 +2,7 @@ import json
 import os
 import time
 import errno
+import shutil
 from pathlib import Path
 from typing import Any
 
@@ -47,9 +48,22 @@ def load_json(path: str, default: Any = None) -> Any:
         # If corrupted, return default rather than crash
         return default
 
+def safe_replace(src: str, dst: str):
+    """Atomic replace with fallback for cross-device renames (Docker volumes)"""
+    try:
+        os.replace(src, dst)
+    except OSError as e:
+        # Cross-device move (errno 18: EXDEV) or other atomic failure
+        if e.errno == errno.EXDEV or os.name == 'nt':
+            shutil.copy2(src, dst)
+            try: os.remove(src)
+            except: pass
+        else:
+            raise
+
 def save_json(path: str, data: Any, caller: str = "unknown") -> bool:
     """Production-grade atomic write to JSON file.
-    Pattern: tempfile -> fsync -> rename.
+    Pattern: tempfile -> fsync -> safe_replace.
     Includes ownership validation and detailed error logging.
     """
     path_obj = Path(path)
@@ -58,13 +72,11 @@ def save_json(path: str, data: Any, caller: str = "unknown") -> bool:
     # 1. Ownership Validation
     expected_owner = OWNERS.get(filename)
     if expected_owner and caller != "unknown" and caller != expected_owner:
-        # We don't hard-fail here to allow emergency bypass, but we log a loud warning
         from .logger import get_logger
         get_logger("state").warning(f"OWNERSHIP_VIOLATION: Agent '{caller}' is writing to '{filename}' (Owned by '{expected_owner}')")
 
     tmp_path = f"{path}.tmp"
     
-    # Inject metadata if data is a dict
     if isinstance(data, dict):
         data = data.copy()
         data["_m3tal_metadata"] = {
@@ -75,16 +87,14 @@ def save_json(path: str, data: Any, caller: str = "unknown") -> bool:
         }
 
     try:
-        # Ensure parent exists
         path_obj.parent.mkdir(parents=True, exist_ok=True)
         
-        # Atomic Write Pattern (V3 final)
         with open(tmp_path, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=4)
             f.flush()
-            os.fsync(f.fileno())  # Force OS buffer to disk
+            os.fsync(f.fileno())
             
-        os.replace(tmp_path, path)
+        safe_replace(tmp_path, path)
         return True
     except Exception as e:
         from .logger import get_logger

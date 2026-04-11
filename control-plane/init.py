@@ -24,7 +24,7 @@ for path in [AGENTS_DIR, REPO_ROOT / "scripts", REPO_ROOT / "dashboard"]:
         sys.path.append(str(path))
 
 from typing import Dict, Any, Optional
-from utils.paths import CONTROL_PLANE, STATE_DIR, LOG_DIR, SCRIPTS_DIR
+from utils.paths import CONTROL_PLANE, STATE_DIR, LOG_DIR, SCRIPTS_DIR, ENV_TELEGRAM_TOKEN, ENV_TELEGRAM_CHAT
 try:
     from preflight import run_preflight
 except ImportError:
@@ -80,8 +80,10 @@ def load_env() -> Dict[str, str]:
                     if (v.startswith('"') and v.endswith('"')) or (v.startswith("'") and v.endswith("'")):
                         v = v[1:-1]
                     env[k.strip()] = v
+                    os.environ[k.strip()] = v
     # Force REPO_ROOT for Docker
     env["REPO_ROOT"] = str(REPO_ROOT)
+    os.environ["REPO_ROOT"] = str(REPO_ROOT)
     return env
 
 GLOBAL_ENV = load_env()
@@ -92,7 +94,9 @@ SYSTEM_STATUS = {
     "logs": "unknown",
     "state": "unknown",
     "docker": "unknown",
-    "auth": "unknown"
+    "auth": "unknown",
+    "dependencies": "unknown",
+    "environment": "unknown"
 }
 
 MODE = "startup"  # Default mode
@@ -189,6 +193,76 @@ def state_agent(repair_mode: bool = False):
         update_status("state", "failed")
         return False
 
+def dependency_agent():
+    """📦 Dependency Agent: Validates required Python packages."""
+    if HB: HB.ping("Validating dependencies")
+    critical_deps = ["requests", "yaml", "psutil"]
+    missing = []
+    
+    for dep in critical_deps:
+        try:
+            __import__(dep if dep != "yaml" else "yaml")
+        except ImportError:
+            missing.append(dep)
+            
+    try:
+        import bcrypt
+    except ImportError:
+        t_log("[DEP] WARNING: bcrypt missing (Tier 2). Auth repairs disabled.", symbol="⚠")
+        update_status("auth", "degraded")
+    
+    if missing:
+        t_log(f"[DEP] FATAL: Missing critical dependencies: {', '.join(missing)}", symbol="✘")
+        t_log("[DEP] Solution: pip install -r requirements.txt", symbol="💡")
+        update_status("dependencies", "failed")
+        return False
+        
+    update_status("dependencies", "ok")
+    return True
+
+def env_validation_agent():
+    """🌍 Environment Agent: Audit Fix 4.5 — Strict validation of runtime context."""
+    if HB: HB.ping("Validating environment")
+    try:
+        # 1. Container Detection
+        is_container = Path("/.dockerenv").exists()
+        t_log(f"[ENV] Context: {'Docker Container' if is_container else 'Host System'}")
+        
+        # 2. .env presence
+        dot_env = REPO_ROOT / ".env"
+        has_dotenv = dot_env.exists()
+        
+        # 3. Required Vars
+        required = [ENV_TELEGRAM_TOKEN, ENV_TELEGRAM_CHAT, "REPO_ROOT"]
+        missing = []
+        for var in required:
+            val = os.getenv(var)
+            if not val:
+                missing.append(var)
+            elif var == ENV_TELEGRAM_TOKEN:
+                # Token-specific rules
+                if len(val) < 40:
+                    t_log(f"[ENV] WARNING: {var} looks truncated (len={len(val)})", symbol="⚠")
+                if val.strip() != val:
+                    t_log(f"[ENV] ERROR: {var} contains whitespace/newlines!", symbol="✘")
+                    missing.append(f"{var} (whitespace)")
+        
+        if missing:
+            t_log(f"[ENV] Missing/Invalid variables: {', '.join(missing)}", symbol="⚠")
+            if has_dotenv:
+                t_log("[ENV] .env file exists but variables not loaded. Check Docker environment passing.", symbol="💡")
+            else:
+                t_log("[ENV] No .env found. Ensure credentials are set.", symbol="💡")
+            update_status("environment", "degraded")
+        else:
+            update_status("environment", "ok")
+            
+        return True
+    except Exception as e:
+        t_log(f"[ENV] Agent failure: {e}", symbol="⚠")
+        update_status("environment", "failed")
+        return True
+
 def auth_agent():
     """🔐 Identity Agent: Non-blocking user baseline check."""
     if HB: HB.ping("Checking identity baseline")
@@ -197,8 +271,7 @@ def auth_agent():
         users_path = resolve_users_path(REPO_ROOT / "dashboard")
         
         if not HAS_BCRYPT:
-            t_log("[AUTH] WARNING: bcrypt module missing. Auth repairs disabled.", symbol="⚠")
-            t_log("[AUTH] Suggestion: pip install bcrypt", symbol="💡")
+            # Already logged by dependency_agent
             update_status("auth", "degraded")
             return True
 
@@ -309,8 +382,8 @@ def docker_agent(repair_mode: bool = False):
                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, 
                                      text=True, shell=use_shell, env=GLOBAL_ENV)
                 
-                # 2. Wait for either critical health or fire-and-forget timer
-                wait_time = 600 if is_critical else 10
+                # 2. Wait for either health or fire-and-forget timer (Audit fix: cap at 90s)
+                wait_time = 90
                 start_time = time.time()
                 while time.time() - start_time < wait_time:
                     if proc.poll() is not None and proc.returncode != 0:
@@ -421,38 +494,47 @@ def run_init(repair_scope: str = None) -> bool:
         print(f"  {RED}✘{END} Another instance is active. Exiting.")
         return False
 
+    global HB, BAR
     HB = Heartbeat()
     HB.start()
-    BAR = ProgressBar(6, prefix="Init")
+    BAR = ProgressBar(9, prefix="Init")
     HB.tether(BAR)
 
     try:
+        # Step 0: Environment & Dependencies (New Audit Layer)
+        BAR.update(0, "Environment")
+        env_validation_agent()
+        
+        BAR.update(1, "Dependencies")
+        if not dependency_agent():
+            return False
+
         # Step 1: FS
-        BAR.update(0, "Filesystem")
+        BAR.update(2, "Filesystem")
         if not fs_agent(repair_mode=(repair_scope in ["all", "fs"])):
             return False
             
         # Step 2: Logs
-        BAR.update(1, "Logs")
+        BAR.update(3, "Logs")
         log_agent(repair_mode=(repair_scope in ["all", "logs"]))
         
         # Step 3: State
-        BAR.update(2, "State")
+        BAR.update(4, "State")
         if not state_agent(repair_mode=(repair_scope in ["all", "state"])):
             return False
             
         # Step 4: Auth
-        BAR.update(3, "Auth")
+        BAR.update(5, "Auth")
         auth_agent()
         
         # Step 5: Docker
-        BAR.update(4, "Docker")
+        BAR.update(6, "Docker")
         docker_agent(repair_mode=(repair_scope == "all"))
         
         # Step 6: Final Health
-        BAR.update(5, "Health")
+        BAR.update(7, "Health")
         ready = health_agent()
-        BAR.update(6, "Complete")
+        BAR.update(8, "Cleanup")
         
         return ready
 

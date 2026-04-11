@@ -65,14 +65,18 @@ def scan_for_containers():
             "downloads": "/mnt/downloads",
             "media": "/mnt/media"
         },
-        "updated_at": os.path.getmtime(DOCKER_DIR) if os.path.exists(DOCKER_DIR) else 0
+        "updated_at": int(time.time())
     }
     
-    if save_json(REGISTRY_JSON, registry_data, caller="registry"):
-        logger.info(f"Registry updated with {len(valid_containers)} containers. (Path: {os.path.abspath(REGISTRY_JSON)})")
-    else:
-        # Detailed error logging already handled by save_json, but we add context
-        logger.error(f"Registry update failed for {os.path.abspath(REGISTRY_JSON)}")
+    try:
+        if save_json(REGISTRY_JSON, registry_data, caller="registry"):
+            logger.info(f"Registry updated with {len(valid_containers)} containers. (Path: {os.path.abspath(REGISTRY_JSON)})")
+        else:
+            logger.error(f"Registry update failed for {os.path.abspath(REGISTRY_JSON)}")
+    except PermissionError:
+        logger.error(f"CRITICAL: Permission Denied while updating Registry at {REGISTRY_JSON}. Check volume permissions.")
+    except Exception as e:
+        logger.error(f"Unexpected error during registry save: {e}")
 
 if __name__ == "__main__":
     wrap_agent("registry", scan_for_containers)

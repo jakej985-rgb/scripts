@@ -10,6 +10,11 @@ else:
     # This file is at control-plane/agents/utils/paths.py
     REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 
+# --- Environment Variable Keys (Audit fix 3.1) --------------------------------
+ENV_TELEGRAM_TOKEN = "TELEGRAM_TOKEN"
+ENV_TELEGRAM_CHAT  = "TELEGRAM_CHAT_ID"
+ENV_REPO_ROOT      = "REPO_ROOT"
+
 # --- Global Component Paths ---------------------------------------------------
 CONTROL_PLANE = REPO_ROOT / "control-plane"
 AGENTS_DIR = CONTROL_PLANE / "agents"

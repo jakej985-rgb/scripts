@@ -10,8 +10,13 @@ import time
 from pathlib import Path
 
 # --- Path System Bootstrap ----------------------------------------------------
-AGENTS_DIR = Path(__file__).resolve().parent  # control-plane/agents/
-sys.path.append(str(AGENTS_DIR))
+# healer.py (v1.1.0) — Path stability fix
+from pathlib import Path
+import sys
+
+AGENTS_DIR = Path(__file__).resolve().parent
+if str(AGENTS_DIR) not in sys.path:
+    sys.path.append(str(AGENTS_DIR))
 
 from utils.paths import REPO_ROOT, STATE_DIR, CONTROL_PLANE
 from utils.guards import wrap_agent
@@ -19,9 +24,9 @@ from utils.healing import (
     acquire_healer_lock, release_healer_lock, log_event, is_writable
 )
 
-# We import the agent logic from init.py to ensure parity, but we'll use a wrapper
-# to enforce "runtime-safe" behavior.
-sys.path.append(str(REPO_ROOT / "control-plane"))
+# Use absolute path from paths.py for init import
+if str(CONTROL_PLANE) not in sys.path:
+    sys.path.append(str(CONTROL_PLANE))
 import init
 
 MAX_CYCLE_TIME = 15  # seconds

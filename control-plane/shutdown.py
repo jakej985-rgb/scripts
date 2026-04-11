@@ -52,8 +52,10 @@ def load_env() -> Dict[str, str]:
                     if (v.startswith('"') and v.endswith('"')) or (v.startswith("'") and v.endswith("'")):
                         v = v[1:-1]
                     env[k.strip()] = v
+                    os.environ[k.strip()] = v
     # Force REPO_ROOT for Docker
     env["REPO_ROOT"] = str(REPO_ROOT)
+    os.environ["REPO_ROOT"] = str(REPO_ROOT)
     return env
 
 GLOBAL_ENV = load_env()
