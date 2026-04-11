@@ -9,20 +9,22 @@ import os
 import sys
 import time
 import subprocess
+import threading
 from pathlib import Path
-from typing import Dict, Any, Optional
 
 # --- Path System Bootstrap ----------------------------------------------------
+# Resolve paths absolutely to satisfy IDE linter and ensure cross-platform stability
 BASE_DIR = Path(__file__).resolve().parent  # control-plane/
-sys.path.append(str(BASE_DIR / "agents"))
+REPO_ROOT = BASE_DIR.parent
+AGENTS_DIR = BASE_DIR / "agents"
 
-from utils.paths import REPO_ROOT, CONTROL_PLANE, AGENTS_DIR, STATE_DIR, LOG_DIR, SCRIPTS_DIR
-
-# Preflight & Script Pathing
-for path in [REPO_ROOT / "scripts", REPO_ROOT / "dashboard"]:
+# Standardize Search Paths
+for path in [AGENTS_DIR, REPO_ROOT / "scripts", REPO_ROOT / "dashboard"]:
     if str(path) not in sys.path:
         sys.path.append(str(path))
 
+from typing import Dict, Any, Optional
+from utils.paths import CONTROL_PLANE, STATE_DIR, LOG_DIR, SCRIPTS_DIR
 try:
     from preflight import run_preflight
 except ImportError:
@@ -39,10 +41,12 @@ from progress_utils import (
 )
 
 # --- Configuration ------------------------------------------------------------
-STATE_DIR = BASE_DIR / "state"
-LOG_DIR = STATE_DIR / "logs"
-
-REQUIRED_DIRS = [STATE_DIR, LOG_DIR, STATE_DIR / "health", STATE_DIR / "locks"]
+REQUIRED_DIRS = [
+    STATE_DIR, 
+    LOG_DIR, 
+    STATE_DIR / "health", 
+    STATE_DIR / "locks"
+]
 
 REQUIRED_LOGS = [
     "monitor.log", "metrics.log", "anomaly.log", "decision.log",
@@ -228,16 +232,58 @@ def docker_agent(repair_mode: bool = False):
                                        capture_output=True, shell=use_shell, env=GLOBAL_ENV, check=True))
             t_log("[DOCKER] Shared network 'm3tal' ready")
         except: pass 
+        
+        # Shared UI State
+        global_live_list = LiveList([])
+        active_stacks = [] # List of (stack_name, path, is_critical, total_svc, expected_services_list)
+        stop_poller = threading.Event()
+
+        def ui_status_poller():
+            """Continuously updates the GlobalLiveList for all active stacks."""
+            while not stop_poller.is_set():
+                for name, sd, is_critical, total, services in list(active_stacks):
+                    cf = sd / "docker-compose.yml"
+                    ps_res = subprocess.run(["docker", "compose", "-f", str(cf), "ps", "--format", "json"],
+                                         capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)
+                    if ps_res.returncode == 0:
+                        out = ps_res.stdout.strip()
+                        ps_data = []
+                        try:
+                            if out.startswith("["): ps_data = json.loads(out)
+                            elif out: ps_data = [json.loads(l) for l in out.splitlines()]
+                        except: pass
+                        
+                        for item in services:
+                            match = next((c for c in ps_data if c.get("Service") == item), None)
+                            if match:
+                                state = match.get("State", "unknown").lower()
+                                status_text = match.get("Status", "").lower()
+                                smart_state = state
+                                
+                                # Visual polish
+                                if "health: starting" in status_text: smart_state = "starting (health-check)"
+                                elif state == "running" and "unhealthy" in status_text: smart_state = "unhealthy"
+                                elif state == "running": smart_state = "healthy" if "healthy" in status_text else "running"
+                                elif state == "created": smart_state = "creating..."
+                                
+                                global_live_list.update(item, smart_state)
+                            else:
+                                # Detection for pulling/launching handled in main loop until first ps hit
+                                pass
+                time.sleep(2)
+
+        poller_thread = threading.Thread(target=ui_status_poller, daemon=True)
+        poller_thread.start()
 
         stacks = [
-            ("routing", REPO_ROOT / "docker" / "routing"),
-            ("maintenance", REPO_ROOT / "docker" / "maintenance"),
-            ("core", REPO_ROOT / "docker" / "core"),
-            ("media", REPO_ROOT / "docker" / "media"),
-            ("apps/tattoo-app", REPO_ROOT / "docker" / "apps" / "tattoo-app")
+            ("routing", REPO_ROOT / "docker" / "routing", False),
+            ("maintenance", REPO_ROOT / "docker" / "maintenance", False),
+            ("core", REPO_ROOT / "docker" / "core", True),
+            ("media", REPO_ROOT / "docker" / "media", False),
+            ("apps/tattoo-app", REPO_ROOT / "docker" / "apps" / "tattoo-app", False)
         ]
         
-        for name, sd in stacks:
+        for name, sd, is_critical in stacks:
             cf = sd / "docker-compose.yml"
             if not cf.exists(): continue
             
@@ -255,79 +301,42 @@ def docker_agent(repair_mode: bool = False):
             sub_bar.update(0, f"Initializing {total_svc} services ({name})")
 
             try:
-                # 1. Start the stack asynchronously
-                # FIXED: Using stderr=DEVNULL for background process to avoid "Pipe Deadlock" 
-                # where the process hangs when the pipe buffer is full.
+                # 1. Register stack and start launch
+                active_stacks.append((name, sd, is_critical, total_svc, expected_services))
+                global_live_list.add_items(expected_services)
+                
                 proc = subprocess.Popen(["docker", "compose", "-f", str(cf), "up", "-d"], 
                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, 
                                      text=True, shell=use_shell, env=GLOBAL_ENV)
                 
-                # Settle time (helps Docker Desktop stabilize container list)
-                time.sleep(1)
-                
-                # 2. Poll for readiness immediately
-                ready_count = 0
-                if total_svc > 0:
-                    start_time = time.time()
-                    while time.time() - start_time < 600: # 600s Smart Timeout (Robust for pulls)
-                        # Check if process crashed immediately
-                        if proc.poll() is not None:
-                             if proc.returncode != 0:
-                                 raise RuntimeError(f"Docker Launch Error (Exit {proc.returncode}). Check Docker Desktop logs.")
-                        
-                        # Active Feedback: If up -d is still running, it's likely pulling
-                        launching_status = "pulling" if proc.poll() is None else "launching"
-
-                        ps_res = subprocess.run(["docker", "compose", "-f", str(cf), "ps", "--format", "json"],
-                                             capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)
-                        
-                        if ps_res.returncode == 0:
-                            out = ps_res.stdout.strip()
-                            ps_data = []
-                            try:
-                                if out.startswith("["): ps_data = json.loads(out)
-                                elif out: ps_data = [json.loads(l) for l in out.splitlines()]
-                            except: pass
-                            
-                            ready_count = 0
-                            for item in expected_services:
-                                match = next((c for c in ps_data if c.get("Service") == item), None)
-                                note = ""
-                                if match:
-                                    state = match.get("State", "unknown").lower()
-                                    status_text = match.get("Status", "").lower()
-                                    
-                                    if state not in ["running", "healthy"]:
-                                        insp = subprocess.run(["docker", "inspect", match.get("Name", ""), "--format", "{{json .State}}"],
-                                                           capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)
-                                        if insp.returncode == 0:
-                                            try:
-                                                istate = json.loads(insp.stdout)
-                                                exit_code = istate.get("ExitCode", 0)
-                                                restarts = istate.get("RestartCount", 0)
-                                                if restarts > 0: note = f"{restarts} restarts"
-                                                if exit_code != 0: note += f", Exit {exit_code}"
-                                            except: pass
-
-                                    smart_state = state
-                                    if "health: starting" in status_text: smart_state = "starting (health-check)"
-                                    elif state == "running" and "unhealthy" in status_text: smart_state = "unhealthy"
-                                    elif state == "running": smart_state = "healthy" if "healthy" in status_text else "running"
-                                    elif state == "created": smart_state = "creating..."
-                                    
-                                    live_list.update(item, smart_state, note=note.strip(", "))
-                                    if smart_state in ["running", "healthy"]: ready_count += 1
-                                else:
-                                    # Still "working" if we are in the loop and ps doesn't see it yet
-                                    live_list.update(item, launching_status)
-
-                            sub_bar.update(ready_count, f"Processed {ready_count}/{total_svc} ({name})")
-                            if ready_count >= total_svc: break
-                        time.sleep(1.5)
+                # 2. Wait for either critical health or fire-and-forget timer
+                wait_time = 600 if is_critical else 10
+                start_time = time.time()
+                while time.time() - start_time < wait_time:
+                    if proc.poll() is not None and proc.returncode != 0:
+                        raise RuntimeError(f"Docker Launch Error (Exit {proc.returncode}) for {name}")
                     
-                    if ready_count < total_svc:
-                         t_log(f"[DOCKER] Stack {name} timed out. Proceeding in DEGRADED mode.", symbol="⚠")
-                         update_status("docker", "partial")
+                    # Update local ready count based on shared live_list status
+                    ready_count = sum(1 for item in expected_services 
+                                    if global_live_list.statuses.get(item) in ["running", "healthy", "done"])
+                    
+                    sub_bar.update(ready_count, f"Processed {ready_count}/{total_svc} ({name})")
+                    if ready_count >= total_svc: break
+                    
+                    # Provide 'pulling' feedback until containers appear
+                    if ready_count == 0 and proc.poll() is None:
+                        for item in expected_services:
+                            if global_live_list.statuses.get(item) == "queued":
+                                global_live_list.update(item, "pulling")
+
+                    time.sleep(1.5)
+                
+                if ready_count < total_svc:
+                    if is_critical:
+                        t_log(f"[DOCKER] Stack {name} timed out. Proceeding in DEGRADED mode.", symbol="⚠")
+                        update_status("docker", "partial")
+                    else:
+                        t_log(f"[DOCKER] Stack {name} launched in background. Moving on.", symbol="🚀")
                 
                 # Lock the lines
                 live_list.reset()
@@ -339,6 +348,10 @@ def docker_agent(repair_mode: bool = False):
         
         if SYSTEM_STATUS["docker"] == "unknown":
             update_status("docker", "ok")
+        
+        # Stop poller before exiting agent
+        stop_poller.set()
+        poller_thread.join(timeout=2)
         return True
     except Exception as e:
         t_log(f"[DOCKER] Agent failed: {e}", symbol="✘")

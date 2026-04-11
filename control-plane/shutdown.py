@@ -94,8 +94,8 @@ def terminate_agents():
             
     HB.log("Clearing healer and agent locks")
     # Clean all lock files
-    (STATE_DIR / "healer.lock").unlink(missing_ok=True)
     locks_dir = STATE_DIR / "locks"
+    (locks_dir / "healer.lock").unlink(missing_ok=True)
     if locks_dir.exists():
         for f in locks_dir.glob("*"):
             try:

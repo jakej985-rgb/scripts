@@ -43,8 +43,10 @@ def save_json(path: str, data: Any) -> bool:
         }
 
     try:
-        # Create directory if it doesn't exist
-        os.makedirs(os.path.dirname(path), exist_ok=True)
+        # Create directory if it doesn't exist (Audit fix 2.8: handle bare files)
+        parent = Path(path).parent
+        if str(parent) not in (".", ""):
+            parent.mkdir(parents=True, exist_ok=True)
         
         with open(tmp_path, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=4)

@@ -24382,3 +24382,106 @@ Traceback (most recent call last):
   File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
     from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
 ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+2026-04-11 02:46:13 [INFO] anomaly: --- Agent anomaly Persistent Loop Started ---
+2026-04-11 02:46:13 [INFO] anomaly: --- Agent anomaly Persistent Loop Started ---
+2026-04-11 02:46:13 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:46:13 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:46:13 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:46:13 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:46:23 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:46:23 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:46:23 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:46:23 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:46:35 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:46:35 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:46:35 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:46:35 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:46:45 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:46:45 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:46:45 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:46:45 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:46:55 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:46:55 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:46:55 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:46:55 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:47:05 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:47:05 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:47:05 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:47:05 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:47:15 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:47:15 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:47:15 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:47:15 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:47:25 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:47:25 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:47:25 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:47:25 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:47:35 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:47:35 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:47:35 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:47:35 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:47:45 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:47:45 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:47:45 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:47:45 [INFO] anomaly: Identified 20 anomalies.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               

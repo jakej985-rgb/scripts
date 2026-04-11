@@ -36,3 +36,4 @@ venv/
 
 # State keep file (allow empty dir to be tracked)
 !control-plane/state/.keep
+/control-plane/state

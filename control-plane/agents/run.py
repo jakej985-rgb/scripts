@@ -171,7 +171,12 @@ def run_agent(name: str, script: str) -> None:
 
         if exit_code != 0:
             _record_failure(name)
-            wait_time = min(5, 30) # Brief safety pause
+            # Audit fix 2.7: True exponential backoff
+            state = _get_restart_state()
+            fail_count = state.get(name, {}).get("count", 1)
+            wait_time = min(2**fail_count, 30)
+            ts_err = time.strftime("%H:%M:%S")
+            print(f"[{ts_err}] {name} failed. Retrying in {wait_time}s...")
             time.sleep(wait_time)
         else:
             time.sleep(2)
@@ -181,6 +186,19 @@ def run_agent(name: str, script: str) -> None:
 
 def main() -> None:
     ts = time.strftime("%H:%M:%S")
+    
+    # Audit fix 2.5: Host vs Container Guard
+    # Prevent duplicate agents if the m3tal-runtime container is already active
+    try:
+        use_shell = os.name == "nt"
+        check_cmd = ["docker", "ps", "--filter", "name=m3tal-runtime", "--filter", "status=running", "-q"]
+        res = subprocess.run(check_cmd, capture_output=True, text=True, shell=use_shell)
+        if res.returncode == 0 and res.stdout.strip():
+            print(f"[{ts}] ABORT: m3tal-runtime container is already running. Terminating host-side runner.")
+            sys.exit(0)
+    except Exception:
+        pass # Fallback to host-side execution if docker is inaccessible
+
     print(f"[{ts}] M3TAL Agent Runner launching...")
 
     threads: list[threading.Thread] = []

@@ -97,17 +97,16 @@ def append_history(system, containers):
         if ts - last_prune_ts > 600:
              if os.path.exists(HISTORY_CSV):
                  with open(HISTORY_CSV, "r") as f:
-                     # Audit fix 2.11: Use deque for memory-efficient tail
-                     all_lines = collections.deque(f, maxlen=MAX_HISTORY_ENTRIES + 1)
+                     # Audit fix 2.6: Use maxlen to automatically prune oldest line on read
+                     all_lines = collections.deque(f, maxlen=MAX_HISTORY_ENTRIES)
                  
-                 if len(all_lines) > MAX_HISTORY_ENTRIES:
-                     logger.info("Rotating metrics-history.csv")
-                     with open(HISTORY_CSV, "w") as f:
-                         # Ensure header is preserved
-                         first_line = all_lines[0]
-                         if not first_line.startswith("timestamp"):
-                             f.write(header)
-                         f.writelines(all_lines)
+                 # deque already has maxlen entries - write it back to prune
+                 logger.info("Rotating metrics-history.csv (Pruning overflow)")
+                 with open(HISTORY_CSV, "w") as f:
+                     # Ensure header is preserved
+                     if all_lines and not all_lines[0].startswith("timestamp"):
+                         f.write(header)
+                     f.writelines(all_lines)
              # Update last prune timestamp
              try:
                  with open(last_prune_file, 'w') as pf:

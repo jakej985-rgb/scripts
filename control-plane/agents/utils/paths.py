@@ -34,6 +34,10 @@ RESTARTS_JSON = STATE_DIR / "restarts.json" # New: Track crash loops
 ANOMALIES_JSON = STATE_DIR / "anomalies.json"
 DECISIONS_JSON = STATE_DIR / "decisions.json"
 REGISTRY_JSON = STATE_DIR / "registry.json"
+HEALTH_REPORT_JSON = STATE_DIR / "health_report.json"
+NORMALIZED_METRICS_JSON = STATE_DIR / "normalized_metrics.json"
+COOLDOWNS_JSON = STATE_DIR / "cooldowns.json"
+CLUSTER_YML = CONFIG_DIR / "cluster.yml"
 
 # --- Dynamic Assets -----------------------------------------------------------
 TRAEFIK_DYNAMIC_YML = STATE_DIR / "traefik-dynamic.yml"

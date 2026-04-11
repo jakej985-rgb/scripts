@@ -14,6 +14,9 @@ if sys.stdout.encoding.lower() != 'utf-8':
     except (AttributeError, Exception):
         pass
 
+# UI Synchronization Lock
+UI_LOCK = threading.Lock()
+
 # --- Configuration & Theme Loading --------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent # Root
 THEME_FILE = BASE_DIR / "control-plane" / "state" / "theme.json"
@@ -115,35 +118,36 @@ class ProgressBar:
         ProgressBar._active_instance = self
 
     def update(self, current: int, suffix: str = ""):
-        self.current = current
-        self.suffix = suffix
-        if not sys.stdout.isatty(): return
+        with UI_LOCK:
+            self.current = current
+            self.suffix = suffix
+            if not sys.stdout.isatty(): return
+                
+            percent = 100 * (current / float(self.total))
+            filled = int(self.width * current // self.total)
+            bar = f"{PINK}█{END}" * filled + f"{DIM}░{END}" * (self.width - filled)
             
-        percent = 100 * (current / float(self.total))
-        filled = int(self.width * current // self.total)
-        bar = f"{PINK}█{END}" * filled + f"{DIM}░{END}" * (self.width - filled)
-        
-        main_line_content = f"  {ORANGE}{self.prefix}{END} {bar} {PINK}{BOLD}{percent:.0f}%{END} {DIM}{suffix}{END}"
-        cols, _ = shutil.get_terminal_size()
-        
-        timer_str = ""
-        if self._tethered_hb:
-            elapsed = int(time.time() - self._tethered_hb._last_activity)
-            timer_str = f" {DIM}[idle {_format_elapsed(elapsed)}]{END}"
+            main_line_content = f"  {ORANGE}{self.prefix}{END} {bar} {PINK}{BOLD}{percent:.0f}%{END} {DIM}{suffix}{END}"
+            cols, _ = shutil.get_terminal_size()
             
-        sys.stdout.write("\r" + " " * (cols - 1) + "\r")
-        
-        visible_main_len = len(f"  {self.prefix} [{'#'*self.width}] {percent:.0f}% {suffix}")
-        padding = cols - visible_main_len - 14 
-        
-        if padding > 0:
-            sys.stdout.write(f"  {ORANGE}{self.prefix}{END} {bar} {PINK}{BOLD}{percent:.0f}%{END} {DIM}{suffix}{END}{' ' * padding}{timer_str}")
-        else:
-            sys.stdout.write(f"{main_line_content}{timer_str}")
+            timer_str = ""
+            if self._tethered_hb:
+                elapsed = int(time.time() - self._tethered_hb._last_activity)
+                timer_str = f" {DIM}[idle {_format_elapsed(elapsed)}]{END}"
+                
+            sys.stdout.write("\r" + " " * (cols - 1) + "\r")
             
-        sys.stdout.flush()
-        if current >= self.total:
-            sys.stdout.write("\n")
+            visible_main_len = len(f"  {self.prefix} [{'#'*self.width}] {percent:.0f}% {suffix}")
+            padding = cols - visible_main_len - 14 
+            
+            if padding > 0:
+                sys.stdout.write(f"  {ORANGE}{self.prefix}{END} {bar} {PINK}{BOLD}{percent:.0f}%{END} {DIM}{suffix}{END}{' ' * padding}{timer_str}")
+            else:
+                sys.stdout.write(f"{main_line_content}{timer_str}")
+                
+            sys.stdout.flush()
+            if current >= self.total:
+                sys.stdout.write("\n")
 
 class SubProgressBar:
     """A compact, one-line progress bar for sub-tasks."""
@@ -152,22 +156,23 @@ class SubProgressBar:
         self.width = width
 
     def update(self, current: int, label: str = ""):
-        if not sys.stdout.isatty(): return
-        filled = int(self.width * current // self.total)
-        bar = f"{PINK}━{END}" * filled + f"{DIM}━{END}" * (self.width - filled)
-        
-        cols, _ = shutil.get_terminal_size()
-        offset = 1
-        if ProgressBar._active_instance:
-            offset = ProgressBar._active_instance._vertical_offset + 1
-            sys.stdout.write(f"\033[{offset}A") 
-        
-        sys.stdout.write("\r" + " " * (cols - 1) + "\r")
-        sys.stdout.write(f"    {DIM}└─{END} {bar} {PINK}{BOLD}{current}/{self.total}{END} {ORANGE}{label}{END}")
-        
-        if ProgressBar._active_instance:
-            sys.stdout.write(f"\033[{offset}B\r") 
-        sys.stdout.flush()
+        with UI_LOCK:
+            if not sys.stdout.isatty(): return
+            filled = int(self.width * current // self.total)
+            bar = f"{PINK}━{END}" * filled + f"{DIM}━{END}" * (self.width - filled)
+            
+            cols, _ = shutil.get_terminal_size()
+            offset = 1
+            if ProgressBar._active_instance:
+                offset = ProgressBar._active_instance._vertical_offset + 1
+                sys.stdout.write(f"\033[{offset}A") 
+            
+            sys.stdout.write("\r" + " " * (cols - 1) + "\r")
+            sys.stdout.write(f"    {DIM}└─{END} {bar} {PINK}{BOLD}{current}/{self.total}{END} {ORANGE}{label}{END}")
+            
+            if ProgressBar._active_instance:
+                sys.stdout.write(f"\033[{offset}B\r") 
+            sys.stdout.flush()
 
 class LiveList:
     """Manages a block of lines for individual container statuses."""
@@ -177,28 +182,66 @@ class LiveList:
         self.times: Dict[str, float] = {item: time.time() for item in items} # Start time
         self.elapsed: Dict[str, Optional[float]] = {item: None for item in items} # Final time
         self.count = len(items)
-        if ProgressBar._active_instance:
-            ProgressBar._active_instance._vertical_offset = self.count
-            for _ in range(self.count):
-                sys.stdout.write("\n")
-            sys.stdout.write("\r")
-            sys.stdout.flush()
+        with UI_LOCK:
+            if ProgressBar._active_instance:
+                ProgressBar._active_instance._vertical_offset = self.count
+                for _ in range(self.count):
+                    sys.stdout.write("\n")
+                sys.stdout.write("\r")
+                sys.stdout.flush()
+                
+                # Initial render for immediate feedback
+                for item in items:
+                    self._render_item(item)
+
+    def add_items(self, new_items: List[str]):
+        """Dynamically expand the live list with new services."""
+        with UI_LOCK:
+            if not sys.stdout.isatty(): 
+                self.items.extend(new_items)
+                return
+
+            for item in new_items:
+                if item not in self.items:
+                    self.items.append(item)
+                    self.statuses[item] = "queued"
+                    self.times[item] = time.time()
+                    self.elapsed[item] = None
             
-            # Initial render for immediate feedback
-            for item in items:
-                self.update(item, "queued")
+            old_count = self.count
+            self.count = len(self.items)
+            diff = self.count - old_count
+            
+            if ProgressBar._active_instance:
+                ProgressBar._active_instance._vertical_offset = self.count
+                # Make room for new lines
+                # Move cursor to end of current list
+                sys.stdout.write("\r")
+                for _ in range(diff):
+                    sys.stdout.write("\n")
+                sys.stdout.flush()
+                
+                # Render the new ones immediately
+                for item in self.items[-diff:]:
+                    self._render_item(item)
 
     def update(self, item: str, status: str, note: str = ""):
-        if item not in self.statuses or not sys.stdout.isatty(): return
-        
-        # Stop clock on terminal state
-        s_lower = status.lower()
-        terminal_states = ["running", "healthy", "done", "removed", "exited", "failed", "unhealthy"]
-        if any(x in s_lower for x in terminal_states) and self.elapsed[item] is None:
-            self.elapsed[item] = time.time() - self.times[item]
+        with UI_LOCK:
+            if item not in self.statuses or not sys.stdout.isatty(): return
             
-        self.statuses[item] = status
-        
+            # Stop clock on terminal state
+            s_lower = status.lower()
+            terminal_states = ["running", "healthy", "done", "removed", "exited", "failed", "unhealthy"]
+            if any(x in s_lower for x in terminal_states) and self.elapsed[item] is None:
+                self.elapsed[item] = time.time() - self.times[item]
+                
+            self.statuses[item] = status
+            self._render_item(item, note)
+
+    def _render_item(self, item: str, note: str = ""):
+        """Internal render — assumes lock is held."""
+        status = self.statuses[item]
+        s_lower = status.lower()
         cols, _ = shutil.get_terminal_size()
         idx = self.items.index(item)
         offset = self.count - idx
