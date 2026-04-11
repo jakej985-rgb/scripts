@@ -1,12 +1,12 @@
 {
-    "status": "healthy",
-    "timestamp": 1775897195,
+    "status": "degraded",
+    "timestamp": 1775898527,
     "mode": "startup",
     "details": {
         "filesystem": "ok",
         "logs": "ok",
         "state": "ok",
         "docker": "ok",
-        "auth": "ok"
+        "auth": "degraded"
     }
 }

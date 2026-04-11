@@ -1,714 +1,1664 @@
 M3TAL SYSTEM DEBUG BUNDLE
-Generated: 2026-04-09 16:34:35
-Repo Root: C:\Users\jakej\Documents\GitHub\M3tal-Media-Server
+Generated: 2026-04-11 02:11:10
+Repo Root: /M3tal-Media-Server
 ================================================================================
 
 --- CORE STATE ---
-[LEADER]: none
+[LEADER]: 9b7945c68051
 
 ================================================================================
 
---- ATTACHMENT: anomaly.log ---
- (Showing last 468 lines)
+--- ATTACHMENT: tunnel.log ---
+ (Showing last 24 lines)
 
-2026-04-09 14:35:35 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:35:35 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:35:35 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
-2026-04-09 14:35:35 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
-2026-04-09 14:35:36 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:35:36 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:35:41 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:35:41 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:35:41 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
-2026-04-09 14:35:41 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
-2026-04-09 14:35:41 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:35:41 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:35:46 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:35:46 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:35:46 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:35:46 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:35:46 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:35:46 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:35:51 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:35:51 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:35:51 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:35:51 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:35:51 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:35:51 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:35:56 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:35:56 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:35:56 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:35:56 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:35:56 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:35:56 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:36:01 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:36:01 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:36:01 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:36:01 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:36:03 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:36:03 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:36:08 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:36:08 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:36:08 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:36:08 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:36:08 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:36:08 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:36:13 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:36:13 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:36:13 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:36:13 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:36:13 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:36:13 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:36:19 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:36:19 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:36:19 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:36:19 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:36:19 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:36:19 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:36:24 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:36:24 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:36:24 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:36:24 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:36:25 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:36:25 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:36:30 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:36:30 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:36:30 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:36:30 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:36:30 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:36:30 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:36:35 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:36:35 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:36:35 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:36:35 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:36:35 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:36:35 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:36:41 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:36:41 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:36:41 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:36:41 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:36:41 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:36:41 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:36:46 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:36:46 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:36:46 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:36:46 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:36:46 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:36:46 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:36:51 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:36:51 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:36:51 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:36:51 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:36:51 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:36:51 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:36:56 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:36:56 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:36:56 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:36:56 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:36:56 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:36:56 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:01 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:01 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:01 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:01 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:01 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:01 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:06 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:06 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:06 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:06 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:06 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:06 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:12 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:12 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:12 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:12 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:12 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:12 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:17 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:17 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:17 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:17 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:17 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:17 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:22 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:22 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:22 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:22 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:22 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:22 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:27 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:27 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:27 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:27 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:27 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:27 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:32 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:32 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:32 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:32 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:32 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:32 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:37 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:37 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:37 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:37 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:37 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:37 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:43 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:43 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:43 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:43 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:43 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:43 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:48 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:48 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:48 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:48 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:48 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:48 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:53 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:53 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:53 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:53 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:53 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:53 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:58 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:58 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:37:58 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:58 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:37:58 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:37:58 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:38:03 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:38:03 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:38:03 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:38:03 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:38:03 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:38:03 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:38:08 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:38:08 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:38:08 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:38:08 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:38:08 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:38:08 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:38:14 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:38:14 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:38:14 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:38:14 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:38:14 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:38:14 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:38:19 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:38:19 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:38:19 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:38:19 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:38:19 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:38:19 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:38:24 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:38:24 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:38:24 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:38:24 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:38:24 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:38:24 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:38:29 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:38:29 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:38:29 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:38:29 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:38:29 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:38:29 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:38:34 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:38:34 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:38:34 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:38:34 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:38:34 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:38:34 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:38:39 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:38:39 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:38:39 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:38:39 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:38:39 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:38:39 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:38:44 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:38:44 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:38:44 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:38:44 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:38:44 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:38:44 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:38:50 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:38:50 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:38:50 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:38:50 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:38:50 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:38:50 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:38:55 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:38:55 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:38:55 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:38:55 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:38:55 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:38:55 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:00 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:00 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:00 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:00 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:00 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:00 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:05 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:05 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:05 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:05 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:05 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:05 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:10 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:10 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:10 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:10 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:10 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:10 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:15 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:15 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:15 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:15 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:15 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:15 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:21 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:21 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:21 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:21 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:21 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:21 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:26 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:26 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:26 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:26 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:26 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:26 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:31 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:31 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:31 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:31 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:31 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:31 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:36 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:36 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:36 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:36 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:36 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:36 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:41 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:41 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:41 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:41 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:41 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:41 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:46 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:46 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:46 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:46 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:46 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:46 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:51 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:51 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:51 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:51 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:52 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:52 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:57 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:57 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:39:57 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:57 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:39:57 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:39:57 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:02 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:02 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:02 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:02 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:02 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:02 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:07 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:07 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:07 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:07 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:07 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:07 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:12 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:12 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:12 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:12 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:12 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:12 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:17 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:17 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:17 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:17 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:17 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:17 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:22 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:22 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:22 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:22 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:23 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:23 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:28 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:28 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:28 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:28 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:28 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:28 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:33 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:33 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:33 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:33 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:33 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:33 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:38 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:38 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:38 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:38 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:38 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:38 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:43 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:43 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:43 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:43 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:43 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:43 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:48 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:48 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:48 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:48 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:48 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:48 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:53 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:53 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:53 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:53 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:54 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:54 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:59 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:59 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:40:59 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:59 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:40:59 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:40:59 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:41:04 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:41:04 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:41:04 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:41:04 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:41:04 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:41:04 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:41:09 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:41:09 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:41:09 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:41:09 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:41:09 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:41:09 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:41:14 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:41:14 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:41:14 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:41:14 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:41:14 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:41:14 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:41:19 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:41:19 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:41:19 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:41:19 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:41:19 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:41:19 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:41:25 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:41:25 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:41:25 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:41:25 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:41:25 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:41:25 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:41:30 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:41:30 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:41:30 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:41:30 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:41:30 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:41:30 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:41:35 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:41:35 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:41:35 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:41:35 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:41:35 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:41:35 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:41:40 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:41:40 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:41:40 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:41:40 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:41:40 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:41:40 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:41:45 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:41:45 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:41:45 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:41:45 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:41:45 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:41:45 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:41:50 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:41:50 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:41:50 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:41:50 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:41:50 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:41:50 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:41:55 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:41:55 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:41:55 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:41:55 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:41:56 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:41:56 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:42:01 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:42:01 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:42:01 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:42:01 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:42:01 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:42:01 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:42:06 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:42:06 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:42:06 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:42:06 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:42:06 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:42:06 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:54:32 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:54:32 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:54:32 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:54:32 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
-2026-04-09 14:54:32 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:54:32 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:54:38 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:54:38 [INFO] anomaly: --- Starting anomaly ---
-2026-04-09 14:54:38 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
-2026-04-09 14:54:38 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
-2026-04-09 14:54:38 [INFO] anomaly: --- Finished anomaly Successfully ---
-2026-04-09 14:54:38 [INFO] anomaly: --- Finished anomaly Successfully ---
-
-----------------------------------------
-
---- ATTACHMENT: chaos.log ---
- (Showing last 2 lines)
-
-2026-04-08 12:20:32 [INFO] chaos: Chaos Test Agent Active (Interval: 30s)
-2026-04-08 12:20:32 [INFO] chaos: Monitoring state files in: C:\Users\jakej\Documents\GitHub\M3tal-Media-Server\control-plane\state
+2026-04-11 02:05:07 [INFO] tunnel: --- Agent tunnel Persistent Loop Started ---
+2026-04-11 02:05:07 [INFO] tunnel: --- Agent tunnel Persistent Loop Started ---
+2026-04-11 02:09:53 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 02:09:57 [INFO] tunnel: --- Agent tunnel Shutdown Cleanly ---
+2026-04-11 02:09:57 [INFO] tunnel: --- Agent tunnel Shutdown Cleanly ---
+2026-04-11 03:08:38 [INFO] tunnel: --- Agent tunnel Persistent Loop Started ---
+2026-04-11 03:08:38 [INFO] tunnel: --- Agent tunnel Persistent Loop Started ---
+2026-04-11 03:08:38 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False). Skipping cycle.
+2026-04-11 03:08:38 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False). Skipping cycle.
+2026-04-11 03:08:48 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False). Skipping cycle.
+2026-04-11 03:08:48 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False). Skipping cycle.
+2026-04-11 03:08:58 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False). Skipping cycle.
+2026-04-11 03:08:58 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False). Skipping cycle.
+2026-04-11 03:09:08 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False). Skipping cycle.
+2026-04-11 03:09:08 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False). Skipping cycle.
+2026-04-11 03:09:18 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False). Skipping cycle.
+2026-04-11 03:09:18 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False). Skipping cycle.
+2026-04-11 03:09:28 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False). Skipping cycle.
+2026-04-11 03:09:28 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False). Skipping cycle.
+2026-04-11 03:09:38 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False). Skipping cycle.
+2026-04-11 03:09:38 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False). Skipping cycle.
+2026-04-11 03:09:40 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 03:09:41 [INFO] tunnel: --- Agent tunnel Shutdown Cleanly ---
+2026-04-11 03:09:41 [INFO] tunnel: --- Agent tunnel Shutdown Cleanly ---
 
 ----------------------------------------
 
 --- ATTACHMENT: decision.log ---
- (Showing last 0 lines)
+ (Showing last 67 lines)
 
-
-----------------------------------------
-
---- ATTACHMENT: guards.log ---
- (Showing last 0 lines)
-
-
-----------------------------------------
-
---- ATTACHMENT: leader.log ---
- (Showing last 3 lines)
-
-2026-04-08 23:40:05 [INFO] leader: Identity: test-host@127.0.0.1 | STATUS: [FOLLOWER] (Leader: test-host)
-2026-04-08 23:46:02 [INFO] leader: Identity: test-host@127.0.0.1 | STATUS: [LEADER]
-2026-04-08 23:47:48 [INFO] leader: Identity: test-host@127.0.0.1 | STATUS: [LEADER]
-
-----------------------------------------
-
---- ATTACHMENT: metrics.log ---
- (Showing last 158 lines)
-
-2026-04-09 14:35:35 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:35:35 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:35:41 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:35:41 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:35:46 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:35:46 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:35:51 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:35:51 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:35:56 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:35:56 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:01 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:01 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:06 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:06 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:11 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:11 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:16 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:16 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:21 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:21 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:27 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:27 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:32 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:32 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:37 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:37 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:42 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:42 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:47 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:47 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:52 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:52 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:57 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:36:57 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:03 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:03 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:08 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:08 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:13 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:13 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:18 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:18 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:23 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:23 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:28 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:28 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:33 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:33 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:38 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:38 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:43 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:43 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:49 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:49 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:54 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:54 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:59 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:37:59 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:38:04 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:38:04 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:38:09 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:38:09 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:38:14 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:38:14 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:38:19 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:38:19 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:38:24 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:38:24 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:38:30 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:38:30 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:38:35 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:38:35 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:38:40 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:38:40 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:38:45 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:38:45 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:38:50 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:38:50 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:38:55 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:38:55 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:00 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:00 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:05 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:05 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:10 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:10 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:16 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:16 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:21 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:21 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:26 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:26 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:31 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:31 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:36 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:36 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:41 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:41 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:46 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:46 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:51 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:51 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:56 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:39:56 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:02 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:02 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:07 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:07 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:12 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:12 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:17 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:17 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:22 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:22 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:27 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:27 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:32 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:32 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:37 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:37 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:43 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:43 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:48 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:48 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:53 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:53 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:58 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:40:58 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:03 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:03 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:08 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:08 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:13 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:13 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:18 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:18 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:23 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:23 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:29 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:29 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:34 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:34 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:39 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:39 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:44 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:44 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:49 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:49 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:54 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:54 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:59 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:41:59 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:42:04 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:42:04 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:54:32 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:54:32 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:54:37 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-2026-04-09 14:54:37 [WARNING] metrics: Agent metrics already running (lock active). Exiting.
-
-----------------------------------------
-
---- ATTACHMENT: monitor.log ---
- (Showing last 0 lines)
-
-
-----------------------------------------
-
---- ATTACHMENT: observer.log ---
- (Showing last 0 lines)
-
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/decision.py", line 8, in <module>
+    from utils.paths import STATE_DIR, ANOMALIES_JSON, DECISIONS_JSON, COOLDOWNS_JSON
+ImportError: cannot import name 'COOLDOWNS_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/decision.py", line 8, in <module>
+    from utils.paths import STATE_DIR, ANOMALIES_JSON, DECISIONS_JSON, COOLDOWNS_JSON
+ImportError: cannot import name 'COOLDOWNS_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/decision.py", line 8, in <module>
+    from utils.paths import STATE_DIR, ANOMALIES_JSON, DECISIONS_JSON, COOLDOWNS_JSON
+ImportError: cannot import name 'COOLDOWNS_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/decision.py", line 8, in <module>
+    from utils.paths import STATE_DIR, ANOMALIES_JSON, DECISIONS_JSON, COOLDOWNS_JSON
+ImportError: cannot import name 'COOLDOWNS_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/decision.py", line 8, in <module>
+    from utils.paths import STATE_DIR, ANOMALIES_JSON, DECISIONS_JSON, COOLDOWNS_JSON
+ImportError: cannot import name 'COOLDOWNS_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/decision.py", line 8, in <module>
+    from utils.paths import STATE_DIR, ANOMALIES_JSON, DECISIONS_JSON, COOLDOWNS_JSON
+ImportError: cannot import name 'COOLDOWNS_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/decision.py", line 8, in <module>
+    from utils.paths import STATE_DIR, ANOMALIES_JSON, DECISIONS_JSON, COOLDOWNS_JSON
+ImportError: cannot import name 'COOLDOWNS_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/decision.py", line 8, in <module>
+    from utils.paths import STATE_DIR, ANOMALIES_JSON, DECISIONS_JSON, COOLDOWNS_JSON
+ImportError: cannot import name 'COOLDOWNS_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/decision.py", line 8, in <module>
+    from utils.paths import STATE_DIR, ANOMALIES_JSON, DECISIONS_JSON, COOLDOWNS_JSON
+ImportError: cannot import name 'COOLDOWNS_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/decision.py", line 8, in <module>
+    from utils.paths import STATE_DIR, ANOMALIES_JSON, DECISIONS_JSON, COOLDOWNS_JSON
+ImportError: cannot import name 'COOLDOWNS_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/decision.py", line 8, in <module>
+    from utils.paths import STATE_DIR, ANOMALIES_JSON, DECISIONS_JSON, COOLDOWNS_JSON
+ImportError: cannot import name 'COOLDOWNS_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/decision.py", line 8, in <module>
+    from utils.paths import STATE_DIR, ANOMALIES_JSON, DECISIONS_JSON, COOLDOWNS_JSON
+ImportError: cannot import name 'COOLDOWNS_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+2026-04-11 03:08:37 [INFO] decision: --- Agent decision Persistent Loop Started ---
+2026-04-11 03:08:37 [INFO] decision: --- Agent decision Persistent Loop Started ---
+2026-04-11 03:08:37 [INFO] decision: Decided on 21 actions.
+2026-04-11 03:08:37 [INFO] decision: Decided on 21 actions.
+2026-04-11 03:08:47 [INFO] decision: Decided on 21 actions.
+2026-04-11 03:08:47 [INFO] decision: Decided on 21 actions.
+2026-04-11 03:08:57 [INFO] decision: Decided on 21 actions.
+2026-04-11 03:08:57 [INFO] decision: Decided on 21 actions.
+2026-04-11 03:09:07 [INFO] decision: Decided on 21 actions.
+2026-04-11 03:09:07 [INFO] decision: Decided on 21 actions.
+2026-04-11 03:09:18 [INFO] decision: Decided on 21 actions.
+2026-04-11 03:09:18 [INFO] decision: Decided on 21 actions.
+2026-04-11 03:09:28 [INFO] decision: Decided on 21 actions.
+2026-04-11 03:09:28 [INFO] decision: Decided on 21 actions.
+2026-04-11 03:09:38 [INFO] decision: Decided on 21 actions.
+2026-04-11 03:09:38 [INFO] decision: Decided on 21 actions.
+2026-04-11 03:09:40 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 03:09:41 [INFO] decision: --- Agent decision Shutdown Cleanly ---
+2026-04-11 03:09:41 [INFO] decision: --- Agent decision Shutdown Cleanly ---
 
 ----------------------------------------
 
 --- ATTACHMENT: reconcile.log ---
- (Showing last 1 lines)
+ (Showing last 74 lines)
 
-
+2026-04-11 02:05:07 [INFO] reconcile: --- Agent reconcile Persistent Loop Started ---
+2026-04-11 02:05:07 [INFO] reconcile: --- Agent reconcile Persistent Loop Started ---
+2026-04-11 02:09:53 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 02:09:57 [INFO] reconcile: --- Agent reconcile Shutdown Cleanly ---
+2026-04-11 02:09:57 [INFO] reconcile: --- Agent reconcile Shutdown Cleanly ---
+2026-04-11 03:08:38 [INFO] reconcile: --- Agent reconcile Persistent Loop Started ---
+2026-04-11 03:08:38 [INFO] reconcile: --- Agent reconcile Persistent Loop Started ---
+2026-04-11 03:08:41 [WARNING] reconcile: Storage Violation: cloudflared missing /mnt:/mnt mount!
+2026-04-11 03:08:41 [WARNING] reconcile: Storage Violation: cloudflared missing /mnt:/mnt mount!
+2026-04-11 03:08:41 [WARNING] reconcile: Storage Violation: dozzle missing /mnt:/mnt mount!
+2026-04-11 03:08:41 [WARNING] reconcile: Storage Violation: dozzle missing /mnt:/mnt mount!
+2026-04-11 03:08:41 [WARNING] reconcile: Storage Violation: flaresolverr missing /mnt:/mnt mount!
+2026-04-11 03:08:41 [WARNING] reconcile: Storage Violation: flaresolverr missing /mnt:/mnt mount!
+2026-04-11 03:08:41 [WARNING] reconcile: Storage Violation: glances missing /mnt:/mnt mount!
+2026-04-11 03:08:41 [WARNING] reconcile: Storage Violation: glances missing /mnt:/mnt mount!
+2026-04-11 03:08:42 [WARNING] reconcile: Storage Violation: gluetun missing /mnt:/mnt mount!
+2026-04-11 03:08:42 [WARNING] reconcile: Storage Violation: gluetun missing /mnt:/mnt mount!
+2026-04-11 03:08:42 [WARNING] reconcile: Storage Violation: homepage missing /mnt:/mnt mount!
+2026-04-11 03:08:42 [WARNING] reconcile: Storage Violation: homepage missing /mnt:/mnt mount!
+2026-04-11 03:08:42 [WARNING] reconcile: Storage Violation: jellyseerr missing /mnt:/mnt mount!
+2026-04-11 03:08:42 [WARNING] reconcile: Storage Violation: jellyseerr missing /mnt:/mnt mount!
+2026-04-11 03:08:42 [WARNING] reconcile: Storage Violation: m3tal-dashboard missing /mnt:/mnt mount!
+2026-04-11 03:08:42 [WARNING] reconcile: Storage Violation: m3tal-dashboard missing /mnt:/mnt mount!
+2026-04-11 03:08:42 [WARNING] reconcile: Storage Violation: m3tal-dashboard-maintenance missing /mnt:/mnt mount!
+2026-04-11 03:08:42 [WARNING] reconcile: Storage Violation: m3tal-dashboard-maintenance missing /mnt:/mnt mount!
+2026-04-11 03:08:42 [WARNING] reconcile: Storage Violation: m3tal-runtime missing /mnt:/mnt mount!
+2026-04-11 03:08:42 [WARNING] reconcile: Storage Violation: m3tal-runtime missing /mnt:/mnt mount!
+2026-04-11 03:08:42 [WARNING] reconcile: Storage Violation: maintainerr missing /mnt:/mnt mount!
+2026-04-11 03:08:42 [WARNING] reconcile: Storage Violation: maintainerr missing /mnt:/mnt mount!
+2026-04-11 03:08:42 [WARNING] reconcile: Storage Violation: portainer missing /mnt:/mnt mount!
+2026-04-11 03:08:42 [WARNING] reconcile: Storage Violation: portainer missing /mnt:/mnt mount!
+2026-04-11 03:08:42 [WARNING] reconcile: Storage Violation: traefik missing /mnt:/mnt mount!
+2026-04-11 03:08:42 [WARNING] reconcile: Storage Violation: traefik missing /mnt:/mnt mount!
+2026-04-11 03:08:42 [WARNING] reconcile: Storage Violation: watchtower missing /mnt:/mnt mount!
+2026-04-11 03:08:42 [WARNING] reconcile: Storage Violation: watchtower missing /mnt:/mnt mount!
+2026-04-11 03:08:42 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-11 03:08:42 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-11 03:08:52 [WARNING] reconcile: Storage Violation: cloudflared missing /mnt:/mnt mount!
+2026-04-11 03:08:52 [WARNING] reconcile: Storage Violation: cloudflared missing /mnt:/mnt mount!
+2026-04-11 03:08:52 [WARNING] reconcile: Storage Violation: dozzle missing /mnt:/mnt mount!
+2026-04-11 03:08:52 [WARNING] reconcile: Storage Violation: dozzle missing /mnt:/mnt mount!
+2026-04-11 03:08:59 [WARNING] reconcile: Storage Violation: flaresolverr missing /mnt:/mnt mount!
+2026-04-11 03:08:59 [WARNING] reconcile: Storage Violation: flaresolverr missing /mnt:/mnt mount!
+2026-04-11 03:08:59 [WARNING] reconcile: Storage Violation: glances missing /mnt:/mnt mount!
+2026-04-11 03:08:59 [WARNING] reconcile: Storage Violation: glances missing /mnt:/mnt mount!
+2026-04-11 03:08:59 [WARNING] reconcile: Storage Violation: gluetun missing /mnt:/mnt mount!
+2026-04-11 03:08:59 [WARNING] reconcile: Storage Violation: gluetun missing /mnt:/mnt mount!
+2026-04-11 03:09:07 [WARNING] reconcile: Storage Violation: homepage missing /mnt:/mnt mount!
+2026-04-11 03:09:07 [WARNING] reconcile: Storage Violation: homepage missing /mnt:/mnt mount!
+2026-04-11 03:09:07 [WARNING] reconcile: Storage Violation: jellyseerr missing /mnt:/mnt mount!
+2026-04-11 03:09:07 [WARNING] reconcile: Storage Violation: jellyseerr missing /mnt:/mnt mount!
+2026-04-11 03:09:07 [WARNING] reconcile: Storage Violation: m3tal-dashboard missing /mnt:/mnt mount!
+2026-04-11 03:09:07 [WARNING] reconcile: Storage Violation: m3tal-dashboard missing /mnt:/mnt mount!
+2026-04-11 03:09:07 [WARNING] reconcile: Storage Violation: m3tal-dashboard-maintenance missing /mnt:/mnt mount!
+2026-04-11 03:09:07 [WARNING] reconcile: Storage Violation: m3tal-dashboard-maintenance missing /mnt:/mnt mount!
+2026-04-11 03:09:07 [WARNING] reconcile: Storage Violation: m3tal-runtime missing /mnt:/mnt mount!
+2026-04-11 03:09:07 [WARNING] reconcile: Storage Violation: m3tal-runtime missing /mnt:/mnt mount!
+2026-04-11 03:09:07 [WARNING] reconcile: Storage Violation: maintainerr missing /mnt:/mnt mount!
+2026-04-11 03:09:07 [WARNING] reconcile: Storage Violation: maintainerr missing /mnt:/mnt mount!
+2026-04-11 03:09:07 [WARNING] reconcile: Storage Violation: portainer missing /mnt:/mnt mount!
+2026-04-11 03:09:07 [WARNING] reconcile: Storage Violation: portainer missing /mnt:/mnt mount!
+2026-04-11 03:09:12 [WARNING] reconcile: Storage Violation: tattoo-api missing /mnt:/mnt mount!
+2026-04-11 03:09:12 [WARNING] reconcile: Storage Violation: tattoo-api missing /mnt:/mnt mount!
+2026-04-11 03:09:25 [WARNING] reconcile: Storage Violation: tattoo-db missing /mnt:/mnt mount!
+2026-04-11 03:09:25 [WARNING] reconcile: Storage Violation: tattoo-db missing /mnt:/mnt mount!
+2026-04-11 03:09:40 [WARNING] reconcile: Storage Violation: traefik missing /mnt:/mnt mount!
+2026-04-11 03:09:40 [WARNING] reconcile: Storage Violation: traefik missing /mnt:/mnt mount!
+2026-04-11 03:09:40 [WARNING] reconcile: Storage Violation: watchtower missing /mnt:/mnt mount!
+2026-04-11 03:09:40 [WARNING] reconcile: Storage Violation: watchtower missing /mnt:/mnt mount!
+2026-04-11 03:09:40 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-11 03:09:40 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-11 03:09:40 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 03:09:41 [INFO] reconcile: --- Agent reconcile Shutdown Cleanly ---
+2026-04-11 03:09:41 [INFO] reconcile: --- Agent reconcile Shutdown Cleanly ---
 
 ----------------------------------------
 
---- ATTACHMENT: registry.log ---
- (Showing last 0 lines)
+--- ATTACHMENT: observer.log ---
+ (Showing last 36 lines)
 
+2026-04-11 02:05:07 [INFO] observer: --- Agent observer Persistent Loop Started ---
+2026-04-11 02:05:07 [INFO] observer: --- Agent observer Persistent Loop Started ---
+2026-04-11 02:09:53 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 02:09:57 [INFO] observer: --- Agent observer Shutdown Cleanly ---
+2026-04-11 02:09:57 [INFO] observer: --- Agent observer Shutdown Cleanly ---
+2026-04-11 03:08:37 [INFO] observer: --- Agent observer Persistent Loop Started ---
+2026-04-11 03:08:37 [INFO] observer: --- Agent observer Persistent Loop Started ---
+2026-04-11 03:08:37 [INFO] observer: Watching system logs for critical events...
+2026-04-11 03:08:37 [INFO] observer: Watching system logs for critical events...
+2026-04-11 03:08:47 [INFO] observer: Watching system logs for critical events...
+2026-04-11 03:08:47 [INFO] observer: Watching system logs for critical events...
+2026-04-11 03:08:47 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+2026-04-11 03:08:47 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+2026-04-11 03:08:57 [INFO] observer: Watching system logs for critical events...
+2026-04-11 03:08:57 [INFO] observer: Watching system logs for critical events...
+2026-04-11 03:08:57 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+2026-04-11 03:08:57 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+2026-04-11 03:09:07 [INFO] observer: Watching system logs for critical events...
+2026-04-11 03:09:07 [INFO] observer: Watching system logs for critical events...
+2026-04-11 03:09:08 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+2026-04-11 03:09:08 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+2026-04-11 03:09:18 [INFO] observer: Watching system logs for critical events...
+2026-04-11 03:09:18 [INFO] observer: Watching system logs for critical events...
+2026-04-11 03:09:18 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+2026-04-11 03:09:18 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+2026-04-11 03:09:28 [INFO] observer: Watching system logs for critical events...
+2026-04-11 03:09:28 [INFO] observer: Watching system logs for critical events...
+2026-04-11 03:09:28 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+2026-04-11 03:09:28 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+2026-04-11 03:09:38 [INFO] observer: Watching system logs for critical events...
+2026-04-11 03:09:38 [INFO] observer: Watching system logs for critical events...
+2026-04-11 03:09:38 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+2026-04-11 03:09:38 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+2026-04-11 03:09:40 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 03:09:41 [INFO] observer: --- Agent observer Shutdown Cleanly ---
+2026-04-11 03:09:41 [INFO] observer: --- Agent observer Shutdown Cleanly ---
 
 ----------------------------------------
 
---- ATTACHMENT: scorer.log ---
- (Showing last 0 lines)
+--- ATTACHMENT: metrics.log ---
+ (Showing last 500 lines)
 
+2026-04-10 17:27:49 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:27:49 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:28:02 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:28:02 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:28:15 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:28:15 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:28:31 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:28:31 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:29:10 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:29:10 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:29:28 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:29:28 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:30:33 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:30:33 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:31:04 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:31:04 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:31:22 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:31:22 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:31:35 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:31:35 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:31:49 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:31:49 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:32:03 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:32:03 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:32:15 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:32:15 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:32:28 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:32:28 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:32:41 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:32:41 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:32:55 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:32:55 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:33:07 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:33:07 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:33:20 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:33:20 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:33:32 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:33:32 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:36:15 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:36:15 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:36:28 [INFO] metrics: Rotating metrics-history.csv
+2026-04-10 17:36:28 [INFO] metrics: Rotating metrics-history.csv
+2026-04-10 17:36:28 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:36:28 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:36:40 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:36:40 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:36:59 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:36:59 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:37:11 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:37:11 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:37:24 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:37:24 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:37:37 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:37:37 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:37:50 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:37:50 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:38:02 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:38:02 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:38:15 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:38:15 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:38:29 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:38:29 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:41:03 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:41:03 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:41:24 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:41:24 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:41:37 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:41:37 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:41:50 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:41:50 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:42:06 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:42:06 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:42:24 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:42:24 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:42:40 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:42:40 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:42:53 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:42:53 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:43:06 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:43:06 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:43:26 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:43:26 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:43:48 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:43:48 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:44:01 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:44:01 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:44:14 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:44:14 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:44:32 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:44:32 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:45:33 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:45:33 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:45:49 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:45:49 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:46:02 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:46:02 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:46:15 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:46:15 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:46:34 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:46:34 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:46:52 [INFO] metrics: Rotating metrics-history.csv
+2026-04-10 17:46:52 [INFO] metrics: Rotating metrics-history.csv
+2026-04-10 17:46:52 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:46:52 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:47:06 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:47:06 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:47:21 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:47:21 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:47:37 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:47:37 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:47:58 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:47:58 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:48:11 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:48:11 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:48:25 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:48:25 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:48:37 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:48:37 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:48:54 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:48:54 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:49:12 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:49:12 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:51:55 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:51:55 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:52:16 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:52:16 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:52:29 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:52:29 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:52:47 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:52:47 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:53:00 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:53:00 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:53:13 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:53:13 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:53:28 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:53:28 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:53:46 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:53:46 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:54:08 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:54:08 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:55:39 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:55:39 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:56:06 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:56:06 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:56:25 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:56:25 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:56:38 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:56:38 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:56:52 [INFO] metrics: Rotating metrics-history.csv
+2026-04-10 17:56:52 [INFO] metrics: Rotating metrics-history.csv
+2026-04-10 17:56:52 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:56:52 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:57:05 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:57:05 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:57:18 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:57:18 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:57:30 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:57:30 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:57:44 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:57:44 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:57:57 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:57:57 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:58:10 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:58:10 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:58:23 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:58:23 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:58:43 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:58:43 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:59:03 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:59:03 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:59:29 [INFO] metrics: Captured metrics and history.
+2026-04-10 17:59:29 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:00:30 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:00:30 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:01:59 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:01:59 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:02:13 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:02:13 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:02:28 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:02:28 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:02:43 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:02:43 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:03:01 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:03:01 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:03:13 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:03:13 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:03:26 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:03:26 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:03:39 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:03:39 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:03:54 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:03:54 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:04:09 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:04:09 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:04:29 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:04:29 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:06:15 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:06:15 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:06:29 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:06:29 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:06:43 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:06:43 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:06:55 [INFO] metrics: Rotating metrics-history.csv
+2026-04-10 18:06:55 [INFO] metrics: Rotating metrics-history.csv
+2026-04-10 18:06:55 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:06:55 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:07:14 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:07:14 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:07:26 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:07:26 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:07:39 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:07:39 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:07:52 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:07:52 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:08:12 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:08:12 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:08:25 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:08:25 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:08:38 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:08:38 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:08:51 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:08:51 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:09:09 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:09:09 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:09:32 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:09:32 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:11:16 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:11:16 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:11:31 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:11:31 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:11:48 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:11:48 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:12:01 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:12:01 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:12:13 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:12:13 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:12:27 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:12:27 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:12:41 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:12:41 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:12:55 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:12:55 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:13:08 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:13:08 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:13:21 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:13:21 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:13:34 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:13:34 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:13:47 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:13:47 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:14:00 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:14:00 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:14:13 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:14:13 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:15:34 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:15:34 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:15:48 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:15:48 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:16:02 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:16:02 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:16:19 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:16:19 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:16:32 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:16:32 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:16:45 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:16:45 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:16:59 [INFO] metrics: Rotating metrics-history.csv
+2026-04-10 18:16:59 [INFO] metrics: Rotating metrics-history.csv
+2026-04-10 18:16:59 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:16:59 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:17:12 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:17:12 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:17:25 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:17:25 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:17:38 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:17:38 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:17:51 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:17:51 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:18:06 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:18:06 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:18:24 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:18:24 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:18:37 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:18:37 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:18:50 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:18:50 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:19:04 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:19:04 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:19:19 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:19:19 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:19:34 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:19:34 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:19:57 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:19:57 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:20:35 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:20:35 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:23:23 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:23:23 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:23:36 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:23:36 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:23:54 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:23:54 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:24:06 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:24:06 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:24:57 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:24:57 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:29:42 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:29:42 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:31:09 [INFO] metrics: Rotating metrics-history.csv
+2026-04-10 18:31:09 [INFO] metrics: Rotating metrics-history.csv
+2026-04-10 18:31:09 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:31:09 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:31:27 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:31:27 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:31:40 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:31:40 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:31:58 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:31:58 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:32:10 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:32:10 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:32:23 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:32:23 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:32:36 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:32:36 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:32:49 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:32:49 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:33:02 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:33:02 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:33:16 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:33:16 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:33:30 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:33:30 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:33:43 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:33:43 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:37:06 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:37:06 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:38:56 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:38:56 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:39:11 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:39:11 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:39:23 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:39:23 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:39:43 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:39:43 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:39:55 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:39:55 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:41:01 [INFO] metrics: Rotating metrics-history.csv
+2026-04-10 18:41:01 [INFO] metrics: Rotating metrics-history.csv
+2026-04-10 18:41:01 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:41:01 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:42:01 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:42:01 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:42:14 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:42:14 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:42:28 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:42:28 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:42:41 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:42:41 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:42:58 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:42:58 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:43:11 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:43:11 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:43:24 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:43:24 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:43:38 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:43:38 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:43:55 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:43:55 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:44:09 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:44:09 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:44:22 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:44:22 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:44:38 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:44:38 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:44:55 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:44:55 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:45:44 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:45:44 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:47:32 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:47:32 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:47:50 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:47:50 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:48:02 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:48:02 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:48:18 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:48:18 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:48:31 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:48:31 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:48:44 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:48:44 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:48:58 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:48:58 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:49:14 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:49:14 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:49:28 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:49:28 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:49:41 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:49:41 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:49:54 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:49:54 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:50:14 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:50:14 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:51:14 [INFO] metrics: Rotating metrics-history.csv
+2026-04-10 18:51:14 [INFO] metrics: Rotating metrics-history.csv
+2026-04-10 18:51:14 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:51:14 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:52:22 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:52:22 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:52:35 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:52:35 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:52:53 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:52:53 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:53:08 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:53:08 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:53:22 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:53:22 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:53:37 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:53:37 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:53:50 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:53:50 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:54:03 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:54:03 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:54:16 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:54:16 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:54:29 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:54:29 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:54:43 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:54:43 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:54:56 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:54:56 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:55:10 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:55:10 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:56:21 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:56:21 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:57:09 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:57:09 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:57:27 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:57:27 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:57:42 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:57:42 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:57:56 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:57:56 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:58:12 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:58:12 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:58:28 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:58:28 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:58:45 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:58:45 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:58:59 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:58:59 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:59:17 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:59:17 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:59:38 [INFO] metrics: Captured metrics and history.
+2026-04-10 18:59:38 [INFO] metrics: Captured metrics and history.
+2026-04-10 19:00:00 [INFO] metrics: Captured metrics and history.
+2026-04-10 19:00:00 [INFO] metrics: Captured metrics and history.
+2026-04-10 23:59:04 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
+2026-04-10 23:59:04 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
+2026-04-10 23:59:11 [INFO] metrics: Rotating metrics-history.csv
+2026-04-10 23:59:11 [INFO] metrics: Rotating metrics-history.csv
+2026-04-10 23:59:11 [INFO] metrics: Captured metrics and history.
+2026-04-10 23:59:11 [INFO] metrics: Captured metrics and history.
+2026-04-10 23:59:24 [INFO] metrics: Captured metrics and history.
+2026-04-10 23:59:24 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:00:35 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:00:35 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:00:47 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:00:47 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:01:13 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:01:13 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:02:23 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:02:23 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:02:35 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:02:35 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:02:51 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:02:51 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:03:00 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 00:03:00 [INFO] metrics: --- Agent metrics Shutdown Cleanly ---
+2026-04-11 00:03:00 [INFO] metrics: --- Agent metrics Shutdown Cleanly ---
+2026-04-11 01:37:26 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
+2026-04-11 01:37:26 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
+2026-04-11 01:39:24 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 01:39:26 [INFO] metrics: --- Agent metrics Shutdown Cleanly ---
+2026-04-11 01:39:26 [INFO] metrics: --- Agent metrics Shutdown Cleanly ---
+2026-04-11 01:52:45 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
+2026-04-11 01:52:45 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
+2026-04-11 01:57:02 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 02:16:05 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
+2026-04-11 02:16:05 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
+2026-04-11 02:17:56 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 02:35:12 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
+2026-04-11 02:35:12 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
+2026-04-11 02:39:55 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 02:40:04 [INFO] metrics: --- Agent metrics Shutdown Cleanly ---
+2026-04-11 02:40:04 [INFO] metrics: --- Agent metrics Shutdown Cleanly ---
+2026-04-11 02:46:13 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
+2026-04-11 02:46:13 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
+                                                                                       2026-04-11 03:08:37 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
+2026-04-11 03:08:37 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
+2026-04-11 03:09:40 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+
+----------------------------------------
+
+--- ATTACHMENT: anomaly.log ---
+ (Showing last 500 lines)
+
+2026-04-10 18:50:03 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:50:03 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:50:03 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:50:03 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:50:13 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:50:13 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:50:13 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:50:13 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:50:24 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:50:24 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:50:24 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:50:24 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:50:34 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:50:34 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:50:35 [INFO] anomaly: Identified 3 anomalies.
+2026-04-10 18:50:35 [INFO] anomaly: Identified 3 anomalies.
+2026-04-10 18:50:45 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:50:45 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:50:45 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:50:45 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:50:55 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:50:55 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:50:56 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:50:56 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:51:07 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:51:07 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:51:07 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:51:07 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:51:17 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:51:17 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:51:17 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:51:17 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:51:27 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:51:27 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:51:27 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:51:27 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:51:39 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:51:39 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:51:39 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:51:39 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:51:49 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:51:49 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:51:49 [INFO] anomaly: Identified 3 anomalies.
+2026-04-10 18:51:49 [INFO] anomaly: Identified 3 anomalies.
+2026-04-10 18:52:00 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:52:00 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:52:01 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:52:01 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:52:12 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:52:12 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:52:12 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:52:12 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:52:22 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:52:22 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:52:22 [INFO] anomaly: Identified 3 anomalies.
+2026-04-10 18:52:22 [INFO] anomaly: Identified 3 anomalies.
+2026-04-10 18:52:32 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:52:32 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:52:32 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:52:32 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:52:42 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:52:42 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:52:43 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:52:43 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:52:53 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:52:53 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:52:53 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:52:53 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:53:03 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:53:03 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:53:03 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:53:03 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:53:14 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:53:14 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:53:14 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:53:14 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:53:24 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:53:24 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:53:24 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:53:24 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:53:35 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:53:35 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:53:35 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:53:35 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:53:45 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:53:45 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:53:45 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:53:45 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:53:55 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:53:55 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:53:55 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:53:55 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:54:05 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:54:05 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:54:06 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:54:06 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:54:16 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:54:16 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:54:16 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:54:16 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:54:26 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:54:26 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:54:26 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:54:26 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:54:36 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:54:36 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:54:36 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:54:36 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:54:47 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:54:47 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:54:47 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:54:47 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:54:57 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:54:57 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:54:57 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:54:57 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:55:07 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:55:07 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:55:07 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:55:07 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:55:17 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:55:17 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:55:18 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:55:18 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:55:29 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:55:29 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:55:30 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:55:30 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:55:41 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:55:41 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:55:41 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:55:41 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:55:51 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:55:51 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:55:51 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:55:51 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:56:01 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:56:01 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:56:02 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:56:02 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:56:12 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:56:12 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:56:12 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:56:12 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:56:23 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:56:23 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:56:23 [INFO] anomaly: Identified 3 anomalies.
+2026-04-10 18:56:23 [INFO] anomaly: Identified 3 anomalies.
+2026-04-10 18:56:33 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:56:33 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:56:33 [INFO] anomaly: Identified 3 anomalies.
+2026-04-10 18:56:33 [INFO] anomaly: Identified 3 anomalies.
+2026-04-10 18:56:43 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:56:43 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:56:43 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:56:43 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:56:54 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:56:54 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:56:54 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:56:54 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:57:04 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:57:04 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:57:04 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:57:04 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:57:14 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:57:14 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:57:14 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:57:14 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:57:25 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:57:25 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:57:25 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:57:25 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:57:35 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:57:35 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:57:35 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:57:35 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:57:45 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:57:45 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:57:46 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:57:46 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:57:56 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:57:56 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:57:56 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:57:56 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:58:07 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:58:07 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:58:07 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:58:07 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:58:17 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:58:17 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:58:17 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:58:17 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:58:28 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:58:28 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:58:28 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:58:28 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:58:38 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:58:38 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:58:39 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:58:39 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:58:49 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:58:49 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:58:50 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:58:50 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:59:02 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:59:02 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:59:02 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:59:02 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:59:12 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:59:12 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:59:12 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:59:12 [INFO] anomaly: Identified 4 anomalies.
+2026-04-10 18:59:24 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:59:24 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:59:28 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:59:28 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:59:38 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:59:38 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:59:40 [INFO] anomaly: Identified 6 anomalies.
+2026-04-10 18:59:40 [INFO] anomaly: Identified 6 anomalies.
+2026-04-10 18:59:51 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:59:51 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 18:59:52 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 18:59:52 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 19:00:03 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 19:00:03 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 19:00:04 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 19:00:04 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 19:00:17 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 19:00:17 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 19:00:17 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 19:00:17 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 23:59:04 [INFO] anomaly: --- Agent anomaly Persistent Loop Started ---
+2026-04-10 23:59:04 [INFO] anomaly: --- Agent anomaly Persistent Loop Started ---
+2026-04-10 23:59:06 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 23:59:06 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 23:59:06 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 23:59:06 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 23:59:17 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
+2026-04-10 23:59:17 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
+2026-04-10 23:59:17 [INFO] anomaly: Identified 23 anomalies.
+2026-04-10 23:59:17 [INFO] anomaly: Identified 23 anomalies.
+2026-04-10 23:59:27 [WARNING] anomaly: System health degraded: CRITICAL (Score: 45%)
+2026-04-10 23:59:27 [WARNING] anomaly: System health degraded: CRITICAL (Score: 45%)
+2026-04-10 23:59:28 [INFO] anomaly: Identified 23 anomalies.
+2026-04-10 23:59:28 [INFO] anomaly: Identified 23 anomalies.
+2026-04-10 23:59:38 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-10 23:59:38 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-10 23:59:39 [INFO] anomaly: Identified 24 anomalies.
+2026-04-10 23:59:39 [INFO] anomaly: Identified 24 anomalies.
+2026-04-10 23:59:49 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-10 23:59:49 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-10 23:59:50 [INFO] anomaly: Identified 24 anomalies.
+2026-04-10 23:59:50 [INFO] anomaly: Identified 24 anomalies.
+2026-04-11 00:00:02 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:00:02 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:00:02 [INFO] anomaly: Identified 24 anomalies.
+2026-04-11 00:00:02 [INFO] anomaly: Identified 24 anomalies.
+2026-04-11 00:00:12 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:00:12 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:00:12 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:00:12 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:00:23 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:00:23 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:00:23 [INFO] anomaly: Identified 24 anomalies.
+2026-04-11 00:00:23 [INFO] anomaly: Identified 24 anomalies.
+2026-04-11 00:00:34 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:00:34 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:00:34 [INFO] anomaly: Identified 24 anomalies.
+2026-04-11 00:00:34 [INFO] anomaly: Identified 24 anomalies.
+2026-04-11 00:00:44 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:00:44 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:00:44 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:00:44 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:00:54 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:00:54 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:00:55 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:00:55 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:01:05 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:01:05 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:01:05 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:01:05 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:01:16 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:01:16 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:01:16 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:01:16 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:01:26 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:01:26 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:01:27 [INFO] anomaly: Identified 22 anomalies.
+2026-04-11 00:01:27 [INFO] anomaly: Identified 22 anomalies.
+2026-04-11 00:01:38 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:01:38 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:01:38 [INFO] anomaly: Identified 22 anomalies.
+2026-04-11 00:01:38 [INFO] anomaly: Identified 22 anomalies.
+2026-04-11 00:01:49 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:01:49 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:01:49 [INFO] anomaly: Identified 22 anomalies.
+2026-04-11 00:01:49 [INFO] anomaly: Identified 22 anomalies.
+2026-04-11 00:01:59 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:01:59 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:01:59 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:01:59 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:02:09 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:02:09 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:02:10 [INFO] anomaly: Identified 21 anomalies.
+2026-04-11 00:02:10 [INFO] anomaly: Identified 21 anomalies.
+2026-04-11 00:02:20 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:02:20 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:02:21 [INFO] anomaly: Identified 21 anomalies.
+2026-04-11 00:02:21 [INFO] anomaly: Identified 21 anomalies.
+2026-04-11 00:02:31 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:02:31 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:02:31 [INFO] anomaly: Identified 21 anomalies.
+2026-04-11 00:02:31 [INFO] anomaly: Identified 21 anomalies.
+2026-04-11 00:02:41 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:02:41 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:02:41 [INFO] anomaly: Identified 21 anomalies.
+2026-04-11 00:02:41 [INFO] anomaly: Identified 21 anomalies.
+2026-04-11 00:02:51 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:02:51 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:02:52 [INFO] anomaly: Identified 21 anomalies.
+2026-04-11 00:02:52 [INFO] anomaly: Identified 21 anomalies.
+2026-04-11 00:03:00 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 00:03:00 [INFO] anomaly: --- Agent anomaly Shutdown Cleanly ---
+2026-04-11 00:03:00 [INFO] anomaly: --- Agent anomaly Shutdown Cleanly ---
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+2026-04-11 02:46:13 [INFO] anomaly: --- Agent anomaly Persistent Loop Started ---
+2026-04-11 02:46:13 [INFO] anomaly: --- Agent anomaly Persistent Loop Started ---
+2026-04-11 02:46:13 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:46:13 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:46:13 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:46:13 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:46:23 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:46:23 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:46:23 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:46:23 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:46:35 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:46:35 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:46:35 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:46:35 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:46:45 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:46:45 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:46:45 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:46:45 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:46:55 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:46:55 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:46:55 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:46:55 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:47:05 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:47:05 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:47:05 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:47:05 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:47:15 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:47:15 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:47:15 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:47:15 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:47:25 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:47:25 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:47:25 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:47:25 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:47:35 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:47:35 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:47:35 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:47:35 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:47:45 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:47:45 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 02:47:45 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 02:47:45 [INFO] anomaly: Identified 20 anomalies.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               2026-04-11 03:08:38 [INFO] anomaly: --- Agent anomaly Persistent Loop Started ---
+2026-04-11 03:08:38 [INFO] anomaly: --- Agent anomaly Persistent Loop Started ---
+2026-04-11 03:08:38 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:08:38 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:08:38 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:08:38 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:08:48 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:08:48 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:08:48 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:08:48 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:08:58 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:08:58 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:08:58 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:08:58 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:09:08 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:09:08 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:09:08 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:09:08 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:09:18 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:09:18 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:09:18 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:09:18 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:09:28 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:09:28 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:09:28 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:09:28 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:09:38 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:09:38 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:09:38 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:09:38 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:09:40 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 03:09:40 [INFO] anomaly: --- Agent anomaly Shutdown Cleanly ---
+2026-04-11 03:09:40 [INFO] anomaly: --- Agent anomaly Shutdown Cleanly ---
 
 ----------------------------------------
 
 --- ATTACHMENT: supervisor.log ---
  (Showing last 0 lines)
 
+
+----------------------------------------
+
+--- ATTACHMENT: chaos.log ---
+ (Showing last 0 lines)
+
+
+----------------------------------------
+
+--- ATTACHMENT: registry.log ---
+ (Showing last 94 lines)
+
+2026-04-11 02:05:08 [INFO] registry: --- Agent registry Persistent Loop Started ---
+2026-04-11 02:05:08 [INFO] registry: --- Agent registry Persistent Loop Started ---
+2026-04-11 02:09:53 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 02:09:58 [INFO] registry: --- Agent registry Shutdown Cleanly ---
+2026-04-11 02:09:58 [INFO] registry: --- Agent registry Shutdown Cleanly ---
+2026-04-11 03:08:38 [INFO] registry: --- Agent registry Persistent Loop Started ---
+2026-04-11 03:08:38 [INFO] registry: --- Agent registry Persistent Loop Started ---
+2026-04-11 03:08:38 [INFO] registry: Found 2 containers in /docker/docker/routing/docker-compose.yml
+2026-04-11 03:08:38 [INFO] registry: Found 2 containers in /docker/docker/routing/docker-compose.yml
+2026-04-11 03:08:38 [INFO] registry: Found 4 containers in /docker/docker/maintenance/docker-compose.yml
+2026-04-11 03:08:38 [INFO] registry: Found 4 containers in /docker/docker/maintenance/docker-compose.yml
+2026-04-11 03:08:38 [INFO] registry: Found 2 containers in /docker/docker/core/docker-compose.yml
+2026-04-11 03:08:38 [INFO] registry: Found 2 containers in /docker/docker/core/docker-compose.yml
+2026-04-11 03:08:38 [INFO] registry: Found 2 containers in /docker/docker/apps/tattoo-app/docker-compose.yml
+2026-04-11 03:08:38 [INFO] registry: Found 2 containers in /docker/docker/apps/tattoo-app/docker-compose.yml
+2026-04-11 03:08:38 [INFO] registry: Found 15 containers in /docker/docker/media/docker-compose.yml
+2026-04-11 03:08:38 [INFO] registry: Found 15 containers in /docker/docker/media/docker-compose.yml
+2026-04-11 03:08:38 [ERROR] registry: Failed to save registry.json
+2026-04-11 03:08:38 [ERROR] registry: Failed to save registry.json
+2026-04-11 03:08:48 [INFO] registry: Found 2 containers in /docker/docker/routing/docker-compose.yml
+2026-04-11 03:08:48 [INFO] registry: Found 2 containers in /docker/docker/routing/docker-compose.yml
+2026-04-11 03:08:48 [INFO] registry: Found 4 containers in /docker/docker/maintenance/docker-compose.yml
+2026-04-11 03:08:48 [INFO] registry: Found 4 containers in /docker/docker/maintenance/docker-compose.yml
+2026-04-11 03:08:48 [INFO] registry: Found 2 containers in /docker/docker/core/docker-compose.yml
+2026-04-11 03:08:48 [INFO] registry: Found 2 containers in /docker/docker/core/docker-compose.yml
+2026-04-11 03:08:48 [INFO] registry: Found 2 containers in /docker/docker/apps/tattoo-app/docker-compose.yml
+2026-04-11 03:08:48 [INFO] registry: Found 2 containers in /docker/docker/apps/tattoo-app/docker-compose.yml
+2026-04-11 03:08:48 [INFO] registry: Found 15 containers in /docker/docker/media/docker-compose.yml
+2026-04-11 03:08:48 [INFO] registry: Found 15 containers in /docker/docker/media/docker-compose.yml
+2026-04-11 03:08:48 [ERROR] registry: Failed to save registry.json
+2026-04-11 03:08:48 [ERROR] registry: Failed to save registry.json
+2026-04-11 03:08:58 [INFO] registry: Found 2 containers in /docker/docker/routing/docker-compose.yml
+2026-04-11 03:08:58 [INFO] registry: Found 2 containers in /docker/docker/routing/docker-compose.yml
+2026-04-11 03:08:58 [INFO] registry: Found 4 containers in /docker/docker/maintenance/docker-compose.yml
+2026-04-11 03:08:58 [INFO] registry: Found 4 containers in /docker/docker/maintenance/docker-compose.yml
+2026-04-11 03:08:58 [INFO] registry: Found 2 containers in /docker/docker/core/docker-compose.yml
+2026-04-11 03:08:58 [INFO] registry: Found 2 containers in /docker/docker/core/docker-compose.yml
+2026-04-11 03:08:58 [INFO] registry: Found 2 containers in /docker/docker/apps/tattoo-app/docker-compose.yml
+2026-04-11 03:08:58 [INFO] registry: Found 2 containers in /docker/docker/apps/tattoo-app/docker-compose.yml
+2026-04-11 03:08:58 [INFO] registry: Found 15 containers in /docker/docker/media/docker-compose.yml
+2026-04-11 03:08:58 [INFO] registry: Found 15 containers in /docker/docker/media/docker-compose.yml
+2026-04-11 03:08:58 [ERROR] registry: Failed to save registry.json
+2026-04-11 03:08:58 [ERROR] registry: Failed to save registry.json
+2026-04-11 03:09:08 [INFO] registry: Found 2 containers in /docker/docker/routing/docker-compose.yml
+2026-04-11 03:09:08 [INFO] registry: Found 2 containers in /docker/docker/routing/docker-compose.yml
+2026-04-11 03:09:08 [INFO] registry: Found 4 containers in /docker/docker/maintenance/docker-compose.yml
+2026-04-11 03:09:08 [INFO] registry: Found 4 containers in /docker/docker/maintenance/docker-compose.yml
+2026-04-11 03:09:08 [INFO] registry: Found 2 containers in /docker/docker/core/docker-compose.yml
+2026-04-11 03:09:08 [INFO] registry: Found 2 containers in /docker/docker/core/docker-compose.yml
+2026-04-11 03:09:08 [INFO] registry: Found 2 containers in /docker/docker/apps/tattoo-app/docker-compose.yml
+2026-04-11 03:09:08 [INFO] registry: Found 2 containers in /docker/docker/apps/tattoo-app/docker-compose.yml
+2026-04-11 03:09:08 [INFO] registry: Found 15 containers in /docker/docker/media/docker-compose.yml
+2026-04-11 03:09:08 [INFO] registry: Found 15 containers in /docker/docker/media/docker-compose.yml
+2026-04-11 03:09:08 [ERROR] registry: Failed to save registry.json
+2026-04-11 03:09:08 [ERROR] registry: Failed to save registry.json
+2026-04-11 03:09:18 [INFO] registry: Found 2 containers in /docker/docker/routing/docker-compose.yml
+2026-04-11 03:09:18 [INFO] registry: Found 2 containers in /docker/docker/routing/docker-compose.yml
+2026-04-11 03:09:18 [INFO] registry: Found 4 containers in /docker/docker/maintenance/docker-compose.yml
+2026-04-11 03:09:18 [INFO] registry: Found 4 containers in /docker/docker/maintenance/docker-compose.yml
+2026-04-11 03:09:18 [INFO] registry: Found 2 containers in /docker/docker/core/docker-compose.yml
+2026-04-11 03:09:18 [INFO] registry: Found 2 containers in /docker/docker/core/docker-compose.yml
+2026-04-11 03:09:18 [INFO] registry: Found 2 containers in /docker/docker/apps/tattoo-app/docker-compose.yml
+2026-04-11 03:09:18 [INFO] registry: Found 2 containers in /docker/docker/apps/tattoo-app/docker-compose.yml
+2026-04-11 03:09:18 [INFO] registry: Found 15 containers in /docker/docker/media/docker-compose.yml
+2026-04-11 03:09:18 [INFO] registry: Found 15 containers in /docker/docker/media/docker-compose.yml
+2026-04-11 03:09:18 [ERROR] registry: Failed to save registry.json
+2026-04-11 03:09:18 [ERROR] registry: Failed to save registry.json
+2026-04-11 03:09:28 [INFO] registry: Found 2 containers in /docker/docker/routing/docker-compose.yml
+2026-04-11 03:09:28 [INFO] registry: Found 2 containers in /docker/docker/routing/docker-compose.yml
+2026-04-11 03:09:28 [INFO] registry: Found 4 containers in /docker/docker/maintenance/docker-compose.yml
+2026-04-11 03:09:28 [INFO] registry: Found 4 containers in /docker/docker/maintenance/docker-compose.yml
+2026-04-11 03:09:28 [INFO] registry: Found 2 containers in /docker/docker/core/docker-compose.yml
+2026-04-11 03:09:28 [INFO] registry: Found 2 containers in /docker/docker/core/docker-compose.yml
+2026-04-11 03:09:28 [INFO] registry: Found 2 containers in /docker/docker/apps/tattoo-app/docker-compose.yml
+2026-04-11 03:09:28 [INFO] registry: Found 2 containers in /docker/docker/apps/tattoo-app/docker-compose.yml
+2026-04-11 03:09:28 [INFO] registry: Found 15 containers in /docker/docker/media/docker-compose.yml
+2026-04-11 03:09:28 [INFO] registry: Found 15 containers in /docker/docker/media/docker-compose.yml
+2026-04-11 03:09:28 [ERROR] registry: Failed to save registry.json
+2026-04-11 03:09:28 [ERROR] registry: Failed to save registry.json
+2026-04-11 03:09:38 [INFO] registry: Found 2 containers in /docker/docker/routing/docker-compose.yml
+2026-04-11 03:09:38 [INFO] registry: Found 2 containers in /docker/docker/routing/docker-compose.yml
+2026-04-11 03:09:38 [INFO] registry: Found 4 containers in /docker/docker/maintenance/docker-compose.yml
+2026-04-11 03:09:38 [INFO] registry: Found 4 containers in /docker/docker/maintenance/docker-compose.yml
+2026-04-11 03:09:39 [INFO] registry: Found 2 containers in /docker/docker/core/docker-compose.yml
+2026-04-11 03:09:39 [INFO] registry: Found 2 containers in /docker/docker/core/docker-compose.yml
+2026-04-11 03:09:39 [INFO] registry: Found 2 containers in /docker/docker/apps/tattoo-app/docker-compose.yml
+2026-04-11 03:09:39 [INFO] registry: Found 2 containers in /docker/docker/apps/tattoo-app/docker-compose.yml
+2026-04-11 03:09:39 [INFO] registry: Found 15 containers in /docker/docker/media/docker-compose.yml
+2026-04-11 03:09:39 [INFO] registry: Found 15 containers in /docker/docker/media/docker-compose.yml
+2026-04-11 03:09:39 [ERROR] registry: Failed to save registry.json
+2026-04-11 03:09:39 [ERROR] registry: Failed to save registry.json
+2026-04-11 03:09:40 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 03:09:41 [INFO] registry: --- Agent registry Shutdown Cleanly ---
+2026-04-11 03:09:41 [INFO] registry: --- Agent registry Shutdown Cleanly ---
+
+----------------------------------------
+
+--- ATTACHMENT: scorer.log ---
+ (Showing last 65 lines)
+
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/health_score.py", line 9, in <module>
+    from utils.paths import STATE_DIR, HEALTH_REPORT_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/health_score.py", line 9, in <module>
+    from utils.paths import STATE_DIR, HEALTH_REPORT_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/health_score.py", line 9, in <module>
+    from utils.paths import STATE_DIR, HEALTH_REPORT_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/health_score.py", line 9, in <module>
+    from utils.paths import STATE_DIR, HEALTH_REPORT_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/health_score.py", line 9, in <module>
+    from utils.paths import STATE_DIR, HEALTH_REPORT_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/health_score.py", line 9, in <module>
+    from utils.paths import STATE_DIR, HEALTH_REPORT_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/health_score.py", line 9, in <module>
+    from utils.paths import STATE_DIR, HEALTH_REPORT_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/health_score.py", line 9, in <module>
+    from utils.paths import STATE_DIR, HEALTH_REPORT_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/health_score.py", line 9, in <module>
+    from utils.paths import STATE_DIR, HEALTH_REPORT_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/health_score.py", line 9, in <module>
+    from utils.paths import STATE_DIR, HEALTH_REPORT_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/health_score.py", line 9, in <module>
+    from utils.paths import STATE_DIR, HEALTH_REPORT_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/health_score.py", line 9, in <module>
+    from utils.paths import STATE_DIR, HEALTH_REPORT_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/health_score.py", line 9, in <module>
+    from utils.paths import STATE_DIR, HEALTH_REPORT_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/health_score.py", line 9, in <module>
+    from utils.paths import STATE_DIR, HEALTH_REPORT_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/health_score.py", line 9, in <module>
+    from utils.paths import STATE_DIR, HEALTH_REPORT_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+2026-04-11 03:08:38 [INFO] scorer: --- Agent scorer Persistent Loop Started ---
+2026-04-11 03:08:38 [INFO] scorer: --- Agent scorer Persistent Loop Started ---
+2026-04-11 03:09:40 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 03:09:41 [INFO] scorer: --- Agent scorer Shutdown Cleanly ---
+2026-04-11 03:09:41 [INFO] scorer: --- Agent scorer Shutdown Cleanly ---
+
+----------------------------------------
+
+--- ATTACHMENT: monitor.log ---
+ (Showing last 24 lines)
+
+2026-04-11 02:05:07 [INFO] monitor: --- Agent monitor Persistent Loop Started ---
+2026-04-11 02:05:07 [INFO] monitor: --- Agent monitor Persistent Loop Started ---
+2026-04-11 02:09:53 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 02:09:57 [INFO] monitor: --- Agent monitor Shutdown Cleanly ---
+2026-04-11 02:09:57 [INFO] monitor: --- Agent monitor Shutdown Cleanly ---
+2026-04-11 03:08:38 [INFO] monitor: --- Agent monitor Persistent Loop Started ---
+2026-04-11 03:08:38 [INFO] monitor: --- Agent monitor Persistent Loop Started ---
+2026-04-11 03:08:38 [INFO] monitor: Health check completed for 25 containers.
+2026-04-11 03:08:38 [INFO] monitor: Health check completed for 25 containers.
+2026-04-11 03:08:48 [INFO] monitor: Health check completed for 25 containers.
+2026-04-11 03:08:48 [INFO] monitor: Health check completed for 25 containers.
+2026-04-11 03:08:58 [INFO] monitor: Health check completed for 25 containers.
+2026-04-11 03:08:58 [INFO] monitor: Health check completed for 25 containers.
+2026-04-11 03:09:09 [INFO] monitor: Health check completed for 25 containers.
+2026-04-11 03:09:09 [INFO] monitor: Health check completed for 25 containers.
+2026-04-11 03:09:19 [INFO] monitor: Health check completed for 25 containers.
+2026-04-11 03:09:19 [INFO] monitor: Health check completed for 25 containers.
+2026-04-11 03:09:29 [INFO] monitor: Health check completed for 25 containers.
+2026-04-11 03:09:29 [INFO] monitor: Health check completed for 25 containers.
+2026-04-11 03:09:40 [INFO] monitor: Health check completed for 25 containers.
+2026-04-11 03:09:40 [INFO] monitor: Health check completed for 25 containers.
+2026-04-11 03:09:40 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 03:09:41 [INFO] monitor: --- Agent monitor Shutdown Cleanly ---
+2026-04-11 03:09:41 [INFO] monitor: --- Agent monitor Shutdown Cleanly ---
+
+----------------------------------------
+
+--- ATTACHMENT: leader.log ---
+ (Showing last 36 lines)
+
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/leader.py", line 8, in <module>
+    from utils.paths import CLUSTER_YML, LEADER_TXT
+ImportError: cannot import name 'CLUSTER_YML' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/leader.py", line 8, in <module>
+    from utils.paths import CLUSTER_YML, LEADER_TXT
+ImportError: cannot import name 'CLUSTER_YML' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/leader.py", line 8, in <module>
+    from utils.paths import CLUSTER_YML, LEADER_TXT
+ImportError: cannot import name 'CLUSTER_YML' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/leader.py", line 8, in <module>
+    from utils.paths import CLUSTER_YML, LEADER_TXT
+ImportError: cannot import name 'CLUSTER_YML' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/leader.py", line 8, in <module>
+    from utils.paths import CLUSTER_YML, LEADER_TXT
+ImportError: cannot import name 'CLUSTER_YML' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+2026-04-11 03:08:35 [INFO] leader: --- Leader Agent Persistent Loop Started ---
+2026-04-11 03:08:35 [INFO] leader: --- Leader Agent Persistent Loop Started ---
+2026-04-11 03:08:35 [INFO] leader: Identity: 9b7945c68051@172.18.0.8 | STATUS: [LEADER]
+2026-04-11 03:08:35 [INFO] leader: Identity: 9b7945c68051@172.18.0.8 | STATUS: [LEADER]
+2026-04-11 03:08:45 [INFO] leader: Identity: 9b7945c68051@172.18.0.8 | STATUS: [LEADER]
+2026-04-11 03:08:45 [INFO] leader: Identity: 9b7945c68051@172.18.0.8 | STATUS: [LEADER]
+2026-04-11 03:08:56 [INFO] leader: Identity: 9b7945c68051@172.18.0.8 | STATUS: [LEADER]
+2026-04-11 03:08:56 [INFO] leader: Identity: 9b7945c68051@172.18.0.8 | STATUS: [LEADER]
+2026-04-11 03:09:06 [INFO] leader: Identity: 9b7945c68051@172.18.0.8 | STATUS: [LEADER]
+2026-04-11 03:09:06 [INFO] leader: Identity: 9b7945c68051@172.18.0.8 | STATUS: [LEADER]
+2026-04-11 03:09:16 [INFO] leader: Identity: 9b7945c68051@172.18.0.8 | STATUS: [LEADER]
+2026-04-11 03:09:16 [INFO] leader: Identity: 9b7945c68051@172.18.0.8 | STATUS: [LEADER]
+2026-04-11 03:09:26 [INFO] leader: Identity: 9b7945c68051@172.18.0.8 | STATUS: [LEADER]
+2026-04-11 03:09:26 [INFO] leader: Identity: 9b7945c68051@172.18.0.8 | STATUS: [LEADER]
+2026-04-11 03:09:36 [INFO] leader: Identity: 9b7945c68051@172.18.0.8 | STATUS: [LEADER]
+2026-04-11 03:09:36 [INFO] leader: Identity: 9b7945c68051@172.18.0.8 | STATUS: [LEADER]
+
+----------------------------------------
+
+--- ATTACHMENT: scaling.log ---
+ (Showing last 10 lines)
+
+2026-04-11 02:05:07 [INFO] scaling: --- Agent scaling Persistent Loop Started ---
+2026-04-11 02:05:07 [INFO] scaling: --- Agent scaling Persistent Loop Started ---
+2026-04-11 02:09:53 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 02:09:57 [INFO] scaling: --- Agent scaling Shutdown Cleanly ---
+2026-04-11 02:09:57 [INFO] scaling: --- Agent scaling Shutdown Cleanly ---
+2026-04-11 03:08:38 [INFO] scaling: --- Agent scaling Persistent Loop Started ---
+2026-04-11 03:08:38 [INFO] scaling: --- Agent scaling Persistent Loop Started ---
+2026-04-11 03:09:40 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 03:09:41 [INFO] scaling: --- Agent scaling Shutdown Cleanly ---
+2026-04-11 03:09:41 [INFO] scaling: --- Agent scaling Shutdown Cleanly ---
+
+----------------------------------------
+
+--- ATTACHMENT: healer.log ---
+ (Showing last 21 lines)
+
+2026-04-11 02:05:07 [HEALER] M3TAL Healer Agent Started.
+[HEALER] Removing stale remote lock (304s old)
+2026-04-11 02:09:22 [HEALER] --- Runtime Healing Cycle Started ---
+  [38;2;255;0;153m✔[0m Component filesystem status: ok
+  [38;2;255;0;153m✔[0m Component logs status: ok
+  [38;2;255;0;153m✔[0m Component state status: ok
+  [38;2;255;0;153m•[0m [DOCKER] Orchestrating stack: routing
+  [38;2;255;0;153m•[0m [DOCKER] Orchestrating stack: maintenance
+  [38;2;255;0;153m•[0m [DOCKER] Orchestrating stack: core
+2026-04-11 02:09:53 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 03:08:38 [HEALER] M3TAL Healer Agent Started.
+2026-04-11 03:08:53 [HEALER] --- Runtime Healing Cycle Started ---
+  [38;2;255;0;153m✔[0m Component filesystem status: ok
+  [38;2;255;0;153m✔[0m Component logs status: ok
+  [38;2;255;0;153m✔[0m Component state status: ok
+  [38;2;255;0;153m•[0m [DOCKER] Orchestrating stack: routing
+  [38;2;255;0;153m🚀[0m [DOCKER] Stack routing launched in background. Moving on.
+  [38;2;255;0;153m•[0m [DOCKER] Orchestrating stack: maintenance
+  [38;2;255;0;153m🚀[0m [DOCKER] Stack maintenance launched in background. Moving on.
+  [38;2;255;0;153m•[0m [DOCKER] Orchestrating stack: core
+2026-04-11 03:09:40 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+
+----------------------------------------
+
+--- ATTACHMENT: init.log ---
+ (Showing last 88 lines)
+
+2026-04-11 00:43:32 ⚠ [INIT] Starting in DEGRADED mode (Tunnel missing/incomplete).
+2026-04-11 00:43:32 ✔ [INIT] Component filesystem status: ok
+2026-04-11 00:43:32 [INIT] [LOG] Initializing monitor.log
+2026-04-11 00:43:32 [INIT] [LOG] Initializing decision.log
+2026-04-11 00:43:32 [INIT] [LOG] Initializing reconcile.log
+2026-04-11 00:43:32 [INIT] [LOG] Initializing registry.log
+2026-04-11 00:43:32 [INIT] [LOG] Initializing observer.log
+2026-04-11 00:43:32 [INIT] [LOG] Initializing scorer.log
+2026-04-11 00:43:32 [INIT] [LOG] Initializing chaos.log
+2026-04-11 00:43:32 [INIT] [LOG] Initializing supervisor.log
+2026-04-11 00:43:32 [INIT] [LOG] Initializing healer.log
+2026-04-11 00:43:32 ✔ [INIT] Component logs status: ok
+2026-04-11 00:43:32 ✔ [INIT] Component state status: ok
+2026-04-11 00:43:32 ✔ [INIT] Component auth status: ok
+2026-04-11 00:43:32 [INIT] [DOCKER] Shared network 'm3tal' ready
+2026-04-11 00:43:32 [INIT] [DOCKER] Orchestrating stack: routing
+2026-04-11 00:43:37 [INIT] [DOCKER] Orchestrating stack: maintenance
+2026-04-11 00:43:42 ⚠ [INIT] Starting in DEGRADED mode (Tunnel missing/incomplete).
+2026-04-11 00:43:58 ⚠ [INIT] Starting in DEGRADED mode (Tunnel missing/incomplete).
+2026-04-11 00:44:53 ⚠ [INIT] Starting in DEGRADED mode (Tunnel missing/incomplete).
+2026-04-11 00:44:57 ⚠ [INIT] Starting in DEGRADED mode (Tunnel missing/incomplete).
+2026-04-11 00:45:02 ⚠ [INIT] Starting in DEGRADED mode (Tunnel missing/incomplete).
+2026-04-11 00:47:18 ⚠ [INIT] Starting in DEGRADED mode (Tunnel missing/incomplete).
+2026-04-11 00:47:40 ⚠ [INIT] Starting in DEGRADED mode (Tunnel missing/incomplete).
+2026-04-11 00:47:51 ⚠ [INIT] Starting in DEGRADED mode (Tunnel missing/incomplete).
+2026-04-11 01:04:18 ⚠ [INIT] Starting in DEGRADED mode (Tunnel missing/incomplete).
+2026-04-11 01:04:18 ✔ [INIT] Component filesystem status: ok
+2026-04-11 01:04:18 ✔ [INIT] Component logs status: ok
+2026-04-11 01:04:18 ✔ [INIT] Component state status: ok
+2026-04-11 01:04:18 ⚠ [INIT] [AUTH] WARNING: bcrypt module missing. Auth repairs disabled.
+2026-04-11 01:04:18 💡 [INIT] [AUTH] Suggestion: pip install bcrypt
+2026-04-11 01:04:18 ⚠ [INIT] Component auth status: degraded
+2026-04-11 01:04:18 [INIT] [DOCKER] Shared network 'm3tal' ready
+2026-04-11 01:04:18 [INIT] [DOCKER] Orchestrating stack: routing
+2026-04-11 01:04:23 [INIT] [DOCKER] Orchestrating stack: maintenance
+2026-04-11 01:04:59 [INIT] [DOCKER] Orchestrating stack: core
+2026-04-11 01:05:05 [INIT] [DOCKER] Orchestrating stack: media
+2026-04-11 02:09:22 ✔ [INIT] Component filesystem status: ok
+2026-04-11 02:09:22 ✔ [INIT] Component logs status: ok
+2026-04-11 02:09:22 ✔ [INIT] Component state status: ok
+2026-04-11 02:09:24 [INIT] [DOCKER] Orchestrating stack: routing
+2026-04-11 02:09:48 [INIT] [DOCKER] Orchestrating stack: maintenance
+2026-04-11 02:09:49 [INIT] [DOCKER] Orchestrating stack: core
+2026-04-11 01:12:08 ⚠ [INIT] Starting in DEGRADED mode (Tunnel missing/incomplete).
+2026-04-11 01:12:57 ⚠ [INIT] Starting in DEGRADED mode (Tunnel missing/incomplete).
+2026-04-11 01:12:57 ✔ [INIT] Component filesystem status: ok
+2026-04-11 01:12:57 ✔ [INIT] Component logs status: ok
+2026-04-11 01:12:57 ✔ [INIT] Component state status: ok
+2026-04-11 01:12:57 ⚠ [INIT] [AUTH] WARNING: bcrypt module missing. Auth repairs disabled.
+2026-04-11 01:12:57 💡 [INIT] [AUTH] Suggestion: pip install bcrypt
+2026-04-11 01:12:57 ⚠ [INIT] Component auth status: degraded
+2026-04-11 01:12:57 [INIT] [DOCKER] Shared network 'm3tal' ready
+2026-04-11 01:12:57 [INIT] [DOCKER] Orchestrating stack: routing
+2026-04-11 01:13:02 [INIT] [DOCKER] Orchestrating stack: maintenance
+2026-04-11 01:13:38 [INIT] [DOCKER] Orchestrating stack: core
+2026-04-11 01:13:44 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1). Check Docker Desktop logs.
+2026-04-11 01:13:44 ⚠ [INIT] Component docker status: partial
+2026-04-11 01:13:44 [INIT] [DOCKER] Orchestrating stack: media
+2026-04-11 01:23:47 ⚠ [INIT] [DOCKER] Stack media timed out. Proceeding in DEGRADED mode.
+2026-04-11 01:23:47 ⚠ [INIT] Component docker status: partial
+2026-04-11 01:23:47 [INIT] [DOCKER] Orchestrating stack: apps/tattoo-app
+2026-04-11 01:23:57 ★ [INIT] System Readiness: DEGRADED
+2026-04-11 02:07:44 ⚠ [INIT] Starting in DEGRADED mode (Tunnel missing/incomplete).
+2026-04-11 02:07:44 ✔ [INIT] Component filesystem status: ok
+2026-04-11 02:07:44 ✔ [INIT] Component logs status: ok
+2026-04-11 02:07:44 ✔ [INIT] Component state status: ok
+2026-04-11 02:07:44 ⚠ [INIT] [AUTH] WARNING: bcrypt module missing. Auth repairs disabled.
+2026-04-11 02:07:44 💡 [INIT] [AUTH] Suggestion: pip install bcrypt
+2026-04-11 02:07:44 ⚠ [INIT] Component auth status: degraded
+2026-04-11 02:07:44 [INIT] [DOCKER] Shared network 'm3tal' ready
+2026-04-11 02:07:44 [INIT] [DOCKER] Orchestrating stack: routing
+2026-04-11 02:07:50 [INIT] [DOCKER] Orchestrating stack: maintenance
+2026-04-11 02:08:01 🚀 [INIT] [DOCKER] Stack maintenance launched in background. Moving on.
+2026-04-11 02:08:01 [INIT] [DOCKER] Orchestrating stack: core
+2026-04-11 02:08:25 [INIT] [DOCKER] Orchestrating stack: media
+2026-04-11 02:08:35 🚀 [INIT] [DOCKER] Stack media launched in background. Moving on.
+2026-04-11 02:08:35 [INIT] [DOCKER] Orchestrating stack: apps/tattoo-app
+2026-04-11 02:08:46 🚀 [INIT] [DOCKER] Stack apps/tattoo-app launched in background. Moving on.
+2026-04-11 02:08:46 ✔ [INIT] Component docker status: ok
+2026-04-11 02:08:47 ★ [INIT] System Readiness: DEGRADED
+2026-04-11 03:08:53 ✔ [INIT] Component filesystem status: ok
+2026-04-11 03:08:53 ✔ [INIT] Component logs status: ok
+2026-04-11 03:08:53 ✔ [INIT] Component state status: ok
+2026-04-11 03:08:57 [INIT] [DOCKER] Orchestrating stack: routing
+2026-04-11 03:09:07 🚀 [INIT] [DOCKER] Stack routing launched in background. Moving on.
+2026-04-11 03:09:07 [INIT] [DOCKER] Orchestrating stack: maintenance
+2026-04-11 03:09:18 🚀 [INIT] [DOCKER] Stack maintenance launched in background. Moving on.
+2026-04-11 03:09:18 [INIT] [DOCKER] Orchestrating stack: core
+
+----------------------------------------
+
+--- ATTACHMENT: guards.log ---
+ (Showing last 19 lines)
+
+2026-04-11 02:09:53 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 02:09:53 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 02:09:53 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 02:09:53 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 02:09:53 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 02:09:53 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 02:09:53 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 02:09:53 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 03:09:40 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 03:09:40 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 03:09:40 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 03:09:40 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 03:09:40 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 03:09:40 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 03:09:40 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 03:09:40 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 03:09:40 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 03:09:40 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 03:09:40 [INFO] guards: Received signal 15. Requesting graceful shutdown...
 
 ----------------------------------------
 

@@ -24484,4 +24484,36 @@ ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker
 2026-04-11 02:47:45 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
 2026-04-11 02:47:45 [INFO] anomaly: Identified 20 anomalies.
 2026-04-11 02:47:45 [INFO] anomaly: Identified 20 anomalies.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               2026-04-11 03:08:38 [INFO] anomaly: --- Agent anomaly Persistent Loop Started ---
+2026-04-11 03:08:38 [INFO] anomaly: --- Agent anomaly Persistent Loop Started ---
+2026-04-11 03:08:38 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:08:38 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:08:38 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:08:38 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:08:48 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:08:48 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:08:48 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:08:48 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:08:58 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:08:58 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:08:58 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:08:58 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:09:08 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:09:08 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:09:08 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:09:08 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:09:18 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:09:18 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:09:18 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:09:18 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:09:28 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:09:28 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:09:28 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:09:28 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:09:38 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:09:38 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 03:09:38 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:09:38 [INFO] anomaly: Identified 3 anomalies.
+2026-04-11 03:09:40 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 03:09:40 [INFO] anomaly: --- Agent anomaly Shutdown Cleanly ---
+2026-04-11 03:09:40 [INFO] anomaly: --- Agent anomaly Shutdown Cleanly ---
