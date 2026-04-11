@@ -7,19 +7,24 @@ from pathlib import Path
 # Add current dir to path for utils
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from utils.paths import REPO_ROOT, STATE_DIR
+from utils.paths import REPO_ROOT, STATE_DIR, LOG_DIR, DOCKER_DIR
 from utils.guards import wrap_agent
 from utils.logger import get_logger
 
 logger = get_logger("tunnel")
-LOG_FILE = os.path.join(STATE_DIR, "logs", "tunnel.log")
+LOG_FILE = LOG_DIR / "tunnel.log"
 CONTAINER_NAME = "cloudflared"
-ROUTING_DIR = os.path.join(REPO_ROOT, "docker", "routing")
+ROUTING_DIR = DOCKER_DIR / "routing"
 
 def check_tunnel_health():
-    """
-    Monitors the cloudflared container and performs autonomous repairs.
-    """
+    """Monitors the cloudflared container and performs autonomous repairs."""
+    # 0. Config Gate: Do not attempt recovery if essential env is missing
+    token = os.getenv("CF_TUNNEL_TOKEN")
+    domain = os.getenv("DOMAIN")
+    
+    if not token or not domain:
+        logger.warning(f"Tunnel config missing (Token={bool(token)}, Domain={bool(domain)}). Skipping cycle.")
+        return
     # 1. Check Container Status
     try:
         inspect_cmd = ["docker", "inspect", "-f", "{{.State.Status}}", CONTAINER_NAME]

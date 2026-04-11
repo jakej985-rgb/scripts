@@ -10,11 +10,9 @@ from typing import Callable, Any, TypeVar
 
 T = TypeVar('T')
 
-# Root resolution
-if "REPO_ROOT" not in globals():
-    REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
-    STATE_DIR = REPO_ROOT / "control-plane" / "state"
-    LOCK_FILE = STATE_DIR / "healer.lock"
+from .paths import REPO_ROOT, STATE_DIR, LOCK_DIR
+
+LOCK_FILE = LOCK_DIR / "healer.lock"
 
 # Recovery Context
 LOG_MODE = "file"  # Set to "stdout" if file writes fail globally

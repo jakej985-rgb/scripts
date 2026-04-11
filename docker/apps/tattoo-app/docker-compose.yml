@@ -4,8 +4,8 @@ services:
     container_name: tattoo-api
     working_dir: /app
     volumes:
-      - /mnt/tattoo/backend:/app
-      - /mnt/tattoo/uploads:/app/uploads
+      - ${DATA_DIR}/tattoo/backend:/app
+      - ${DATA_DIR}/tattoo/uploads:/app/uploads
     command:
       - sh
       - -c
@@ -28,7 +28,7 @@ services:
       POSTGRES_PASSWORD: ${TATTOO_DB_PASSWORD}
       POSTGRES_DB: tattooapp
     volumes:
-      - /mnt/tattoo/db:/var/lib/postgresql/data
+      - ${DATA_DIR}/tattoo/db:/var/lib/postgresql/data
     restart: unless-stopped
 
 networks:

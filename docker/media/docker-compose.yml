@@ -36,8 +36,10 @@ services:
       - PGID=1000
       - WEBUI_PORT=8080
     volumes:
-      - ${CONFIG_DIR:-/docker/configs}/qbittorrent:/config
-      - ${DATA_DIR:-/mnt}:/data
+      - ${CONFIG_DIR}/qbittorrent:/config
+      - ${DATA_DIR}:/mnt
+      - ${DATA_DIR}/downloads:/downloads
+      - ${DATA_DIR}/media:/media
     restart: unless-stopped
 
   radarr:
@@ -58,8 +60,10 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - ${CONFIG_DIR:-/docker/configs}/radarr:/config
-      - ${DATA_DIR:-/mnt}:/data
+      - ${CONFIG_DIR}/radarr:/config
+      - ${DATA_DIR}:/mnt
+      - ${DATA_DIR}/downloads:/downloads
+      - ${DATA_DIR}/media:/media
     restart: unless-stopped
 
   sonarr:
@@ -80,8 +84,10 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - ${CONFIG_DIR:-/docker/configs}/sonarr:/config
-      - ${DATA_DIR:-/mnt}:/data
+      - ${CONFIG_DIR}/sonarr:/config
+      - ${DATA_DIR}:/mnt
+      - ${DATA_DIR}/downloads:/downloads
+      - ${DATA_DIR}/media:/media
 
     restart: unless-stopped
 
@@ -94,8 +100,10 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - ${CONFIG_DIR:-/docker/configs}/bazarr:/config
-      - ${DATA_DIR:-/mnt}:/data
+      - ${CONFIG_DIR}/bazarr:/config
+      - ${DATA_DIR}:/mnt
+      - ${DATA_DIR}/downloads:/downloads
+      - ${DATA_DIR}/media:/media
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bazarr.rule=Host(`bazarr.${DOMAIN}`)"
@@ -113,8 +121,10 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - ${CONFIG_DIR:-/docker/configs}/komga:/config
-      - ${DATA_DIR:-/mnt}:/data
+      - ${CONFIG_DIR}/komga:/config
+      - ${DATA_DIR}:/mnt
+      - ${DATA_DIR}/downloads:/downloads
+      - ${DATA_DIR}/media:/media
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.komga.rule=Host(`komga.${DOMAIN}`)"
@@ -132,7 +142,7 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - ${CONFIG_DIR:-/docker/configs}/jellyseerr:/app/config
+      - ${CONFIG_DIR}/jellyseerr:/app/config
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.jellyseerr.rule=Host(`jellyseerr.${DOMAIN}`)"
@@ -145,9 +155,7 @@ services:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
     volumes:
-      - ${CONFIG_DIR:-/docker/configs}/homepage:/app/config
-      - ${DATA_DIR:-/mnt}/disk1:/disk1
-      - ${DATA_DIR:-/mnt}/downloads:/downloads
+      - ${CONFIG_DIR}/homepage:/app/config
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     labels:
       - "traefik.enable=true"
@@ -161,7 +169,10 @@ services:
     image: ghcr.io/autobrr/autobrr:v1.39
     container_name: autobrr
     volumes:
-      - ${CONFIG_DIR:-/docker/configs}/autobrr:/config
+      - ${CONFIG_DIR}/autobrr:/config
+      - ${DATA_DIR}:/mnt
+      - ${DATA_DIR}/downloads:/downloads
+      - ${DATA_DIR}/media:/media
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.autobrr.rule=Host(`autobrr.${DOMAIN}`)"
@@ -174,14 +185,17 @@ services:
     image: ghcr.io/recyclarr/recyclarr
     container_name: recyclarr
     volumes:
-      - ${CONFIG_DIR:-/docker/configs}/recyclarr:/config
+      - ${CONFIG_DIR}/recyclarr:/config
+      - ${DATA_DIR}:/mnt
+      - ${DATA_DIR}/downloads:/downloads
+      - ${DATA_DIR}/media:/media
     restart: unless-stopped
 
   maintainerr:
     image: ghcr.io/maintainerr/maintainerr:latest
     container_name: maintainerr
     volumes:
-      - ${CONFIG_DIR:-/docker/configs}/maintainerr:/opt/data
+      - ${CONFIG_DIR}/maintainerr:/opt/data
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.maintainerr.rule=Host(`maintainerr.${DOMAIN}`)"
@@ -194,9 +208,11 @@ services:
     image: ghcr.io/haveagitgat/tdarr:latest
     container_name: tdarr
     volumes:
-      - ${CONFIG_DIR:-/docker/configs}/tdarr:/app/config
-      - ${CONFIG_DIR:-/docker/configs}/tdarr:/app/logs
-      - ${DATA_DIR:-/mnt}/disk1:/data
+      - ${CONFIG_DIR}/tdarr:/app/config
+      - ${CONFIG_DIR}/tdarr:/app/logs
+      - ${DATA_DIR}:/mnt
+      - ${DATA_DIR}/downloads:/downloads
+      - ${DATA_DIR}/media:/media
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.tdarr.rule=Host(`tdarr.${DOMAIN}`)"
@@ -239,7 +255,10 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - ${CONFIG_DIR:-/docker/configs}/prowlarr:/config
+      - ${CONFIG_DIR}/prowlarr:/config
+      - ${DATA_DIR}:/mnt
+      - ${DATA_DIR}/downloads:/downloads
+      - ${DATA_DIR}/media:/media
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.m3tal-media-server.xyz`)"
@@ -264,18 +283,6 @@ services:
 networks:
   m3tal:
     external: true
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

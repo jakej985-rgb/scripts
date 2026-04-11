@@ -15,18 +15,16 @@ import time
 from pathlib import Path
 
 # --- Context Anchoring --------------------------------------------------------
-AGENTS_DIR = Path(__file__).resolve().parent
-BASE_DIR = AGENTS_DIR.parent  # control-plane/
-REPO_ROOT = BASE_DIR.parent
+from utils.paths import REPO_ROOT, CONTROL_PLANE, AGENTS_DIR, STATE_DIR, LOG_DIR, RESTARTS_JSON
+from utils.healing import atomic_write_json
+import json
+
+BASE_DIR = CONTROL_PLANE
 
 # Add support directories to system path
 for path in [REPO_ROOT / "scripts", REPO_ROOT / "dashboard"]:
     if str(path) not in sys.path:
         sys.path.append(str(path))
-
-# --- Path System --------------------------------------------------------------
-STATE_DIR = BASE_DIR / "state"
-LOG_DIR = STATE_DIR / "logs"
 
 PYTHON = sys.executable  # Use the same interpreter that launched us
 
@@ -87,14 +85,65 @@ signal.signal(signal.SIGINT, _handle_signal)
 
 # --- Agent Runner -------------------------------------------------------------
 
-def run_agent(name: str, script: str) -> None:
-    """Run a single agent in a supervised loop with exponential backoff."""
-    crash_count = 0
-    log_path = LOG_DIR / f"{name}.log"
+# --- Stability Logic ----------------------------------------------------------
 
+def _get_restart_state() -> dict:
+    if RESTARTS_JSON.exists():
+        try:
+            return json.loads(RESTARTS_JSON.read_text())
+        except:
+            return {}
+    return {}
+
+def _check_stability(name: str) -> bool:
+    """Returns True if agent is stable, False if it should be paused."""
+    state = _get_restart_state()
+    agent_data = state.get(name, {"count": 0, "last_fail": 0, "pause_until": 0})
+    now = time.time()
+
+    # 1. Reset if stable for > 10 minutes
+    if now - agent_data["last_fail"] > 600:
+        agent_data["count"] = 0
+    
+    # 2. Check if currently in a pause window
+    if now < agent_data["pause_until"]:
+        return False
+    
+    return True
+
+def _record_failure(name: str):
+    """Records a failure and triggers backoff if unstable."""
+    state = _get_restart_state()
+    agent_data = state.get(name, {"count": 0, "last_fail": 0, "pause_until": 0})
+    now = time.time()
+
+    # Reset counter if last fail was long ago
+    if now - agent_data["last_fail"] > 600:
+        agent_data["count"] = 1
+    else:
+        agent_data["count"] += 1
+
+    agent_data["last_fail"] = now
+
+    # Stability Guard: 5 fails in 60s -> 5m pause
+    if agent_data["count"] >= 5 and (now - agent_data["last_fail"] < 60):
+        ts = time.strftime("%H:%M:%S")
+        print(f"[{ts}] STABILITY_WARNING: {name} unstable. Pausing for 5m.")
+        agent_data["pause_until"] = now + 300
+    
+    state[name] = agent_data
+    atomic_write_json(RESTARTS_JSON, state)
+
+def run_agent(name: str, script: str) -> None:
+    """Run a single agent in a supervised loop with adaptive backoff."""
     while not _shutdown_event.is_set():
+        if not _check_stability(name):
+            time.sleep(10)
+            continue
+
         ts = time.strftime("%H:%M:%S")
         print(f"[{ts}] Starting {name}...")
+        log_path = LOG_DIR / f"{name}.log"
 
         try:
             with open(log_path, "a", encoding="utf-8") as log_file:
@@ -117,15 +166,12 @@ def run_agent(name: str, script: str) -> None:
         if _shutdown_event.is_set():
             break
 
-        if exit_code == 0:
-            crash_count = 0
-            time.sleep(5)  # Agent exited cleanly, restart after brief pause
-        else:
-            crash_count += 1
-            wait_time = min(5 * crash_count, 60)
-            ts2 = time.strftime("%H:%M:%S")
-            print(f"[{ts2}] CRASH: {name} (exit {exit_code}). Backoff {wait_time}s...")
+        if exit_code != 0:
+            _record_failure(name)
+            wait_time = min(5, 30) # Brief safety pause
             time.sleep(wait_time)
+        else:
+            time.sleep(2)
 
 
 # --- Main Entry ---------------------------------------------------------------

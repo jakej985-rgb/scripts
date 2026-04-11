@@ -1,36 +1,50 @@
 import os
+from pathlib import Path
 
-# Root resolution
-# Since this lives in control-plane/agents/utils/, we need to go up 3 levels to reach GitHub/M3tal-Media-Server/
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
-REPO_ROOT = BASE_DIR
+# --- Root Resolution ----------------------------------------------------------
+# If REPO_ROOT is provided in environment (Docker mode), use it.
+# Otherwise, resolve it relative to this file (Dev mode).
+env_root = os.getenv("REPO_ROOT")
+if env_root:
+    REPO_ROOT = Path(env_root)
+else:
+    # This file is at control-plane/agents/utils/paths.py
+    REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 
-# Control Plane paths
-STATE_DIR = os.path.join(BASE_DIR, "control-plane", "state")
-LOG_DIR = os.path.join(STATE_DIR, "logs")
-CONFIG_DIR = os.path.join(BASE_DIR, "control-plane", "config")
-DOCKER_DIR = os.path.join(BASE_DIR, "docker")
+# --- Global Component Paths ---------------------------------------------------
+CONTROL_PLANE = REPO_ROOT / "control-plane"
+AGENTS_DIR = CONTROL_PLANE / "agents"
+DOCKER_DIR = REPO_ROOT / "docker"
+DASHBOARD_DIR = REPO_ROOT / "dashboard"
+SCRIPTS_DIR = REPO_ROOT / "scripts"
 
-# State Files (Standardized via AGENT_PLAN.md)
-LEADER_TXT = os.path.join(STATE_DIR, "leader.txt")
-HEALTH_JSON = os.path.join(STATE_DIR, "health.json")
-CONTAINER_HEALTH_JSON = os.path.join(STATE_DIR, "health", "monitor_containers.json")
-METRICS_JSON = os.path.join(STATE_DIR, "metrics.json")
-ANOMALIES_JSON = os.path.join(STATE_DIR, "anomalies.json")
-DECISIONS_JSON = os.path.join(STATE_DIR, "decisions.json")
-REGISTRY_JSON = os.path.join(STATE_DIR, "registry.json")
-COOLDOWNS_JSON = os.path.join(STATE_DIR, "cooldowns.json")
-NORMALIZED_METRICS_JSON = os.path.join(STATE_DIR, "normalized_metrics.json")
-HEALTH_REPORT_JSON = os.path.join(STATE_DIR, "health_report.json")
+# --- State & Monitoring -------------------------------------------------------
+STATE_DIR = CONTROL_PLANE / "state"
+LOG_DIR = STATE_DIR / "logs"
+LOCK_DIR = STATE_DIR / "locks"
+HEALTH_DIR = STATE_DIR / "health"
+CONFIG_DIR = CONTROL_PLANE / "config"
 
-# Config Files
-CLUSTER_YML = os.path.join(CONFIG_DIR, "cluster.yml")
-JOBS_JSON = os.path.join(CONFIG_DIR, "jobs.json")
-NODES_JSON = os.path.join(CONFIG_DIR, "nodes.json")
+# --- Static State Files -------------------------------------------------------
+LEADER_TXT = STATE_DIR / "leader.txt"
+HEALTH_JSON = STATE_DIR / "health.json"
+CONTAINER_HEALTH_JSON = HEALTH_DIR / "monitor_containers.json"
+METRICS_JSON = STATE_DIR / "metrics.json"
+RESTARTS_JSON = STATE_DIR / "restarts.json" # New: Track crash loops
+ANOMALIES_JSON = STATE_DIR / "anomalies.json"
+DECISIONS_JSON = STATE_DIR / "decisions.json"
+REGISTRY_JSON = STATE_DIR / "registry.json"
 
-# Extra paths
-TRAEFIK_DYNAMIC_YML = os.path.join(STATE_DIR, "traefik-dynamic.yml")
+# --- Dynamic Assets -----------------------------------------------------------
+TRAEFIK_DYNAMIC_YML = STATE_DIR / "traefik-dynamic.yml"
+THEME_JSON = STATE_DIR / "theme.json"
 
 def ensure_dirs():
-    for d in [STATE_DIR, LOG_DIR, CONFIG_DIR]:
-        os.makedirs(d, exist_ok=True)
+    """Safety: ensure all core state/log directories exist."""
+    dirs = [STATE_DIR, LOG_DIR, LOCK_DIR, HEALTH_DIR, CONFIG_DIR]
+    for d in dirs:
+        d.mkdir(parents=True, exist_ok=True)
+
+if __name__ == "__main__":
+    print(f"M3TAL Path Standard: {REPO_ROOT}")
+    ensure_dirs()

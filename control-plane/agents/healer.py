@@ -9,10 +9,7 @@ import sys
 import time
 from pathlib import Path
 
-# Add current dir to path for utils
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
-from utils.paths import REPO_ROOT, STATE_DIR
+from utils.paths import REPO_ROOT, STATE_DIR, CONTROL_PLANE
 from utils.guards import wrap_agent
 from utils.healing import (
     acquire_healer_lock, release_healer_lock, log_event, is_writable

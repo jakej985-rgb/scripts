@@ -36,7 +36,7 @@ services:
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${CONFIG_DIR:-/docker/configs}/portainer:/data
+      - ${CONFIG_DIR}/portainer:/data
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.portainer.rule=Host(`portainer.m3tal-media-server.xyz`)"
@@ -49,7 +49,7 @@ services:
     container_name: m3tal-dashboard-maintenance
     restart: unless-stopped
     volumes:
-      - ${REPO_ROOT:-/docker}:/docker
+      - ${REPO_ROOT}:/docker
       - /var/run/docker.sock:/var/run/docker.sock
     working_dir: /docker/dashboard
     command: >

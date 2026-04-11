@@ -3,10 +3,10 @@ services:
     image: python:3.11-slim
     container_name: m3tal-dashboard
     volumes:
-      - ${REPO_ROOT:-./../..}/dashboard:/app
-      - ${REPO_ROOT:-./../..}/control-plane/state:/docker/state
-      - ${REPO_ROOT:-./../..}/control-plane/config:/docker/config
-      - ${REPO_ROOT:-./../..}/control-plane/state/logs:/docker/logs
+      - ${REPO_ROOT}/dashboard:/app
+      - ${REPO_ROOT}/control-plane/state:/docker/state
+      - ${REPO_ROOT}/control-plane/config:/docker/config
+      - ${REPO_ROOT}/control-plane/state/logs:/docker/logs
       - /var/run/docker.sock:/var/run/docker.sock
     working_dir: /app
     command: >
@@ -31,7 +31,7 @@ services:
       dockerfile: Dockerfile.runtime
     container_name: m3tal-runtime
     volumes:
-      - ${REPO_ROOT:-./../..}:/docker
+      - ${REPO_ROOT}:/docker
       - /var/run/docker.sock:/var/run/docker.sock
     working_dir: /docker
     command: python3 control-plane/agents/run.py

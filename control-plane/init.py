@@ -12,15 +12,16 @@ import subprocess
 from pathlib import Path
 from typing import Dict, Any, Optional
 
-# Root addition for utils
-BASE_DIR = Path(__file__).resolve().parent  # control-plane/
-REPO_ROOT = BASE_DIR.parent
-AGENTS_DIR = BASE_DIR / "agents"
-SCRIPTS_DIR = REPO_ROOT / "scripts"
+# --- Path System --------------------------------------------------------------
+from utils.paths import REPO_ROOT, CONTROL_PLANE, AGENTS_DIR, STATE_DIR, LOG_DIR, SCRIPTS_DIR
+BASE_DIR = CONTROL_PLANE
 
-sys.path.insert(0, str(AGENTS_DIR))
-sys.path.insert(0, str(REPO_ROOT / "dashboard"))
-sys.path.insert(0, str(SCRIPTS_DIR))
+# Preflight Import
+sys.path.append(str(SCRIPTS_DIR))
+try:
+    from preflight import run_preflight
+except ImportError:
+    run_preflight = None
 
 from utils.healing import (
     retry, is_writable, atomic_write_json, 
@@ -330,12 +331,18 @@ def health_agent():
 
 # --- Main Orchestrator --------------------------------------------------------
 
-def run_init(repair_scope: str = None):
-    """Primary entry point for system initialization."""
-    global MODE, HB, BAR
-    MODE = "startup"
+def run_init(repair_mode: bool = False) -> bool:
+    """Main entry point: Orchestrates the entire bootstrap with preflight guarding."""
+    Header.show("M3TAL Self-Healing Init", f"Production Bootstrap — Repair: {repair_mode}")
     
-    Header.show("M3TAL Self-Healing Init", f"Production Bootstrap — Repair: {repair_scope or 'None'}")
+    # 0. Preflight Gate
+    if run_preflight:
+        preflight_status = run_preflight()
+        if preflight_status == "CRITICAL":
+            Header.show("CRITICAL FAILURE", "Preflight Validation Failed. Aborting startup.")
+            return False
+        if preflight_status == "DEGRADED":
+            log_event("init", "Starting in DEGRADED mode (Tunnel missing/incomplete).", symbol="⚠")
     
     if not acquire_healer_lock():
         print(f"  {RED}✘{END} Another instance is active. Exiting.")
