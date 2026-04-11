@@ -44,10 +44,17 @@ TRAEFIK_DYNAMIC_YML = STATE_DIR / "traefik-dynamic.yml"
 THEME_JSON = STATE_DIR / "theme.json"
 
 def ensure_dirs():
-    """Safety: ensure all core state/log directories exist."""
+    """Safety: ensure all core state/log directories exist and clear stale locks."""
     dirs = [STATE_DIR, LOG_DIR, LOCK_DIR, HEALTH_DIR, CONFIG_DIR]
     for d in dirs:
         d.mkdir(parents=True, exist_ok=True)
+    
+    # Clear stale locks on startup to avoid PID reuse conflicts across restarts
+    for lock_file in LOCK_DIR.glob("*.pid"):
+        try:
+            lock_file.unlink()
+        except:
+            pass
 
 if __name__ == "__main__":
     print(f"M3TAL Path Standard: {REPO_ROOT}")

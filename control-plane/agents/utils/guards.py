@@ -2,6 +2,7 @@ import sys
 import os
 import time
 import signal
+from pathlib import Path
 from typing import Callable, Any
 
 # Root addition for utils
@@ -38,53 +39,59 @@ def is_leader():
     except:
         return True
 
-def acquire_lock(agent_name: str) -> bool:
-    """Batch 15 T1: Ensure only one instance of an agent runs at a time."""
+def acquire_lock(agent_name: str, ttl_seconds: int = 300) -> bool:
+    """Batch 15 T1: Ensure only one instance of an agent runs at a time.
+    Hybrid Logic: PID Check + TTL Fallback (5 mins).
+    """
     os.makedirs(LOCK_SUBDIR, exist_ok=True)
     lock_file = os.path.join(LOCK_SUBDIR, f"{agent_name}.pid")
     
-    # Check if lock exists and if the process is still alive
     if os.path.exists(lock_file):
         try:
-            with open(lock_file, 'r') as f:
-                old_pid = int(f.read().strip())
-            
-            alive = False
-            try:
-                import psutil
-                if psutil.pid_exists(old_pid):
-                    proc = psutil.Process(old_pid)
-                    # Safety check: ensure it's actually a python/agent process
-                    if proc.is_running() and "python" in proc.name().lower():
-                        alive = True
-            except (ImportError, Exception):
-                # Fallback to os.kill(0) if psutil fails or is missing
-                if hasattr(os, 'kill'):
-                    try:
-                        os.kill(old_pid, 0)
-                        alive = True
-                    except OSError:
-                        alive = False
-                else:
-                    # Windows without psutil: assume stale
-                    alive = False
+            # TTL Fallback: If file is older than ttl_seconds, ignore PID and assume stale
+            mtime = os.path.getmtime(lock_file)
+            if (time.time() - mtime) > ttl_seconds:
+                logger.warning(f"Lock file for {agent_name} is stale (> {ttl_seconds}s). Reclaiming.")
+            else:
+                # PID Check
+                with open(lock_file, 'r') as f:
+                    old_pid = int(f.read().strip())
+                
+                alive = False
+                try:
+                    import psutil
+                    if psutil.pid_exists(old_pid):
+                        proc = psutil.Process(old_pid)
+                        if proc.is_running() and "python" in proc.name().lower():
+                            alive = True
+                except (ImportError, Exception):
+                    if hasattr(os, 'kill'):
+                        try:
+                            os.kill(old_pid, 0)
+                            alive = True
+                        except OSError:
+                            alive = False
 
-            if alive:
-                return False
+                if alive:
+                    return False
 
-            try:
-                os.remove(lock_file)
-            except OSError:
-                pass
-        except (ValueError, OSError):
-            try:
-                os.remove(lock_file)
-            except OSError:
-                pass
+            os.remove(lock_file)
+        except Exception as e:
+            try: os.remove(lock_file)
+            except: pass
             
     with open(lock_file, 'w') as f:
         f.write(str(os.getpid()))
     return True
+
+def heartbeat_lock(agent_name: str):
+    """Update lock file timestamp to prevent TTL expiry."""
+    lock_file = os.path.join(LOCK_SUBDIR, f"{agent_name}.pid")
+    if os.path.exists(lock_file):
+        try:
+            Path(lock_file).touch()
+        except:
+            pass
 
 def release_lock(agent_name: str):
     lock_file = os.path.join(LOCK_SUBDIR, f"{agent_name}.pid")
@@ -124,8 +131,8 @@ def wrap_agent(agent_name: str, func: Callable[[], Any], interval: int = 10):
         
         while not _SHUTDOWN_SIGNALED:
             if not is_leader():
-                # Follower mode: sleep and check again later
                 time.sleep(interval)
+                heartbeat_lock(agent_name) # Stay alive even while following
                 continue
 
             try:
@@ -135,8 +142,8 @@ def wrap_agent(agent_name: str, func: Callable[[], Any], interval: int = 10):
             except Exception as e:
                 agent_logger.error(f"Agent {agent_name} tick failed: {e}", exc_info=True)
                 update_agent_health(agent_name, success=False, error_msg=str(e))
-                # Exponential-ish backoff on error would be here, 
-                # but we rely on the loop interval for now.
+            
+            heartbeat_lock(agent_name)
 
             # Sleep until next tick
             for _ in range(interval):

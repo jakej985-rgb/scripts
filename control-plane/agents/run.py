@@ -18,7 +18,7 @@ from pathlib import Path
 AGENTS_DIR = Path(__file__).resolve().parent  # control-plane/agents/
 sys.path.append(str(AGENTS_DIR))
 
-from utils.paths import REPO_ROOT, CONTROL_PLANE, STATE_DIR, LOG_DIR, RESTARTS_JSON
+from utils.paths import REPO_ROOT, CONTROL_PLANE, STATE_DIR, LOG_DIR, RESTARTS_JSON, ensure_dirs
 from utils.healing import atomic_write_json
 import json
 
@@ -187,6 +187,10 @@ def run_agent(name: str, script: str) -> None:
 
 def main() -> None:
     ts = time.strftime("%H:%M:%S")
+    
+    # Audit fix 2.6: State Readiness (Step 6)
+    # Ensure all required state/log directories exist before launching agents
+    ensure_dirs()
     
     # Audit fix 2.5: Host vs Container Guard
     # Prevent duplicate agents if the m3tal-runtime container is already active
