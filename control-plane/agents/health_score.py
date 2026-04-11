@@ -68,6 +68,12 @@ def calculate_health():
     file_issues = []
     now = time.time()
     
+    # Tweak 5: Health Modes & Docker Guard
+    from utils.paths import STATE_DIR
+    monitor_path = os.path.join(STATE_DIR, "health", "monitor_containers.json")
+    monitor_data = load_json(monitor_path, default={"docker_available": True})
+    docker_available = monitor_data.get("docker_available", True)
+    
     # 1. File Health
     for f_name in MONITORED_FILES:
         path = os.path.join(STATE_DIR, f_name)
@@ -87,14 +93,22 @@ def calculate_health():
 
     # 2. Agent Health (Batch 5 T3 integration)
     agent_health = aggregate_agent_health()
+    tier1_agents = ["monitor", "registry", "leader", "decision"]
+    tier1_fail = False
+    
     for agent, stats in agent_health.items():
         if stats.get("status") != "healthy":
             score -= 10
             file_issues.append(f"Agent Unhealthy: {agent} ({stats.get('error')})")
+            if agent in tier1_agents:
+                tier1_fail = True
+        
         # Staleness check
         if now - stats.get("timestamp", 0) > 120:
             score -= 15
             file_issues.append(f"Agent Stalled: {agent}")
+            if agent in tier1_agents:
+                tier1_fail = True
 
     # 3. Pipeline Integrity
     decision_path = os.path.join(STATE_DIR, "decisions.json")
@@ -105,22 +119,50 @@ def calculate_health():
         if age > 120:
             file_issues.append("Pipeline Stall: decisions.json is stale")
             score -= 20
+            tier1_fail = True
+
+    # 4. Mode Determination (Tweak 5)
+    any_agent_fail = any(stats.get("status") != "healthy" for stats in agent_health.values())
+    
+    if tier1_fail:
+        mode = "CRITICAL"
+        score = min(score, 40)
+    elif any_agent_fail:
+        mode = "DEGRADED"
+        score = min(score, 70)
+    elif not docker_available:
+        mode = "PARTIAL"
+        score = max(score, 70) 
+        file_issues.append("DOCKER_UNREACHABLE: No container visibility")
+    else:
+        mode = "FULL"
 
     score = max(score, 0)
-    verdict = "HEALTHY" if score >= 85 else ("WARNING" if score >= 60 else "CRITICAL")
     
-    # Export global health for API (backward compatibility)
-    # The monitor_containers.json is merged here for dashboard consumption
-
     save_json(HEALTH_REPORT_JSON, {
         "score": score,
-        "verdict": verdict,
+        "mode": mode,
+        "verdict": mode,
         "issues": file_issues,
         "recovery": recovery_metrics,
         "agent_health": agent_health,
+        "docker_available": docker_available,
         "timestamp": int(now)
     }, caller="scorer")
+    
+    logger.info(f"Health check completed. Mode: {mode}, Score: {score}")
+
+def check_docker_connectivity():
+    """Initial guard check for Docker daemon."""
+    import subprocess
+    try:
+        subprocess.run(["docker", "ps", "-q"], capture_output=True, timeout=5, check=True)
+        return True
+    except:
+        return False
 
 if __name__ == "__main__":
-    # Now uses wrap_agent for proper lock/shutdown/health integration (Audit fix 2.2)
+    if not check_docker_connectivity():
+        logger.warning("Docker daemon unreachable at startup. System will start in PARTIAL mode.")
+    
     wrap_agent("scorer", calculate_health)

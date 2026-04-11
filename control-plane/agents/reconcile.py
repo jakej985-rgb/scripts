@@ -49,9 +49,12 @@ def perform_action(action):
         return False
         
     try:
-        # Batch 5 T2: Removed shell=True for security
-        subprocess.run(cmd, check=True, capture_output=True, text=True)
+        # Tweak 4: Subprocess timeout and explicit error handling
+        subprocess.run(cmd, check=True, capture_output=True, text=True, timeout=15)
         return True
+    except subprocess.TimeoutExpired:
+        logger.error(f"Action {a_type} on {target} timed out (15s)")
+        return False
     except subprocess.CalledProcessError as e:
         logger.error(f"Failed to execute {a_type} on {target}: {e.stderr}")
         return False
@@ -64,12 +67,15 @@ def perform_scale(action):
             if file.endswith('.yml') or file.endswith('.yaml'):
                 full_path = os.path.join(root, file)
                 try:
-                    res = subprocess.run(["docker", "compose", "-f", full_path, "ps", target], capture_output=True, text=True)
+                    res = subprocess.run(["docker", "compose", "-f", full_path, "ps", target], capture_output=True, text=True, timeout=10)
                     if res.returncode == 0 and target in res.stdout:
                         num = 2 if direction == "up" else 1
                         logger.info(f"Scaling {target} {direction} to {num} replicas")
-                        subprocess.run(["docker", "compose", "-f", full_path, "up", "-d", "--scale", f"{target}={num}"], check=True)
+                        subprocess.run(["docker", "compose", "-f", full_path, "up", "-d", "--scale", f"{target}={num}"], check=True, timeout=30)
                         return True
+                except subprocess.TimeoutExpired:
+                    logger.error(f"Scale check timed out for {target} in {full_path}")
+                    continue
                 except:
                     continue
     return False
@@ -90,12 +96,15 @@ def perform_redeploy(action):
                 try:
                     # Check if service exists in this file
                     res = subprocess.run(["docker", "compose", "-f", full_path, "config", "--services"], 
-                                         capture_output=True, text=True)
+                                         capture_output=True, text=True, timeout=10)
                     if res.returncode == 0 and target in res.stdout.splitlines():
                         logger.info(f"Found {target} in {full_path}. Redeploying...")
                         cmd = ["docker", "compose", "-f", full_path] + env_arg + ["up", "-d", target]
-                        subprocess.run(cmd, check=True)
+                        subprocess.run(cmd, check=True, timeout=60)
                         return True
+                except subprocess.TimeoutExpired:
+                    logger.error(f"Redeploy check timed out for {target} in {full_path}")
+                    continue
                 except Exception as e:
                     logger.error(f"Error checking compose file {full_path}: {e}")
                     continue
@@ -115,7 +124,10 @@ def enforce_dependencies():
             if not dep.startswith("/"):
                 if dep in health and health[dep].get("status") == "offline":
                     logger.warning(f"Dependency Violation: {app} is running but {dep} is stopped. Starting {dep}...")
-                    subprocess.run(["docker", "start", dep])
+                    try:
+                        subprocess.run(["docker", "start", dep], timeout=15)
+                    except subprocess.TimeoutExpired:
+                        logger.error(f"Dependency start timed out for {dep}")
 
 MEDIA_CONTAINERS = {"radarr", "sonarr", "qbittorrent", "bazarr", "tdarr", 
                     "komga", "recyclarr", "autobrr", "prowlarr"}
@@ -128,11 +140,13 @@ def check_storage_enforcement():
             continue  # Skip non-media containers (Audit Fix)
         try:
             cmd = ["docker", "inspect", c, "--format", "{{range .Mounts}}{{.Source}}:{{.Destination}} {{end}}"]
-            res = subprocess.run(cmd, capture_output=True, text=True)
+            res = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
             if res.returncode == 0:
                 mounts = res.stdout.strip()
                 if "/mnt:/mnt" not in mounts:
                     logger.warning(f"Storage Violation: {c} missing /mnt:/mnt mount!")
+        except subprocess.TimeoutExpired:
+            logger.error(f"Storage inspect timed out for {c}")
         except Exception as e:
             logger.debug(f"Could not inspect {c}: {e}")
 

@@ -29,8 +29,12 @@ def check_tunnel_health():
     # 1. Check Container Status
     try:
         inspect_cmd = ["docker", "inspect", "-f", "{{.State.Status}}", CONTAINER_NAME]
-        result = subprocess.run(inspect_cmd, capture_output=True, text=True)
+        # Tweak 4: Subprocess timeout
+        result = subprocess.run(inspect_cmd, capture_output=True, text=True, timeout=10)
         status = result.stdout.strip() if result.returncode == 0 else "missing"
+    except subprocess.TimeoutExpired:
+        logger.error("Tunnel inspect timed out (10s)")
+        status = "error"
     except Exception as e:
         logger.error(f"Failed to inspect tunnel container: {e}")
         status = "error"
@@ -62,14 +66,16 @@ def _recover_tunnel(current_status: str):
         if current_status == "missing":
             logger.info("Recreating missing tunnel container...")
             cmd = ["docker", "compose", "up", "-d", "cloudflared"]
-            subprocess.run(cmd, cwd=ROUTING_DIR, check=True)
+            subprocess.run(cmd, cwd=ROUTING_DIR, check=True, timeout=60)
         else:
             logger.info(f"Restarting unhealthy tunnel container ({current_status})...")
             # Force recreate is safer for cloudflared to ensure token sync
             cmd = ["docker", "compose", "up", "-d", "--force-recreate", "cloudflared"]
-            subprocess.run(cmd, cwd=ROUTING_DIR, check=True)
+            subprocess.run(cmd, cwd=ROUTING_DIR, check=True, timeout=60)
         
         logger.info("Tunnel recovery successful.")
+    except subprocess.TimeoutExpired:
+        logger.error("Tunnel recovery timed out (60s)")
     except Exception as e:
         logger.error(f"Tunnel recovery failed: {e}")
 

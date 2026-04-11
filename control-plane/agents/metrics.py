@@ -46,16 +46,24 @@ def get_container_metrics():
     container_stats = []
     try:
         cmd = ["docker", "stats", "--no-stream", "--format", "{{json .}}"]
-        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        # Tweak 4: Subprocess timeout and explicit error handling
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True, timeout=10)
         for line in result.stdout.strip().split('\n'):
             if line:
-                raw = json.loads(line)
-                container_stats.append({
-                    "name": raw.get("Name"),
-                    "cpu": float(raw.get("CPUPerc", "0").replace("%", "")),
-                    "mem": float(raw.get("MemPerc", "0").replace("%", "")),
-                    "mem_usage": raw.get("MemUsage"),
-                })
+                try:
+                    raw = json.loads(line)
+                    container_stats.append({
+                        "name": raw.get("Name"),
+                        "cpu": float(raw.get("CPUPerc", "0").replace("%", "")),
+                        "mem": float(raw.get("MemPerc", "0").replace("%", "")),
+                        "mem_usage": raw.get("MemUsage"),
+                    })
+                except (json.JSONDecodeError, ValueError):
+                    continue
+    except subprocess.TimeoutExpired:
+        logger.error("Docker stats timed out (10s)")
+    except subprocess.CalledProcessError as e:
+        logger.error(f"Docker stats failed: {e}")
     except Exception as e:
         logger.error(f"Failed to get container stats: {e}")
     return container_stats
