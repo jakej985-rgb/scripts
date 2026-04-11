@@ -70,6 +70,7 @@ def shutdown_stack(stack_name: str, bar: ProgressBar, current_step: int):
     """Surgically stops and removes a specific Docker stack."""
     stack_path = DOCKER_DIR / stack_name
     compose_file = stack_path / "docker-compose.yml"
+    use_shell = os.name == "nt"
     
     if not compose_file.exists():
         bar.update(current_step, f"Skipping {stack_name} (missing)")
@@ -78,8 +79,20 @@ def shutdown_stack(stack_name: str, bar: ProgressBar, current_step: int):
     HB.ping(f"Dismantling {stack_name}")
     HB.log(f"Dismantling {stack_name} stack...")
     
+    # Pre-check: Is the stack actually up?
+    ps_inspect = subprocess.run(["docker", "compose", "-f", str(compose_file), "ps", "--format", "json"],
+                                 capture_output=True, text=True, shell=use_shell)
+    is_up = False
+    if ps_inspect.returncode == 0 and ps_inspect.stdout.strip():
+        # If ps returns any json objects, the stack has containers (even if exited)
+        is_up = True
+    
+    if not is_up:
+        HB.log(f"Stack {stack_name} is already down. Skipping.", symbol="✔")
+        bar.update(current_step, f"Skipped {stack_name} (Already Down)")
+        return
+
     # Identify containers before removal
-    use_shell = os.name == "nt"
     conf_cmd = ["docker", "compose", "-f", str(compose_file), "config", "--services"]
     conf_res = subprocess.run(conf_cmd, capture_output=True, text=True, shell=use_shell)
     expected_services = conf_res.stdout.strip().splitlines() if conf_res.returncode == 0 else []
