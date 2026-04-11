@@ -87,18 +87,14 @@ def shutdown_stack(stack_name: str, bar: ProgressBar, current_step: int):
     
     sub_bar = SubProgressBar(total_svc)
     live_list = LiveList(expected_services)
-    sub_bar.update(0, f"Dismantling {total_svc} services")
-
-    def dismantle():
-        cmd = ["docker", "compose", "down", "--remove-orphans"]
-        subprocess.run(cmd, cwd=str(stack_path), shell=use_shell, check=True, capture_output=True)
-        return True
+    sub_bar.update(0, f"Dismantling {total_svc} services ({stack_name})")
 
     try:
-        # 1. Start deconstruction
-        dismantle()
+        # 1. Start deconstruction asynchronously
+        proc = subprocess.Popen(["docker", "compose", "down", "--remove-orphans"], 
+                                cwd=str(stack_path), shell=use_shell, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         
-        # 2. Poll for removal
+        # 2. Poll for removal immediately
         start_time = time.time()
         while time.time() - start_time < 120:
             ps_res = subprocess.run(["docker", "compose", "-f", str(compose_file), "ps", "--format", "json"],
@@ -122,7 +118,7 @@ def shutdown_stack(stack_name: str, bar: ProgressBar, current_step: int):
                     else:
                         live_list.update(item, "removed")
 
-                sub_bar.update(removed_count, f"Removed {removed_count}/{total_svc}")
+                sub_bar.update(removed_count, f"Removed {removed_count}/{total_svc} ({stack_name})")
                 if remaining_count == 0: break
             time.sleep(1.5)
         

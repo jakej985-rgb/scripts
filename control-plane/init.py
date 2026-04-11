@@ -211,25 +211,27 @@ def docker_agent(repair_mode: bool = False):
             
             sub_bar = SubProgressBar(total_svc)
             live_list = LiveList(expected_services)
-            sub_bar.update(0, f"Initializing {total_svc} services")
-
-            def launch():
-                res = subprocess.run(["docker", "compose", "-f", str(cf), "up", "-d"], 
-                                   capture_output=True, text=True, shell=use_shell)
-                if res.returncode != 0:
-                    raise RuntimeError(f"Docker Error: {res.stderr[:200]}")
-                return True
+            sub_bar.update(0, f"Initializing {total_svc} services ({name})")
 
             try:
-                # 1. Start the stack
-                retry(launch, attempts=2 if MODE == "runtime" else 3)
+                # 1. Start the stack asynchronously
+                proc = subprocess.Popen(["docker", "compose", "-f", str(cf), "up", "-d"], 
+                                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True, shell=use_shell)
                 
-                # 2. Poll for readiness
+                # 2. Poll for readiness immediately
+                ready_count = 0
                 if total_svc > 0:
                     start_time = time.time()
                     while time.time() - start_time < 60: # 60s Smart Timeout
+                        # Check if process crashed immediately
+                        if proc.poll() is not None:
+                             _, stderr = proc.communicate()
+                             if proc.returncode != 0:
+                                 raise RuntimeError(f"Docker Launch Error: {stderr[:100]}")
+
                         ps_res = subprocess.run(["docker", "compose", "-f", str(cf), "ps", "--format", "json"],
                                              capture_output=True, text=True, shell=use_shell)
+                        
                         if ps_res.returncode == 0:
                             out = ps_res.stdout.strip()
                             ps_data = []
@@ -246,7 +248,6 @@ def docker_agent(repair_mode: bool = False):
                                     state = match.get("State", "unknown").lower()
                                     status_text = match.get("Status", "").lower()
                                     
-                                    # Deep Inspect for non-running items
                                     if state not in ["running", "healthy"]:
                                         insp = subprocess.run(["docker", "inspect", match.get("Name", ""), "--format", "{{json .State}}"],
                                                            capture_output=True, text=True, shell=use_shell)
@@ -255,13 +256,10 @@ def docker_agent(repair_mode: bool = False):
                                                 istate = json.loads(insp.stdout)
                                                 exit_code = istate.get("ExitCode", 0)
                                                 restarts = istate.get("RestartCount", 0)
-                                                error = istate.get("Error", "")
                                                 if restarts > 0: note = f"{restarts} restarts"
                                                 if exit_code != 0: note += f", Exit {exit_code}"
-                                                if error: note += f", {error[:20]}"
                                             except: pass
 
-                                    # Smart State Mapping
                                     smart_state = state
                                     if "health: starting" in status_text: smart_state = "starting (health-check)"
                                     elif state == "running" and "unhealthy" in status_text: smart_state = "unhealthy"
@@ -271,9 +269,10 @@ def docker_agent(repair_mode: bool = False):
                                     live_list.update(item, smart_state, note=note.strip(", "))
                                     if smart_state in ["running", "healthy"]: ready_count += 1
                                 else:
-                                    live_list.update(item, "preparing...")
+                                    # Still "working" if we are in the loop and ps doesn't see it yet
+                                    live_list.update(item, "launching...")
 
-                            sub_bar.update(ready_count, f"Processed {ready_count}/{total_svc}")
+                            sub_bar.update(ready_count, f"Processed {ready_count}/{total_svc} ({name})")
                             if ready_count >= total_svc: break
                         time.sleep(1.5)
                     
@@ -281,7 +280,7 @@ def docker_agent(repair_mode: bool = False):
                          t_log(f"[DOCKER] Stack {name} timed out. Proceeding in DEGRADED mode.", symbol="⚠")
                          update_status("docker", "partial")
                 
-                # Lock the lines so next stack prints below
+                # Lock the lines
                 live_list.reset()
                 
             except Exception as e:
