@@ -12,7 +12,7 @@ RED = "\033[91m"
 BOLD = "\033[1m"
 END = "\033[0m"
 
-REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 ENV_FILE = os.path.join(REPO_ROOT, ".env")
 EXAMPLE_FILE = os.path.join(REPO_ROOT, ".env.example")
 

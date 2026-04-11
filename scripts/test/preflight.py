@@ -12,7 +12,7 @@ OPTIONAL_ENV = ["CF_TUNNEL_TOKEN"]
 import shutil
 
 # Load .env for manual testing
-env_path = Path(__file__).resolve().parent.parent / ".env"
+env_path = Path(__file__).resolve().parent.parent.parent / ".env"
 if env_path.exists():
     with open(env_path, "r", encoding="utf-8") as f:
         for line in f:

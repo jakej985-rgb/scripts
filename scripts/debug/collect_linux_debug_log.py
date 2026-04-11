@@ -1,29 +1,49 @@
 #!/usr/bin/env python3
 import time
 import os
+import subprocess
 from pathlib import Path
 
 # --- Context Anchoring --------------------------------------------------------
-SCRIPTS_DIR = Path(__file__).resolve().parent
+SCRIPTS_DIR = Path(__file__).resolve().parent.parent
 REPO_ROOT = SCRIPTS_DIR.parent
 STATE_DIR = REPO_ROOT / "control-plane" / "state"
 LOG_DIR = STATE_DIR / "logs"
 
-OUTPUT_FILE = REPO_ROOT / "debug_bundle.txt"
+OUTPUT_FILE = REPO_ROOT / "logs_linux.txt"
+
+def run_cmd(cmd_list, label):
+    """Safely run a system command and return output."""
+    try:
+        res = subprocess.run(cmd_list, capture_output=True, text=True, timeout=10)
+        return f"\n--- {label} ---\n{res.stdout if res.returncode == 0 else res.stderr}\n"
+    except Exception as e:
+        return f"\n--- {label} FAILED ---\n{e}\n"
 
 def collect_logs():
     ts = time.strftime("%Y-%m-%d %H:%M:%S")
-    print(f"[*] Starting debug log collection at {ts}...")
+    print(f"[*] Starting Linux debug log collection at {ts}...")
     
     try:
         with open(OUTPUT_FILE, "w", encoding="utf-8") as bundle:
-            bundle.write(f"M3TAL SYSTEM DEBUG BUNDLE\n")
+            bundle.write(f"M3TAL SYSTEM DEBUG BUNDLE (LINUX)\n")
             bundle.write(f"Generated: {ts}\n")
             bundle.write(f"Repo Root: {REPO_ROOT}\n")
             bundle.write("=" * 80 + "\n\n")
 
-            # 1. State Verification
-            bundle.write("--- CORE STATE ---\n")
+            # 1. System Info
+            bundle.write("--- LINUX SYSTEM INFO ---\n")
+            bundle.write(run_cmd(["uname", "-a"], "Kernel Info"))
+            bundle.write(run_cmd(["hostname"], "Hostname"))
+            bundle.write(run_cmd(["docker", "version"], "Docker Version"))
+            bundle.write(run_cmd(["docker", "ps", "-a"], "Docker Container Status"))
+            bundle.write(run_cmd(["ip", "addr"], "Network Configuration"))
+            bundle.write(run_cmd(["ls", "-la", "/var/run/docker.sock"], "Docker Socket Permissions"))
+            
+            bundle.write("\n" + "=" * 80 + "\n\n")
+
+            # 2. M3TAL State Verification
+            bundle.write("--- M3TAL CORE STATE ---\n")
             leader_file = STATE_DIR / "leader.txt"
             if leader_file.exists():
                 bundle.write(f"[LEADER]: {leader_file.read_text(encoding='utf-8').strip()}\n")
@@ -32,13 +52,12 @@ def collect_logs():
             
             bundle.write("\n" + "=" * 80 + "\n\n")
 
-            # 2. Log Collection
+            # 3. Component Log Collection
             if not LOG_DIR.exists():
                 bundle.write(f"[FATAL] Log directory missing: {LOG_DIR}\n")
                 return
 
-            # Explicitly iterate names to avoid issues with some globbing patterns on Windows
-            for filename in os.listdir(LOG_DIR):
+            for filename in sorted(os.listdir(LOG_DIR)):
                 if not filename.endswith(".log"):
                     continue
                     
@@ -46,7 +65,6 @@ def collect_logs():
                 bundle.write(f"--- ATTACHMENT: {filename} ---\n")
                 
                 try:
-                    # Windows Tip: Some logs might be locked. Open in non-exclusive mode.
                     with open(log_path, "r", encoding="utf-8", errors="replace") as f:
                         lines = f.readlines()
                         tail = lines[-500:] # Last 500 lines
@@ -57,7 +75,7 @@ def collect_logs():
                 
                 bundle.write("\n" + "-" * 40 + "\n\n")
 
-        print(f"[+] Debug bundle ready: {OUTPUT_FILE}")
+        print(f"[+] Linux debug bundle ready: {OUTPUT_FILE}")
     except Exception as e:
         print(f"[FATAL] Collection failed: {e}")
 

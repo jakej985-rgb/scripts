@@ -22,6 +22,13 @@ DOCKER_DIR = REPO_ROOT / "docker"
 DASHBOARD_DIR = REPO_ROOT / "dashboard"
 SCRIPTS_DIR = REPO_ROOT / "scripts"
 
+# Script Subfolders
+SCRIPTS_DEBUG = SCRIPTS_DIR / "debug"
+SCRIPTS_HELPERS = SCRIPTS_DIR / "helpers"
+SCRIPTS_CONFIG = SCRIPTS_DIR / "config"
+SCRIPTS_TEST = SCRIPTS_DIR / "test"
+SCRIPTS_MAINT = SCRIPTS_DIR / "maintenance"
+
 # --- State & Monitoring -------------------------------------------------------
 STATE_DIR = CONTROL_PLANE / "state"
 LOG_DIR = STATE_DIR / "logs"

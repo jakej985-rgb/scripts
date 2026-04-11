@@ -19,7 +19,7 @@ REPO_ROOT = BASE_DIR.parent
 AGENTS_DIR = BASE_DIR / "agents"
 
 # Standardize Search Paths
-for path in [AGENTS_DIR, REPO_ROOT / "scripts", REPO_ROOT / "dashboard"]:
+for path in [AGENTS_DIR, REPO_ROOT / "scripts" / "helpers", REPO_ROOT / "scripts" / "test", REPO_ROOT / "dashboard"]:
     if str(path) not in sys.path:
         sys.path.append(str(path))
 

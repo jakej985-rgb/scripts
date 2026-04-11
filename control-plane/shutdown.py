@@ -16,7 +16,7 @@ from typing import Dict, Any, Optional
 BASE_DIR = Path(__file__).resolve().parent  # control-plane/
 REPO_ROOT = BASE_DIR.parent
 SCRIPTS_DIR = REPO_ROOT / "scripts"
-sys.path.insert(0, str(SCRIPTS_DIR))
+sys.path.insert(0, str(SCRIPTS_DIR / "helpers"))
 
 from progress_utils import (
     Header, ProgressBar, SubProgressBar, LiveList, Heartbeat, Spinner,

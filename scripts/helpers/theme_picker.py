@@ -7,7 +7,7 @@ from tkinter import colorchooser, messagebox
 from pathlib import Path
 
 # --- Context ------------------------------------------------------------------
-BASE_DIR = Path(__file__).resolve().parent.parent # Root
+BASE_DIR = Path(__file__).resolve().parent.parent.parent # Root
 THEME_FILE = BASE_DIR / "control-plane" / "state" / "theme.json"
 
 def hex_to_rgb(hex_str: str):

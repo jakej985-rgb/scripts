@@ -6,7 +6,7 @@ import time
 from pathlib import Path
 
 # --- Context Anchoring --------------------------------------------------------
-REPO_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 DOCKER_DIR = REPO_ROOT / "docker"
 
 # Stacks to shut down in order (most dependent last)
