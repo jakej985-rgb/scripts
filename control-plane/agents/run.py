@@ -49,6 +49,7 @@ AGENTS = [
     ("observer",  "observer.py",     False),
     ("tunnel",    "tunnel.py",       False),
     ("healer",    "healer.py",       False),
+    ("notify",    "notify.py",       False),
     # ("chaos",   "chaos_test.py",   False),  # Intentionally disabled in prod
 ]
 
@@ -189,15 +190,17 @@ def main() -> None:
     
     # Audit fix 2.5: Host vs Container Guard
     # Prevent duplicate agents if the m3tal-runtime container is already active
-    try:
-        use_shell = os.name == "nt"
-        check_cmd = ["docker", "ps", "--filter", "name=m3tal-runtime", "--filter", "status=running", "-q"]
-        res = subprocess.run(check_cmd, capture_output=True, text=True, shell=use_shell)
-        if res.returncode == 0 and res.stdout.strip():
-            print(f"[{ts}] ABORT: m3tal-runtime container is already running. Terminating host-side runner.")
-            sys.exit(0)
-    except Exception:
-        pass # Fallback to host-side execution if docker is inaccessible
+    # Skip this check if we are ALREADY inside the container
+    if os.getenv("IN_CONTAINER") != "true":
+        try:
+            use_shell = os.name == "nt"
+            check_cmd = ["docker", "ps", "--filter", "name=m3tal-runtime", "--filter", "status=running", "-q"]
+            res = subprocess.run(check_cmd, capture_output=True, text=True, shell=use_shell)
+            if res.returncode == 0 and res.stdout.strip():
+                print(f"[{ts}] ABORT: m3tal-runtime container is already running. Terminating host-side runner.")
+                sys.exit(0)
+        except Exception:
+            pass # Fallback to host-side execution if docker is inaccessible
 
     print(f"[{ts}] M3TAL Agent Runner launching...")
 

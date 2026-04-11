@@ -117,10 +117,15 @@ def enforce_dependencies():
                     logger.warning(f"Dependency Violation: {app} is running but {dep} is stopped. Starting {dep}...")
                     subprocess.run(["docker", "start", dep])
 
+MEDIA_CONTAINERS = {"radarr", "sonarr", "qbittorrent", "bazarr", "tdarr", 
+                    "komga", "recyclarr", "autobrr", "prowlarr"}
+
 def check_storage_enforcement():
     registry = load_json(REGISTRY_JSON, default={"containers": []})
     containers = registry.get("containers", [])
     for c in containers:
+        if c not in MEDIA_CONTAINERS:
+            continue  # Skip non-media containers (Audit Fix)
         try:
             cmd = ["docker", "inspect", c, "--format", "{{range .Mounts}}{{.Source}}:{{.Destination}} {{end}}"]
             res = subprocess.run(cmd, capture_output=True, text=True)

@@ -38,6 +38,12 @@ services:
     restart: unless-stopped
     environment:
       - TZ=America/Denver
+      - CF_TUNNEL_TOKEN=${CF_TUNNEL_TOKEN}
+      - DOMAIN=${DOMAIN}
+      - REPO_ROOT=/docker
+      - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      - IN_CONTAINER=true
     networks:
       - m3tal
 

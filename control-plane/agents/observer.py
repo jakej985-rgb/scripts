@@ -17,6 +17,7 @@ _seen_events: set[str] = set(load_json(SEEN_EVENTS_JSON, default=[]))
 
 def aggregate_events():
     """Phase 2: Observer Agent as per Audit Batch 4 T5."""
+    global _seen_events
     # This agent scans agent logs and generates a unified event stream
     logger.info("Watching system logs for critical events...")
     

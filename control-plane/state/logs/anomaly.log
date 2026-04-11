@@ -24484,4 +24484,44 @@ ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker
 2026-04-11 02:47:45 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
 2026-04-11 02:47:45 [INFO] anomaly: Identified 20 anomalies.
 2026-04-11 02:47:45 [INFO] anomaly: Identified 20 anomalies.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               2026-04-11 11:29:34 [INFO] anomaly: --- Agent anomaly Persistent Loop Started ---
+2026-04-11 11:29:34 [INFO] anomaly: --- Agent anomaly Persistent Loop Started ---
+2026-04-11 11:29:34 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 11:29:34 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 11:29:34 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 11:29:34 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 11:29:44 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 11:29:44 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 11:29:44 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 11:29:44 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 11:29:54 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 11:29:54 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 11:29:54 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 11:29:54 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 11:30:04 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 11:30:04 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 11:30:04 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 11:30:04 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 11:30:14 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 11:30:14 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 11:30:14 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 11:30:14 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 11:30:24 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 11:30:24 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 11:30:24 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 11:30:24 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 11:30:34 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 11:30:34 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 11:30:34 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 11:30:34 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 11:30:44 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 11:30:44 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 11:30:44 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 11:30:44 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 11:30:54 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 11:30:54 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 11:30:54 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 11:30:54 [INFO] anomaly: Identified 20 anomalies.
+2026-04-11 11:30:55 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 11:30:55 [INFO] anomaly: --- Agent anomaly Shutdown Cleanly ---
+2026-04-11 11:30:55 [INFO] anomaly: --- Agent anomaly Shutdown Cleanly ---
