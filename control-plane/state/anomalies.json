@@ -2,13 +2,83 @@
     "issues": [
         {
             "type": "recoverable",
+            "target": "cloudflared",
+            "reason": "container stopped"
+        },
+        {
+            "type": "recoverable",
+            "target": "flaresolverr",
+            "reason": "container stopped"
+        },
+        {
+            "type": "recoverable",
+            "target": "glances",
+            "reason": "container missing from host"
+        },
+        {
+            "type": "recoverable",
+            "target": "gluetun",
+            "reason": "container missing from host"
+        },
+        {
+            "type": "recoverable",
+            "target": "homepage",
+            "reason": "container missing from host"
+        },
+        {
+            "type": "recoverable",
+            "target": "jellyseerr",
+            "reason": "container missing from host"
+        },
+        {
+            "type": "recoverable",
+            "target": "komga",
+            "reason": "container missing from host"
+        },
+        {
+            "type": "recoverable",
             "target": "m3tal-dashboard",
             "reason": "container stopped"
         },
         {
             "type": "recoverable",
             "target": "m3tal-dashboard-maintenance",
-            "reason": "container stopped"
+            "reason": "container missing from host"
+        },
+        {
+            "type": "recoverable",
+            "target": "maintainerr",
+            "reason": "container missing from host"
+        },
+        {
+            "type": "recoverable",
+            "target": "portainer",
+            "reason": "container missing from host"
+        },
+        {
+            "type": "recoverable",
+            "target": "prowlarr",
+            "reason": "container missing from host"
+        },
+        {
+            "type": "recoverable",
+            "target": "qbittorrent",
+            "reason": "container missing from host"
+        },
+        {
+            "type": "recoverable",
+            "target": "radarr",
+            "reason": "container missing from host"
+        },
+        {
+            "type": "recoverable",
+            "target": "recyclarr",
+            "reason": "container missing from host"
+        },
+        {
+            "type": "recoverable",
+            "target": "sonarr",
+            "reason": "container missing from host"
         },
         {
             "type": "recoverable",
@@ -22,13 +92,23 @@
         },
         {
             "type": "recoverable",
+            "target": "tdarr",
+            "reason": "container missing from host"
+        },
+        {
+            "type": "recoverable",
+            "target": "traefik",
+            "reason": "container missing from host"
+        },
+        {
+            "type": "recoverable",
             "target": "watchtower",
-            "reason": "container stopped"
+            "reason": "container missing from host"
         }
     ],
     "_m3tal_metadata": {
         "version": "1.3.0",
-        "updated_at": 1775847617,
-        "host": "1e688f7701c9"
+        "updated_at": 1775887371,
+        "host": "50842ebab5cb"
     }
 }

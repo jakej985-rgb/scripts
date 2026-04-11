@@ -24249,3 +24249,96 @@ ied 6 anomalies.
 2026-04-10 19:00:17 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
 2026-04-10 19:00:17 [INFO] anomaly: Identified 5 anomalies.
 2026-04-10 19:00:17 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 23:59:04 [INFO] anomaly: --- Agent anomaly Persistent Loop Started ---
+2026-04-10 23:59:04 [INFO] anomaly: --- Agent anomaly Persistent Loop Started ---
+2026-04-10 23:59:06 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 23:59:06 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-10 23:59:06 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 23:59:06 [INFO] anomaly: Identified 5 anomalies.
+2026-04-10 23:59:17 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
+2026-04-10 23:59:17 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
+2026-04-10 23:59:17 [INFO] anomaly: Identified 23 anomalies.
+2026-04-10 23:59:17 [INFO] anomaly: Identified 23 anomalies.
+2026-04-10 23:59:27 [WARNING] anomaly: System health degraded: CRITICAL (Score: 45%)
+2026-04-10 23:59:27 [WARNING] anomaly: System health degraded: CRITICAL (Score: 45%)
+2026-04-10 23:59:28 [INFO] anomaly: Identified 23 anomalies.
+2026-04-10 23:59:28 [INFO] anomaly: Identified 23 anomalies.
+2026-04-10 23:59:38 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-10 23:59:38 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-10 23:59:39 [INFO] anomaly: Identified 24 anomalies.
+2026-04-10 23:59:39 [INFO] anomaly: Identified 24 anomalies.
+2026-04-10 23:59:49 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-10 23:59:49 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-10 23:59:50 [INFO] anomaly: Identified 24 anomalies.
+2026-04-10 23:59:50 [INFO] anomaly: Identified 24 anomalies.
+2026-04-11 00:00:02 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:00:02 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:00:02 [INFO] anomaly: Identified 24 anomalies.
+2026-04-11 00:00:02 [INFO] anomaly: Identified 24 anomalies.
+2026-04-11 00:00:12 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:00:12 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:00:12 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:00:12 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:00:23 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:00:23 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:00:23 [INFO] anomaly: Identified 24 anomalies.
+2026-04-11 00:00:23 [INFO] anomaly: Identified 24 anomalies.
+2026-04-11 00:00:34 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:00:34 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:00:34 [INFO] anomaly: Identified 24 anomalies.
+2026-04-11 00:00:34 [INFO] anomaly: Identified 24 anomalies.
+2026-04-11 00:00:44 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:00:44 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:00:44 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:00:44 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:00:54 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:00:54 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:00:55 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:00:55 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:01:05 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:01:05 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:01:05 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:01:05 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:01:16 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:01:16 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:01:16 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:01:16 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:01:26 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:01:26 [WARNING] anomaly: System health degraded: WARNING (Score: 75%)
+2026-04-11 00:01:27 [INFO] anomaly: Identified 22 anomalies.
+2026-04-11 00:01:27 [INFO] anomaly: Identified 22 anomalies.
+2026-04-11 00:01:38 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:01:38 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:01:38 [INFO] anomaly: Identified 22 anomalies.
+2026-04-11 00:01:38 [INFO] anomaly: Identified 22 anomalies.
+2026-04-11 00:01:49 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:01:49 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:01:49 [INFO] anomaly: Identified 22 anomalies.
+2026-04-11 00:01:49 [INFO] anomaly: Identified 22 anomalies.
+2026-04-11 00:01:59 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:01:59 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:01:59 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:01:59 [INFO] anomaly: Identified 23 anomalies.
+2026-04-11 00:02:09 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:02:09 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:02:10 [INFO] anomaly: Identified 21 anomalies.
+2026-04-11 00:02:10 [INFO] anomaly: Identified 21 anomalies.
+2026-04-11 00:02:20 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:02:20 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:02:21 [INFO] anomaly: Identified 21 anomalies.
+2026-04-11 00:02:21 [INFO] anomaly: Identified 21 anomalies.
+2026-04-11 00:02:31 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:02:31 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:02:31 [INFO] anomaly: Identified 21 anomalies.
+2026-04-11 00:02:31 [INFO] anomaly: Identified 21 anomalies.
+2026-04-11 00:02:41 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:02:41 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:02:41 [INFO] anomaly: Identified 21 anomalies.
+2026-04-11 00:02:41 [INFO] anomaly: Identified 21 anomalies.
+2026-04-11 00:02:51 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:02:51 [WARNING] anomaly: System health degraded: WARNING (Score: 60%)
+2026-04-11 00:02:52 [INFO] anomaly: Identified 21 anomalies.
+2026-04-11 00:02:52 [INFO] anomaly: Identified 21 anomalies.
+2026-04-11 00:03:00 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 00:03:00 [INFO] anomaly: --- Agent anomaly Shutdown Cleanly ---
+2026-04-11 00:03:00 [INFO] anomaly: --- Agent anomaly Shutdown Cleanly ---

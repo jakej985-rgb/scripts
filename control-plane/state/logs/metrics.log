@@ -6900,3 +6900,26 @@ s Persistent Loop Started ---
 2026-04-10 18:59:38 [INFO] metrics: Captured metrics and history.
 2026-04-10 19:00:00 [INFO] metrics: Captured metrics and history.
 2026-04-10 19:00:00 [INFO] metrics: Captured metrics and history.
+2026-04-10 23:59:04 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
+2026-04-10 23:59:04 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
+2026-04-10 23:59:11 [INFO] metrics: Rotating metrics-history.csv
+2026-04-10 23:59:11 [INFO] metrics: Rotating metrics-history.csv
+2026-04-10 23:59:11 [INFO] metrics: Captured metrics and history.
+2026-04-10 23:59:11 [INFO] metrics: Captured metrics and history.
+2026-04-10 23:59:24 [INFO] metrics: Captured metrics and history.
+2026-04-10 23:59:24 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:00:35 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:00:35 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:00:47 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:00:47 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:01:13 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:01:13 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:02:23 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:02:23 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:02:35 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:02:35 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:02:51 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:02:51 [INFO] metrics: Captured metrics and history.
+2026-04-11 00:03:00 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 00:03:00 [INFO] metrics: --- Agent metrics Shutdown Cleanly ---
+2026-04-11 00:03:00 [INFO] metrics: --- Agent metrics Shutdown Cleanly ---
