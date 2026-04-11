@@ -193,8 +193,13 @@ def docker_agent(repair_mode: bool = False):
             t_log("[DOCKER] Shared network 'm3tal' ready")
         except: pass 
 
-        stacks = [("routing", REPO_ROOT / "docker" / "routing"), 
-                  ("core", REPO_ROOT / "docker" / "core")]
+        stacks = [
+            ("routing", REPO_ROOT / "docker" / "routing"),
+            ("maintenance", REPO_ROOT / "docker" / "maintenance"),
+            ("core", REPO_ROOT / "docker" / "core"),
+            ("media", REPO_ROOT / "docker" / "media"),
+            ("apps/tattoo-app", REPO_ROOT / "docker" / "apps" / "tattoo-app")
+        ]
         
         for name, sd in stacks:
             cf = sd / "docker-compose.yml"

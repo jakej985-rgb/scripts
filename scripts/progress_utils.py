@@ -174,6 +174,8 @@ class LiveList:
     def __init__(self, items: List[str]):
         self.items = items
         self.statuses: Dict[str, str] = {item: "queued" for item in items}
+        self.times: Dict[str, float] = {item: time.time() for item in items} # Start time
+        self.elapsed: Dict[str, Optional[float]] = {item: None for item in items} # Final time
         self.count = len(items)
         if ProgressBar._active_instance:
             ProgressBar._active_instance._vertical_offset = self.count
@@ -181,9 +183,20 @@ class LiveList:
                 sys.stdout.write("\n")
             sys.stdout.write("\r")
             sys.stdout.flush()
+            
+            # Initial render for immediate feedback
+            for item in items:
+                self.update(item, "queued")
 
     def update(self, item: str, status: str, note: str = ""):
         if item not in self.statuses or not sys.stdout.isatty(): return
+        
+        # Stop clock on terminal state
+        s_lower = status.lower()
+        terminal_states = ["running", "healthy", "done", "removed", "exited", "failed", "unhealthy"]
+        if any(x in s_lower for x in terminal_states) and self.elapsed[item] is None:
+            self.elapsed[item] = time.time() - self.times[item]
+            
         self.statuses[item] = status
         
         cols, _ = shutil.get_terminal_size()
@@ -193,7 +206,6 @@ class LiveList:
             sys.stdout.write(f"\033[{offset}A") 
             sys.stdout.write("\r" + " " * (cols - 1) + "\r")
             
-            s_lower = status.lower()
             if any(x in s_lower for x in ["running", "healthy", "done", "removed"]):
                 color = GREEN
             elif any(x in s_lower for x in ["starting", "pulling", "preparing", "terminating", "launching"]):
@@ -203,8 +215,19 @@ class LiveList:
             else:
                 color = DIM
 
+            # Calculate current or final elapsed time
+            curr_elapsed = self.elapsed[item] or (time.time() - self.times[item])
+            time_str = f" {DIM}{curr_elapsed:.1f}s{END}"
+            
+            # Blank Tag logic: hide meta-states like 'launching', 'preparing'
+            display_status = status
+            if any(x in s_lower for x in ["launching", "preparing", "queued"]):
+                display_status = "" # Clear brackets
+            
+            tag = f"[{color}{display_status}{END}]" if display_status else f"[{DIM}      {END}]"
+            
             note_str = f" {DIM}({note}){END}" if note else ""
-            sys.stdout.write(f"      {DIM}•{END} {ORANGE}{item}{END}: [{color}{status}{END}]{note_str}")
+            sys.stdout.write(f"      {DIM}•{END} {ORANGE}{item}{END}: {tag}{note_str}{time_str}")
             
             sys.stdout.write(f"\033[{offset}B\r")
             sys.stdout.flush()
