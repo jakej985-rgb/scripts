@@ -1,0 +1,13 @@
+{
+    "python.defaultInterpreterPath": "venv/Scripts/python.exe",
+    "python.testing.pytestArgs": [
+        "control-plane/tests"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/scripts/helpers",
+        "${workspaceFolder}/control-plane/agents",
+        "${workspaceFolder}/scripts/test"
+    ]
+}

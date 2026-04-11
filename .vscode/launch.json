@@ -1,0 +1,80 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "M3TAL: Supervisor (Main Entry)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/control-plane/supervisor.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}:${workspaceFolder}/scripts/helpers"
+            }
+        },
+        {
+            "name": "M3TAL: Init (Bootstrap)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/control-plane/init.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}:${workspaceFolder}/scripts/helpers"
+            }
+        },
+        {
+            "name": "M3TAL: Init (Repair All)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/control-plane/init.py",
+            "args": ["--repair"],
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}:${workspaceFolder}/scripts/helpers"
+            }
+        },
+        {
+            "name": "M3TAL: Shutdown (Global Blackout)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/control-plane/shutdown.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}:${workspaceFolder}/scripts/helpers"
+            }
+        },
+        {
+            "name": "M3TAL: Install Wizard (Interactive)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/install.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "M3TAL: Run Tests (Pytest)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "args": [
+                "${workspaceFolder}/control-plane/tests"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}:${workspaceFolder}/scripts/helpers"
+            }
+        }
+    ]
+}

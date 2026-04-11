@@ -8,10 +8,12 @@ from pathlib import Path
 
 # Resolve repo root
 BASE_DIR = Path(__file__).resolve().parent
-REPO_ROOT = BASE_DIR.parent
+REPO_ROOT = BASE_DIR.parent.parent
 DOCKER_DIR = REPO_ROOT / "docker"
 
-sys.path.append(str(REPO_ROOT / "scripts"))
+# Add scripts subfolders to path for sibling imports
+for sub in ["config", "helpers"]:
+    sys.path.append(str(REPO_ROOT / "scripts" / sub))
 try:
     from validate_env import YELLOW, RED, GREEN, BLUE, BOLD, END
     from progress_utils import ProgressBar, Spinner

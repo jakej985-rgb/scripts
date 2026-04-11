@@ -10,7 +10,7 @@ import subprocess
 import time
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 STATE_DIR = REPO_ROOT / "control-plane" / "state"
 LOG_DIR = STATE_DIR / "logs"
 INIT_PY = REPO_ROOT / "control-plane" / "init.py"

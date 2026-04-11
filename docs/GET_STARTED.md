@@ -63,7 +63,7 @@ Once installed, M3TAL provides a web interface to see what's happening.
    * **Username**: `admin`
    * **Password**: the admin password you chose during the interactive setup
 
-3. **Recover or rotate your password if needed**: Run `python scripts/manage_users.py --reset-admin` from an interactive terminal.
+3. **Recover or rotate your password if needed**: Run `python scripts/config/manage_users.py --reset-admin` from an interactive terminal.
 
 ---
 
@@ -93,10 +93,10 @@ You don't need to do anything! If a container crashes:
 To keep your configuration safe, run the backup script once a week:
 
 ```bash
-bash scripts/backup.sh
+bash scripts/maintenance/backup.sh
 ```
 
-This saves your settings to `/mnt/backups`. If anything breaks, you can use `bash scripts/restore.sh` to get everything back.
+This saves your settings to `/mnt/backups`. If anything breaks, you can use `bash scripts/maintenance/restore.sh` to get everything back.
 
 ---
 

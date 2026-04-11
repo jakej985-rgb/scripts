@@ -1,7 +1,7 @@
 [
   {
     "name": "backup",
-    "command": "bash scripts/backup.sh",
+    "command": "bash scripts/maintenance/backup.sh",
     "schedule": "0 3 * * *",
     "node": "local"
   },

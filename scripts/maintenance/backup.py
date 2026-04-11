@@ -13,7 +13,7 @@ import tarfile
 import time
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 DEFAULT_DEST = Path(os.getenv("DATA_DIR", "/mnt")) / "backups" / "docker-configs"
 KEEP_BACKUPS = 5
 

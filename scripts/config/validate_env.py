@@ -4,8 +4,10 @@ import sys
 from pathlib import Path
 
 # Resolve repo root
-REPO_ROOT = Path(__file__).resolve().parent.parent
-sys.path.append(str(REPO_ROOT / "scripts"))
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+# Add scripts subfolders to path for sibling imports
+for sub in ["config", "helpers"]:
+    sys.path.append(str(REPO_ROOT / "scripts" / sub))
 
 try:
     from configure_env import REQUIRED_VARS, ENV_FILE, YELLOW, RED, GREEN, BOLD, END
@@ -44,7 +46,7 @@ def validate_env(interactive=False):
             
         print(f"{RED}{BOLD}[REX] ERROR: .env file is missing!{END}")
         if interactive:
-            print(f"{YELLOW}Hint: Run 'python scripts/configure_env.py' to generate it.{END}")
+            print(f"{YELLOW}Hint: Run 'python scripts/config/configure_env.py' to generate it.{END}")
         return False, []
 
     missing = []
@@ -60,7 +62,7 @@ def validate_env(interactive=False):
         for m in missing:
             print(f"  - {m}")
         if interactive:
-            print(f"\n{YELLOW}Hint: Run 'python scripts/configure_env.py' to update your configuration.{END}")
+            print(f"\n{YELLOW}Hint: Run 'python scripts/config/configure_env.py' to update your configuration.{END}")
         return False, missing
 
     print(f"{GREEN}[REX] Environment integrity verified.{END}")

@@ -183,8 +183,8 @@ bash control-plane/init.sh | tee -a $LOG
 echo ""
 log "=== Environment Configuration ==="
 # Use the new interactive Python wizard instead of manual sed patching
-if [ -f "scripts/configure_env.py" ]; then
-  python3 scripts/configure_env.py
+if [ -f "scripts/config/configure_env.py" ]; then
+  python3 scripts/config/configure_env.py
 else
   warn "Configuration wizard missing, using .env.example"
   cp .env.example .env

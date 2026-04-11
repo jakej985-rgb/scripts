@@ -13,7 +13,7 @@ import sys
 import tarfile
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 DEFAULT_BACKUP_DIR = Path(os.getenv("DATA_DIR", "/mnt")) / "backups" / "docker-configs"
 PYTHON = sys.executable
 
@@ -77,7 +77,7 @@ def main() -> None:
 
     if backup_file is None or not backup_file.exists():
         print("[ERROR] No backup file found.")
-        print("Usage: python3 scripts/restore.py [path_to_tar.gz]")
+        print("Usage: python3 scripts/maintenance/restore.py [path_to_tar.gz]")
         sys.exit(1)
 
     print(f"\n=== M3TAL RESTORE WIZARD ===")

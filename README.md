@@ -49,7 +49,7 @@ Open your browser to `http://YOUR_SERVER_IP:8080`.
 
 * **Username**: `admin`
 * **Password**: the admin password you chose during the interactive setup
-* *⚠️ If you need to rotate or recover the admin password later, run `python scripts/manage_users.py --reset-admin`.*
+* *⚠️ If you need to rotate or recover the admin password later, run `python scripts/config/manage_users.py --reset-admin`.*
 
 ---
 
