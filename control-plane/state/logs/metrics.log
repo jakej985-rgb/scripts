@@ -6925,3 +6925,6 @@ s Persistent Loop Started ---
 2026-04-11 00:03:00 [INFO] metrics: --- Agent metrics Shutdown Cleanly ---
 2026-04-11 01:37:26 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
 2026-04-11 01:37:26 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
+2026-04-11 01:39:24 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-11 01:39:26 [INFO] metrics: --- Agent metrics Shutdown Cleanly ---
+2026-04-11 01:39:26 [INFO] metrics: --- Agent metrics Shutdown Cleanly ---

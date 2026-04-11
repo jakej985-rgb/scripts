@@ -95,13 +95,13 @@ MODE = "startup"  # Default mode
 HB: Optional[Heartbeat] = None
 BAR: Optional[ProgressBar] = None
 
-def t_log(msg: str, symbol: str = "•"):
+def t_log(msg: str, symbol: str = None):
     """Terminal & File Logger bridge."""
-    log_event("init", msg)
+    log_event("init", msg, symbol=symbol)
     if HB:
         HB.log(msg, symbol=symbol)
     else:
-        print(f"  {CYAN}{symbol}{END} {msg}")
+        print(f"  {CYAN}{symbol if symbol else '•'}{END} {msg}")
 
 def update_status(component: str, status: str):
     SYSTEM_STATUS[component] = status
