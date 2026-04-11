@@ -1,22 +1,22 @@
 {
     "leader": {
         "count": 5,
-        "last_fail": 1775893063.9053495,
-        "pause_until": 1775893363.9053495
+        "last_fail": 1775893984.4700608,
+        "pause_until": 1775894284.4700608
     },
     "decision": {
         "count": 5,
-        "last_fail": 1775893089.2883008,
-        "pause_until": 1775893389.2883008
+        "last_fail": 1775894025.6097887,
+        "pause_until": 1775894325.6097887
     },
     "scorer": {
         "count": 5,
-        "last_fail": 1775893078.1263328,
-        "pause_until": 1775893378.1263328
+        "last_fail": 1775894003.480708,
+        "pause_until": 1775894303.480708
     },
     "anomaly": {
         "count": 5,
-        "last_fail": 1775893067.231597,
-        "pause_until": 1775893367.231597
+        "last_fail": 1775893987.7717395,
+        "pause_until": 1775894287.7717395
     }
 }

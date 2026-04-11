@@ -6,7 +6,11 @@ import os
 from pathlib import Path
 from typing import Any
 
-import bcrypt
+try:
+    import bcrypt
+    HAS_BCRYPT = True
+except ImportError:
+    HAS_BCRYPT = False
 
 
 DEFAULT_ADMIN_USERNAME = "admin"
@@ -89,10 +93,15 @@ def save_users(users: list[dict[str, str]], users_path: str | Path | None = None
 
 
 def hash_password(password: str) -> str:
+    if not HAS_BCRYPT:
+        raise ImportError("bcrypt module is required for password hashing. Run: pip install bcrypt")
     return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
 
 
 def verify_password(password: str, token_hash: str) -> bool:
+    if not HAS_BCRYPT:
+        # Fallback to False behavior if bcrypt is missing, but log the issue if possible
+        return False
     try:
         return bcrypt.checkpw(password.encode("utf-8"), token_hash.encode("utf-8"))
     except (ValueError, TypeError):

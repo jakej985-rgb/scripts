@@ -65,18 +65,27 @@ def terminate_agents():
     HB.ping("Stopping autonomous agents")
     HB.log("Cleaning up autonomous agent runtime...")
     
-    target_scripts = ["run.py", "healer.py"]
+    target_scripts = ["run.py", "healer.py", "supervisor.py", "init.py"]
+    current_pid = os.getpid()
     
     if os.name == "nt":
         try:
             import psutil
             for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
+                if proc.info['pid'] == current_pid: continue
                 cmdline = proc.info.get('cmdline')
                 if cmdline and any(s in ' '.join(cmdline) for s in target_scripts):
-                    HB.log(f"Terminating agent process {proc.info['pid']}", symbol="⚠")
-                    proc.terminate()
+                    HB.log(f"Terminating orphan process {proc.info['pid']} ({' '.join(cmdline[:3])})", symbol="⚠")
+                    try:
+                        proc.terminate()
+                    except:
+                        subprocess.run(["taskkill", "/F", "/PID", str(proc.info['pid'])], capture_output=True, shell=True)
         except ImportError:
             for script in target_scripts:
+                # Filter out current process by checking if it's NOT shutdown.py (which is us)
+                subprocess.run(["taskkill", "/F", "/FI", f"cmdline eq *{script}*", "/FI", "IMAGENAME ne python.exe"], 
+                             capture_output=True, shell=True)
+                # Fallback: kill based on script name if we can match it
                 subprocess.run(["taskkill", "/F", "/FI", f"cmdline eq *{script}*"], 
                              capture_output=True, shell=True)
     else:
@@ -84,11 +93,14 @@ def terminate_agents():
             subprocess.run(["pkill", "-f", script], capture_output=True)
             
     HB.log("Clearing healer and agent locks")
+    # Clean all lock files
     (STATE_DIR / "healer.lock").unlink(missing_ok=True)
     locks_dir = STATE_DIR / "locks"
     if locks_dir.exists():
-        for f in locks_dir.glob("*.pid"):
-            f.unlink()
+        for f in locks_dir.glob("*"):
+            try:
+                if f.is_file(): f.unlink()
+            except: pass
 
 def shutdown_stack(stack_name: str, bar: ProgressBar, current_step: int):
     """Surgically stops and removes a specific Docker stack."""

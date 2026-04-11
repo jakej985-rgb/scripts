@@ -189,7 +189,15 @@ def auth_agent():
     """🔐 Identity Agent: Non-blocking user baseline check."""
     if HB: HB.ping("Checking identity baseline")
     try:
+        from auth import HAS_BCRYPT
         users_path = resolve_users_path(REPO_ROOT / "dashboard")
+        
+        if not HAS_BCRYPT:
+            t_log("[AUTH] WARNING: bcrypt module missing. Auth repairs disabled.", symbol="⚠")
+            t_log("[AUTH] Suggestion: pip install bcrypt", symbol="💡")
+            update_status("auth", "degraded")
+            return True
+
         _, error = inspect_users_file(users_path=users_path)
         
         if error is not None:
@@ -261,11 +269,14 @@ def docker_agent(repair_mode: bool = False):
                 ready_count = 0
                 if total_svc > 0:
                     start_time = time.time()
-                    while time.time() - start_time < 60: # 60s Smart Timeout
+                    while time.time() - start_time < 600: # 600s Smart Timeout (Robust for pulls)
                         # Check if process crashed immediately
                         if proc.poll() is not None:
                              if proc.returncode != 0:
                                  raise RuntimeError(f"Docker Launch Error (Exit {proc.returncode}). Check Docker Desktop logs.")
+                        
+                        # Active Feedback: If up -d is still running, it's likely pulling
+                        launching_status = "pulling" if proc.poll() is None else "launching"
 
                         ps_res = subprocess.run(["docker", "compose", "-f", str(cf), "ps", "--format", "json"],
                                              capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)
@@ -308,7 +319,7 @@ def docker_agent(repair_mode: bool = False):
                                     if smart_state in ["running", "healthy"]: ready_count += 1
                                 else:
                                     # Still "working" if we are in the loop and ps doesn't see it yet
-                                    live_list.update(item, "launching...")
+                                    live_list.update(item, launching_status)
 
                             sub_bar.update(ready_count, f"Processed {ready_count}/{total_svc} ({name})")
                             if ready_count >= total_svc: break
