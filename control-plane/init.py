@@ -68,9 +68,14 @@ def load_env() -> Dict[str, str]:
     if env_path.exists():
         with open(env_path, "r", encoding="utf-8") as f:
             for line in f:
+                line = line.strip()
                 if "=" in line and not line.startswith("#"):
-                    k, v = line.strip().split("=", 1)
-                    env[k] = v
+                    k, v = line.split("=", 1)
+                    # Strip inline comments, whitespace, and quotes
+                    v = v.split("#")[0].strip()
+                    if (v.startswith('"') and v.endswith('"')) or (v.startswith("'") and v.endswith("'")):
+                        v = v[1:-1]
+                    env[k.strip()] = v
     # Force REPO_ROOT for Docker
     env["REPO_ROOT"] = str(REPO_ROOT)
     return env
@@ -243,9 +248,14 @@ def docker_agent(repair_mode: bool = False):
 
             try:
                 # 1. Start the stack asynchronously
+                # FIXED: Using stderr=DEVNULL for background process to avoid "Pipe Deadlock" 
+                # where the process hangs when the pipe buffer is full.
                 proc = subprocess.Popen(["docker", "compose", "-f", str(cf), "up", "-d"], 
-                                     stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, 
+                                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, 
                                      text=True, shell=use_shell, env=GLOBAL_ENV)
+                
+                # Settle time (helps Docker Desktop stabilize container list)
+                time.sleep(1)
                 
                 # 2. Poll for readiness immediately
                 ready_count = 0
@@ -254,9 +264,8 @@ def docker_agent(repair_mode: bool = False):
                     while time.time() - start_time < 60: # 60s Smart Timeout
                         # Check if process crashed immediately
                         if proc.poll() is not None:
-                             _, stderr = proc.communicate()
                              if proc.returncode != 0:
-                                 raise RuntimeError(f"Docker Launch Error: {stderr[:100]}")
+                                 raise RuntimeError(f"Docker Launch Error (Exit {proc.returncode}). Check Docker Desktop logs.")
 
                         ps_res = subprocess.run(["docker", "compose", "-f", str(cf), "ps", "--format", "json"],
                                              capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)

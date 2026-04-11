@@ -1,12 +1,12 @@
 {
     "status": "degraded",
-    "timestamp": 1775892363,
+    "timestamp": 1775892771,
     "mode": "startup",
     "details": {
         "filesystem": "ok",
         "logs": "ok",
         "state": "ok",
-        "docker": "failed",
+        "docker": "partial",
         "auth": "ok"
     }
 }

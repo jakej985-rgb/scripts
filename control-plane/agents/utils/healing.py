@@ -6,7 +6,7 @@ import json
 import tempfile
 import errno
 from pathlib import Path
-from typing import Callable, Any, TypeVar
+from typing import Callable, Any, TypeVar, Optional
 
 T = TypeVar('T')
 

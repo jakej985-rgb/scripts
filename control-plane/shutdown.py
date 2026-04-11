@@ -44,9 +44,14 @@ def load_env() -> Dict[str, str]:
     if env_path.exists():
         with open(env_path, "r", encoding="utf-8") as f:
             for line in f:
+                line = line.strip()
                 if "=" in line and not line.startswith("#"):
-                    k, v = line.strip().split("=", 1)
-                    env[k] = v
+                    k, v = line.split("=", 1)
+                    # Strip inline comments, whitespace, and quotes
+                    v = v.split("#")[0].strip()
+                    if (v.startswith('"') and v.endswith('"')) or (v.startswith("'") and v.endswith("'")):
+                        v = v[1:-1]
+                    env[k.strip()] = v
     # Force REPO_ROOT for Docker
     env["REPO_ROOT"] = str(REPO_ROOT)
     return env
@@ -123,9 +128,13 @@ def shutdown_stack(stack_name: str, bar: ProgressBar, current_step: int):
 
     try:
         # 1. Start deconstruction asynchronously
+        # FIXED: Using stderr=DEVNULL to avoid "Pipe Deadlock" during teardown
         proc = subprocess.Popen(["docker", "compose", "down", "--remove-orphans"], 
                                 cwd=str(stack_path), shell=use_shell, 
-                                stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, env=GLOBAL_ENV)
+                                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, env=GLOBAL_ENV)
+        
+        # Settle time
+        time.sleep(1)
         
         # 2. Poll for removal immediately
         start_time = time.time()

@@ -24342,3 +24342,23 @@ ied 6 anomalies.
 2026-04-11 00:03:00 [INFO] guards: Received signal 15. Requesting graceful shutdown...
 2026-04-11 00:03:00 [INFO] anomaly: --- Agent anomaly Shutdown Cleanly ---
 2026-04-11 00:03:00 [INFO] anomaly: --- Agent anomaly Shutdown Cleanly ---
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/anomaly.py", line 7, in <module>
+    from utils.paths import HEALTH_JSON, METRICS_JSON, ANOMALIES_JSON, HEALTH_REPORT_JSON, CONTAINER_HEALTH_JSON
+ImportError: cannot import name 'HEALTH_REPORT_JSON' from 'utils.paths' (/docker/control-plane/agents/utils/paths.py)
