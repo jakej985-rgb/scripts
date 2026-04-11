@@ -141,10 +141,11 @@ def release_healer_lock():
     except:
         pass
 
-def log_event(name: str, message: str):
+def log_event(name: str, message: str, symbol: Optional[str] = None):
     global LOG_MODE
     ts = time.strftime("%Y-%m-%d %H:%M:%S")
-    formatted = f"{ts} [{name.upper()}] {message}"
+    sym_prefix = f"{symbol} " if symbol else ""
+    formatted = f"{ts} {sym_prefix}[{name.upper()}] {message}"
     if LOG_MODE == "file":
         try:
             log_dir = STATE_DIR / "logs"

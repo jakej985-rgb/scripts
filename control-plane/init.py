@@ -195,7 +195,7 @@ def docker_agent(repair_mode: bool = False):
         use_shell = os.name == "nt"
         try:
             retry(lambda: subprocess.run(["docker", "network", "create", "m3tal"], 
-                                       capture_output=True, shell=use_shell, check=True))
+                                       capture_output=True, shell=use_shell, env=GLOBAL_ENV, check=True))
             t_log("[DOCKER] Shared network 'm3tal' ready")
         except: pass 
 
@@ -216,7 +216,7 @@ def docker_agent(repair_mode: bool = False):
             # Sub-item: Detect expected services
             use_shell = os.name == "nt"
             conf_cmd = ["docker", "compose", "-f", str(cf), "config", "--services"]
-            conf_res = subprocess.run(conf_cmd, capture_output=True, text=True, shell=use_shell)
+            conf_res = subprocess.run(conf_cmd, capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)
             expected_services = conf_res.stdout.strip().splitlines() if conf_res.returncode == 0 else []
             total_svc = len(expected_services)
             
@@ -227,7 +227,8 @@ def docker_agent(repair_mode: bool = False):
             try:
                 # 1. Start the stack asynchronously
                 proc = subprocess.Popen(["docker", "compose", "-f", str(cf), "up", "-d"], 
-                                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True, shell=use_shell)
+                                     stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, 
+                                     text=True, shell=use_shell, env=GLOBAL_ENV)
                 
                 # 2. Poll for readiness immediately
                 ready_count = 0
@@ -241,7 +242,7 @@ def docker_agent(repair_mode: bool = False):
                                  raise RuntimeError(f"Docker Launch Error: {stderr[:100]}")
 
                         ps_res = subprocess.run(["docker", "compose", "-f", str(cf), "ps", "--format", "json"],
-                                             capture_output=True, text=True, shell=use_shell)
+                                             capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)
                         
                         if ps_res.returncode == 0:
                             out = ps_res.stdout.strip()
@@ -261,7 +262,7 @@ def docker_agent(repair_mode: bool = False):
                                     
                                     if state not in ["running", "healthy"]:
                                         insp = subprocess.run(["docker", "inspect", match.get("Name", ""), "--format", "{{json .State}}"],
-                                                           capture_output=True, text=True, shell=use_shell)
+                                                           capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)
                                         if insp.returncode == 0:
                                             try:
                                                 istate = json.loads(insp.stdout)
@@ -332,6 +333,22 @@ def health_agent():
         return is_ready
     except Exception as e:
         print(f"Health Agent crashed: {e}")
+        return False
+
+def repair(scope: str = "all") -> bool:
+    """🛠️ Repair Agent: Force-recreates stacks to resolve drift or connectivity gaps."""
+    t_log(f"Repairing scope: {scope}", symbol="🔧")
+    try:
+        stacks_to_fix = [scope] if scope != "all" else ["routing", "maintenance", "core", "media", "apps/tattoo-app"]
+        for stack in stacks_to_fix:
+            sd = REPO_ROOT / "docker" / stack
+            if not sd.exists(): continue
+            t_log(f"[REPAIR] Rebuilding {stack} stack...", symbol="🔧")
+            subprocess.run(["docker", "compose", "up", "-d", "--force-recreate"], 
+                         cwd=str(sd), shell=(os.name=="nt"), env=GLOBAL_ENV, capture_output=True)
+        return True
+    except Exception as e:
+        t_log(f"Repair failed: {e}", symbol="✘")
         return False
 
 # --- Main Orchestrator --------------------------------------------------------
