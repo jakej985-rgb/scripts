@@ -20,4 +20,3 @@ venv/
 pytest_temp_*/
 pytest_tmp_*/
 codex-validate-*/
-debug_bundle.txt
