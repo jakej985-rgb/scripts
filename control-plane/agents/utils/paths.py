@@ -48,6 +48,7 @@ REGISTRY_JSON = STATE_DIR / "registry.json"
 HEALTH_REPORT_JSON = STATE_DIR / "health_report.json"
 NORMALIZED_METRICS_JSON = STATE_DIR / "normalized_metrics.json"
 COOLDOWNS_JSON = STATE_DIR / "cooldowns.json"
+TELEGRAM_OFFSET_TXT = STATE_DIR / "telegram_offset.txt"
 CLUSTER_YML = CONFIG_DIR / "cluster.yml"
 
 # --- Agent Tier & Contract Registry -------------------------------------------
@@ -66,6 +67,7 @@ TIERS = {
     "observer": 2,
     "tunnel": 2,
     "healer": 2,
+    "command_listener": 2,
 }
 
 # The absolute minimum files/dirs required for each agent to start

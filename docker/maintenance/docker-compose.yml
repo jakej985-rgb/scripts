@@ -14,6 +14,7 @@ services:
       - "600"
     environment:
       - TZ=America/Denver
+      - DOCKER_API_VERSION=${DOCKER_API_VERSION}
     networks:
       - m3tal
 
@@ -27,6 +28,8 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.dozzle.rule=Host(`logs.m3tal-media-server.xyz`)"
       - "traefik.http.services.dozzle.loadbalancer.server.port=8080"
+    environment:
+      - DOCKER_API_VERSION=${DOCKER_API_VERSION}
     networks:
       - m3tal
 
@@ -41,6 +44,8 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.portainer.rule=Host(`portainer.m3tal-media-server.xyz`)"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+    environment:
+      - DOCKER_API_VERSION=${DOCKER_API_VERSION}
     networks:
       - m3tal
 
@@ -56,6 +61,7 @@ services:
       sh -c "pip install --quiet -r /docker/requirements.txt && python server.py"
     environment:
       - TZ=America/Denver
+      - DOCKER_API_VERSION=${DOCKER_API_VERSION}
       - DASHBOARD_SECRET=${DASHBOARD_SECRET}
       - STATE_DIR=/docker/control-plane/state
       - USERS_FILE=/docker/dashboard/users.json

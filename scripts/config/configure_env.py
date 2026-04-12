@@ -30,7 +30,9 @@ REQUIRED_VARS = [
     "VPN_PASSWORD",
     "DASHBOARD_SECRET",
     "CF_TUNNEL_TOKEN",
-    "TELEGRAM_BOT_TOKEN"
+    "TELEGRAM_BOT_TOKEN",
+    "TG_CHAT_COUNT",
+    "DOCKER_API_VERSION"
 ]
 
 def get_input(prompt, default=None):
@@ -110,14 +112,19 @@ def main():
     new_env["AI_API_KEY"] = get_input("OpenAI/Anthropic API Key (Optional)", current_env.get("AI_API_KEY", ""))
     print("")
 
-    # 4. Notifications (Multi-Channel Audit Fix 5.7)
+    # 4. Notifications (Multi-Channel Audit Phase 4 - Upgraded to 6-Channel v2)
     print(f"{BOLD}--- [4] Telegram Multi-Channel Notifications ---{END}")
     new_env["TELEGRAM_BOT_TOKEN"] = get_input("Telegram Bot Token", current_env.get("TELEGRAM_BOT_TOKEN", current_env.get("TELEGRAM_TOKEN", "")))
-    new_env["TG_CHAT_MODE"] = get_input("Telegram Chat Mode (1-4)", current_env.get("TG_CHAT_MODE", "1"))
-    new_env["TG_MAIN_CHAT_ID"] = get_input("Main/Alert Chat ID", current_env.get("TG_MAIN_CHAT_ID", current_env.get("TELEGRAM_CHAT_ID", "")))
+    new_env["TG_CHAT_COUNT"] = get_input("Telegram Chat Count (1-6)", current_env.get("TG_CHAT_COUNT", current_env.get("TG_CHAT_MODE", "1")))
+    new_env["TG_AUTO_DISCOVER"] = get_input("Enable Auto-Discovery (true/false)", current_env.get("TG_AUTO_DISCOVER", "false"))
+    new_env["ALLOWED_USERS"] = get_input("Allowed User IDs (comma-separated)", current_env.get("ALLOWED_USERS", "0"))
+    
+    new_env["TG_MAIN_CHAT_ID"] = get_input("Main Chat ID", current_env.get("TG_MAIN_CHAT_ID", current_env.get("TELEGRAM_CHAT_ID", "")))
     new_env["TG_LOG_CHAT_ID"] = get_input("Logs Chat ID (0 to disable)", current_env.get("TG_LOG_CHAT_ID", "0"))
     new_env["TG_ERROR_CHAT_ID"] = get_input("Errors Chat ID (0 to disable)", current_env.get("TG_ERROR_CHAT_ID", "0"))
-    new_env["TG_ALERT_CHAT_ID"] = get_input("Critical alerts Chat ID (0 to disable)", current_env.get("TG_ALERT_CHAT_ID", "0"))
+    new_env["TG_ALERT_CHAT_ID"] = get_input("Critical Alerts Chat ID (0 to disable)", current_env.get("TG_ALERT_CHAT_ID", "0"))
+    new_env["TG_ACTION_CHAT_ID"] = get_input("Action/Command Chat ID (0 to disable)", current_env.get("TG_ACTION_CHAT_ID", "0"))
+    new_env["TG_DOCKER_CHAT_ID"] = get_input("Docker Telemetry Chat ID (0 to disable)", current_env.get("TG_DOCKER_CHAT_ID", "0"))
     
     # Legacy fallbacks for backward compatibility
     new_env["TELEGRAM_TOKEN"] = new_env["TELEGRAM_BOT_TOKEN"]
@@ -147,10 +154,10 @@ def main():
             
             # Sort keys into categories for readability
             categories = {
-                "SYSTEM": ["REPO_ROOT", "PUID", "PGID", "TZ", "MASTER_IP", "DASHBOARD_PORT", "HTTP_PORT", "DOMAIN", "BASE_DOMAIN", "DATA_DIR", "CONFIG_DIR", "CF_TUNNEL_TOKEN"],
+                "SYSTEM": ["REPO_ROOT", "DOCKER_API_VERSION", "PUID", "PGID", "TZ", "MASTER_IP", "DASHBOARD_PORT", "HTTP_PORT", "DOMAIN", "BASE_DOMAIN", "DATA_DIR", "CONFIG_DIR", "CF_TUNNEL_TOKEN"],
                 "VPN": ["VPN_USER", "VPN_PASSWORD"],
                 "AI": ["OLLAMA_URL", "AI_API_KEY"],
-                "NOTIFY": ["TELEGRAM_BOT_TOKEN", "TG_CHAT_MODE", "TG_MAIN_CHAT_ID", "TG_LOG_CHAT_ID", "TG_ERROR_CHAT_ID", "TG_ALERT_CHAT_ID", "TELEGRAM_TOKEN", "TELEGRAM_CHAT_ID"],
+                "NOTIFY": ["TELEGRAM_BOT_TOKEN", "TG_CHAT_COUNT", "TG_AUTO_DISCOVER", "ALLOWED_USERS", "TG_MAIN_CHAT_ID", "TG_LOG_CHAT_ID", "TG_ERROR_CHAT_ID", "TG_ALERT_CHAT_ID", "TG_ACTION_CHAT_ID", "TG_DOCKER_CHAT_ID", "TELEGRAM_TOKEN", "TELEGRAM_CHAT_ID"],
                 "DB": ["TATTOO_DB_PASSWORD"],
                 "AUTH": ["DASHBOARD_SECRET"]
             }

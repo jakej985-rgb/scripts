@@ -270,9 +270,13 @@ def env_validation_agent():
         dot_env = REPO_ROOT / ".env"
         has_dotenv = dot_env.exists()
         
-        # 3. Required Vars (Flexible Audit 5.9)
-        strictly_required = ["TELEGRAM_BOT_TOKEN", "REPO_ROOT"]
-        potential_chats = ["TG_MAIN_CHAT_ID", "TG_LOG_CHAT_ID", "TG_ERROR_CHAT_ID", "TG_ALERT_CHAT_ID", "TELEGRAM_CHAT_ID"]
+        # 3. Required Vars (Expanded for 6-Channel Control Plane)
+        strictly_required = ["TELEGRAM_BOT_TOKEN", "TG_CHAT_COUNT", "DOCKER_API_VERSION", "REPO_ROOT"]
+        potential_chats = [
+            "TG_MAIN_CHAT_ID", "TG_LOG_CHAT_ID", "TG_ERROR_CHAT_ID", 
+            "TG_ALERT_CHAT_ID", "TG_ACTION_CHAT_ID", "TG_DOCKER_CHAT_ID",
+            "TELEGRAM_CHAT_ID"
+        ]
         
         missing = []
         for var in strictly_required:

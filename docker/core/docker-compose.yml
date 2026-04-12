@@ -55,6 +55,7 @@ services:
     # Running as non-root appuser (configured in Dockerfile)
     environment:
       - TZ=America/Denver
+      - DOCKER_API_VERSION=${DOCKER_API_VERSION}
       - REPO_ROOT=/docker
       - IN_CONTAINER=true
     networks:
