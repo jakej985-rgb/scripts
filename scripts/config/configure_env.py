@@ -136,7 +136,7 @@ def main():
             
             # Sort keys into categories for readability
             categories = {
-                "SYSTEM": ["PUID", "PGID", "TZ", "MASTER_IP", "DASHBOARD_PORT", "HTTP_PORT", "DOMAIN", "DATA_DIR", "CONFIG_DIR", "CF_TUNNEL_TOKEN"],
+                "SYSTEM": ["PUID", "PGID", "TZ", "MASTER_IP", "DASHBOARD_PORT", "HTTP_PORT", "DOMAIN", "BASE_DOMAIN", "DATA_DIR", "CONFIG_DIR", "CF_TUNNEL_TOKEN"],
                 "VPN": ["VPN_USER", "VPN_PASSWORD"],
                 "AI": ["OLLAMA_URL", "AI_API_KEY"],
                 "NOTIFY": ["TELEGRAM_TOKEN", "TELEGRAM_CHAT_ID"],
