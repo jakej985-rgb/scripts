@@ -379,7 +379,6 @@ def docker_agent(repair_mode: bool = False):
                                 
                                 global_live_list.update(item, smart_state)
                             else:
-                                # Detection for pulling/launching handled in main loop until first ps hit
                                 pass
                 time.sleep(2)
 
@@ -418,7 +417,6 @@ def docker_agent(repair_mode: bool = False):
             t_log(f"[DOCKER] Orchestrating stack: {name}")
             
             # Sub-item: Detect expected services
-            use_shell = os.name == "nt"
             conf_cmd = ["docker", "compose", "-f", str(cf), "config", "--services"]
             conf_res = subprocess.run(conf_cmd, capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)
             expected_services = conf_res.stdout.strip().splitlines() if conf_res.returncode == 0 else []
@@ -435,7 +433,9 @@ def docker_agent(repair_mode: bool = False):
                 
                 proc = subprocess.Popen(["docker", "compose", "-f", str(cf), "up", "-d"], 
                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, 
-                                          # 2. Wait for Docker status (Up/Running)
+                                     text=True, shell=use_shell, env=GLOBAL_ENV)
+                
+                # 2. Wait for Docker status (Up/Running)
                 wait_time = TIMEOUTS.get(name, 90)
                 start_time = time.time()
                 while time.time() - start_time < wait_time:
@@ -460,10 +460,7 @@ def docker_agent(repair_mode: bool = False):
                     if not wait_for_readiness(name, c_name, l_pat, p_cmd, timeout=wait_time):
                         if is_critical:
                             raise RuntimeError(f"Critical service {c_name} in {name} stack failed readiness probes.")
-live_list.update(item, "pulling")
 
-                    time.sleep(1.5)
-                
                 if ready_count < total_svc:
                     if is_critical:
                         t_log(f"[DOCKER] Stack {name} timed out. Proceeding in DEGRADED mode.", symbol="⚠")
