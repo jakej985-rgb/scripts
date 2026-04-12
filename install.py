@@ -14,13 +14,30 @@ import platform
 import shutil
 import subprocess
 import sys
+import time
 import uuid
 from pathlib import Path
+
+# --- Configuration ------------------------------------------------------------
+
+SCAFFOLD_DIRS = [
+    Path("media"),
+    Path("media") / "movies",
+    Path("media") / "tv",
+    Path("downloads"),
+    Path("logs"),
+    Path("disk1"),
+    Path("control-plane") / "state",
+    Path("control-plane") / "config",
+    Path("control-plane") / "state" / "health",
+    Path("control-plane") / "state" / "locks",
+]
 
 # --- ANSI Colors --------------------------------------------------------------
 
 GREEN = "\033[92m"
 BLUE = "\033[94m"
+CYAN = "\033[96m"
 YELLOW = "\033[93m"
 RED = "\033[91m"
 BOLD = "\033[1m"
@@ -56,10 +73,14 @@ def ask(prompt: str, default: str = "") -> str:
 def detect_os() -> str:
     """Detect the host operating system family."""
     system = platform.system().lower()
+    
+    # Initialize ANSI support on Windows
+    if system == "windows":
+        os.system('')
+        return "windows"
+    
     if system == "darwin":
         return "macos"
-    if system == "windows":
-        return "windows"
 
     # Linux — detect distro
     try:
@@ -82,7 +103,7 @@ def detect_os() -> str:
 DEPS = {
     "git":    {"check": "git --version",    "debian": "sudo apt-get install -y git",      "fedora": "sudo dnf install -y git",       "arch": "sudo pacman -S --noconfirm git",    "macos": "brew install git"},
     "docker": {"check": "docker --version", "debian": "curl -fsSL https://get.docker.com | sh", "fedora": "curl -fsSL https://get.docker.com | sh", "arch": "sudo pacman -S --noconfirm docker", "macos": "brew install --cask docker"},
-    "python3": {"check": "python3 --version", "debian": "sudo apt-get install -y python3 python3-pip", "fedora": "sudo dnf install -y python3 python3-pip", "arch": "sudo pacman -S --noconfirm python python-pip", "macos": "brew install python3"},
+    "python": {"check": "python --version" if platform.system().lower() == "windows" else "python3 --version", "debian": "sudo apt-get install -y python3 python3-pip", "fedora": "sudo dnf install -y python3 python3-pip", "arch": "sudo pacman -S --noconfirm python python-pip", "macos": "brew install python3"},
     "docker compose": {"check": "docker compose version", "debian": "sudo apt-get install -y docker-compose-plugin", "fedora": "sudo dnf install -y docker-compose-plugin", "arch": "sudo pacman -S --noconfirm docker-compose", "macos": "echo 'Docker Desktop includes Compose'"},
 }
 
@@ -110,6 +131,54 @@ def check_and_install_deps(os_type: str, auto_install: bool) -> None:
                     warn(f"Failed to install {name}")
             else:
                 warn(f"{name} not found — install manually")
+
+
+def ensure_directories(install_dir: Path, fix_perms: bool) -> None:
+    """Creates the standard directory tree for M3TAL."""
+    log(f"\n{BOLD}=== Directory Scaffolding ==={END}")
+    
+    for rel_path in SCAFFOLD_DIRS:
+        abs_path = install_dir / rel_path
+        if not abs_path.exists():
+            log(f"  [CREATE] {rel_path}")
+            abs_path.mkdir(parents=True, exist_ok=True)
+        else:
+            log(f"  [EXISTS] {rel_path}")
+        
+        if fix_perms and os.name != "nt":
+            try:
+                # Basic chown to current user
+                import pwd
+                user = pwd.getpwuid(os.getuid()).pw_name
+                subprocess.run(["sudo", "chown", "-R", f"{user}:{user}", str(abs_path)], check=False)
+            except (ImportError, AttributeError):
+                pass
+
+
+def setup_venv(install_dir: Path, venv_name: str) -> Path:
+    """Creates a virtual environment and installs requirements."""
+    log(f"\n{BOLD}=== Virtual Environment Setup ==={END}")
+    venv_path = install_dir / venv_name
+    
+    if not venv_path.exists():
+        log(f"  [CREATE] {venv_name}...")
+        subprocess.run([sys.executable, "-m", "venv", str(venv_path)], check=True)
+    else:
+        log(f"  [EXISTS] {venv_name}")
+    
+    # Identify pip path
+    pip_exe = venv_path / ("Scripts" if os.name == "nt" else "bin") / ("pip.exe" if os.name == "nt" else "pip")
+    py_exe = venv_path / ("Scripts" if os.name == "nt" else "bin") / ("python.exe" if os.name == "nt" else "python")
+    
+    log(f"  [INSTALL] requirements.txt into {venv_name}...")
+    req_file = install_dir / "requirements.txt"
+    if req_file.exists():
+        subprocess.run([str(pip_exe), "install", "-U", "pip"], check=False)
+        subprocess.run([str(pip_exe), "install", "-r", str(req_file)], check=False)
+    else:
+        warn("requirements.txt missing — skipping pip install")
+        
+    return py_exe
 
 
 # --- Repo Setup ---------------------------------------------------------------
@@ -210,19 +279,27 @@ def setup_repo(install_dir: Path) -> bool:
 # --- Main ---------------------------------------------------------------------
 
 def main() -> None:
+    start_time = time.time()
     print(f"\n{BOLD}{BLUE}=== M3TAL MEDIA SERVER INTERACTIVE INSTALL ==={END}\n")
 
     os_type = detect_os()
     log(f"Detected OS: {BOLD}{os_type}{END}")
 
     # Config wizard
-    default_dir = str(Path.home() / "M3tal-Media-Server")
+    working_dir = Path.cwd()
+    is_already_in_repo = (working_dir / ".git").exists() or (working_dir / "control-plane").exists()
+    default_dir = str(working_dir) if is_already_in_repo else str(Path.home() / "M3tal-Media-Server")
+    
     install_dir = Path(ask("Install directory", default_dir))
+    venv_name = ask("Virtual environment name", "venv")
     auto_install = ask("Auto-install missing dependencies? (y/n)", "y").lower() == "y"
+    fix_perms = ask("Fix permissions for data directories? (y/n)", "y").lower() == "y"
     auto_start = ask("Start system after install? (y/n)", "y").lower() == "y"
 
     log(f"\n{BOLD}=== Summary ==={END}")
     log(f"  Install Dir:  {install_dir}")
+    log(f"  Venv Name:    {venv_name}")
+    log(f"  Fix Perms:    {fix_perms}")
     log(f"  Auto Install: {auto_install}")
     log(f"  Auto Start:   {auto_start}")
 
@@ -233,41 +310,43 @@ def main() -> None:
     # 1. Dependencies
     check_and_install_deps(os_type, auto_install)
 
-    # 2. Python packages
-    log(f"\n{BOLD}=== Installing Python Dependencies ==={END}")
-    req_file = Path("requirements.txt")
-    if req_file.exists():
-        subprocess.run([sys.executable, "-m", "pip", "install", "-r", str(req_file)], check=False)
-    else:
-        warn("requirements.txt not found — skip pip install")
-
-    # 3. Repository
+    # 2. Repository
     if not setup_repo(install_dir):
         sys.exit(1)
 
     os.chdir(install_dir)
 
-    # 4. Init
+    # 3. Virtual Environment
+    venv_python = setup_venv(install_dir, venv_name)
+
+    # 4. Scaffolding
+    ensure_directories(install_dir, fix_perms)
+
+    # 5. Init
     log(f"\n{BOLD}=== Initializing M3TAL Control Plane ==={END}")
     init_script = install_dir / "control-plane" / "init.py"
-    subprocess.run([sys.executable, str(init_script)], check=True)
+    subprocess.run([str(venv_python), str(init_script)], check=True)
 
-    # 5. Environment config
+    # 6. Environment config
     log(f"\n{BOLD}=== Environment Configuration ==={END}")
-    wizard = install_dir / "scripts" / "configure_env.py"
+    wizard = install_dir / "scripts" / "config" / "configure_env.py"
     if wizard.exists():
-        subprocess.run([sys.executable, str(wizard)], check=True)
+        subprocess.run([str(venv_python), str(wizard)], check=True)
     else:
-        warn("Configuration wizard missing, using .env.example")
+        warn("Configuration wizard missing (checked scripts/config/configure_env.py)")
         env_example = install_dir / ".env.example"
         if env_example.exists():
             shutil.copy2(env_example, install_dir / ".env")
 
-    # 6. Docker network
+    # 7. Docker network
     log(f"\n{BOLD}=== Docker Network ==={END}")
     try:
+        should_prune = ask("Prune existing 'm3tal' network before creation? (y/n)", "n").lower() == "y"
+        if should_prune:
+            subprocess.run(["docker", "network", "rm", "m3tal"], check=False)
+            
         result = subprocess.run(["docker", "network", "ls"], capture_output=True, text=True)
-        if "m3tal" in result.stdout:
+        if "m3tal" in result.stdout and not should_prune:
             log(f"  {GREEN}[OK]{END} network exists")
         else:
             subprocess.run(["docker", "network", "create", "m3tal"], check=True)
@@ -275,20 +354,20 @@ def main() -> None:
     except FileNotFoundError:
         warn("Docker not available — network not created")
 
-    # 7. Final checks
+    # 8. Final checks
     log(f"\n{BOLD}=== Final Checks ==={END}")
-    for cmd in ["docker --version", "python3 --version"]:
+    for cmd_label, cmd_args in [("Docker", ["docker", "--version"]), ("Python (Venv)", [str(venv_python), "--version"])]:
         try:
-            result = subprocess.run(cmd.split(), capture_output=True, text=True)
-            log(f"  {GREEN}[OK]{END} {result.stdout.strip()}")
+            subprocess.run(cmd_args, capture_output=True, text=True)
+            log(f"  {GREEN}[OK]{END} {cmd_label}")
         except FileNotFoundError:
-            warn(f"{cmd.split()[0]} not found")
+            warn(f"{cmd_label} not found")
 
-    # 8. Auto-start
+    # 9. Auto-start
     if auto_start:
         log(f"\n{BOLD}[START] Launching control plane...{END}")
         supervisor = install_dir / "control-plane" / "supervisor.py"
-        subprocess.Popen([sys.executable, str(supervisor)])
+        subprocess.Popen([str(venv_python), str(supervisor)])
 
     # 9. Warnings summary
     if WARNINGS:
@@ -298,10 +377,24 @@ def main() -> None:
         log(f"  ⚠️  Some dependencies may need manual installation")
 
     # 10. Done
+    duration = time.time() - start_time
     log(f"\n{GREEN}{BOLD}=== INSTALL COMPLETE ==={END}")
+    log(f"  Total Time:   {duration:.2f}s")
     log(f"\n  Run manually: python3 control-plane/supervisor.py")
     log(f"  Dashboard:    http://localhost:8080\n")
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print(f"\n{YELLOW}Installation interrupted by user.{END}")
+    except SystemExit:
+        # Catch sys.exit() calls so the finally-style pause still runs
+        pass
+    except Exception as e:
+        print(f"\n{RED}FATAL ERROR: {e}{END}")
+    
+    print(f"\n{BOLD}Installation process finished.{END}")
+    input(f"\n{CYAN}Press Enter to close this window...{END}")
+    sys.exit(0)
