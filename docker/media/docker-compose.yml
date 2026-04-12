@@ -5,32 +5,10 @@ x-logging: &default-logging
     max-file: "3"
 
 services:
-  gluetun:
-    image: qmcgaw/gluetun
-    container_name: gluetun
-    cap_add:
-      - NET_ADMIN
-    environment:
-      - VPN_SERVICE_PROVIDER=private internet access
-      - VPN_TYPE=openvpn
-      - OPENVPN_USER=${VPN_USER}
-      - OPENVPN_PASSWORD=${VPN_PASSWORD}
-      - SERVER_REGIONS=US East
-      - FIREWALL_VPN_INPUT_PORTS=8080,6881
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.qbittorrent.rule=Host(`qbittorrent.m3tal-media-server.xyz`)"
-      - "traefik.http.services.qbittorrent.loadbalancer.server.port=8080"
-    networks:
-      - m3tal
-    restart: unless-stopped
-
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent
     container_name: qbittorrent
-    network_mode: "service:gluetun"
-    depends_on:
-      - gluetun
+    network_mode: "container:gluetun"
     environment:
       - PUID=1000
       - PGID=1000

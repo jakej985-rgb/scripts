@@ -1,0 +1,25 @@
+services:
+  gluetun:
+    image: qmcgaw/gluetun:latest
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - VPN_SERVICE_PROVIDER=private internet access
+      - VPN_TYPE=openvpn
+      - OPENVPN_USER=${VPN_USER}
+      - OPENVPN_PASSWORD=${VPN_PASSWORD}
+      - SERVER_REGIONS=US East
+      - FIREWALL_VPN_INPUT_PORTS=8080,6881
+    labels:
+      - "traefik.enable=true"
+      # qBittorrent labels are here because it will share gluetun's network stack
+      - "traefik.http.routers.qbittorrent.rule=Host(`qbittorrent.${DOMAIN}`)"
+      - "traefik.http.services.qbittorrent.loadbalancer.server.port=8080"
+    networks:
+      - m3tal
+    restart: unless-stopped
+
+networks:
+  m3tal:
+    external: true

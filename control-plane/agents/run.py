@@ -32,6 +32,7 @@ AGENTS = [
     ("health_score", "health_score.py"),
     ("observer",  "observer.py"),
     ("tunnel",    "tunnel.py"),
+    ("network_guard", "network_guard.py"),
     ("healer",    "healer.py"),
     ("notify",    "notify.py"),
 ]
@@ -163,12 +164,24 @@ def main() -> None:
     ts = time.strftime("%H:%M:%S")
     ensure_dirs()
     
-    # 1. Master Lock Enforcement
-    if not acquire_lock(RUNNER_LOCK):
-        print(f"[{ts}] ABORT: Another Agent Runner is already active.")
-        sys.exit(0)
-
     print(f"[{ts}] M3TAL Agent Runner launching...")
+
+    # 1.1 Wait for System Readiness (init.py must finish)
+    health_file = STATE_DIR / "health.json"
+    while not _shutdown_event.is_set():
+        if health_file.exists():
+            try:
+                health = json.loads(health_file.read_text())
+                if health.get("mode") == "running":
+                    print(f"[{time.strftime('%H:%M:%S')}] System READY. Releasing agents...")
+                    break
+            except:
+                pass
+        print(f"[{time.strftime('%H:%M:%S')}] System INITIALIZING... waiting for bootstrap.")
+        time.sleep(5)
+
+    if _shutdown_event.is_set():
+        return
 
     threads: list[threading.Thread] = []
 

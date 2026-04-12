@@ -115,6 +115,44 @@ def update_status(component: str, status: str):
     SYSTEM_STATUS[component] = status
     t_log(f"Component {component} status: {status}", symbol="✔" if status == "ok" else "⚠")
 
+def wait_for_readiness(name: str, container_name: str, log_pattern: str = None, probe_cmd: list = None, timeout: int = 60) -> bool:
+    """Multi-signal readiness: Polls logs and runs network probes until service is ready."""
+    t_log(f"Waiting for {name} readiness (timeout {timeout}s)...", symbol="⏳")
+    start_time = time.time()
+    use_shell = os.name == "nt"
+    
+    while time.time() - start_time < timeout:
+        # Signal 1: Log Pattern
+        if log_pattern:
+            try:
+                log_res = subprocess.run(["docker", "logs", "--tail", "50", container_name], 
+                                      capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)
+                if log_pattern in log_res.stdout or log_pattern in log_res.stderr:
+                    t_log(f"{name} log signal caught: '{log_pattern}'", symbol="✔")
+                    # If no probe command, we're done
+                    if not probe_cmd: return True
+                    # Otherwise, continue to probe check
+            except:
+                pass
+
+        # Signal 2: Network/Probe Command
+        if probe_cmd:
+            try:
+                # Prefix with docker exec if it's not already
+                full_cmd = ["docker", "exec", container_name] + probe_cmd
+                probe_res = subprocess.run(full_cmd, capture_output=True, shell=use_shell, env=GLOBAL_ENV)
+                if probe_res.returncode == 0:
+                    t_log(f"{name} network probe SUCCEEDED.", symbol="✔")
+                    return True
+            except:
+                pass
+        
+        # If neither signal hit but container is running, we wait
+        time.sleep(2)
+    
+    t_log(f"{name} readiness TIMEOUT of {timeout}s reached.", symbol="⚠")
+    return False
+
 # --- Healing Agents -----------------------------------------------------------
 
 def fs_agent(repair_mode: bool = False):
@@ -349,12 +387,29 @@ def docker_agent(repair_mode: bool = False):
         poller_thread.start()
 
         stacks = [
-            ("routing", REPO_ROOT / "docker" / "routing", False),
+            ("routing", REPO_ROOT / "docker" / "routing", True),    # CRITICAL: Gateway
+            ("network", REPO_ROOT / "docker" / "network", True),    # CRITICAL: VPN
             ("maintenance", REPO_ROOT / "docker" / "maintenance", False),
-            ("core", REPO_ROOT / "docker" / "core", True),
+            ("core", REPO_ROOT / "docker" / "core", True),         # CRITICAL: Agents/Dashboard
             ("media", REPO_ROOT / "docker" / "media", False),
             ("apps/tattoo-app", REPO_ROOT / "docker" / "apps" / "tattoo-app", False)
         ]
+        
+        # Tiered Timeouts
+        TIMEOUTS = {
+            "routing": 60,
+            "network": 60,
+            "core": 45,
+            "media": 120,
+            "apps/tattoo-app": 60
+        }
+
+        # Readiness definitions (Log Pattern, Probe Command)
+        READINESS = {
+            "routing": ("cloudflared", "Connected to Cloudflare", ["curl", "-s", "-f", "https://ipinfo.io"]),
+            "network": ("gluetun", "VPN is up", ["curl", "-s", "-f", "https://ifconfig.me"]),
+            "core": ("m3tal-dashboard", None, ["curl", "-s", "-f", "http://localhost:8080/api/health"])
+        }
         
         for name, sd, is_critical in stacks:
             cf = sd / "docker-compose.yml"
@@ -380,27 +435,32 @@ def docker_agent(repair_mode: bool = False):
                 
                 proc = subprocess.Popen(["docker", "compose", "-f", str(cf), "up", "-d"], 
                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, 
-                                     text=True, shell=use_shell, env=GLOBAL_ENV)
-                
-                # 2. Wait for either health or fire-and-forget timer (Audit fix: cap at 90s)
-                wait_time = 90
+                                          # 2. Wait for Docker status (Up/Running)
+                wait_time = TIMEOUTS.get(name, 90)
                 start_time = time.time()
                 while time.time() - start_time < wait_time:
                     if proc.poll() is not None and proc.returncode != 0:
                         raise RuntimeError(f"Docker Launch Error (Exit {proc.returncode}) for {name}")
                     
-                    # Update local ready count based on shared live_list status
                     ready_count = sum(1 for item in expected_services 
                                     if global_live_list.statuses.get(item) in ["running", "healthy", "done"])
                     
                     sub_bar.update(ready_count, f"Processed {ready_count}/{total_svc} ({name})")
                     if ready_count >= total_svc: break
                     
-                    # Provide 'pulling' feedback until containers appear
                     if ready_count == 0 and proc.poll() is None:
                         for item in expected_services:
                             if global_live_list.statuses.get(item) == "queued":
                                 global_live_list.update(item, "pulling")
+                    time.sleep(1.5)
+
+                # 3. Enhanced Readiness Check (Multi-Signal)
+                if name in READINESS:
+                    c_name, l_pat, p_cmd = READINESS[name]
+                    if not wait_for_readiness(name, c_name, l_pat, p_cmd, timeout=wait_time):
+                        if is_critical:
+                            raise RuntimeError(f"Critical service {c_name} in {name} stack failed readiness probes.")
+live_list.update(item, "pulling")
 
                     time.sleep(1.5)
                 
@@ -447,7 +507,7 @@ def health_agent():
         health_packet = {
             "status": final_status,
             "timestamp": int(time.time()),
-            "mode": MODE,
+            "mode": "running" if is_ready else "degraded",
             "details": SYSTEM_STATUS
         }
         
