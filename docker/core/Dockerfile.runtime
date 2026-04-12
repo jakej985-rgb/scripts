@@ -29,11 +29,9 @@ RUN pip install --no-cache-dir \
     psutil==5.9.8
 
 # 4. Non-Root Execution Enforcement
-# Create appuser and add to docker group (GID 999 is standard for Docker Desktop/Debian)
+# Create appuser and add to groups (GID 0 is often needed for Docker Desktop socket access)
 RUN groupadd -g 1000 appuser && \
-    groupadd -g 999 docker_socket && \
-    useradd -m -u 1000 -g 1000 appuser && \
-    usermod -aG docker_socket appuser
+    useradd -m -u 1000 -g 1000 -G 0 appuser
 
 # Set workspace
 WORKDIR /docker
