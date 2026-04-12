@@ -396,16 +396,16 @@ def docker_agent(repair_mode: bool = False):
         
         # Tiered Timeouts
         TIMEOUTS = {
-            "routing": 60,
-            "network": 60,
-            "core": 45,
+            "routing": 90,
+            "network": 90,
+            "core": 60,
             "media": 120,
             "apps/tattoo-app": 60
         }
 
         # Readiness definitions (Log Pattern, Probe Command)
         READINESS = {
-            "routing": ("cloudflared", "Connected to Cloudflare", ["curl", "-s", "-f", "https://ipinfo.io"]),
+            "routing": ("cloudflared", "Registered tunnel connection", ["curl", "-s", "-f", "https://ipinfo.io"]),
             "network": ("gluetun", "VPN is up", ["curl", "-s", "-f", "https://ifconfig.me"]),
             "core": ("m3tal-dashboard", None, ["curl", "-s", "-f", "http://localhost:8080/api/health"])
         }

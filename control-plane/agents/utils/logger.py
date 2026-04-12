@@ -19,8 +19,15 @@ def get_logger(name):
     try:
         os.makedirs(LOG_DIR, exist_ok=True)
         log_file = os.path.join(LOG_DIR, f"{name}.log")
-        # Use RotatingFileHandler to prevent log sprawl (Batch 3 T2)
-        fh = RotatingFileHandler(log_file, maxBytes=10*1024*1024, backupCount=3)
+        try:
+            # Use RotatingFileHandler to prevent log sprawl (Batch 3 T2)
+            fh = RotatingFileHandler(log_file, maxBytes=10*1024*1024, backupCount=3)
+        except PermissionError:
+            # Fallback for Windows locking issues (Audit fix 4.6)
+            # If the shared log is locked by another agent, use a unique file
+            log_file = os.path.join(LOG_DIR, f"{name}_{os.getpid()}.log")
+            fh = RotatingFileHandler(log_file, maxBytes=10*1024*1024, backupCount=3)
+            
         fh.setFormatter(formatter)
         logger.addHandler(fh)
     except Exception as e:

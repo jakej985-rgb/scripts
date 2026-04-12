@@ -71,58 +71,60 @@ def get_container_metrics():
 def append_history(system, containers):
     """Batch 6 T1: Append metrics to history CSV with rotation."""
     ts = system["timestamp"]
-    lines = []
+    new_lines = []
     
-    # Write system summary
-    lines.append(f"{ts},host,{system['cpu']},{system['mem']}\n")
-    
-    # Write container individual metrics
+    # Pre-format lines for batch write
+    new_lines.append(f"{ts},host,{system['cpu']},{system['mem']}\n")
     for c in containers:
-        lines.append(f"{ts},{c['name']},{c['cpu']},{c['mem']}\n")
+        new_lines.append(f"{ts},{c['name']},{c['cpu']},{c['mem']}\n")
         
+    header = "timestamp,name,cpu,mem\n"
+    
     try:
-        file_exists = os.path.isfile(HISTORY_CSV)
-        header = "timestamp,name,cpu,mem\n"
-        
-        # Ensure header exists if file is missing or empty
-        if not file_exists or os.path.getsize(HISTORY_CSV) == 0:
-            with open(HISTORY_CSV, 'w') as f:
-                f.write(header)
-
-        with open(HISTORY_CSV, "a") as f:
-            f.writelines(lines)
-            
-        # Persistent rotation check — every 10 minutes (Audit fix 2.5)
-        last_prune_file = os.path.join(STATE_DIR, "last_prune.json")
-        last_prune_data = {}
+        # Step 1: Ensure header and Append new data
+        mode = 'a' if os.path.isfile(HISTORY_CSV) and os.path.getsize(HISTORY_CSV) > 0 else 'w'
         try:
-            with open(last_prune_file, 'r') as pf:
-                last_prune_data = json.loads(pf.read().strip() or '{}')
-        except:
-            pass
-        last_prune_ts = last_prune_data.get("ts", 0)
+            with open(HISTORY_CSV, mode) as f:
+                if mode == 'w':
+                    f.write(header)
+                f.writelines(new_lines)
+        except PermissionError:
+            # Audit fix: don't crash if locked, just log and skip this cycle
+            logger.warning("metrics-history.csv is currently locked. Skipping this history record.")
+            return
+
+        # Step 2: Periodic Rotation check (every 10 minutes)
+        last_prune_file = os.path.join(STATE_DIR, "last_prune.json")
+        last_prune_ts = 0
+        try:
+            if os.path.exists(last_prune_file):
+                with open(last_prune_file, 'r') as pf:
+                    last_prune_ts = json.loads(pf.read().strip() or '{}').get("ts", 0)
+        except: pass
 
         if ts - last_prune_ts > 600:
-             if os.path.exists(HISTORY_CSV):
-                 with open(HISTORY_CSV, "r") as f:
-                     # Audit fix 2.6: Use maxlen to automatically prune oldest line on read
-                     all_lines = collections.deque(f, maxlen=MAX_HISTORY_ENTRIES)
-                 
-                 # deque already has maxlen entries - write it back to prune
-                 logger.info("Rotating metrics-history.csv (Pruning overflow)")
-                 with open(HISTORY_CSV, "w") as f:
-                     # Ensure header is preserved
-                     if all_lines and not all_lines[0].startswith("timestamp"):
-                         f.write(header)
-                     f.writelines(all_lines)
-             # Update last prune timestamp
-             try:
-                 with open(last_prune_file, 'w') as pf:
-                     json.dump({"ts": ts}, pf)
-             except:
-                 pass
+            try:
+                if os.path.exists(HISTORY_CSV):
+                    with open(HISTORY_CSV, "r") as f:
+                        # Use maxlen to automatically prune oldest line on read
+                        all_lines = collections.deque(f, maxlen=MAX_HISTORY_ENTRIES)
+                    
+                    # Write it back to prune (Batch 3 T4 - Atomic-like replacement)
+                    with open(HISTORY_CSV, "w") as f:
+                        if all_lines and not all_lines[0].startswith("timestamp"):
+                            f.write(header)
+                        f.writelines(all_lines)
+                
+                # Update last prune timestamp
+                with open(last_prune_file, 'w') as pf:
+                    json.dump({"ts": ts}, pf)
+                logger.info("Rotated metrics-history.csv")
+            except PermissionError:
+                logger.warning("Rotation failed: metrics-history.csv is locked.")
+            except Exception as e:
+                logger.error(f"Rotation error: {e}")
     except Exception as e:
-        logger.error(f"Failed to write history: {e}")
+        logger.error(f"Failed to process history: {e}")
 
 def collect_all_metrics():
     system = get_system_metrics()

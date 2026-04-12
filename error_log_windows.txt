@@ -1,7 +1,8 @@
 M3TAL ERROR LOG (WINDOWS)
-Generated: 2026-04-12 02:34:11
+Generated: 2026-04-12 09:47:11
 ================================================================================
 
+|   â””â”€â”€ Restart VPN on healthcheck failure: yes
 [anomaly.log] 2026-04-11 19:20:38 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
 [anomaly.log] 2026-04-11 19:20:38 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
 [anomaly.log] 2026-04-11 19:20:49 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
@@ -278,6 +279,74 @@ Generated: 2026-04-12 02:34:11
 [anomaly.log] 2026-04-12 02:33:32 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
 [anomaly.log] 2026-04-12 02:33:42 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
 [anomaly.log] 2026-04-12 02:33:42 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:34:13 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:34:13 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:34:25 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:34:25 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:34:38 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:34:38 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:34:49 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:34:49 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:35:00 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:35:00 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:35:11 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:35:11 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:35:24 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:35:24 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:35:38 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:35:38 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:35:49 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:35:49 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:36:02 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:36:02 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:36:16 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:36:16 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:36:30 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:36:30 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:42:34 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
+[anomaly.log] 2026-04-12 02:42:34 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
+[anomaly.log] 2026-04-12 02:42:47 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:42:47 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:43:01 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:43:01 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:43:12 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:43:12 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:43:24 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:43:24 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:43:40 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:43:40 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:43:56 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:43:56 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:44:10 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:44:10 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:44:24 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:44:24 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:44:39 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:44:39 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:44:52 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:44:52 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:45:06 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:45:06 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:45:18 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:45:18 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:45:31 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:45:31 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:45:42 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:45:42 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:45:57 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:45:57 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:46:09 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:46:09 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:46:20 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:46:20 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:46:34 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:46:34 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:46:48 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:46:48 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:47:02 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:47:02 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:47:15 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:47:15 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
 [decision.log] Failed to initialize file logger for guards: [Errno 13] Permission denied: '/docker/control-plane/state/logs/guards.log'
 [decision.log] Failed to initialize file logger for guards: [Errno 13] Permission denied: '/docker/control-plane/state/logs/guards.log'
 [healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Critical service cloudflared in routing stack failed readiness probes.
@@ -296,6 +365,8 @@ Generated: 2026-04-12 02:34:11
 [healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Critical service cloudflared in routing stack failed readiness probes.
 [healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Critical service gluetun in network stack failed readiness probes.
 [healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Critical service m3tal-dashboard in core stack failed readiness probes.
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Critical service cloudflared in routing stack failed readiness probes.
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Critical service gluetun in network stack failed readiness probes.
 [health_score.log] 2026-04-11 19:20:26 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
 [health_score.log] 2026-04-11 19:20:37 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
 [health_score.log] 2026-04-11 19:20:52 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
@@ -357,6 +428,40 @@ Generated: 2026-04-12 02:34:11
 [health_score.log] 2026-04-12 02:33:29 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
 [health_score.log] 2026-04-12 02:33:41 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
 [health_score.log] 2026-04-12 02:34:08 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:34:21 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:34:31 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:34:43 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:34:53 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:35:05 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:35:19 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:35:30 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:35:44 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:35:57 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:36:10 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:36:20 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:36:30 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:42:29 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 0
+[health_score.log] 2026-04-12 02:42:44 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:42:58 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:43:13 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:43:27 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:43:41 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:43:53 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:44:09 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:44:22 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:44:37 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:44:49 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:45:01 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:45:12 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:45:23 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:45:38 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:45:50 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:46:03 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:46:17 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:46:31 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:46:46 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:46:57 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:47:08 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
 [init.log] 2026-04-12 07:14:48 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
 [init.log] 2026-04-12 07:16:18 ⚠ [INIT] [DOCKER] Stack network failed: Critical service gluetun in network stack failed readiness probes.
 [init.log] 2026-04-12 07:16:25 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
@@ -380,6 +485,10 @@ Generated: 2026-04-12 02:34:11
 [init.log] 2026-04-12 02:27:42 ⚠ [INIT] [DOCKER] Stack routing failed: Critical service cloudflared in routing stack failed readiness probes.
 [init.log] 2026-04-12 02:28:43 ⚠ [INIT] [DOCKER] Stack network failed: Critical service gluetun in network stack failed readiness probes.
 [init.log] 2026-04-12 02:29:30 ⚠ [INIT] [DOCKER] Stack core failed: Critical service m3tal-dashboard in core stack failed readiness probes.
+[init.log] 2026-04-12 09:39:02 ⚠ [INIT] [DOCKER] Stack routing failed: Critical service cloudflared in routing stack failed readiness probes.
+[init.log] 2026-04-12 09:40:29 ⚠ [INIT] [DOCKER] Stack network failed: Critical service gluetun in network stack failed readiness probes.
+[init.log] 2026-04-12 02:43:53 ⚠ [INIT] [DOCKER] Stack routing failed: Critical service cloudflared in routing stack failed readiness probes.
+[init.log] 2026-04-12 02:44:54 ⚠ [INIT] [DOCKER] Stack network failed: Critical service gluetun in network stack failed readiness probes.
 [leader.log] 2026-04-11 19:20:17 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
 [leader.log] 2026-04-11 19:20:17 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
 [leader.log] 2026-04-11 19:20:27 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
@@ -534,6 +643,96 @@ Generated: 2026-04-12 02:34:11
 [leader.log] 2026-04-12 02:33:43 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
 [leader.log] 2026-04-12 02:34:03 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
 [leader.log] 2026-04-12 02:34:03 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:34:13 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:34:13 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:34:23 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:34:23 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:34:33 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:34:33 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:34:43 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:34:43 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:34:53 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:34:53 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:35:03 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:35:03 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:35:13 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:35:13 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:35:23 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:35:23 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:35:33 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:35:33 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:35:43 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:35:43 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:35:53 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:35:53 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:36:03 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:36:03 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:36:13 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:36:13 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:36:23 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:36:23 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:36:33 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:36:33 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:42:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:42:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:42:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:42:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:42:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:42:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:42:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:42:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:43:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:43:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:43:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:43:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:43:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:43:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:43:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:43:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:43:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:43:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:43:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:43:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:44:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:44:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:44:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:44:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:44:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:44:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:44:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:44:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:44:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:44:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:44:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:44:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:45:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:45:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:45:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:45:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:45:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:45:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:45:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:45:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:45:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:45:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:45:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:45:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:46:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:46:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:46:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:46:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:46:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:46:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:46:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:46:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:46:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:46:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:46:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:46:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:47:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:47:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:47:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:47:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
 [metrics.log] 2026-04-11 19:20:34 [ERROR] metrics: Docker stats timed out (10s)
 [metrics.log] 2026-04-11 19:20:34 [ERROR] metrics: Docker stats timed out (10s)
 [metrics.log] 2026-04-11 19:20:57 [ERROR] metrics: Docker stats timed out (10s)
@@ -888,6 +1087,24 @@ Generated: 2026-04-12 02:34:11
 [metrics.log] 2026-04-12 02:33:27 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
 [metrics.log] 2026-04-12 02:33:39 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
 [metrics.log] 2026-04-12 02:33:39 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:43:26 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-12 02:43:26 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-12 02:43:49 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-12 02:43:49 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-12 02:44:13 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-12 02:44:13 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-12 02:44:36 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-12 02:44:36 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-12 02:44:58 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-12 02:44:58 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-12 02:45:24 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-12 02:45:24 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-12 02:46:08 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-12 02:46:08 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-12 02:46:34 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-12 02:46:34 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-12 02:46:59 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-12 02:46:59 [ERROR] metrics: Docker stats timed out (10s)
 [monitor.log] 2026-04-11 19:20:27 [ERROR] monitor: Docker poll timed out (10s)
 [monitor.log] 2026-04-11 19:20:27 [ERROR] monitor: Docker poll timed out (10s)
 [monitor.log] 2026-04-11 19:23:24 [ERROR] monitor: Failed to poll docker (Status 1)
@@ -1270,6 +1487,34 @@ Generated: 2026-04-12 02:34:11
 [notify.log] 2026-04-12 02:32:47 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
 [notify.log] 2026-04-12 02:33:18 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
 [notify.log] 2026-04-12 02:33:18 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:34:16 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:34:16 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:34:50 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:34:50 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:35:23 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:35:23 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:35:57 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:35:57 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:36:30 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:36:30 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:42:38 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:42:38 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:43:08 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:43:08 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:43:38 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:43:38 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:44:10 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:44:10 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:44:42 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:44:42 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:45:17 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:45:17 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:45:49 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:45:49 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:46:24 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:46:24 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:46:55 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:46:55 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
 [observer.log] 2026-04-11 19:20:26 [INFO] observer: Watching system logs for critical events...
 [observer.log] 2026-04-11 19:20:26 [INFO] observer: Watching system logs for critical events...
 [observer.log] 2026-04-11 19:20:26 [WARNING] observer: Critical Event detected in leader: 2026-04-11 19:20:17 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
@@ -1782,6 +2027,92 @@ Generated: 2026-04-12 02:34:11
 [observer.log] 2026-04-12 02:33:43 [INFO] observer: Watching system logs for critical events...
 [observer.log] 2026-04-12 02:33:43 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:33:32 [ERROR] monitor: Failed to poll docker (Status 1)
 [observer.log] 2026-04-12 02:33:43 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:33:32 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:34:13 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:34:13 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:34:26 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:34:26 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:34:38 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:34:38 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:34:50 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:34:50 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:35:01 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:35:01 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:35:12 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:35:12 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:35:26 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:35:26 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:35:36 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:35:36 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:35:50 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:35:50 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:36:04 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:36:04 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:36:15 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:36:15 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:36:29 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:36:29 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:42:35 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:42:35 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:42:46 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:42:46 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:43:00 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:43:00 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:43:12 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:43:12 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:43:24 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:43:24 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:43:35 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:43:35 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:43:35 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:43:26 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-12 02:43:35 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:43:26 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-12 02:43:47 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:43:47 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:43:59 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:43:59 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:43:59 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:43:49 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-12 02:43:59 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:43:49 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-12 02:44:14 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:44:14 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:44:14 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:44:13 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-12 02:44:14 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:44:13 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-12 02:44:28 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:44:28 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:44:41 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:44:41 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:44:41 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:44:36 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-12 02:44:41 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:44:36 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-12 02:44:57 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:44:57 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:45:12 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:45:12 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:45:12 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:44:58 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-12 02:45:12 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:44:58 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-12 02:45:25 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:45:25 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:45:26 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:45:24 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-12 02:45:26 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:45:24 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-12 02:45:39 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:45:39 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:45:51 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:45:51 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:46:02 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:46:02 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:46:13 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:46:13 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:46:13 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:46:08 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-12 02:46:13 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:46:08 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-12 02:46:25 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:46:25 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:46:36 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:46:36 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:46:36 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:46:34 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-12 02:46:36 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:46:34 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-12 02:46:51 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:46:51 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:47:04 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:47:04 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:47:04 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:46:59 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-12 02:47:04 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:46:59 [ERROR] metrics: Docker stats timed out (10s)
 [reconcile.log] Failed to initialize file logger for guards: [Errno 13] Permission denied: '/docker/control-plane/state/logs/guards.log'
 [reconcile.log] Failed to initialize file logger for guards: [Errno 13] Permission denied: '/docker/control-plane/state/logs/guards.log'
 [registry.log] 2026-04-11 19:20:17 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
@@ -1897,6 +2228,10 @@ Generated: 2026-04-12 02:34:11
 [registry.log] 2026-04-12 02:32:34 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
 [registry.log] 2026-04-12 02:32:34 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
 [registry.log] 2026-04-12 02:32:34 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+[registry.log] 2026-04-12 02:42:25 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+[registry.log] 2026-04-12 02:42:25 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+[registry.log] 2026-04-12 02:42:26 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+[registry.log] 2026-04-12 02:42:26 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
 [scorer.log] 2026-04-11 19:20:26 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
 [scorer.log] 2026-04-11 19:20:37 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
 [scorer.log] 2026-04-11 19:20:52 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
@@ -1958,6 +2293,40 @@ Generated: 2026-04-12 02:34:11
 [scorer.log] 2026-04-12 02:33:29 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
 [scorer.log] 2026-04-12 02:33:41 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
 [scorer.log] 2026-04-12 02:34:08 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:34:21 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:34:31 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:34:43 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:34:53 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:35:05 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:35:19 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:35:30 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:35:44 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:35:57 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:36:10 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:36:20 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:36:30 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:42:29 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 0
+[scorer.log] 2026-04-12 02:42:44 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:42:58 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:43:13 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:43:27 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:43:41 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:43:53 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:44:09 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:44:22 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:44:37 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:44:49 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:45:01 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:45:12 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:45:23 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:45:38 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:45:50 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:46:03 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:46:17 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:46:31 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:46:46 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:46:57 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:47:08 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
 [tunnel.log] 2026-04-11 19:20:36 [ERROR] tunnel: Tunnel inspect timed out (10s)
 [tunnel.log] 2026-04-11 19:20:36 [ERROR] tunnel: Tunnel inspect timed out (10s)
 [tunnel.log] 2026-04-11 19:21:37 [ERROR] tunnel: Tunnel recovery timed out (60s)

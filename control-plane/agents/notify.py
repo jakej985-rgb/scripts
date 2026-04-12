@@ -23,6 +23,10 @@ TELEGRAM_TOKEN   = os.getenv(ENV_TELEGRAM_TOKEN, "")
 TELEGRAM_CHAT_ID = os.getenv(ENV_TELEGRAM_CHAT, "")
 NOTIFY_STATE_JSON = os.path.join(STATE_DIR, "notify_state.json")
 
+# Alert Configuration (Audit fix 4.7)
+ALERT_VERDICTS = ["DEGRADED", "CRITICAL"]
+ALERT_COOLDOWN = 3600  # 1 hour
+
 def validate_telegram_env():
     """Strict validation for Telegram credentials (Audit fix 4.1)."""
     if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_ID:

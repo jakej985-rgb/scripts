@@ -1,5 +1,5 @@
 M3TAL SYSTEM DEBUG BUNDLE (WINDOWS)
-Generated: 2026-04-12 02:34:11
+Generated: 2026-04-12 09:47:11
 Repo Root: C:\Users\jakej\Documents\GitHub\M3tal-Media-Server
 ================================================================================
 
@@ -45,10 +45,33 @@ Server: Docker Desktop 4.68.0 (223695)
 
 
 --- Docker Container Status ---
-CONTAINER ID   IMAGE                       COMMAND                  CREATED          STATUS                      PORTS     NAMES
-e32103ce631f   core-m3tal-runtime          "python3 control-plaâ€¦"   19 seconds ago   Up 11 seconds                         m3tal-runtime
-839a76ef0dbd   core-m3tal-dashboard        "python3 server.py"      19 seconds ago   Up 11 seconds                         m3tal-dashboard
-79888b2a95cb   python:3.11-slim-bookworm   "sh -c 'chown -R 100â€¦"   21 seconds ago   Exited (0) 14 seconds ago             m3tal-permission-fixer
+CONTAINER ID   IMAGE                                    COMMAND                  CREATED              STATUS                             PORTS                                    NAMES
+6b9ccc78d7c4   node:20                                  "docker-entrypoint.sâ€¦"   About a minute ago   Created                                                                     tattoo-api
+11c38bd96cb0   postgres:latest                          "docker-entrypoint.sâ€¦"   2 minutes ago        Restarting (1) 15 seconds ago                                               tattoo-db
+a1ff58d64e0b   lscr.io/linuxserver/sonarr               "/init"                  4 minutes ago        Up 2 minutes (unhealthy)           8989/tcp                                 sonarr
+1b40f45a4ef8   ghcr.io/maintainerr/maintainerr:latest   "/opt/app/start.sh"      4 minutes ago        Up 2 minutes                       6246/tcp                                 maintainerr
+72b956a8398a   lscr.io/linuxserver/bazarr:latest        "/init"                  4 minutes ago        Up 2 minutes (health: starting)    6767/tcp                                 bazarr
+8d514b5247e7   ghcr.io/flaresolverr/flaresolverr        "/usr/bin/dumb-init â€¦"   4 minutes ago        Up 3 minutes                       8191-8192/tcp                            flaresolverr
+72629d7b147a   lscr.io/linuxserver/qbittorrent          "/init"                  4 minutes ago        Up 3 minutes                                                                qbittorrent
+552073639edd   lscr.io/linuxserver/radarr               "/init"                  4 minutes ago        Up 3 minutes (healthy)             7878/tcp                                 radarr
+efbb8e6a9e58   fallenbagel/jellyseerr                   "/sbin/tini -- pnpm â€¦"   4 minutes ago        Up 3 minutes (health: starting)    5055/tcp                                 jellyseerr
+6c94ea1e9291   ghcr.io/haveagitgat/tdarr:latest         "/init"                  4 minutes ago        Up 2 minutes                       8265-8267/tcp                            tdarr
+49c245ae2d00   gotson/komga                             "java -Dspring.profiâ€¦"   4 minutes ago        Up 3 minutes (health: starting)    25600/tcp                                komga
+60a0c9ac5bd9   ghcr.io/autobrr/autobrr:v1.39            "/usr/local/bin/autoâ€¦"   4 minutes ago        Up 2 minutes                       7474/tcp                                 autobrr
+7a413f83ea20   ghcr.io/recyclarr/recyclarr              "/sbin/tini -- /entrâ€¦"   4 minutes ago        Up 2 minutes                                                                recyclarr
+853fa86f4394   lscr.io/linuxserver/prowlarr             "/init"                  4 minutes ago        Up 2 minutes (health: starting)    9696/tcp                                 prowlarr
+212b02f7532a   nicolargo/glances:latest                 "glances -w"             4 minutes ago        Up 3 minutes                       61208-61209/tcp                          glances
+08ae436f1725   ghcr.io/gethomepage/homepage:latest      "docker-entrypoint.sâ€¦"   4 minutes ago        Up 2 minutes (unhealthy)           3000/tcp                                 homepage
+bbe409f8b9b4   core-m3tal-dashboard                     "python3 server.py"      5 minutes ago        Up 4 minutes                                                                m3tal-dashboard
+05bfe5ad04e3   core-m3tal-runtime                       "python3 control-plaâ€¦"   5 minutes ago        Up 4 minutes                                                                m3tal-runtime
+ce24ba0c3d50   python:3.11-slim-bookworm                "sh -c 'chown -R 100â€¦"   5 minutes ago        Exited (0) 4 minutes ago                                                    m3tal-permission-fixer
+b353bd287780   python:3.11-slim                         "sh -c 'pip install â€¦"   6 minutes ago        Up 6 minutes                                                                m3tal-dashboard-maintenance
+f2f7e10c10d7   portainer/portainer-ce                   "/portainer"             6 minutes ago        Up 6 minutes                       8000/tcp, 9000/tcp, 9443/tcp             portainer
+3676816c5310   amir20/dozzle                            "/dozzle"                6 minutes ago        Up 6 minutes                       8080/tcp                                 dozzle
+2b8833b8a21f   containrrr/watchtower                    "/watchtower --labelâ€¦"   6 minutes ago        Up 11 seconds (health: starting)   8080/tcp                                 watchtower
+b0bf35630bf1   qmcgaw/gluetun:latest                    "/gluetun-entrypoint"    8 minutes ago        Up 8 minutes (healthy)             8000/tcp, 8388/tcp, 8888/tcp, 8388/udp   gluetun
+8e13b1588048   cloudflare/cloudflared:latest            "cloudflared --no-auâ€¦"   9 minutes ago        Up 9 minutes                                                                cloudflared
+656a672f43c6   traefik:v3.0                             "/entrypoint.sh --apâ€¦"   9 minutes ago        Up 9 minutes                       80/tcp                                   traefik
 
 
 --- Network Configuration ---
@@ -71,7 +94,7 @@ Ethernet adapter Ethernet:
    Autoconfiguration Enabled . . . . : Yes
    IPv6 Address. . . . . . . . . . . : 2607:fb90:f15:ca11::43b6(Preferred) 
    Lease Obtained. . . . . . . . . . : Saturday, April 11, 2026 2:54:24 AM
-   Lease Expires . . . . . . . . . . : Sunday, April 12, 2026 3:12:22 AM
+   Lease Expires . . . . . . . . . . : Sunday, April 12, 2026 3:42:22 AM
    IPv6 Address. . . . . . . . . . . : 2607:fb90:f15:ca11:53f8:67bf:6e76:59b6(Preferred) 
    IPv6 Address. . . . . . . . . . . : fdfe:5e6c:2e69:98de:423b:252c:5f6a:a34a(Preferred) 
    Temporary IPv6 Address. . . . . . : 2607:fb90:f15:ca11:20cc:c2f1:4c31:8f2c(Preferred) 
@@ -80,7 +103,7 @@ Ethernet adapter Ethernet:
    IPv4 Address. . . . . . . . . . . : 192.168.12.4(Preferred) 
    Subnet Mask . . . . . . . . . . . : 255.255.255.0
    Lease Obtained. . . . . . . . . . : Saturday, April 11, 2026 2:54:22 AM
-   Lease Expires . . . . . . . . . . : Saturday, April 18, 2026 2:55:00 AM
+   Lease Expires . . . . . . . . . . : Saturday, April 18, 2026 2:54:59 AM
    Default Gateway . . . . . . . . . : fe80::6667:72ff:fe01:ac4%10
                                        192.168.12.1
    DHCP Server . . . . . . . . . . . : 192.168.12.1
@@ -159,16 +182,16 @@ Ethernet adapter vEthernet (WSL):
 --- M3TAL CORE STATE ---
 [HEALTH]: {
     "status": "degraded",
-    "timestamp": 1775982571,
+    "timestamp": 1775983549,
     "mode": "running",
     "details": {
         "filesystem": "ok",
         "logs": "ok",
         "state": "ok",
         "docker": "partial",
-        "auth": "unknown",
-        "dependencies": "unknown",
-        "environment": "unknown"
+        "auth": "ok",
+        "dependencies": "ok",
+        "environment": "ok"
     }
 }
 
@@ -176,15 +199,112 @@ Ethernet adapter vEthernet (WSL):
 --- DOCKER STACK LOGS ---
 
 --- Container Logs: traefik ---
-Error response from daemon: No such container: traefik
 
 
 --- Container Logs: cloudflared ---
-Error response from daemon: No such container: cloudflared
 
 
 --- Container Logs: gluetun ---
-Error response from daemon: No such container: gluetun
+|   |   â””â”€â”€ Verbosity level: 1
+|   â””â”€â”€ Path MTU discovery:
+|       â”œâ”€â”€ ICMP addresses:
+|       |   â”œâ”€â”€ 1.1.1.1
+|       |   â””â”€â”€ 8.8.8.8
+|       â””â”€â”€ TCP addresses:
+|           â”œâ”€â”€ 1.1.1.1:443
+|           â”œâ”€â”€ 8.8.8.8:443
+|           â”œâ”€â”€ 1.1.1.1:53
+|           â”œâ”€â”€ 8.8.8.8:53
+|           â”œâ”€â”€ [2606:4700:4700::1111]:53
+|           â”œâ”€â”€ [2001:4860:4860::8888]:53
+|           â”œâ”€â”€ [2606:4700:4700::1111]:443
+|           â””â”€â”€ [2001:4860:4860::8888]:443
+â”œâ”€â”€ DNS settings:
+|   â”œâ”€â”€ Upstream resolver type: dot
+|   â”œâ”€â”€ Upstream resolvers:
+|   |   â””â”€â”€ Cloudflare
+|   â”œâ”€â”€ Caching: yes
+|   â”œâ”€â”€ IPv6: no
+|   â”œâ”€â”€ Update period: every 24h0m0s
+|   â””â”€â”€ DNS filtering settings:
+|       â”œâ”€â”€ Block malicious: yes
+|       â”œâ”€â”€ Block ads: no
+|       â””â”€â”€ Block surveillance: no
+â”œâ”€â”€ Firewall settings:
+|   â”œâ”€â”€ Enabled: yes
+|   â”œâ”€â”€ Iptables settings:
+|   |   â””â”€â”€ Log level: info
+|   â””â”€â”€ VPN input ports:
+|       â”œâ”€â”€ 8080
+|       â””â”€â”€ 6881
+â”œâ”€â”€ Log settings:
+|   â””â”€â”€ Log level: info
+â”œâ”€â”€ IPv6 settings:
+|   â””â”€â”€ Check addresses:
+|       â”œâ”€â”€ [2001:4860:4860::8888]:53
+|       â””â”€â”€ [2606:4700:4700::1111]:53
+â”œâ”€â”€ Health settings:
+|   â”œâ”€â”€ Server listening address: 127.0.0.1:9999
+|   â”œâ”€â”€ Target addresses:
+|   |   â”œâ”€â”€ cloudflare.com:443
+|   |   â””â”€â”€ github.com:443
+|   â”œâ”€â”€ Small health check type: ICMP echo request
+|   |   â””â”€â”€ ICMP target IPs:
+|   |       â”œâ”€â”€ 1.1.1.1
+|   |       â””â”€â”€ 8.8.8.8
+|   â””â”€â”€ Restart VPN on healthcheck failure: yes
+â”œâ”€â”€ Shadowsocks server settings:
+|   â””â”€â”€ Enabled: no
+â”œâ”€â”€ HTTP proxy settings:
+|   â””â”€â”€ Enabled: no
+â”œâ”€â”€ Control server settings:
+|   â”œâ”€â”€ Listening address: :8000
+|   â”œâ”€â”€ Logging: yes
+|   â””â”€â”€ Authentication file path: /gluetun/auth/config.toml
+â”œâ”€â”€ Storage settings:
+|   â””â”€â”€ Filepath: /gluetun/servers.json
+â”œâ”€â”€ OS Alpine settings:
+|   â”œâ”€â”€ Process UID: 1000
+|   â””â”€â”€ Process GID: 1000
+â”œâ”€â”€ Public IP settings:
+|   â”œâ”€â”€ IP file path: /tmp/gluetun/ip
+|   â”œâ”€â”€ Public IP data base API: ipinfo
+|   â””â”€â”€ Public IP data backup APIs:
+|       â”œâ”€â”€ ifconfigco
+|       â”œâ”€â”€ ip2location
+|       â””â”€â”€ cloudflare
+â””â”€â”€ Version settings:
+    â””â”€â”€ Enabled: yes
+2026-04-12T08:39:10Z INFO [routing] default route found: interface eth0, gateway 172.18.0.1, assigned IP 172.18.0.4 and family v4
+2026-04-12T08:39:10Z INFO [routing] adding route for 0.0.0.0/0
+2026-04-12T08:39:10Z INFO [firewall] setting allowed subnets...
+2026-04-12T08:39:10Z INFO [routing] default route found: interface eth0, gateway 172.18.0.1, assigned IP 172.18.0.4 and family v4
+2026-04-12T08:39:10Z INFO TUN device is not available: open /dev/net/tun: no such file or directory; creating it...
+2026-04-12T08:39:10Z INFO [healthcheck] listening on 127.0.0.1:9999
+2026-04-12T08:39:10Z INFO [http server] http server listening on [::]:8000
+2026-04-12T08:39:10Z INFO [firewall] allowing VPN connection...
+2026-04-12T08:39:10Z INFO [openvpn] OpenVPN 2.6.16 x86_64-alpine-linux-musl [SSL (OpenSSL)] [LZO] [LZ4] [EPOLL] [MH/PKTINFO] [AEAD]
+2026-04-12T08:39:10Z INFO [openvpn] library versions: OpenSSL 3.5.5 27 Jan 2026, LZO 2.10
+2026-04-12T08:39:10Z INFO [openvpn] TCP/UDP: Preserving recently used remote address: [AF_INET]212.56.54.46:1197
+2026-04-12T08:39:10Z INFO [openvpn] UDPv4 link local: (not bound)
+2026-04-12T08:39:10Z INFO [openvpn] UDPv4 link remote: [AF_INET]212.56.54.46:1197
+2026-04-12T08:39:11Z INFO [openvpn] [newjersey430] Peer Connection Initiated with [AF_INET]212.56.54.46:1197
+2026-04-12T08:39:11Z INFO [openvpn] TUN/TAP device tun0 opened
+2026-04-12T08:39:11Z INFO [openvpn] /sbin/ip link set dev tun0 up mtu 1500
+2026-04-12T08:39:11Z INFO [openvpn] /sbin/ip link set dev tun0 up
+2026-04-12T08:39:11Z INFO [openvpn] /sbin/ip addr add dev tun0 10.37.110.236/24 broadcast +
+2026-04-12T08:39:11Z INFO [openvpn] UID set to nonrootuser
+2026-04-12T08:39:11Z INFO [openvpn] Initialization Sequence Completed
+2026-04-12T08:39:11Z INFO [firewall] setting allowed input port 8080 through interface tun0...
+2026-04-12T08:39:11Z INFO [firewall] setting allowed input port 6881 through interface tun0...
+2026-04-12T08:39:11Z INFO [MTU discovery] finding maximum MTU, this can take up to 6 seconds
+2026-04-12T08:39:16Z INFO [MTU discovery] setting VPN interface tun0 MTU to maximum valid MTU 1258
+2026-04-12T08:39:16Z INFO [dns] DNS server listening on [::]:53
+2026-04-12T08:39:16Z INFO [dns] ready and using DNS server with dot upstream resolvers
+2026-04-12T08:39:16Z INFO [dns] downloading hostnames and IP block lists
+2026-04-12T08:39:22Z INFO [ip getter] Public IP address is 212.56.54.46 (United States, New Jersey, Trenton - source: ipinfo+ifconfig.co+ip2location+cloudflare)
+2026-04-12T08:39:22Z INFO [dns] leak check report: 104.23.252.40 (20%), 162.158.157.217 (20%), 162.158.153.217 (10%), 162.158.157.216 (10%), 172.68.115.42 (10%), 172.70.109.20 (10%), 172.70.113.202 (10%), 172.71.199.43 (10%)
+2026-04-12T08:39:23Z INFO [vpn] You are running 2 commits behind the most recent latest
 
 
 --- Container Logs: m3tal-dashboard ---
@@ -194,7 +314,7 @@ Error response from daemon: No such container: gluetun
 --- COMPONENT LOG COLLECTION ---
 
 --- ATTACHMENT: anomaly.log ---
-  (Processing last 484 lines)
+  (Processing last 595 lines)
 2026-04-11 19:20:25 [INFO] anomaly: [DEBUG] AGENT=anomaly PID=42 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:25 [INFO] anomaly: [DEBUG] AGENT=anomaly PID=42 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:25 [WARNING] anomaly: DEGRADED: Contract breached: missing monitor_containers.json [DEGRADED]
@@ -679,12 +799,123 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
 2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
 2026-04-12 02:33:44 [INFO] anomaly: --- Agent anomaly Shutdown Cleanly ---
 2026-04-12 02:33:44 [INFO] anomaly: --- Agent anomaly Shutdown Cleanly ---
+2026-04-12 02:34:13 [INFO] anomaly: [DEBUG] AGENT=anomaly PID=62 HOST=e32103ce631f BYPASS=False
+2026-04-12 02:34:13 [INFO] anomaly: [DEBUG] AGENT=anomaly PID=62 HOST=e32103ce631f BYPASS=False
+2026-04-12 02:34:13 [INFO] anomaly: --- Agent anomaly Persistent Loop Started ---
+2026-04-12 02:34:13 [INFO] anomaly: --- Agent anomaly Persistent Loop Started ---
+2026-04-12 02:34:13 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:34:13 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:34:13 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:34:25 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:34:25 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:34:25 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:34:38 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:34:38 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:34:39 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:34:49 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:34:49 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:34:49 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:35:00 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:35:00 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:35:01 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:35:11 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:35:11 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:35:11 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:35:24 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:35:24 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:35:24 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:35:38 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:35:38 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:35:38 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:35:49 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:35:49 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:35:50 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:36:02 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:36:02 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:36:02 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:36:16 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:36:16 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:36:16 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:36:30 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:36:30 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:36:30 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:42:34 [INFO] anomaly: [DEBUG] AGENT=anomaly PID=45 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:34 [INFO] anomaly: [DEBUG] AGENT=anomaly PID=45 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:34 [INFO] anomaly: --- Agent anomaly Persistent Loop Started ---
+2026-04-12 02:42:34 [INFO] anomaly: --- Agent anomaly Persistent Loop Started ---
+2026-04-12 02:42:34 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
+2026-04-12 02:42:34 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
+2026-04-12 02:42:34 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:47 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:42:47 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:42:47 [INFO] anomaly: Identified 1 anomalies.
+2026-04-12 02:42:47 [INFO] anomaly: Identified 1 anomalies.
+2026-04-12 02:42:47 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:01 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:43:01 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:43:01 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:12 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:43:12 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:43:13 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:24 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:43:24 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:43:26 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:40 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:43:40 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:43:42 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:56 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:43:56 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:43:58 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:10 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:44:10 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:44:12 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:24 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:44:24 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:44:25 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:39 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:44:39 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:44:41 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:52 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:44:52 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:44:53 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:06 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:45:06 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:45:07 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:18 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:45:18 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:45:19 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:31 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:45:31 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:45:32 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:42 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:45:42 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:45:43 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:57 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:45:57 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:45:58 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:09 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:46:09 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:46:10 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:20 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:46:20 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:46:21 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:34 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:46:34 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:46:35 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:48 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:46:48 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:46:49 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:47:02 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:47:02 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:47:03 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:47:15 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:47:15 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
 
 --- ATTACHMENT: chaos.log ---
   (Processing last 0 lines)
 
 --- ATTACHMENT: decision.log ---
-  (Processing last 177 lines)
+  (Processing last 214 lines)
 2026-04-11 19:20:18 [INFO] decision: [DEBUG] AGENT=decision PID=15 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:18 [INFO] decision: [DEBUG] AGENT=decision PID=15 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:18 [INFO] decision: --- Agent decision Persistent Loop Started ---
@@ -862,14 +1093,46 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
 2026-04-12 02:34:06 [INFO] decision: --- Agent decision Persistent Loop Started ---
 2026-04-12 02:34:06 [INFO] decision: --- Agent decision Persistent Loop Started ---
 2026-04-12 02:34:06 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:34:16 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:34:27 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:34:40 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:34:54 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:35:04 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:35:19 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:35:32 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:35:43 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:35:57 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:36:08 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:36:21 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:36:31 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:42:27 [INFO] decision: [DEBUG] AGENT=decision PID=21 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:27 [INFO] decision: [DEBUG] AGENT=decision PID=21 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:27 [INFO] decision: --- Agent decision Persistent Loop Started ---
+2026-04-12 02:42:27 [INFO] decision: --- Agent decision Persistent Loop Started ---
+2026-04-12 02:42:27 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:37 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:51 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:05 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:19 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:34 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:50 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:03 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:16 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:30 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:46 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:59 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:15 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:27 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:40 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:54 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:10 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:23 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:38 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:49 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:47:04 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
 
 --- ATTACHMENT: guards.log ---
-  (Processing last 664 lines)
-2026-04-11 19:20:19 [WARNING] guards: Lock conflict for decision: PID 15 on be83cf10cf30 is still alive.
-2026-04-11 19:20:21 [WARNING] guards: Lock conflict for reconcile: PID 17 on be83cf10cf30 is still alive.
-2026-04-11 19:20:25 [WARNING] guards: Lock conflict for scaling: PID 40 on be83cf10cf30 is still alive.
-2026-04-11 19:20:26 [WARNING] guards: Lock conflict for anomaly: PID 42 on be83cf10cf30 is still alive.
-2026-04-11 19:20:26 [WARNING] guards: Lock conflict for scorer: PID 19 on be83cf10cf30 is still alive.
+  (Processing last 1000 lines)
 2026-04-11 19:20:27 [WARNING] guards: Lock conflict for observer: PID 44 on be83cf10cf30 is still alive.
 2026-04-11 19:20:28 [WARNING] guards: Lock conflict for monitor: PID 12 on be83cf10cf30 is still alive.
 2026-04-11 19:20:30 [WARNING] guards: Lock conflict for decision: PID 15 on be83cf10cf30 is still alive.
@@ -1529,9 +1792,350 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
 2026-04-12 02:34:06 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
 2026-04-12 02:34:07 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
 2026-04-12 02:34:08 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:34:13 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:34:13 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:34:13 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:34:14 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:34:15 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:34:15 [WARNING] guards: Lock conflict for metrics: PID 51 on e32103ce631f is still alive.
+2026-04-12 02:34:16 [WARNING] guards: Lock conflict for notify: PID 79 on e32103ce631f is still alive.
+2026-04-12 02:34:16 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:34:18 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:34:20 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:34:21 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:34:23 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:34:25 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:34:25 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:34:27 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:34:27 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:34:27 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:34:30 [WARNING] guards: Lock conflict for metrics: PID 51 on e32103ce631f is still alive.
+2026-04-12 02:34:31 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:34:32 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:34:33 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:34:33 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:34:35 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:34:37 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:34:38 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:34:39 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:34:40 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:34:43 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:34:43 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:34:44 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:34:45 [WARNING] guards: Lock conflict for metrics: PID 51 on e32103ce631f is still alive.
+2026-04-12 02:34:45 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:34:48 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:34:49 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:34:49 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:34:50 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:34:50 [WARNING] guards: Lock conflict for notify: PID 79 on e32103ce631f is still alive.
+2026-04-12 02:34:53 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:34:54 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:34:56 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:34:57 [WARNING] guards: Lock conflict for metrics: PID 51 on e32103ce631f is still alive.
+2026-04-12 02:34:57 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:34:57 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:34:58 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:35:01 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:35:01 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:35:02 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:35:04 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:35:06 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:35:09 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:35:09 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:35:11 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:35:11 [WARNING] guards: Lock conflict for metrics: PID 51 on e32103ce631f is still alive.
+2026-04-12 02:35:12 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:35:12 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:35:13 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:35:15 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:35:19 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:35:19 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:35:19 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:35:21 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:35:22 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:35:23 [WARNING] guards: Lock conflict for notify: PID 79 on e32103ce631f is still alive.
+2026-04-12 02:35:24 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:35:26 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:35:26 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:35:28 [WARNING] guards: Lock conflict for metrics: PID 51 on e32103ce631f is still alive.
+2026-04-12 02:35:29 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:35:30 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:35:30 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:35:32 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:35:34 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:35:35 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:35:36 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:35:37 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:35:38 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:35:40 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:35:41 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:35:43 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:35:44 [WARNING] guards: Lock conflict for metrics: PID 51 on e32103ce631f is still alive.
+2026-04-12 02:35:44 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:35:46 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:35:46 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:35:48 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:35:50 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:35:50 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:35:51 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:35:53 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:35:57 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:35:57 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:35:57 [WARNING] guards: Lock conflict for notify: PID 79 on e32103ce631f is still alive.
+2026-04-12 02:35:57 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:35:58 [WARNING] guards: Lock conflict for metrics: PID 51 on e32103ce631f is still alive.
+2026-04-12 02:36:00 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:36:02 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:36:02 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:36:03 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:36:04 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:36:06 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:36:08 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:36:10 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:36:10 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:36:11 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:36:14 [WARNING] guards: Lock conflict for metrics: PID 51 on e32103ce631f is still alive.
+2026-04-12 02:36:15 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:36:16 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:36:17 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:36:17 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:36:18 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:36:20 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:36:21 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:36:21 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:36:24 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:36:26 [WARNING] guards: Lock conflict for metrics: PID 51 on e32103ce631f is still alive.
+2026-04-12 02:36:29 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:36:30 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:36:30 [WARNING] guards: Lock conflict for anomaly: PID 62 on e32103ce631f is still alive.
+2026-04-12 02:36:30 [WARNING] guards: Lock conflict for notify: PID 79 on e32103ce631f is still alive.
+2026-04-12 02:36:30 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:36:31 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:36:31 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:36:32 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:42:26 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:27 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:28 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:29 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:34 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:34 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:35 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:35 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:36 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:36 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:37 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:37 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:38 [WARNING] guards: Lock conflict for notify: PID 71 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:39 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:44 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:46 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:46 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:47 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:48 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:48 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:50 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:51 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:51 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:53 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:56 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:58 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:01 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:01 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:01 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:01 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:04 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:04 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:05 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:08 [WARNING] guards: Lock conflict for notify: PID 71 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:10 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:10 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:13 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:13 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:13 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:14 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:15 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:17 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:19 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:23 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:23 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:24 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:26 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:28 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:28 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:28 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:30 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:30 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:34 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:36 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:37 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:37 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:39 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:39 [WARNING] guards: Lock conflict for notify: PID 71 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:42 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:42 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:42 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:45 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:48 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:50 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:50 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:51 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:51 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:51 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:56 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:56 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:58 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:58 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:00 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:03 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:04 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:04 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:05 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:06 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:10 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:10 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:12 [WARNING] guards: Lock conflict for notify: PID 71 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:12 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:14 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:16 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:16 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:16 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:16 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:20 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:20 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:23 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:24 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:25 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:29 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:29 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:29 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:30 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:31 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:33 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:35 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:37 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:38 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:41 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:43 [WARNING] guards: Lock conflict for notify: PID 71 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:43 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:43 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:44 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:44 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:46 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:46 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:50 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:50 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:53 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:57 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:57 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:58 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:58 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:59 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:59 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:01 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:01 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:03 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:07 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:12 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:12 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:13 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:13 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:13 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:14 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:14 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:15 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:17 [WARNING] guards: Lock conflict for notify: PID 71 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:19 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:23 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:24 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:24 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:24 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:27 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:27 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:27 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:27 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:29 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:32 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:35 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:37 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:37 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:38 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:38 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:40 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:40 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:41 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:43 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:44 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:47 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:49 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:49 [WARNING] guards: Lock conflict for notify: PID 71 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:50 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:50 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:51 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:52 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:53 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:54 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:58 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:00 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:01 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:02 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:04 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:05 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:05 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:10 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:10 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:10 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:10 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:13 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:14 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:16 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:16 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:17 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:18 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:21 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:23 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:23 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:24 [WARNING] guards: Lock conflict for notify: PID 71 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:25 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:26 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:27 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:28 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:28 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:32 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:35 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:35 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:36 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:37 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:38 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:38 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:40 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:40 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:41 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:47 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:48 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:49 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:49 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:52 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:52 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:52 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:53 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:53 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:56 [WARNING] guards: Lock conflict for notify: PID 71 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:58 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:47:00 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:47:03 [WARNING] guards: Lock conflict for anomaly: PID 45 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:47:03 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:47:04 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:47:04 [WARNING] guards: Lock conflict for decision: PID 21 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:47:05 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:47:05 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:47:07 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:47:07 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:47:09 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:47:14 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
 
 --- ATTACHMENT: healer.log ---
-  (Processing last 141 lines)
+  (Processing last 173 lines)
 2026-04-11 19:20:27 [HEALER] M3TAL Healer Agent Started.
 [HEALER] Removing stale remote lock (310s old)
 2026-04-11 19:23:12 [HEALER] --- Runtime Healing Cycle Started ---
@@ -1673,9 +2277,41 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
   [38;2;255;105;180m•[0m [DOCKER] Orchestrating stack: routing
   [38;2;255;105;180m⏳[0m Waiting for routing readiness (timeout 60s)...
 2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:34:15 [HEALER] M3TAL Healer Agent Started.
+2026-04-12 02:42:36 [HEALER] M3TAL Healer Agent Started.
+[HEALER] Removing stale remote lock (308s old)
+2026-04-12 02:42:51 [HEALER] --- Runtime Healing Cycle Started ---
+  [38;2;255;105;180m✔[0m Component filesystem status: ok
+  [38;2;255;105;180m✔[0m Component logs status: ok
+  [38;2;255;105;180m✔[0m Component state status: ok
+  [38;2;255;105;180m•[0m [DOCKER] Orchestrating stack: routing
+  [38;2;255;105;180m⏳[0m Waiting for routing readiness (timeout 60s)...
+  [38;2;255;105;180m⚠[0m routing readiness TIMEOUT of 60s reached.
+  [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Critical service cloudflared in routing stack failed readiness probes.
+  [38;2;255;105;180m⚠[0m Component docker status: partial
+  [38;2;255;105;180m•[0m [DOCKER] Orchestrating stack: network
+  [38;2;255;105;180m⏳[0m Waiting for network readiness (timeout 60s)...
+  [38;2;255;105;180m⚠[0m network readiness TIMEOUT of 60s reached.
+  [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Critical service gluetun in network stack failed readiness probes.
+  [38;2;255;105;180m⚠[0m Component docker status: partial
+  [38;2;255;105;180m•[0m [DOCKER] Orchestrating stack: maintenance
+  [38;2;255;105;180m•[0m [DOCKER] Orchestrating stack: core
+  [38;2;255;105;180m⏳[0m Waiting for core readiness (timeout 45s)...
+  [38;2;255;105;180m✔[0m core network probe SUCCEEDED.
+  [38;2;255;105;180m•[0m [DOCKER] Orchestrating stack: media
+  [38;2;255;105;180m•[0m [DOCKER] Orchestrating stack: apps/tattoo-app
+  [38;2;255;105;180m★[0m System Readiness: DEGRADED
+2026-04-12 02:44:56 [HEALER] --- Cycle Complete (125.33s) Ready=True ---
+2026-04-12 02:44:56 [HEALER] WARNING: Healing cycle took 125.33s (Limit 15s)
+2026-04-12 02:46:57 [HEALER] --- Runtime Healing Cycle Started ---
+  [38;2;255;105;180m✔[0m Component filesystem status: ok
+  [38;2;255;105;180m✔[0m Component logs status: ok
+  [38;2;255;105;180m✔[0m Component state status: ok
+  [38;2;255;105;180m•[0m [DOCKER] Orchestrating stack: routing
+  [38;2;255;105;180m⏳[0m Waiting for routing readiness (timeout 60s)...
 
 --- ATTACHMENT: health_score.log ---
-  (Processing last 200 lines)
+  (Processing last 304 lines)
 2026-04-11 19:20:25 [WARNING] scorer: Docker daemon unreachable at startup. System will start in PARTIAL mode.
 2026-04-11 19:20:25 [INFO] scorer: [DEBUG] AGENT=scorer PID=19 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:25 [INFO] scorer: --- Agent scorer Persistent Loop Started ---
@@ -1876,9 +2512,113 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
 2026-04-12 02:34:08 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
 2026-04-12 02:34:08 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
 2026-04-12 02:34:08 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:34:20 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:34:21 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:34:21 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:34:31 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:34:31 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:34:31 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:34:43 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:34:43 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:34:43 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:34:53 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:34:53 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:34:53 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:35:05 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:35:05 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:35:06 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:35:19 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:35:19 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:35:19 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:35:30 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:35:30 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:35:30 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:35:44 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:35:44 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:35:44 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:35:57 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:35:57 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:35:57 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:36:10 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:36:10 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:36:10 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:36:20 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:36:20 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:36:20 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:36:30 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:36:30 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:36:30 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
+2026-04-12 02:42:29 [INFO] scorer: [DEBUG] AGENT=scorer PID=25 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:29 [INFO] scorer: --- Agent scorer Persistent Loop Started ---
+2026-04-12 02:42:29 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:42:29 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 0
+2026-04-12 02:42:29 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:44 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:42:44 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:42:44 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:58 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:42:58 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:42:58 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:12 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:43:13 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:43:13 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:26 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:43:27 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:43:28 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:40 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:43:41 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:43:42 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:53 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:43:53 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:43:56 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:09 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:44:09 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:44:10 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:21 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:44:22 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:44:23 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:37 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:44:37 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:44:38 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:49 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:44:49 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:44:50 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:01 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:45:01 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:45:01 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:12 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:45:12 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:45:13 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:23 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:45:23 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:45:23 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:38 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:45:38 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:45:38 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:50 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:45:50 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:45:50 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:03 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:46:03 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:46:04 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:17 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:46:17 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:46:18 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:31 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:46:31 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:46:32 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:46 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:46:46 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:46:47 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:57 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:46:57 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:46:58 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:47:08 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:47:08 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:47:09 [WARNING] guards: Lock conflict for scorer: PID 25 on 05bfe5ad04e3 is still alive.
 
 --- ATTACHMENT: init.log ---
-  (Processing last 271 lines)
+  (Processing last 326 lines)
 2026-04-12 02:18:02 [INIT] [ENV] Context: Host System
 2026-04-12 02:18:02 ✔ [INIT] Component environment status: ok
 2026-04-12 02:18:04 ✔ [INIT] Component dependencies status: ok
@@ -2150,9 +2890,64 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
 2026-04-12 02:32:45 ✔ [INIT] Component state status: ok
 2026-04-12 02:32:47 [INIT] [DOCKER] Orchestrating stack: routing
 2026-04-12 02:32:47 ⏳ [INIT] Waiting for routing readiness (timeout 60s)...
+2026-04-12 09:37:43 [INIT] [ENV] Context: Host System
+2026-04-12 09:37:43 ✔ [INIT] Component environment status: ok
+2026-04-12 09:37:45 ✔ [INIT] Component dependencies status: ok
+2026-04-12 09:37:45 ✔ [INIT] Component filesystem status: ok
+2026-04-12 09:37:45 ✔ [INIT] Component logs status: ok
+2026-04-12 09:37:45 ✔ [INIT] Component state status: ok
+2026-04-12 09:37:45 ✔ [INIT] Component auth status: ok
+2026-04-12 09:37:46 [INIT] [DOCKER] Shared network 'm3tal' ready
+2026-04-12 09:37:46 [INIT] [DOCKER] Orchestrating stack: routing
+2026-04-12 09:38:01 ⏳ [INIT] Waiting for routing readiness (timeout 60s)...
+2026-04-12 09:39:02 ⚠ [INIT] routing readiness TIMEOUT of 60s reached.
+2026-04-12 09:39:02 ⚠ [INIT] [DOCKER] Stack routing failed: Critical service cloudflared in routing stack failed readiness probes.
+2026-04-12 09:39:02 ⚠ [INIT] Component docker status: partial
+2026-04-12 09:39:02 [INIT] [DOCKER] Orchestrating stack: network
+2026-04-12 09:39:28 ⏳ [INIT] Waiting for network readiness (timeout 60s)...
+2026-04-12 09:40:29 ⚠ [INIT] network readiness TIMEOUT of 60s reached.
+2026-04-12 09:40:29 ⚠ [INIT] [DOCKER] Stack network failed: Critical service gluetun in network stack failed readiness probes.
+2026-04-12 09:40:29 ⚠ [INIT] Component docker status: partial
+2026-04-12 09:40:29 [INIT] [DOCKER] Orchestrating stack: maintenance
+2026-04-12 09:41:59 🚀 [INIT] [DOCKER] Stack maintenance launched in background. Moving on.
+2026-04-12 09:41:59 [INIT] [DOCKER] Orchestrating stack: core
+2026-04-12 09:42:45 ⏳ [INIT] Waiting for core readiness (timeout 45s)...
+2026-04-12 09:42:46 ✔ [INIT] core network probe SUCCEEDED.
+2026-04-12 09:42:46 ⚠ [INIT] [DOCKER] Stack core timed out. Proceeding in DEGRADED mode.
+2026-04-12 09:42:46 ⚠ [INIT] Component docker status: partial
+2026-04-12 09:42:46 [INIT] [DOCKER] Orchestrating stack: media
+2026-04-12 02:42:51 ✔ [INIT] Component filesystem status: ok
+2026-04-12 02:42:51 ✔ [INIT] Component logs status: ok
+2026-04-12 02:42:51 ✔ [INIT] Component state status: ok
+2026-04-12 02:42:53 [INIT] [DOCKER] Orchestrating stack: routing
+2026-04-12 02:42:53 ⏳ [INIT] Waiting for routing readiness (timeout 60s)...
+2026-04-12 02:43:53 ⚠ [INIT] routing readiness TIMEOUT of 60s reached.
+2026-04-12 02:43:53 ⚠ [INIT] [DOCKER] Stack routing failed: Critical service cloudflared in routing stack failed readiness probes.
+2026-04-12 02:43:53 ⚠ [INIT] Component docker status: partial
+2026-04-12 02:43:53 [INIT] [DOCKER] Orchestrating stack: network
+2026-04-12 02:43:53 ⏳ [INIT] Waiting for network readiness (timeout 60s)...
+2026-04-12 09:44:47 🚀 [INIT] [DOCKER] Stack media launched in background. Moving on.
+2026-04-12 09:44:47 [INIT] [DOCKER] Orchestrating stack: apps/tattoo-app
+2026-04-12 02:44:54 ⚠ [INIT] network readiness TIMEOUT of 60s reached.
+2026-04-12 02:44:54 ⚠ [INIT] [DOCKER] Stack network failed: Critical service gluetun in network stack failed readiness probes.
+2026-04-12 02:44:54 ⚠ [INIT] Component docker status: partial
+2026-04-12 02:44:54 [INIT] [DOCKER] Orchestrating stack: maintenance
+2026-04-12 02:44:54 [INIT] [DOCKER] Orchestrating stack: core
+2026-04-12 02:44:54 ⏳ [INIT] Waiting for core readiness (timeout 45s)...
+2026-04-12 02:44:54 ✔ [INIT] core network probe SUCCEEDED.
+2026-04-12 02:44:54 [INIT] [DOCKER] Orchestrating stack: media
+2026-04-12 02:44:54 [INIT] [DOCKER] Orchestrating stack: apps/tattoo-app
+2026-04-12 02:44:56 ★ [INIT] System Readiness: DEGRADED
+2026-04-12 09:45:47 🚀 [INIT] [DOCKER] Stack apps/tattoo-app launched in background. Moving on.
+2026-04-12 09:45:50 ★ [INIT] System Readiness: DEGRADED
+2026-04-12 02:46:57 ✔ [INIT] Component filesystem status: ok
+2026-04-12 02:46:57 ✔ [INIT] Component logs status: ok
+2026-04-12 02:46:57 ✔ [INIT] Component state status: ok
+2026-04-12 02:46:58 [INIT] [DOCKER] Orchestrating stack: routing
+2026-04-12 02:46:58 ⏳ [INIT] Waiting for routing readiness (timeout 60s)...
 
 --- ATTACHMENT: leader.log ---
-  (Processing last 162 lines)
+  (Processing last 254 lines)
 2026-04-11 19:20:15 [INFO] leader: --- Leader Agent Persistent Loop Started ---
 2026-04-11 19:20:15 [INFO] leader: --- Leader Agent Persistent Loop Started ---
 2026-04-11 19:20:17 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
@@ -2315,9 +3110,101 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
 2026-04-12 02:34:03 [INFO] leader: --- Leader Agent Persistent Loop Started ---
 2026-04-12 02:34:03 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
 2026-04-12 02:34:03 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:34:13 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:34:13 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:34:23 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:34:23 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:34:33 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:34:33 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:34:43 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:34:43 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:34:53 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:34:53 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:35:03 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:35:03 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:35:13 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:35:13 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:35:23 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:35:23 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:35:33 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:35:33 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:35:43 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:35:43 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:35:53 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:35:53 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:36:03 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:36:03 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:36:13 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:36:13 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:36:23 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:36:23 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:36:33 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:36:33 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:42:24 [INFO] leader: --- Leader Agent Persistent Loop Started ---
+2026-04-12 02:42:24 [INFO] leader: --- Leader Agent Persistent Loop Started ---
+2026-04-12 02:42:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:42:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:42:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:42:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:42:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:42:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:42:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:42:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:43:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:43:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:43:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:43:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:43:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:43:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:43:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:43:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:43:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:43:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:43:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:43:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:44:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:44:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:44:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:44:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:44:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:44:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:44:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:44:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:44:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:44:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:44:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:44:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:45:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:45:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:45:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:45:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:45:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:45:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:45:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:45:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:45:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:45:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:45:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:45:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:46:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:46:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:46:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:46:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:46:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:46:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:46:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:46:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:46:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:46:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:46:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:46:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:47:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:47:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:47:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:47:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
 
 --- ATTACHMENT: metrics.log ---
-  (Processing last 747 lines)
+  (Processing last 840 lines)
 2026-04-11 19:20:24 [INFO] metrics: [DEBUG] AGENT=metrics PID=32 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:24 [INFO] metrics: [DEBUG] AGENT=metrics PID=32 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:24 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
@@ -3065,9 +3952,102 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
 2026-04-12 02:34:12 [INFO] metrics: [DEBUG] AGENT=metrics PID=51 HOST=e32103ce631f BYPASS=False
 2026-04-12 02:34:12 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
 2026-04-12 02:34:12 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
+2026-04-12 02:34:15 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:34:15 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:34:15 [WARNING] guards: Lock conflict for metrics: PID 51 on e32103ce631f is still alive.
+2026-04-12 02:34:30 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:34:30 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:34:30 [WARNING] guards: Lock conflict for metrics: PID 51 on e32103ce631f is still alive.
+2026-04-12 02:34:44 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:34:44 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:34:45 [WARNING] guards: Lock conflict for metrics: PID 51 on e32103ce631f is still alive.
+2026-04-12 02:34:56 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:34:56 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:34:57 [WARNING] guards: Lock conflict for metrics: PID 51 on e32103ce631f is still alive.
+2026-04-12 02:35:11 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:35:11 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:35:11 [WARNING] guards: Lock conflict for metrics: PID 51 on e32103ce631f is still alive.
+2026-04-12 02:35:28 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:35:28 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:35:28 [WARNING] guards: Lock conflict for metrics: PID 51 on e32103ce631f is still alive.
+2026-04-12 02:35:44 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:35:44 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:35:44 [WARNING] guards: Lock conflict for metrics: PID 51 on e32103ce631f is still alive.
+2026-04-12 02:35:58 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:35:58 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:35:58 [WARNING] guards: Lock conflict for metrics: PID 51 on e32103ce631f is still alive.
+2026-04-12 02:36:13 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:36:13 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:36:14 [WARNING] guards: Lock conflict for metrics: PID 51 on e32103ce631f is still alive.
+2026-04-12 02:36:26 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:36:26 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:36:26 [WARNING] guards: Lock conflict for metrics: PID 51 on e32103ce631f is still alive.
+2026-04-12 02:42:33 [INFO] metrics: [DEBUG] AGENT=metrics PID=34 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:33 [INFO] metrics: [DEBUG] AGENT=metrics PID=34 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:33 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
+2026-04-12 02:42:33 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
+2026-04-12 02:42:36 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:42:36 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:42:36 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:50 [INFO] metrics: Rotating metrics-history.csv (Pruning overflow)
+2026-04-12 02:42:50 [INFO] metrics: Rotating metrics-history.csv (Pruning overflow)
+2026-04-12 02:42:50 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:42:50 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:42:50 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:03 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:43:03 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:43:04 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:26 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:43:26 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:43:27 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:43:27 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:43:28 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:49 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:43:49 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:43:50 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:43:50 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:43:51 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:13 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:44:13 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:44:13 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:44:13 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:44:14 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:36 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:44:36 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:44:36 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:44:36 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:44:37 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:58 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:44:58 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:44:59 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:44:59 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:44:59 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:24 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:45:24 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:45:24 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:45:24 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:45:24 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:44 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:45:44 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:45:44 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:08 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:46:08 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:46:09 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:46:09 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:46:10 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:34 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:46:34 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:46:34 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:46:34 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:46:35 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:59 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:46:59 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:47:00 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:47:00 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:47:00 [WARNING] guards: Lock conflict for metrics: PID 34 on 05bfe5ad04e3 is still alive.
 
 --- ATTACHMENT: monitor.log ---
-  (Processing last 597 lines)
+  (Processing last 700 lines)
 2026-04-11 19:20:17 [INFO] monitor: [DEBUG] AGENT=monitor PID=12 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:17 [INFO] monitor: [DEBUG] AGENT=monitor PID=12 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:17 [INFO] monitor: --- Agent monitor Persistent Loop Started ---
@@ -3665,9 +4645,112 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
 2026-04-12 02:34:05 [INFO] monitor: Health check completed for 0 containers (Available: True).
 2026-04-12 02:34:05 [INFO] monitor: Health check completed for 0 containers (Available: True).
 2026-04-12 02:34:05 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:34:18 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:34:18 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:34:18 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:34:33 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:34:33 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:34:33 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:34:43 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:34:43 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:34:43 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:34:57 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:34:57 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:34:57 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:35:09 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:35:09 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:35:09 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:35:19 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:35:19 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:35:19 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:35:29 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:35:29 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:35:30 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:35:40 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:35:40 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:35:40 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:35:51 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:35:51 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:35:51 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:36:03 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:36:03 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:36:03 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:36:18 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:36:18 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:36:18 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:36:32 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:36:32 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:36:32 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:42:26 [INFO] monitor: [DEBUG] AGENT=monitor PID=12 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:26 [INFO] monitor: [DEBUG] AGENT=monitor PID=12 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:26 [INFO] monitor: --- Agent monitor Persistent Loop Started ---
+2026-04-12 02:42:26 [INFO] monitor: --- Agent monitor Persistent Loop Started ---
+2026-04-12 02:42:26 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:42:26 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:42:26 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:37 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:42:37 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:42:37 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:51 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:42:51 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:42:51 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:09 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:43:09 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:43:10 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:22 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:43:22 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:43:23 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:36 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:43:36 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:43:37 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:50 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:43:50 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:43:51 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:04 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:44:04 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:44:05 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:19 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:44:19 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:44:20 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:32 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:44:32 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:44:33 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:46 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:44:46 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:44:46 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:00 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:45:00 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:45:01 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:13 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:45:13 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:45:14 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:29 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:45:29 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:45:29 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:41 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:45:41 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:45:41 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:53 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:45:53 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:45:53 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:09 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:46:09 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:46:10 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:23 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:46:23 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:46:23 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:35 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:46:35 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:46:36 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:48 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:46:48 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:46:48 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:47:04 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:47:04 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:47:05 [WARNING] guards: Lock conflict for monitor: PID 12 on 05bfe5ad04e3 is still alive.
 
 --- ATTACHMENT: network_guard.log ---
-  (Processing last 51 lines)
+  (Processing last 123 lines)
 2026-04-12 00:19:31 [INFO] network_guard: [DEBUG] AGENT=network_guard PID=49 HOST=c87673d775d1 BYPASS=False
 2026-04-12 00:19:31 [INFO] network_guard: [DEBUG] AGENT=network_guard PID=49 HOST=c87673d775d1 BYPASS=False
 2026-04-12 00:19:32 [INFO] network_guard: --- Agent network_guard Persistent Loop Started ---
@@ -3719,9 +4802,81 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
 2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
 2026-04-12 02:33:44 [INFO] network_guard: --- Agent network_guard Shutdown Cleanly ---
 2026-04-12 02:33:44 [INFO] network_guard: --- Agent network_guard Shutdown Cleanly ---
+2026-04-12 02:34:14 [INFO] network_guard: [DEBUG] AGENT=network_guard PID=68 HOST=e32103ce631f BYPASS=False
+2026-04-12 02:34:14 [INFO] network_guard: [DEBUG] AGENT=network_guard PID=68 HOST=e32103ce631f BYPASS=False
+2026-04-12 02:34:14 [INFO] network_guard: --- Agent network_guard Persistent Loop Started ---
+2026-04-12 02:34:14 [INFO] network_guard: --- Agent network_guard Persistent Loop Started ---
+2026-04-12 02:34:14 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:34:14 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:34:15 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:34:27 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:34:27 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:34:27 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:34:37 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:34:37 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:34:37 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:34:48 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:34:48 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:34:48 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:34:58 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:34:58 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:34:58 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:35:13 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:35:13 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:35:13 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:35:26 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:35:26 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:35:26 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:35:36 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:35:36 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:35:36 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:35:48 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:35:48 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:35:48 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:36:02 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:36:02 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:36:02 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:36:17 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:36:17 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:36:17 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:36:30 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:36:30 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:36:30 [WARNING] guards: Lock conflict for network_guard: PID 68 on e32103ce631f is still alive.
+2026-04-12 02:42:35 [INFO] network_guard: [DEBUG] AGENT=network_guard PID=51 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:35 [INFO] network_guard: [DEBUG] AGENT=network_guard PID=51 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:36 [INFO] network_guard: --- Agent network_guard Persistent Loop Started ---
+2026-04-12 02:42:36 [INFO] network_guard: --- Agent network_guard Persistent Loop Started ---
+2026-04-12 02:42:36 [INFO] network_guard: DETECTED Gluetun restart (StartedAt: 2026-04-12T08:39:08.049182213Z). Bouncing dependents...
+2026-04-12 02:42:36 [INFO] network_guard: DETECTED Gluetun restart (StartedAt: 2026-04-12T08:39:08.049182213Z). Bouncing dependents...
+2026-04-12 02:42:36 [INFO] network_guard: No dependents found to restart.
+2026-04-12 02:42:36 [INFO] network_guard: No dependents found to restart.
+2026-04-12 02:42:36 [INFO] network_guard: Dependents stabilized.
+2026-04-12 02:42:36 [INFO] network_guard: Dependents stabilized.
+2026-04-12 02:42:36 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:48 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:01 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:14 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:28 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:39 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:50 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:04 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:16 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:29 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:44 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:57 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:12 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:24 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:37 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:50 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:05 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:16 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:28 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:41 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:53 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:47:07 [WARNING] guards: Lock conflict for network_guard: PID 51 on 05bfe5ad04e3 is still alive.
 
 --- ATTACHMENT: notify.log ---
-  (Processing last 439 lines)
+  (Processing last 691 lines)
 2026-04-11 19:20:39 [INFO] notify: Telegram Config Validated: Token=87863...lZDMk (len=46), Chat=6723376693
 2026-04-11 19:20:39 [INFO] notify: Telegram Config Validated: Token=87863...lZDMk (len=46), Chat=6723376693
 2026-04-11 19:20:40 [INFO] notify: Telegram Connection Verified: @M3talMediaServerBot
@@ -4161,9 +5316,261 @@ NameError: name 'ALERT_VERDICTS' is not defined
 2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
 2026-04-12 02:33:45 [INFO] notify: --- Agent notify Shutdown Cleanly ---
 2026-04-12 02:33:45 [INFO] notify: --- Agent notify Shutdown Cleanly ---
+2026-04-12 02:34:16 [WARNING] notify: Telegram credentials missing (TELEGRAM_TOKEN / TELEGRAM_CHAT_ID).
+2026-04-12 02:34:16 [WARNING] notify: Telegram credentials missing (TELEGRAM_TOKEN / TELEGRAM_CHAT_ID).
+2026-04-12 02:34:16 [INFO] notify: [DEBUG] AGENT=notify PID=79 HOST=e32103ce631f BYPASS=False
+2026-04-12 02:34:16 [INFO] notify: [DEBUG] AGENT=notify PID=79 HOST=e32103ce631f BYPASS=False
+2026-04-12 02:34:16 [INFO] notify: --- Agent notify Persistent Loop Started ---
+2026-04-12 02:34:16 [INFO] notify: --- Agent notify Persistent Loop Started ---
+2026-04-12 02:34:16 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:34:16 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:34:16 [WARNING] guards: Lock conflict for notify: PID 79 on e32103ce631f is still alive.
+2026-04-12 02:34:50 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:34:50 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:34:50 [WARNING] guards: Lock conflict for notify: PID 79 on e32103ce631f is still alive.
+2026-04-12 02:35:23 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:35:23 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:35:23 [WARNING] guards: Lock conflict for notify: PID 79 on e32103ce631f is still alive.
+2026-04-12 02:35:57 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:35:57 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:35:57 [WARNING] guards: Lock conflict for notify: PID 79 on e32103ce631f is still alive.
+2026-04-12 02:36:30 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:36:30 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:36:30 [WARNING] guards: Lock conflict for notify: PID 79 on e32103ce631f is still alive.
+2026-04-12 02:42:37 [INFO] notify: Telegram Config Validated: Token=87863...lZDMk (len=46), Chat=6723376693
+2026-04-12 02:42:37 [INFO] notify: Telegram Config Validated: Token=87863...lZDMk (len=46), Chat=6723376693
+2026-04-12 02:42:38 [INFO] notify: Telegram Connection Verified: @M3talMediaServerBot
+2026-04-12 02:42:38 [INFO] notify: Telegram Connection Verified: @M3talMediaServerBot
+2026-04-12 02:42:38 [INFO] notify: [DEBUG] AGENT=notify PID=71 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:38 [INFO] notify: [DEBUG] AGENT=notify PID=71 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:38 [INFO] notify: --- Agent notify Persistent Loop Started ---
+2026-04-12 02:42:38 [INFO] notify: --- Agent notify Persistent Loop Started ---
+2026-04-12 02:42:38 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:42:38 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:42:38 [WARNING] guards: Lock conflict for notify: PID 71 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:08 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:43:08 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:43:08 [WARNING] guards: Lock conflict for notify: PID 71 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:38 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:43:38 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:43:39 [WARNING] guards: Lock conflict for notify: PID 71 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:10 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:44:10 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:44:12 [WARNING] guards: Lock conflict for notify: PID 71 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:42 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:44:42 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:44:43 [WARNING] guards: Lock conflict for notify: PID 71 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:17 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:45:17 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:45:17 [WARNING] guards: Lock conflict for notify: PID 71 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:49 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:45:49 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:45:49 [WARNING] guards: Lock conflict for notify: PID 71 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:24 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:46:24 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:46:24 [WARNING] guards: Lock conflict for notify: PID 71 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:55 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:46:55 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:46:56 [WARNING] guards: Lock conflict for notify: PID 71 on 05bfe5ad04e3 is still alive.
 
 --- ATTACHMENT: observer.log ---
-  (Processing last 681 lines)
+  (Processing last 809 lines)
 2026-04-11 19:20:26 [INFO] observer: [DEBUG] AGENT=observer PID=44 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:26 [INFO] observer: [DEBUG] AGENT=observer PID=44 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:26 [INFO] observer: --- Agent observer Persistent Loop Started ---
@@ -4845,9 +6252,137 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
 2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
 2026-04-12 02:33:45 [INFO] observer: --- Agent observer Shutdown Cleanly ---
 2026-04-12 02:33:45 [INFO] observer: --- Agent observer Shutdown Cleanly ---
+2026-04-12 02:34:13 [INFO] observer: [DEBUG] AGENT=observer PID=64 HOST=e32103ce631f BYPASS=False
+2026-04-12 02:34:13 [INFO] observer: [DEBUG] AGENT=observer PID=64 HOST=e32103ce631f BYPASS=False
+2026-04-12 02:34:13 [INFO] observer: --- Agent observer Persistent Loop Started ---
+2026-04-12 02:34:13 [INFO] observer: --- Agent observer Persistent Loop Started ---
+2026-04-12 02:34:13 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:34:13 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:34:13 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:34:26 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:34:26 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:34:27 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:34:38 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:34:38 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:34:38 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:34:50 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:34:50 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:34:50 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:35:01 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:35:01 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:35:01 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:35:12 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:35:12 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:35:12 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:35:26 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:35:26 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:35:26 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:35:36 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:35:36 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:35:37 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:35:50 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:35:50 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:35:50 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:36:04 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:36:04 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:36:04 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:36:15 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:36:15 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:36:15 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:36:29 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:36:29 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:36:29 [WARNING] guards: Lock conflict for observer: PID 64 on e32103ce631f is still alive.
+2026-04-12 02:42:35 [INFO] observer: [DEBUG] AGENT=observer PID=47 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:35 [INFO] observer: [DEBUG] AGENT=observer PID=47 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:35 [INFO] observer: --- Agent observer Persistent Loop Started ---
+2026-04-12 02:42:35 [INFO] observer: --- Agent observer Persistent Loop Started ---
+2026-04-12 02:42:35 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:42:35 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:42:35 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:46 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:42:46 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:42:46 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:00 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:43:00 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:43:01 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:12 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:43:12 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:43:13 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:24 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:43:24 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:43:24 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:35 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:43:35 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:43:35 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:43:26 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:43:35 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:43:26 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:43:37 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:47 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:43:47 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:43:48 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:59 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:43:59 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:43:59 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:43:49 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:43:59 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:43:49 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:44:00 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:14 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:44:14 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:44:14 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:44:13 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:44:14 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:44:13 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:44:16 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:28 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:44:28 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:44:29 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:41 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:44:41 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:44:41 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:44:36 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:44:41 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:44:36 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:44:43 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:57 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:44:57 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:44:58 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:12 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:45:12 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:45:12 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:44:58 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:45:12 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:44:58 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:45:13 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:25 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:45:25 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:45:26 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:45:24 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:45:26 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:45:24 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:45:27 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:39 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:45:39 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:45:40 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:51 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:45:51 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:45:51 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:02 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:46:02 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:46:02 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:13 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:46:13 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:46:13 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:46:08 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:46:13 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:46:08 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:46:14 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:25 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:46:25 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:46:26 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:36 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:46:36 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:46:36 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:46:34 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:46:36 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:46:34 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:46:37 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:51 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:46:51 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:46:52 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:47:04 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:47:04 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:47:04 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:46:59 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:47:04 [WARNING] observer: Critical Event detected in metrics: 2026-04-12 02:46:59 [ERROR] metrics: Docker stats timed out (10s)
+2026-04-12 02:47:05 [WARNING] guards: Lock conflict for observer: PID 47 on 05bfe5ad04e3 is still alive.
 
 --- ATTACHMENT: reconcile.log ---
-  (Processing last 464 lines)
+  (Processing last 570 lines)
 2026-04-11 19:20:19 [INFO] reconcile: [DEBUG] AGENT=reconcile PID=17 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:19 [INFO] reconcile: [DEBUG] AGENT=reconcile PID=17 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:19 [INFO] reconcile: --- Agent reconcile Persistent Loop Started ---
@@ -5312,9 +6847,115 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
 2026-04-12 02:34:07 [INFO] reconcile: Reconciliation cycle complete.
 2026-04-12 02:34:07 [INFO] reconcile: Reconciliation cycle complete.
 2026-04-12 02:34:07 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:34:20 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:34:20 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:34:20 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:34:32 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:34:32 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:34:32 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:34:45 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:34:45 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:34:45 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:34:57 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:34:57 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:34:57 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:35:11 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:35:11 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:35:12 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:35:22 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:35:22 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:35:22 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:35:35 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:35:35 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:35:35 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:35:46 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:35:46 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:35:46 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:36:00 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:36:00 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:36:00 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:36:10 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:36:10 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:36:10 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:36:21 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:36:21 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:36:21 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:42:28 [INFO] reconcile: [DEBUG] AGENT=reconcile PID=23 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:28 [INFO] reconcile: [DEBUG] AGENT=reconcile PID=23 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:28 [INFO] reconcile: --- Agent reconcile Persistent Loop Started ---
+2026-04-12 02:42:28 [INFO] reconcile: --- Agent reconcile Persistent Loop Started ---
+2026-04-12 02:42:28 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:42:28 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:42:28 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:39 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:42:39 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:42:39 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:52 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:42:52 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:42:53 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:04 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:43:04 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:43:04 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:17 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:43:17 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:43:17 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:29 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:43:29 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:43:30 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:41 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:43:41 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:43:42 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:55 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:43:55 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:43:56 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:06 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:44:06 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:44:06 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:19 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:44:19 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:44:20 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:30 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:44:30 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:44:31 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:43 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:44:43 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:44:44 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:57 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:44:57 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:44:57 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:11 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:45:11 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:45:12 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:26 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:45:26 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:45:27 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:37 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:45:37 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:45:37 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:51 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:45:51 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:45:52 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:05 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:46:05 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:46:05 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:16 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:46:16 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:46:17 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:28 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:46:28 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:46:28 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:40 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:46:40 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:46:40 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:52 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:46:52 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:46:53 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:47:07 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:47:07 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:47:07 [WARNING] guards: Lock conflict for reconcile: PID 23 on 05bfe5ad04e3 is still alive.
 
 --- ATTACHMENT: registry.log ---
-  (Processing last 851 lines)
+  (Processing last 885 lines)
 2026-04-11 19:20:17 [INFO] registry: [DEBUG] AGENT=registry PID=10 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:17 [INFO] registry: [DEBUG] AGENT=registry PID=10 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:17 [INFO] registry: --- Agent registry Persistent Loop Started ---
@@ -6166,9 +7807,43 @@ Traceback (most recent call last):
 NameError: name 'time' is not defined
 2026-04-12 02:32:34 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
 2026-04-12 02:32:34 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+2026-04-12 02:42:25 [INFO] registry: [DEBUG] AGENT=registry PID=10 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:25 [INFO] registry: [DEBUG] AGENT=registry PID=10 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:25 [INFO] registry: --- Agent registry Persistent Loop Started ---
+2026-04-12 02:42:25 [INFO] registry: --- Agent registry Persistent Loop Started ---
+2026-04-12 02:42:25 [INFO] registry: Found 2 containers in /docker/docker/apps/tattoo-app/docker-compose.yml
+2026-04-12 02:42:25 [INFO] registry: Found 2 containers in /docker/docker/apps/tattoo-app/docker-compose.yml
+2026-04-12 02:42:25 [INFO] registry: Found 3 containers in /docker/docker/core/docker-compose.yml
+2026-04-12 02:42:25 [INFO] registry: Found 3 containers in /docker/docker/core/docker-compose.yml
+2026-04-12 02:42:25 [INFO] registry: Found 4 containers in /docker/docker/maintenance/docker-compose.yml
+2026-04-12 02:42:25 [INFO] registry: Found 4 containers in /docker/docker/maintenance/docker-compose.yml
+2026-04-12 02:42:25 [INFO] registry: Found 14 containers in /docker/docker/media/docker-compose.yml
+2026-04-12 02:42:25 [INFO] registry: Found 14 containers in /docker/docker/media/docker-compose.yml
+2026-04-12 02:42:25 [INFO] registry: Found 1 containers in /docker/docker/network/docker-compose.yml
+2026-04-12 02:42:25 [INFO] registry: Found 1 containers in /docker/docker/network/docker-compose.yml
+2026-04-12 02:42:25 [INFO] registry: Found 2 containers in /docker/docker/routing/docker-compose.yml
+2026-04-12 02:42:25 [INFO] registry: Found 2 containers in /docker/docker/routing/docker-compose.yml
+2026-04-12 02:42:25 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/registry.py", line 68, in scan_for_containers
+    "updated_at": int(time.time())
+                      ^^^^
+NameError: name 'time' is not defined
+2026-04-12 02:42:25 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/registry.py", line 68, in scan_for_containers
+    "updated_at": int(time.time())
+                      ^^^^
+NameError: name 'time' is not defined
+2026-04-12 02:42:26 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+2026-04-12 02:42:26 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
 
 --- ATTACHMENT: scaling.log ---
-  (Processing last 83 lines)
+  (Processing last 126 lines)
 2026-04-11 19:20:25 [INFO] scaling: [DEBUG] AGENT=scaling PID=40 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:25 [INFO] scaling: [DEBUG] AGENT=scaling PID=40 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:25 [INFO] scaling: --- Agent scaling Persistent Loop Started ---
@@ -6252,9 +7927,52 @@ NameError: name 'time' is not defined
 2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
 2026-04-12 02:33:44 [INFO] scaling: --- Agent scaling Shutdown Cleanly ---
 2026-04-12 02:33:44 [INFO] scaling: --- Agent scaling Shutdown Cleanly ---
+2026-04-12 02:34:13 [INFO] scaling: [DEBUG] AGENT=scaling PID=53 HOST=e32103ce631f BYPASS=False
+2026-04-12 02:34:13 [INFO] scaling: [DEBUG] AGENT=scaling PID=53 HOST=e32103ce631f BYPASS=False
+2026-04-12 02:34:13 [INFO] scaling: --- Agent scaling Persistent Loop Started ---
+2026-04-12 02:34:13 [INFO] scaling: --- Agent scaling Persistent Loop Started ---
+2026-04-12 02:34:13 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:34:23 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:34:33 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:34:44 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:34:56 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:35:09 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:35:21 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:35:34 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:35:46 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:35:57 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:36:11 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:36:24 [WARNING] guards: Lock conflict for scaling: PID 53 on e32103ce631f is still alive.
+2026-04-12 02:42:33 [INFO] scaling: [DEBUG] AGENT=scaling PID=36 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:33 [INFO] scaling: [DEBUG] AGENT=scaling PID=36 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:33 [INFO] scaling: --- Agent scaling Persistent Loop Started ---
+2026-04-12 02:42:33 [INFO] scaling: --- Agent scaling Persistent Loop Started ---
+2026-04-12 02:42:34 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:46 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:56 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:10 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:23 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:36 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:51 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:04 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:16 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:29 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:43 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:58 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:13 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:24 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:35 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:47 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:00 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:13 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:25 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:38 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:52 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:47:04 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:47:14 [WARNING] guards: Lock conflict for scaling: PID 36 on 05bfe5ad04e3 is still alive.
 
 --- ATTACHMENT: scorer.log ---
-  (Processing last 75 lines)
+  (Processing last 111 lines)
 2026-04-11 19:20:25 [WARNING] scorer: Docker daemon unreachable at startup. System will start in PARTIAL mode.
 2026-04-11 19:20:25 [INFO] scorer: [DEBUG] AGENT=scorer PID=19 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:25 [INFO] scorer: --- Agent scorer Persistent Loop Started ---
@@ -6330,9 +8048,45 @@ NameError: name 'time' is not defined
 2026-04-12 02:34:08 [INFO] scorer: [DEBUG] AGENT=scorer PID=42 HOST=e32103ce631f BYPASS=False
 2026-04-12 02:34:08 [INFO] scorer: --- Agent scorer Persistent Loop Started ---
 2026-04-12 02:34:08 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:34:21 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:34:31 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:34:43 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:34:53 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:35:05 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:35:19 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:35:30 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:35:44 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:35:57 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:36:10 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:36:20 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:36:30 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:42:29 [INFO] scorer: [DEBUG] AGENT=scorer PID=25 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:29 [INFO] scorer: --- Agent scorer Persistent Loop Started ---
+2026-04-12 02:42:29 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 0
+2026-04-12 02:42:44 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:42:58 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:43:13 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:43:27 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:43:41 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:43:53 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:44:09 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:44:22 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:44:37 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:44:49 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:45:01 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:45:12 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:45:23 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:45:38 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:45:50 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:46:03 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:46:17 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:46:31 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:46:46 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:46:57 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:47:08 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
 
 --- ATTACHMENT: state.log ---
-  (Processing last 61 lines)
+  (Processing last 95 lines)
 2026-04-11 19:20:25 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
 2026-04-11 19:20:37 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
 2026-04-11 19:20:52 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
@@ -6394,12 +8148,46 @@ NameError: name 'time' is not defined
 2026-04-12 02:33:29 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
 2026-04-12 02:33:40 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
 2026-04-12 02:34:08 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:34:20 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:34:31 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:34:43 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:34:53 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:35:05 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:35:19 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:35:30 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:35:44 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:35:57 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:36:10 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:36:20 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:36:30 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:42:29 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:42:44 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:42:58 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:43:12 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:43:26 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:43:40 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:43:53 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:44:09 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:44:21 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:44:37 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:44:49 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:45:01 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:45:12 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:45:23 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:45:38 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:45:50 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:46:03 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:46:17 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:46:31 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:46:46 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:46:57 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:47:08 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
 
 --- ATTACHMENT: supervisor.log ---
   (Processing last 0 lines)
 
 --- ATTACHMENT: tunnel.log ---
-  (Processing last 162 lines)
+  (Processing last 272 lines)
 2026-04-11 19:20:26 [INFO] tunnel: [DEBUG] AGENT=tunnel PID=46 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:26 [INFO] tunnel: [DEBUG] AGENT=tunnel PID=46 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:26 [INFO] tunnel: --- Agent tunnel Persistent Loop Started ---
@@ -6562,3 +8350,113 @@ NameError: name 'time' is not defined
 2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
 2026-04-12 02:33:45 [INFO] tunnel: --- Agent tunnel Shutdown Cleanly ---
 2026-04-12 02:33:45 [INFO] tunnel: --- Agent tunnel Shutdown Cleanly ---
+2026-04-12 02:34:14 [INFO] tunnel: [DEBUG] AGENT=tunnel PID=66 HOST=e32103ce631f BYPASS=False
+2026-04-12 02:34:14 [INFO] tunnel: [DEBUG] AGENT=tunnel PID=66 HOST=e32103ce631f BYPASS=False
+2026-04-12 02:34:14 [INFO] tunnel: --- Agent tunnel Persistent Loop Started ---
+2026-04-12 02:34:14 [INFO] tunnel: --- Agent tunnel Persistent Loop Started ---
+2026-04-12 02:34:14 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:34:14 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:34:14 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:34:25 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:34:25 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:34:25 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:34:35 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:34:35 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:34:35 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:34:49 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:34:49 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:34:49 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:35:02 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:35:02 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:35:02 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:35:15 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:35:15 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:35:15 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:35:29 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:35:29 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:35:29 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:35:40 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:35:40 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:35:41 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:35:53 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:35:53 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:35:53 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:36:06 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:36:06 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:36:06 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:36:17 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:36:17 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:36:17 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:36:31 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:36:31 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:36:31 [WARNING] guards: Lock conflict for tunnel: PID 66 on e32103ce631f is still alive.
+2026-04-12 02:42:35 [INFO] tunnel: [DEBUG] AGENT=tunnel PID=49 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:35 [INFO] tunnel: [DEBUG] AGENT=tunnel PID=49 HOST=05bfe5ad04e3 BYPASS=False
+2026-04-12 02:42:35 [INFO] tunnel: --- Agent tunnel Persistent Loop Started ---
+2026-04-12 02:42:35 [INFO] tunnel: --- Agent tunnel Persistent Loop Started ---
+2026-04-12 02:42:35 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:42:35 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:42:35 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:42:48 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:42:48 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:42:48 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:01 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:43:01 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:43:01 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:15 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:43:15 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:43:15 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:29 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:43:29 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:43:30 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:44 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:43:44 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:43:45 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:43:57 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:43:57 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:43:58 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:09 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:44:09 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:44:10 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:24 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:44:24 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:44:24 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:34 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:44:34 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:44:35 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:44:49 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:44:49 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:44:50 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:03 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:45:03 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:45:03 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:14 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:45:14 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:45:14 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:26 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:45:26 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:45:27 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:37 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:45:37 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:45:38 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:45:48 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:45:48 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:45:49 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:01 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:46:01 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:46:01 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:15 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:46:15 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:46:16 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:27 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:46:27 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:46:27 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:40 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:46:40 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:46:40 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:46:51 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:46:51 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:46:52 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
+2026-04-12 02:47:03 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:47:03 [WARNING] tunnel: Tunnel config missing (Token=True, Domain=True, Base=False). Skipping cycle.
+2026-04-12 02:47:03 [WARNING] guards: Lock conflict for tunnel: PID 49 on 05bfe5ad04e3 is still alive.
