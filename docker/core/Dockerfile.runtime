@@ -1,32 +1,45 @@
-# M3TAL Runtime - Stable Debian-Slim Base
-FROM python:3.11-slim
+# M3TAL Runtime - Hardened Debian-Bookworm Base
+FROM python:3.11-slim-bookworm
 
 # Prevent debris and speed up installs
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Install Docker CLI (No Daemon)
-RUN apt-get update && apt-get install -y \
+# 1. System Hardening & Security Patching
+# We force upgrade to patch critical OpenSSL CVEs (2026-28388+)
+RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
     curl \
     ca-certificates \
     gnupg \
-    && install -m 0755 -d /etc/apt/keyrings \
-    && curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg \
-    && chmod a+r /etc/apt/keyrings/docker.gpg \
-    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-    tee /etc/apt/sources.list.d/docker.list > /dev/null \
-    && apt-get update && apt-get install -y docker-ce-cli \
+    procps \
+    # docker.io is the Debian-maintained engine/cli, reducing attack surface vs docker-ce-cli
+    docker.io \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Pre-install base Python requirements
+# 2. Python Toolchain Hardening
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
+
+# 3. Pinned Dependency Installation
+# Aligning with security-validated versions
 RUN pip install --no-cache-dir \
-    bcrypt \
-    requests \
-    PyYAML
+    bcrypt==4.1.2 \
+    requests==2.32.3 \
+    PyYAML==6.0.2 \
+    psutil==5.9.8
+
+# 4. Non-Root Execution Enforcement
+# Create appuser and add to docker group (GID 999 is standard for Docker Desktop/Debian)
+RUN groupadd -g 1000 appuser && \
+    groupadd -g 999 docker_socket && \
+    useradd -m -u 1000 -g 1000 appuser && \
+    usermod -aG docker_socket appuser
 
 # Set workspace
 WORKDIR /docker
 
-# Default command - will be overridden by compose but provided as fallback
+# Switch to non-privileged user
+USER appuser
+
+# Default command -Fallback for agents
 CMD ["python3", "control-plane/agents/run.py"]

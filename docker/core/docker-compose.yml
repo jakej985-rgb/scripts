@@ -1,14 +1,16 @@
 services:
   m3tal-dashboard:
-    image: python:3.11-slim
+    build:
+      context: ../..
+      dockerfile: docker/core/Dockerfile.dashboard
     container_name: m3tal-dashboard
     volumes:
       - ${REPO_ROOT}:/docker
-      - /var/run/docker.sock:/var/run/docker.sock
     working_dir: /docker/dashboard
-    command: >
-      sh -c "pip install --quiet -r ../requirements.txt && python server.py"
+    command: python3 server.py
     restart: unless-stopped
+    # Running as non-root appuser
+    user: "1000:1000"
     environment:
       - TZ=America/Denver
       - DASHBOARD_SECRET=${DASHBOARD_SECRET}
@@ -21,11 +23,10 @@ services:
     networks:
       - m3tal
 
-
   m3tal-runtime:
     build:
-      context: .
-      dockerfile: Dockerfile.runtime
+      context: ../..
+      dockerfile: docker/core/Dockerfile.runtime
     container_name: m3tal-runtime
     volumes:
       - ${REPO_ROOT}:/docker
@@ -33,6 +34,8 @@ services:
     working_dir: /docker
     command: python3 control-plane/agents/run.py
     restart: unless-stopped
+    # Running as non-root appuser
+    user: "1000:1000"
     environment:
       - TZ=America/Denver
       - CF_TUNNEL_TOKEN=${CF_TUNNEL_TOKEN}
