@@ -10,11 +10,17 @@ from pathlib import Path
 
 # --- Path System Bootstrap ----------------------------------------------------
 AGENTS_DIR = Path(__file__).resolve().parent  # control-plane/agents/
+CONTROL_PLANE = AGENTS_DIR.parent             # control-plane/
 sys.path.append(str(AGENTS_DIR))
+sys.path.append(str(CONTROL_PLANE))
 
 from utils.paths import REPO_ROOT, CONTROL_PLANE, AGENTS_DIR, LOG_DIR, STATE_DIR, RESTARTS_JSON, ensure_dirs, TIERS
 from utils.healing import atomic_write_json
 from utils.guards import acquire_lock, release_lock, is_pid_running
+
+# Telegram System Integration (Audit Phase 4)
+from config.telegram import validate as validate_telegram
+from utils.telegram.queue import start_worker as start_telegram_worker
 
 PYTHON = sys.executable
 
@@ -118,6 +124,11 @@ def run_agent(name: str, script: str) -> None:
     env = os.environ.copy()
     env["M3TAL_ORCHESTRATOR"] = "1"
     
+    # Ensure children can see control-plane root (Audit Phase 4)
+    python_path = env.get("PYTHONPATH", "")
+    new_path = f"{CONTROL_PLANE}{os.pathsep}{python_path}" if python_path else str(CONTROL_PLANE)
+    env["PYTHONPATH"] = new_path
+    
     while not _shutdown_event.is_set():
         if not _check_stability(name):
             time.sleep(10)
@@ -164,6 +175,10 @@ def main() -> None:
     ts = time.strftime("%H:%M:%S")
     ensure_dirs()
     
+    # 1. Initialize Telemetry System
+    if validate_telegram():
+        start_telegram_worker()
+
     print(f"[{ts}] M3TAL Agent Runner launching...")
 
     # 1.1 Wait for System Readiness (init.py must finish)
