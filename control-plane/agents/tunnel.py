@@ -22,9 +22,10 @@ def check_tunnel_health():
     # 0. Config Gate: Do not attempt recovery if essential env is missing
     token = os.getenv("CF_TUNNEL_TOKEN")
     domain = os.getenv("DOMAIN")
+    base_domain = os.getenv("BASE_DOMAIN")
     
-    if not token or not domain:
-        logger.warning(f"Tunnel config missing (Token={bool(token)}, Domain={bool(domain)}). Skipping cycle.")
+    if not token or not domain or not base_domain:
+        logger.warning(f"Tunnel config missing (Token={bool(token)}, Domain={bool(domain)}, Base={bool(base_domain)}). Skipping cycle.")
         return
     # 1. Check Container Status
     try:

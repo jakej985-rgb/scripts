@@ -24,6 +24,7 @@ REQUIRED_VARS = [
     "DATA_DIR",
     "CONFIG_DIR",
     "DOMAIN",
+    "BASE_DOMAIN",
     "VPN_USER",
     "VPN_PASSWORD",
     "DASHBOARD_SECRET",
@@ -91,6 +92,7 @@ def main():
 
     new_env["CONFIG_DIR"] = get_input("Global Configuration Directory", current_config)
     new_env["DOMAIN"] = get_input("Public Domain (m3tal-media-server.xyz)", current_env.get("DOMAIN", "m3tal-media-server.xyz"))
+    new_env["BASE_DOMAIN"] = get_input("Base Domain (same as public domain if unsure)", current_env.get("BASE_DOMAIN", new_env["DOMAIN"]))
     print("")
 
     # 2. VPN Setup
@@ -111,8 +113,14 @@ def main():
     new_env["TELEGRAM_CHAT_ID"] = get_input("Telegram Chat ID", current_env.get("TELEGRAM_CHAT_ID", ""))
     print("")
 
-    # 5. Security (Auto-gen tokens if 'secret' or 'replace_me')
-    print(f"{BOLD}--- [5] Security & Access ---{END}")
+    # 5. Cloudflare Tunnel
+    print(f"{BOLD}--- [5] External Access (Cloudflare Tunnel) ---{END}")
+    print(f"{YELLOW}⚠️  Crucial for remote access. Leave as 'replace_me' if using local only.{END}")
+    new_env["CF_TUNNEL_TOKEN"] = get_input("Cloudflare Tunnel Token", current_env.get("CF_TUNNEL_TOKEN", "replace_me"))
+    print("")
+
+    # 6. Security (Auto-gen tokens if 'secret' or 'replace_me')
+    print(f"{BOLD}--- [6] Security & Access ---{END}")
     if current_env.get("DASHBOARD_SECRET", "replace_me") == "replace_me":
         new_val = secrets.token_hex(32)
         print(f"Generated new Persistent Session Secret (DASHBOARD_SECRET)")

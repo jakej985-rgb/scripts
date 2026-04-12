@@ -6,8 +6,8 @@ from pathlib import Path
 
 # --- Configuration ------------------------------------------------------------
 MNT_POINT = "/mnt"
-REQUIRED_ENV = ["DOMAIN"]
-OPTIONAL_ENV = ["CF_TUNNEL_TOKEN"]
+REQUIRED_ENV = ["DOMAIN", "BASE_DOMAIN", "CF_TUNNEL_TOKEN"]
+OPTIONAL_ENV = []
 
 import shutil
 
