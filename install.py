@@ -184,10 +184,24 @@ def setup_venv(install_dir: Path, venv_name: str) -> Path:
 # --- Repo Setup ---------------------------------------------------------------
 
 def remove_path(path: Path) -> None:
+    """Robust path removal that handles read-only files on Windows."""
+    def on_error(func, path, exc_info):
+        # Clear read-only bit and retry
+        import stat
+        try:
+            os.chmod(path, stat.S_IWRITE)
+            func(path)
+        except:
+            pass # Fallback: let the system handle it or skip
+
     if path.is_dir():
-        shutil.rmtree(path)
+        shutil.rmtree(path, onerror=on_error)
     else:
-        path.unlink()
+        try:
+            if os.name == "nt": os.chmod(path, 0o777)
+            path.unlink()
+        except:
+            pass
 
 
 def create_staging_dir(parent_dir: Path, prefix: str) -> Path:
@@ -215,6 +229,10 @@ def merge_install_tree(source_dir: Path, install_dir: Path) -> None:
             shutil.move(str(src), str(stashed_path))
 
         for item in source_dir.iterdir():
+            if item.name == ".git":
+                # Never overwrite the .git state during a merge
+                continue
+
             dest = install_dir / item.name
             if dest.exists():
                 remove_path(dest)
