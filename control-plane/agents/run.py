@@ -12,7 +12,7 @@ from pathlib import Path
 AGENTS_DIR = Path(__file__).resolve().parent  # control-plane/agents/
 sys.path.append(str(AGENTS_DIR))
 
-from utils.paths import REPO_ROOT, CONTROL_PLANE, AGENTS_DIR, LOG_DIR, RESTARTS_JSON, ensure_dirs, TIERS
+from utils.paths import REPO_ROOT, CONTROL_PLANE, AGENTS_DIR, LOG_DIR, STATE_DIR, RESTARTS_JSON, ensure_dirs, TIERS
 from utils.healing import atomic_write_json
 from utils.guards import acquire_lock, release_lock, is_pid_running
 
