@@ -186,13 +186,12 @@ def setup_venv(install_dir: Path, venv_name: str) -> Path:
 def remove_path(path: Path) -> None:
     """Robust path removal that handles read-only files on Windows."""
     def on_error(func, path, exc_info):
-        # Clear read-only bit and retry
         import stat
         try:
             os.chmod(path, stat.S_IWRITE)
             func(path)
         except:
-            pass # Fallback: let the system handle it or skip
+            pass
 
     if path.is_dir():
         shutil.rmtree(path, onerror=on_error)
@@ -230,7 +229,6 @@ def merge_install_tree(source_dir: Path, install_dir: Path) -> None:
 
         for item in source_dir.iterdir():
             if item.name == ".git":
-                # Never overwrite the .git state during a merge
                 continue
 
             dest = install_dir / item.name
@@ -254,7 +252,7 @@ def merge_install_tree(source_dir: Path, install_dir: Path) -> None:
             dest.parent.mkdir(parents=True, exist_ok=True)
             shutil.move(str(stashed_path), str(dest))
     finally:
-        shutil.rmtree(preserve_stash, ignore_errors=True)
+        remove_path(preserve_stash)
 
 
 def setup_repo(install_dir: Path) -> bool:
@@ -273,7 +271,7 @@ def setup_repo(install_dir: Path) -> bool:
             tmp_dir = create_staging_dir(install_dir.parent, "m3tal-clone")
             subprocess.run(["git", "clone", REPO_URL, str(tmp_dir)], check=True)
             merge_install_tree(tmp_dir, install_dir)
-            shutil.rmtree(tmp_dir)
+            remove_path(tmp_dir)
             return True
 
         elif action == "2":
