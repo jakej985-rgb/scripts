@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
 import os
+import platform
 import secrets
 import sys
 from datetime import datetime
@@ -56,12 +56,40 @@ def main():
     new_env = current_env.copy()
 
     # 1. System Config
+    is_windows = platform.system().lower() == "windows"
+    
+    # Platform-aware defaults for a smooth experience
+    repo_media = os.path.join(REPO_ROOT, "media")
+    default_data = "D:" if (is_windows and os.path.exists("D:\\")) else ("/mnt" if not is_windows else repo_media)
+    default_config = "C:\\M3tal\\Config" if is_windows else "/docker/configs"
+
+    current_data = current_env.get("DATA_DIR", default_data)
+    current_config = current_env.get("CONFIG_DIR", default_config)
+    
+    # If the current value is a Linux placeholder and we are on Windows, swap it
+    if is_windows:
+        if current_data == "/mnt": current_data = default_data
+        if current_config == "/docker/configs": current_config = default_config
+
     print(f"{BOLD}--- [1] System Settings ---{END}")
     new_env["MASTER_IP"] = get_input("Master Node IP", current_env.get("MASTER_IP", "127.0.0.1"))
     new_env["DASHBOARD_PORT"] = get_input("Dashboard UI Port", current_env.get("DASHBOARD_PORT", "8080"))
     new_env["HTTP_PORT"] = get_input("HTTP Gateway Port (80)", current_env.get("HTTP_PORT", "80"))
-    new_env["DATA_DIR"] = get_input("Global Data Directory", current_env.get("DATA_DIR", "/mnt"))
-    new_env["CONFIG_DIR"] = get_input("Global Configuration Directory", current_env.get("CONFIG_DIR", "/docker/configs"))
+    
+    # Robust DATA_DIR input with Windows validation
+    while True:
+        data_input = get_input("Global Data Directory", current_data)
+        if is_windows and data_input.startswith("/") and not data_input.startswith("//"):
+            print(f"{RED}[!] WARNING: You are on Windows but entered a Linux path ({data_input}).{END}")
+            confirm_path = get_input("Are you sure? (y/n)", "n")
+            if confirm_path.lower() == "y":
+                new_env["DATA_DIR"] = data_input
+                break
+            continue
+        new_env["DATA_DIR"] = data_input
+        break
+
+    new_env["CONFIG_DIR"] = get_input("Global Configuration Directory", current_config)
     new_env["DOMAIN"] = get_input("Public Domain (m3tal-media-server.xyz)", current_env.get("DOMAIN", "m3tal-media-server.xyz"))
     print("")
 

@@ -16,9 +16,12 @@ env_path = Path(__file__).resolve().parent.parent.parent / ".env"
 if env_path.exists():
     with open(env_path, "r", encoding="utf-8") as f:
         for line in f:
+            line = line.strip()
             if "=" in line and not line.startswith("#"):
-                key, val = line.strip().split("=", 1)
-                os.environ[key] = val
+                key, val = line.split("=", 1)
+                # Strip quotes/whitespace if present
+                val = val.strip().strip('"').strip("'")
+                os.environ[key.strip()] = val
 
 def check_mount() -> bool:
     """Hard Check: Verify DATA_DIR is accessible and optionally verify capacity."""
@@ -28,9 +31,20 @@ def check_mount() -> bool:
         return False
         
     path = Path(data_dir)
-    if not path.exists():
-        print(f"[X] CRITICAL: DATA_DIR path does not exist: {path}")
+    
+    # Windows Check: Linux paths like /mnt are invalid
+    if os.name == "nt" and data_dir.startswith("/") and not data_dir.startswith("//"):
+        print(f"[X] CRITICAL: Invalid Windows path detected: '{data_dir}'. Use a drive letter (e.g., D:).")
         return False
+
+    if not path.exists():
+        print(f"[!] WARNING: DATA_DIR path does not exist. Attempting to create: {path}")
+        try:
+            path.mkdir(parents=True, exist_ok=True)
+            print(f"[OK] DATA_DIR created successfully.")
+        except Exception as e:
+            print(f"[X] CRITICAL: Failed to create DATA_DIR at {path}: {e}")
+            return False
     
     # Informational: Empty check
     try:

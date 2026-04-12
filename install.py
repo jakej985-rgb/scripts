@@ -338,12 +338,7 @@ def main() -> None:
     # 4. Scaffolding
     ensure_directories(install_dir, fix_perms)
 
-    # 5. Init
-    log(f"\n{BOLD}=== Initializing M3TAL Control Plane ==={END}")
-    init_script = install_dir / "control-plane" / "init.py"
-    subprocess.run([str(venv_python), str(init_script)], check=True)
-
-    # 6. Environment config
+    # 5. Environment config
     log(f"\n{BOLD}=== Environment Configuration ==={END}")
     wizard = install_dir / "scripts" / "config" / "configure_env.py"
     if wizard.exists():
@@ -353,6 +348,11 @@ def main() -> None:
         env_example = install_dir / ".env.example"
         if env_example.exists():
             shutil.copy2(env_example, install_dir / ".env")
+
+    # 6. Init
+    log(f"\n{BOLD}=== Initializing M3TAL Control Plane ==={END}")
+    init_script = install_dir / "control-plane" / "init.py"
+    subprocess.run([str(venv_python), str(init_script)], check=True)
 
     # 7. Docker network
     log(f"\n{BOLD}=== Docker Network ==={END}")
