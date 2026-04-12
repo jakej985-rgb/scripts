@@ -20,3 +20,4 @@ venv/
 pytest_temp_*/
 pytest_tmp_*/
 codex-validate-*/
+hidden.txt
