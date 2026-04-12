@@ -9,5 +9,7 @@
         "${workspaceFolder}/scripts/helpers",
         "${workspaceFolder}/control-plane/agents",
         "${workspaceFolder}/scripts/test"
-    ]
+    ],
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    "python.terminal.useEnvFile": true
 }
