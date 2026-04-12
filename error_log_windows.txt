@@ -1,8 +1,7 @@
 M3TAL ERROR LOG (WINDOWS)
-Generated: 2026-04-12 09:25:58
+Generated: 2026-04-12 02:34:11
 ================================================================================
 
-|   â””â”€â”€ Restart VPN on healthcheck failure: yes
 [anomaly.log] 2026-04-11 19:20:38 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
 [anomaly.log] 2026-04-11 19:20:38 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
 [anomaly.log] 2026-04-11 19:20:49 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
@@ -223,6 +222,62 @@ Generated: 2026-04-12 09:25:58
 [anomaly.log] 2026-04-12 02:25:49 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
 [anomaly.log] 2026-04-12 02:25:59 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
 [anomaly.log] 2026-04-12 02:25:59 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:26:11 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:26:11 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:26:22 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:26:22 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:26:34 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:26:34 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:26:48 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:26:48 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:27:00 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:27:00 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:27:13 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:27:13 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:27:24 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:27:24 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:27:36 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:27:36 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:27:51 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:27:51 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:28:01 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:28:01 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:28:13 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:28:13 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:28:28 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:28:28 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:28:40 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:28:40 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:28:53 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:28:53 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:29:04 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:29:04 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:29:16 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:29:16 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:29:28 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:29:28 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:29:42 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:29:42 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:29:57 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:29:57 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:30:11 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:30:11 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:30:22 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:30:22 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:30:32 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:30:32 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:32:43 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
+[anomaly.log] 2026-04-12 02:32:43 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
+[anomaly.log] 2026-04-12 02:32:55 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:32:55 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:33:09 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:33:09 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:33:20 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:33:20 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:33:32 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:33:32 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:33:42 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-12 02:33:42 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
 [decision.log] Failed to initialize file logger for guards: [Errno 13] Permission denied: '/docker/control-plane/state/logs/guards.log'
 [decision.log] Failed to initialize file logger for guards: [Errno 13] Permission denied: '/docker/control-plane/state/logs/guards.log'
 [healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Critical service cloudflared in routing stack failed readiness probes.
@@ -235,6 +290,9 @@ Generated: 2026-04-12 09:25:58
 [healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Critical service cloudflared in routing stack failed readiness probes.
 [healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Critical service gluetun in network stack failed readiness probes.
 [healer.log] Failed to initialize file logger for guards: [Errno 13] Permission denied: '/docker/control-plane/state/logs/guards.log'
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Critical service cloudflared in routing stack failed readiness probes.
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Critical service gluetun in network stack failed readiness probes.
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Critical service m3tal-dashboard in core stack failed readiness probes.
 [healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Critical service cloudflared in routing stack failed readiness probes.
 [healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Critical service gluetun in network stack failed readiness probes.
 [healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Critical service m3tal-dashboard in core stack failed readiness probes.
@@ -292,6 +350,13 @@ Generated: 2026-04-12 09:25:58
 [health_score.log] 2026-04-12 00:24:12 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
 [health_score.log] 2026-04-12 00:24:25 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
 [health_score.log] 2026-04-12 00:24:38 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:32:38 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 0
+[health_score.log] 2026-04-12 02:32:51 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:33:04 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:33:15 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:33:29 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:33:41 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-12 02:34:08 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
 [init.log] 2026-04-12 07:14:48 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
 [init.log] 2026-04-12 07:16:18 ⚠ [INIT] [DOCKER] Stack network failed: Critical service gluetun in network stack failed readiness probes.
 [init.log] 2026-04-12 07:16:25 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
@@ -312,6 +377,9 @@ Generated: 2026-04-12 09:25:58
 [init.log] 2026-04-12 02:22:49 ⚠ [INIT] [DOCKER] Stack routing failed: Critical service cloudflared in routing stack failed readiness probes.
 [init.log] 2026-04-12 02:23:51 ⚠ [INIT] [DOCKER] Stack network failed: Critical service gluetun in network stack failed readiness probes.
 [init.log] 2026-04-12 02:24:38 ⚠ [INIT] [DOCKER] Stack core failed: Critical service m3tal-dashboard in core stack failed readiness probes.
+[init.log] 2026-04-12 02:27:42 ⚠ [INIT] [DOCKER] Stack routing failed: Critical service cloudflared in routing stack failed readiness probes.
+[init.log] 2026-04-12 02:28:43 ⚠ [INIT] [DOCKER] Stack network failed: Critical service gluetun in network stack failed readiness probes.
+[init.log] 2026-04-12 02:29:30 ⚠ [INIT] [DOCKER] Stack core failed: Critical service m3tal-dashboard in core stack failed readiness probes.
 [leader.log] 2026-04-11 19:20:17 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
 [leader.log] 2026-04-11 19:20:17 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
 [leader.log] 2026-04-11 19:20:27 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
@@ -450,6 +518,22 @@ Generated: 2026-04-12 09:25:58
 [leader.log] 2026-04-12 00:24:25 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
 [leader.log] 2026-04-12 00:24:35 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
 [leader.log] 2026-04-12 00:24:35 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:32:43 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:32:43 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:32:53 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:32:53 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:33:03 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:33:03 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:33:13 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:33:13 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:33:23 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:33:23 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:33:33 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:33:33 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:33:43 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:33:43 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:34:03 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 02:34:03 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
 [metrics.log] 2026-04-11 19:20:34 [ERROR] metrics: Docker stats timed out (10s)
 [metrics.log] 2026-04-11 19:20:34 [ERROR] metrics: Docker stats timed out (10s)
 [metrics.log] 2026-04-11 19:20:57 [ERROR] metrics: Docker stats timed out (10s)
@@ -700,6 +784,110 @@ Generated: 2026-04-12 09:25:58
 [metrics.log] 2026-04-12 02:25:51 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
 [metrics.log] 2026-04-12 02:25:51 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
 [metrics.log] 2026-04-12 02:25:51 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:26:03 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:26:03 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:26:03 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:26:03 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:26:14 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:26:14 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:26:14 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:26:14 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:26:27 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:26:27 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:26:28 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:26:28 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:26:40 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:26:40 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:26:40 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:26:40 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:26:54 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:26:54 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:26:54 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:26:54 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:27:06 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:27:06 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:27:06 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:27:06 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:27:21 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:27:21 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:27:21 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:27:21 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:27:35 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:27:35 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:27:35 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:27:35 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:27:45 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:27:45 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:27:45 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:27:45 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:27:55 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:27:55 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:27:55 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:27:55 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:28:07 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:28:07 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:28:07 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:28:07 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:28:17 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:28:17 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:28:18 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:28:18 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:28:31 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:28:31 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:28:31 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:28:31 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:28:44 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:28:44 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:28:44 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:28:44 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:28:54 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:28:54 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:28:54 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:28:54 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:29:06 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:29:06 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:29:06 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:29:06 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:29:20 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:29:20 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:29:20 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:29:20 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:29:34 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:29:34 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:29:35 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:29:35 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:29:47 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:29:47 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:29:47 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:29:47 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:29:59 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:29:59 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:29:59 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:29:59 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:30:09 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:30:09 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:30:09 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:30:09 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:30:23 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:30:23 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:30:23 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:30:23 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:30:35 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:30:35 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:30:35 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:30:35 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+[metrics.log] 2026-04-12 02:32:42 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:32:42 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:32:56 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:32:56 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:33:07 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:33:07 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:33:17 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:33:17 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:33:27 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:33:27 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:33:39 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+[metrics.log] 2026-04-12 02:33:39 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
 [monitor.log] 2026-04-11 19:20:27 [ERROR] monitor: Docker poll timed out (10s)
 [monitor.log] 2026-04-11 19:20:27 [ERROR] monitor: Docker poll timed out (10s)
 [monitor.log] 2026-04-11 19:23:24 [ERROR] monitor: Failed to poll docker (Status 1)
@@ -922,6 +1110,118 @@ Generated: 2026-04-12 09:25:58
 [monitor.log] 2026-04-12 02:25:49 [ERROR] monitor: Failed to poll docker (Status 1)
 [monitor.log] 2026-04-12 02:25:49 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
 [monitor.log] 2026-04-12 02:25:49 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:26:03 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:26:03 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:26:03 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:26:03 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:26:17 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:26:17 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:26:17 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:26:17 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:26:31 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:26:31 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:26:31 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:26:31 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:26:41 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:26:41 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:26:41 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:26:41 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:26:55 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:26:55 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:26:55 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:26:55 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:27:06 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:27:06 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:27:06 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:27:06 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:27:20 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:27:20 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:27:20 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:27:20 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:27:31 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:27:31 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:27:31 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:27:31 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:27:44 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:27:44 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:27:44 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:27:44 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:27:56 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:27:56 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:27:56 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:27:56 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:28:07 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:28:07 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:28:07 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:28:07 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:28:19 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:28:19 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:28:19 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:28:19 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:28:32 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:28:32 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:28:32 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:28:32 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:28:44 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:28:44 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:28:44 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:28:44 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:28:55 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:28:55 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:28:55 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:28:55 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:29:09 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:29:09 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:29:09 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:29:09 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:29:22 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:29:22 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:29:22 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:29:22 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:29:35 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:29:35 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:29:35 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:29:35 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:29:47 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:29:47 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:29:47 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:29:47 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:30:01 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:30:01 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:30:01 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:30:01 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:30:15 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:30:15 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:30:15 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:30:15 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:30:32 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:30:32 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:30:32 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:30:32 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:32:35 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:32:35 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:32:35 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:32:35 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:32:47 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:32:47 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:32:47 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:32:47 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:32:58 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:32:58 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:32:58 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:32:58 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:33:10 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:33:10 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:33:10 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:33:10 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:33:21 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:33:21 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:33:21 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:33:21 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:33:32 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:33:32 [ERROR] monitor: Failed to poll docker (Status 1)
+[monitor.log] 2026-04-12 02:33:32 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+[monitor.log] 2026-04-12 02:33:32 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
 [notify.log] 2026-04-11 19:20:40 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
 [notify.log] 2026-04-11 19:20:40 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
 [notify.log] 2026-04-11 19:21:10 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
@@ -966,6 +1266,10 @@ Generated: 2026-04-12 09:25:58
 [notify.log] 2026-04-12 00:24:06 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
 [notify.log] 2026-04-12 00:24:37 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
 [notify.log] 2026-04-12 00:24:37 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:32:47 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:32:47 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:33:18 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-12 02:33:18 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
 [observer.log] 2026-04-11 19:20:26 [INFO] observer: Watching system logs for critical events...
 [observer.log] 2026-04-11 19:20:26 [INFO] observer: Watching system logs for critical events...
 [observer.log] 2026-04-11 19:20:26 [WARNING] observer: Critical Event detected in leader: 2026-04-11 19:20:17 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
@@ -1364,6 +1668,120 @@ Generated: 2026-04-12 09:25:58
 [observer.log] 2026-04-12 02:25:56 [INFO] observer: Watching system logs for critical events...
 [observer.log] 2026-04-12 02:25:56 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:25:49 [ERROR] monitor: Failed to poll docker (Status 1)
 [observer.log] 2026-04-12 02:25:56 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:25:49 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:26:10 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:26:10 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:26:10 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:26:03 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:26:10 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:26:03 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:26:20 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:26:20 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:26:20 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:26:17 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:26:20 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:26:17 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:26:32 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:26:32 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:26:32 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:26:31 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:26:32 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:26:31 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:26:45 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:26:45 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:26:45 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:26:41 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:26:45 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:26:41 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:26:56 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:26:56 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:26:56 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:26:55 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:26:56 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:26:55 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:27:06 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:27:06 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:27:06 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:27:06 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:27:06 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:27:06 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:27:21 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:27:21 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:27:21 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:27:20 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:27:21 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:27:20 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:27:32 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:27:32 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:27:32 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:27:31 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:27:32 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:27:31 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:27:44 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:27:44 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:27:56 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:27:56 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:27:56 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:27:44 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:27:56 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:27:44 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:28:06 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:28:06 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:28:06 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:27:56 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:28:06 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:27:56 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:28:18 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:28:18 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:28:18 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:28:07 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:28:18 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:28:07 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:28:31 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:28:31 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:28:31 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:28:19 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:28:31 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:28:19 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:28:45 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:28:45 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:28:45 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:28:32 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:28:45 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:28:32 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:28:45 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:28:44 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:28:45 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:28:44 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:28:57 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:28:57 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:28:57 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:28:55 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:28:57 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:28:55 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:29:12 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:29:12 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:29:12 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:29:09 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:29:12 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:29:09 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:29:22 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:29:22 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:29:22 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:29:22 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:29:22 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:29:22 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:29:36 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:29:36 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:29:36 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:29:35 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:29:36 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:29:35 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:29:47 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:29:47 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:29:47 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:29:47 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:29:47 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:29:47 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:30:00 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:30:00 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:30:11 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:30:11 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:30:11 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:30:01 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:30:11 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:30:01 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:30:25 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:30:25 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:30:25 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:30:15 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:30:25 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:30:15 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:30:38 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:30:38 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:30:38 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:30:32 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:30:38 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:30:32 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:32:43 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:32:43 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:32:44 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:32:35 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:32:44 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:32:35 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:32:55 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:32:55 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:32:55 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:32:47 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:32:55 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:32:47 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:33:08 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:33:08 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:33:08 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:32:58 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:33:08 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:32:58 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:33:18 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:33:18 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:33:18 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:33:10 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:33:18 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:33:10 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:33:30 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:33:30 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:33:30 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:33:21 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:33:30 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:33:21 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:33:43 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:33:43 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-12 02:33:43 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:33:32 [ERROR] monitor: Failed to poll docker (Status 1)
+[observer.log] 2026-04-12 02:33:43 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:33:32 [ERROR] monitor: Failed to poll docker (Status 1)
 [reconcile.log] Failed to initialize file logger for guards: [Errno 13] Permission denied: '/docker/control-plane/state/logs/guards.log'
 [reconcile.log] Failed to initialize file logger for guards: [Errno 13] Permission denied: '/docker/control-plane/state/logs/guards.log'
 [registry.log] 2026-04-11 19:20:17 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
@@ -1470,6 +1888,15 @@ Generated: 2026-04-12 09:25:58
 [registry.log] 2026-04-12 02:22:18 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
 [registry.log] 2026-04-12 02:22:19 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
 [registry.log] 2026-04-12 02:22:19 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+[registry.log] Failed to initialize file logger for guards: [Errno 13] Permission denied: '/docker/control-plane/state/logs/guards.log'
+[registry.log] 2026-04-12 02:27:25 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+[registry.log] 2026-04-12 02:27:25 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+[registry.log] 2026-04-12 02:27:25 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+[registry.log] 2026-04-12 02:27:25 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+[registry.log] 2026-04-12 02:32:34 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+[registry.log] 2026-04-12 02:32:34 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+[registry.log] 2026-04-12 02:32:34 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+[registry.log] 2026-04-12 02:32:34 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
 [scorer.log] 2026-04-11 19:20:26 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
 [scorer.log] 2026-04-11 19:20:37 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
 [scorer.log] 2026-04-11 19:20:52 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
@@ -1524,6 +1951,13 @@ Generated: 2026-04-12 09:25:58
 [scorer.log] 2026-04-12 00:24:12 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
 [scorer.log] 2026-04-12 00:24:25 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
 [scorer.log] 2026-04-12 00:24:38 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:32:38 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 0
+[scorer.log] 2026-04-12 02:32:51 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:33:04 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:33:15 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:33:29 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:33:41 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-12 02:34:08 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
 [tunnel.log] 2026-04-11 19:20:36 [ERROR] tunnel: Tunnel inspect timed out (10s)
 [tunnel.log] 2026-04-11 19:20:36 [ERROR] tunnel: Tunnel inspect timed out (10s)
 [tunnel.log] 2026-04-11 19:21:37 [ERROR] tunnel: Tunnel recovery timed out (60s)

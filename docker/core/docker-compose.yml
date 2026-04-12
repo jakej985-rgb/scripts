@@ -23,8 +23,7 @@ services:
     working_dir: /docker/dashboard
     command: python3 server.py
     restart: unless-stopped
-    # Running as non-root appuser
-    user: "1000:1000"
+    # Running as non-root appuser (configured in Dockerfile)
     environment:
       - TZ=America/Denver
       - DASHBOARD_SECRET=${DASHBOARD_SECRET}
@@ -51,8 +50,7 @@ services:
     working_dir: /docker
     command: python3 control-plane/agents/run.py
     restart: unless-stopped
-    # Running as non-root appuser
-    user: "1000:1000"
+    # Running as non-root appuser (configured in Dockerfile)
     environment:
       - TZ=America/Denver
       - CF_TUNNEL_TOKEN=${CF_TUNNEL_TOKEN}

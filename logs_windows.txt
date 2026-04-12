@@ -1,5 +1,5 @@
 M3TAL SYSTEM DEBUG BUNDLE (WINDOWS)
-Generated: 2026-04-12 09:25:58
+Generated: 2026-04-12 02:34:11
 Repo Root: C:\Users\jakej\Documents\GitHub\M3tal-Media-Server
 ================================================================================
 
@@ -45,32 +45,10 @@ Server: Docker Desktop 4.68.0 (223695)
 
 
 --- Docker Container Status ---
-CONTAINER ID   IMAGE                                    COMMAND                  CREATED          STATUS                            PORTS                                    NAMES
-9258e5689228   node:20                                  "docker-entrypoint.sâ€¦"   3 minutes ago    Restarting (254) 31 seconds ago                                            tattoo-api
-9879ddc0f262   postgres:latest                          "docker-entrypoint.sâ€¦"   3 minutes ago    Restarting (1) 46 seconds ago                                              tattoo-db
-93d4bdd50285   core-m3tal-dashboard                     "python3 server.py"      4 minutes ago    Up 4 minutes                                                               m3tal-dashboard
-7c80e011cc95   core-m3tal-runtime                       "python3 control-plaâ€¦"   4 minutes ago    Up 4 minutes                                                               m3tal-runtime
-30a18dc84d6e   portainer/portainer-ce                   "/portainer"             6 minutes ago    Up 6 minutes                      8000/tcp, 9000/tcp, 9443/tcp             portainer
-ec3bbbd75654   python:3.11-slim                         "sh -c 'pip install â€¦"   6 minutes ago    Up 6 minutes                                                               m3tal-dashboard-maintenance
-335e75be8b02   amir20/dozzle                            "/dozzle"                6 minutes ago    Up 6 minutes                      8080/tcp                                 dozzle
-4ef385c2f2c1   containrrr/watchtower                    "/watchtower --labelâ€¦"   6 minutes ago    Restarting (1) 20 seconds ago                                              watchtower
-d484857a1b89   cloudflare/cloudflared:latest            "cloudflared --no-auâ€¦"   13 minutes ago   Up 3 minutes                                                               cloudflared
-cf51ab38c87f   traefik:v3.0                             "/entrypoint.sh --apâ€¦"   13 minutes ago   Up 13 minutes                     80/tcp                                   traefik
-4dd45b21718e   lscr.io/linuxserver/prowlarr             "/init"                  18 minutes ago   Up 17 minutes (healthy)           9696/tcp                                 prowlarr
-99458a955015   nicolargo/glances:latest                 "glances -w"             18 minutes ago   Up 17 minutes                     61208-61209/tcp                          glances
-17350255ed29   ghcr.io/maintainerr/maintainerr:latest   "/opt/app/start.sh"      18 minutes ago   Up 17 minutes                     6246/tcp                                 maintainerr
-52fa2157192e   ghcr.io/haveagitgat/tdarr:latest         "/init"                  18 minutes ago   Up 17 minutes                     8265-8267/tcp                            tdarr
-987df48c7b45   ghcr.io/flaresolverr/flaresolverr        "/usr/bin/dumb-init â€¦"   18 minutes ago   Up 13 minutes                     8191-8192/tcp                            flaresolverr
-158982faa970   lscr.io/linuxserver/radarr               "/init"                  18 minutes ago   Up 17 minutes (healthy)           7878/tcp                                 radarr
-1ab97a426023   lscr.io/linuxserver/qbittorrent          "/init"                  18 minutes ago   Up 17 minutes                                                              qbittorrent
-89f5fc95dc96   ghcr.io/recyclarr/recyclarr              "/sbin/tini -- /entrâ€¦"   18 minutes ago   Created                                                                    recyclarr
-e146650f521d   gotson/komga                             "java -Dspring.profiâ€¦"   18 minutes ago   Created                                                                    komga
-4e197f63c0f5   lscr.io/linuxserver/bazarr:latest        "/init"                  18 minutes ago   Up 17 minutes (healthy)           6767/tcp                                 bazarr
-803a92661f19   fallenbagel/jellyseerr                   "/sbin/tini -- pnpm â€¦"   18 minutes ago   Up 17 minutes (unhealthy)         5055/tcp                                 jellyseerr
-805420500b62   lscr.io/linuxserver/sonarr               "/init"                  18 minutes ago   Up 17 minutes (healthy)           8989/tcp                                 sonarr
-64c0b9be0ff7   ghcr.io/autobrr/autobrr:v1.39            "/usr/local/bin/autoâ€¦"   18 minutes ago   Created                                                                    autobrr
-a02e1ecadcdc   ghcr.io/gethomepage/homepage:latest      "docker-entrypoint.sâ€¦"   18 minutes ago   Up 17 minutes (healthy)           3000/tcp                                 homepage
-a33de8ff9e3e   qmcgaw/gluetun:latest                    "/gluetun-entrypoint"    54 minutes ago   Up 54 minutes (healthy)           8000/tcp, 8388/tcp, 8888/tcp, 8388/udp   gluetun
+CONTAINER ID   IMAGE                       COMMAND                  CREATED          STATUS                      PORTS     NAMES
+e32103ce631f   core-m3tal-runtime          "python3 control-plaâ€¦"   19 seconds ago   Up 11 seconds                         m3tal-runtime
+839a76ef0dbd   core-m3tal-dashboard        "python3 server.py"      19 seconds ago   Up 11 seconds                         m3tal-dashboard
+79888b2a95cb   python:3.11-slim-bookworm   "sh -c 'chown -R 100â€¦"   21 seconds ago   Exited (0) 14 seconds ago             m3tal-permission-fixer
 
 
 --- Network Configuration ---
@@ -102,7 +80,7 @@ Ethernet adapter Ethernet:
    IPv4 Address. . . . . . . . . . . : 192.168.12.4(Preferred) 
    Subnet Mask . . . . . . . . . . . : 255.255.255.0
    Lease Obtained. . . . . . . . . . : Saturday, April 11, 2026 2:54:22 AM
-   Lease Expires . . . . . . . . . . : Saturday, April 18, 2026 2:54:59 AM
+   Lease Expires . . . . . . . . . . : Saturday, April 18, 2026 2:55:00 AM
    Default Gateway . . . . . . . . . : fe80::6667:72ff:fe01:ac4%10
                                        192.168.12.1
    DHCP Server . . . . . . . . . . . : 192.168.12.1
@@ -181,7 +159,7 @@ Ethernet adapter vEthernet (WSL):
 --- M3TAL CORE STATE ---
 [HEALTH]: {
     "status": "degraded",
-    "timestamp": 1775982278,
+    "timestamp": 1775982571,
     "mode": "running",
     "details": {
         "filesystem": "ok",
@@ -198,112 +176,15 @@ Ethernet adapter vEthernet (WSL):
 --- DOCKER STACK LOGS ---
 
 --- Container Logs: traefik ---
+Error response from daemon: No such container: traefik
 
 
 --- Container Logs: cloudflared ---
+Error response from daemon: No such container: cloudflared
 
 
 --- Container Logs: gluetun ---
-|   |   â””â”€â”€ Verbosity level: 1
-|   â””â”€â”€ Path MTU discovery:
-|       â”œâ”€â”€ ICMP addresses:
-|       |   â”œâ”€â”€ 1.1.1.1
-|       |   â””â”€â”€ 8.8.8.8
-|       â””â”€â”€ TCP addresses:
-|           â”œâ”€â”€ 1.1.1.1:443
-|           â”œâ”€â”€ 8.8.8.8:443
-|           â”œâ”€â”€ 1.1.1.1:53
-|           â”œâ”€â”€ 8.8.8.8:53
-|           â”œâ”€â”€ [2606:4700:4700::1111]:53
-|           â”œâ”€â”€ [2001:4860:4860::8888]:53
-|           â”œâ”€â”€ [2606:4700:4700::1111]:443
-|           â””â”€â”€ [2001:4860:4860::8888]:443
-â”œâ”€â”€ DNS settings:
-|   â”œâ”€â”€ Upstream resolver type: dot
-|   â”œâ”€â”€ Upstream resolvers:
-|   |   â””â”€â”€ Cloudflare
-|   â”œâ”€â”€ Caching: yes
-|   â”œâ”€â”€ IPv6: no
-|   â”œâ”€â”€ Update period: every 24h0m0s
-|   â””â”€â”€ DNS filtering settings:
-|       â”œâ”€â”€ Block malicious: yes
-|       â”œâ”€â”€ Block ads: no
-|       â””â”€â”€ Block surveillance: no
-â”œâ”€â”€ Firewall settings:
-|   â”œâ”€â”€ Enabled: yes
-|   â”œâ”€â”€ Iptables settings:
-|   |   â””â”€â”€ Log level: info
-|   â””â”€â”€ VPN input ports:
-|       â”œâ”€â”€ 8080
-|       â””â”€â”€ 6881
-â”œâ”€â”€ Log settings:
-|   â””â”€â”€ Log level: info
-â”œâ”€â”€ IPv6 settings:
-|   â””â”€â”€ Check addresses:
-|       â”œâ”€â”€ [2001:4860:4860::8888]:53
-|       â””â”€â”€ [2606:4700:4700::1111]:53
-â”œâ”€â”€ Health settings:
-|   â”œâ”€â”€ Server listening address: 127.0.0.1:9999
-|   â”œâ”€â”€ Target addresses:
-|   |   â”œâ”€â”€ cloudflare.com:443
-|   |   â””â”€â”€ github.com:443
-|   â”œâ”€â”€ Small health check type: ICMP echo request
-|   |   â””â”€â”€ ICMP target IPs:
-|   |       â”œâ”€â”€ 1.1.1.1
-|   |       â””â”€â”€ 8.8.8.8
-|   â””â”€â”€ Restart VPN on healthcheck failure: yes
-â”œâ”€â”€ Shadowsocks server settings:
-|   â””â”€â”€ Enabled: no
-â”œâ”€â”€ HTTP proxy settings:
-|   â””â”€â”€ Enabled: no
-â”œâ”€â”€ Control server settings:
-|   â”œâ”€â”€ Listening address: :8000
-|   â”œâ”€â”€ Logging: yes
-|   â””â”€â”€ Authentication file path: /gluetun/auth/config.toml
-â”œâ”€â”€ Storage settings:
-|   â””â”€â”€ Filepath: /gluetun/servers.json
-â”œâ”€â”€ OS Alpine settings:
-|   â”œâ”€â”€ Process UID: 1000
-|   â””â”€â”€ Process GID: 1000
-â”œâ”€â”€ Public IP settings:
-|   â”œâ”€â”€ IP file path: /tmp/gluetun/ip
-|   â”œâ”€â”€ Public IP data base API: ipinfo
-|   â””â”€â”€ Public IP data backup APIs:
-|       â”œâ”€â”€ ifconfigco
-|       â”œâ”€â”€ ip2location
-|       â””â”€â”€ cloudflare
-â””â”€â”€ Version settings:
-    â””â”€â”€ Enabled: yes
-2026-04-12T07:31:34Z INFO [routing] default route found: interface eth0, gateway 172.18.0.1, assigned IP 172.18.0.2 and family v4
-2026-04-12T07:31:34Z INFO [routing] adding route for 0.0.0.0/0
-2026-04-12T07:31:34Z INFO [firewall] setting allowed subnets...
-2026-04-12T07:31:34Z INFO [routing] default route found: interface eth0, gateway 172.18.0.1, assigned IP 172.18.0.2 and family v4
-2026-04-12T07:31:34Z INFO TUN device is not available: open /dev/net/tun: no such file or directory; creating it...
-2026-04-12T07:31:34Z INFO [healthcheck] listening on 127.0.0.1:9999
-2026-04-12T07:31:34Z INFO [http server] http server listening on [::]:8000
-2026-04-12T07:31:34Z INFO [firewall] allowing VPN connection...
-2026-04-12T07:31:34Z INFO [openvpn] OpenVPN 2.6.16 x86_64-alpine-linux-musl [SSL (OpenSSL)] [LZO] [LZ4] [EPOLL] [MH/PKTINFO] [AEAD]
-2026-04-12T07:31:34Z INFO [openvpn] library versions: OpenSSL 3.5.5 27 Jan 2026, LZO 2.10
-2026-04-12T07:31:34Z INFO [openvpn] TCP/UDP: Preserving recently used remote address: [AF_INET]212.56.54.30:1197
-2026-04-12T07:31:34Z INFO [openvpn] UDPv4 link local: (not bound)
-2026-04-12T07:31:34Z INFO [openvpn] UDPv4 link remote: [AF_INET]212.56.54.30:1197
-2026-04-12T07:31:34Z INFO [openvpn] [newjersey430] Peer Connection Initiated with [AF_INET]212.56.54.30:1197
-2026-04-12T07:31:34Z INFO [openvpn] TUN/TAP device tun0 opened
-2026-04-12T07:31:34Z INFO [openvpn] /sbin/ip link set dev tun0 up mtu 1500
-2026-04-12T07:31:34Z INFO [openvpn] /sbin/ip link set dev tun0 up
-2026-04-12T07:31:34Z INFO [openvpn] /sbin/ip addr add dev tun0 10.21.110.231/24 broadcast +
-2026-04-12T07:31:34Z INFO [openvpn] UID set to nonrootuser
-2026-04-12T07:31:34Z INFO [openvpn] Initialization Sequence Completed
-2026-04-12T07:31:34Z INFO [firewall] setting allowed input port 8080 through interface tun0...
-2026-04-12T07:31:34Z INFO [firewall] setting allowed input port 6881 through interface tun0...
-2026-04-12T07:31:34Z INFO [MTU discovery] finding maximum MTU, this can take up to 6 seconds
-2026-04-12T07:31:39Z INFO [MTU discovery] setting VPN interface tun0 MTU to maximum valid MTU 1258
-2026-04-12T07:31:39Z INFO [dns] DNS server listening on [::]:53
-2026-04-12T07:31:39Z INFO [dns] ready and using DNS server with dot upstream resolvers
-2026-04-12T07:31:39Z INFO [dns] downloading hostnames and IP block lists
-2026-04-12T07:31:46Z INFO [ip getter] Public IP address is 212.56.54.30 (United States, New Jersey, Trenton - source: ipinfo+ifconfig.co+ip2location+cloudflare)
-2026-04-12T07:31:46Z INFO [dns] leak check report: 104.23.189.40 (10%), 104.23.252.40 (10%), 108.162.218.208 (10%), 162.158.153.216 (10%), 162.158.153.217 (10%), 162.158.157.215 (10%), 172.68.115.42 (10%), 172.70.109.203 (10%), 172.70.113.203 (10%), 172.70.229.152 (10%)
-2026-04-12T07:31:46Z INFO [vpn] You are running 2 commits behind the most recent latest
+Error response from daemon: No such container: gluetun
 
 
 --- Container Logs: m3tal-dashboard ---
@@ -313,7 +194,7 @@ Ethernet adapter vEthernet (WSL):
 --- COMPONENT LOG COLLECTION ---
 
 --- ATTACHMENT: anomaly.log ---
-  (Processing last 393 lines)
+  (Processing last 484 lines)
 2026-04-11 19:20:25 [INFO] anomaly: [DEBUG] AGENT=anomaly PID=42 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:25 [INFO] anomaly: [DEBUG] AGENT=anomaly PID=42 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:25 [WARNING] anomaly: DEGRADED: Contract breached: missing monitor_containers.json [DEGRADED]
@@ -707,12 +588,103 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
 2026-04-12 02:25:59 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
 2026-04-12 02:25:59 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
 2026-04-12 02:25:59 [WARNING] guards: Lock conflict for anomaly: PID 27 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:11 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:26:11 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:26:11 [WARNING] guards: Lock conflict for anomaly: PID 27 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:22 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:26:22 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:26:22 [WARNING] guards: Lock conflict for anomaly: PID 27 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:34 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:26:34 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:26:35 [WARNING] guards: Lock conflict for anomaly: PID 27 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:48 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:26:48 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:26:48 [WARNING] guards: Lock conflict for anomaly: PID 27 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:00 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:27:00 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:27:00 [WARNING] guards: Lock conflict for anomaly: PID 27 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:13 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:27:13 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:27:13 [WARNING] guards: Lock conflict for anomaly: PID 27 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:24 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:27:24 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:27:24 [WARNING] guards: Lock conflict for anomaly: PID 27 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:36 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:27:36 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:27:37 [WARNING] guards: Lock conflict for anomaly: PID 27 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:51 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:27:51 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:27:51 [WARNING] guards: Lock conflict for anomaly: PID 27 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:01 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:28:01 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:28:01 [WARNING] guards: Lock conflict for anomaly: PID 27 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:13 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:28:13 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:28:14 [WARNING] guards: Lock conflict for anomaly: PID 27 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:28 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:28:28 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:28:28 [WARNING] guards: Lock conflict for anomaly: PID 27 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:40 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:28:40 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:28:40 [WARNING] guards: Lock conflict for anomaly: PID 27 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:53 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:28:53 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:28:53 [WARNING] guards: Lock conflict for anomaly: PID 27 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:04 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:29:04 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:29:04 [WARNING] guards: Lock conflict for anomaly: PID 27 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:16 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:29:16 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:29:17 [WARNING] guards: Lock conflict for anomaly: PID 27 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:28 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:29:28 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:29:28 [WARNING] guards: Lock conflict for anomaly: PID 27 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:42 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:29:42 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:29:44 [WARNING] guards: Lock conflict for anomaly: PID 27 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:57 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:29:57 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:29:58 [WARNING] guards: Lock conflict for anomaly: PID 27 on 7c80e011cc95 is still alive.
+2026-04-12 02:30:11 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:30:11 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:30:22 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:30:22 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:30:32 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:30:32 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:30:42 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:30:43 [INFO] anomaly: --- Agent anomaly Shutdown Cleanly ---
+2026-04-12 02:30:43 [INFO] anomaly: --- Agent anomaly Shutdown Cleanly ---
+2026-04-12 02:32:43 [INFO] anomaly: [DEBUG] AGENT=anomaly PID=75 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:32:43 [INFO] anomaly: [DEBUG] AGENT=anomaly PID=75 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:32:43 [INFO] anomaly: --- Agent anomaly Persistent Loop Started ---
+2026-04-12 02:32:43 [INFO] anomaly: --- Agent anomaly Persistent Loop Started ---
+2026-04-12 02:32:43 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
+2026-04-12 02:32:43 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
+2026-04-12 02:32:43 [WARNING] guards: Lock conflict for anomaly: PID 75 on 33633b0d72eb is still alive.
+2026-04-12 02:32:55 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:32:55 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:32:56 [WARNING] guards: Lock conflict for anomaly: PID 75 on 33633b0d72eb is still alive.
+2026-04-12 02:33:09 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:33:09 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:33:09 [WARNING] guards: Lock conflict for anomaly: PID 75 on 33633b0d72eb is still alive.
+2026-04-12 02:33:20 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:33:20 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:33:21 [WARNING] guards: Lock conflict for anomaly: PID 75 on 33633b0d72eb is still alive.
+2026-04-12 02:33:32 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:33:32 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:33:32 [WARNING] guards: Lock conflict for anomaly: PID 75 on 33633b0d72eb is still alive.
+2026-04-12 02:33:42 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:33:42 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+2026-04-12 02:33:42 [WARNING] guards: Lock conflict for anomaly: PID 75 on 33633b0d72eb is still alive.
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:33:44 [INFO] anomaly: --- Agent anomaly Shutdown Cleanly ---
+2026-04-12 02:33:44 [INFO] anomaly: --- Agent anomaly Shutdown Cleanly ---
 
 --- ATTACHMENT: chaos.log ---
   (Processing last 0 lines)
 
 --- ATTACHMENT: decision.log ---
-  (Processing last 137 lines)
+  (Processing last 177 lines)
 2026-04-11 19:20:18 [INFO] decision: [DEBUG] AGENT=decision PID=15 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:18 [INFO] decision: [DEBUG] AGENT=decision PID=15 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:18 [INFO] decision: --- Agent decision Persistent Loop Started ---
@@ -850,9 +822,49 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
 2026-04-12 02:25:31 [WARNING] guards: Lock conflict for decision: PID 14 on 7c80e011cc95 is still alive.
 2026-04-12 02:25:44 [WARNING] guards: Lock conflict for decision: PID 14 on 7c80e011cc95 is still alive.
 2026-04-12 02:25:55 [WARNING] guards: Lock conflict for decision: PID 14 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:06 [WARNING] guards: Lock conflict for decision: PID 14 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:18 [WARNING] guards: Lock conflict for decision: PID 14 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:33 [WARNING] guards: Lock conflict for decision: PID 14 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:47 [WARNING] guards: Lock conflict for decision: PID 14 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:01 [WARNING] guards: Lock conflict for decision: PID 14 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:15 [WARNING] guards: Lock conflict for decision: PID 14 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:26 [WARNING] guards: Lock conflict for decision: PID 14 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:40 [WARNING] guards: Lock conflict for decision: PID 14 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:53 [WARNING] guards: Lock conflict for decision: PID 14 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:07 [WARNING] guards: Lock conflict for decision: PID 14 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:21 [WARNING] guards: Lock conflict for decision: PID 14 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:36 [WARNING] guards: Lock conflict for decision: PID 14 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:47 [WARNING] guards: Lock conflict for decision: PID 14 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:00 [WARNING] guards: Lock conflict for decision: PID 14 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:14 [WARNING] guards: Lock conflict for decision: PID 14 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:29 [WARNING] guards: Lock conflict for decision: PID 14 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:39 [WARNING] guards: Lock conflict for decision: PID 14 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:51 [WARNING] guards: Lock conflict for decision: PID 14 on 7c80e011cc95 is still alive.
+2026-04-12 02:30:04 [WARNING] guards: Lock conflict for decision: PID 14 on 7c80e011cc95 is still alive.
+2026-04-12 02:30:42 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:30:43 [INFO] decision: --- Agent decision Shutdown Cleanly ---
+2026-04-12 02:30:43 [INFO] decision: --- Agent decision Shutdown Cleanly ---
+2026-04-12 02:32:36 [INFO] decision: [DEBUG] AGENT=decision PID=38 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:32:36 [INFO] decision: [DEBUG] AGENT=decision PID=38 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:32:36 [INFO] decision: --- Agent decision Persistent Loop Started ---
+2026-04-12 02:32:36 [INFO] decision: --- Agent decision Persistent Loop Started ---
+2026-04-12 02:32:37 [WARNING] guards: Lock conflict for decision: PID 38 on 33633b0d72eb is still alive.
+2026-04-12 02:32:48 [WARNING] guards: Lock conflict for decision: PID 38 on 33633b0d72eb is still alive.
+2026-04-12 02:33:01 [WARNING] guards: Lock conflict for decision: PID 38 on 33633b0d72eb is still alive.
+2026-04-12 02:33:13 [WARNING] guards: Lock conflict for decision: PID 38 on 33633b0d72eb is still alive.
+2026-04-12 02:33:28 [WARNING] guards: Lock conflict for decision: PID 38 on 33633b0d72eb is still alive.
+2026-04-12 02:33:39 [WARNING] guards: Lock conflict for decision: PID 38 on 33633b0d72eb is still alive.
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:33:45 [INFO] decision: --- Agent decision Shutdown Cleanly ---
+2026-04-12 02:33:45 [INFO] decision: --- Agent decision Shutdown Cleanly ---
+2026-04-12 02:34:06 [INFO] decision: [DEBUG] AGENT=decision PID=38 HOST=e32103ce631f BYPASS=False
+2026-04-12 02:34:06 [INFO] decision: [DEBUG] AGENT=decision PID=38 HOST=e32103ce631f BYPASS=False
+2026-04-12 02:34:06 [INFO] decision: --- Agent decision Persistent Loop Started ---
+2026-04-12 02:34:06 [INFO] decision: --- Agent decision Persistent Loop Started ---
+2026-04-12 02:34:06 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
 
 --- ATTACHMENT: guards.log ---
-  (Processing last 588 lines)
+  (Processing last 664 lines)
 2026-04-11 19:20:19 [WARNING] guards: Lock conflict for decision: PID 15 on be83cf10cf30 is still alive.
 2026-04-11 19:20:21 [WARNING] guards: Lock conflict for reconcile: PID 17 on be83cf10cf30 is still alive.
 2026-04-11 19:20:25 [WARNING] guards: Lock conflict for scaling: PID 40 on be83cf10cf30 is still alive.
@@ -1441,9 +1453,85 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
 2026-04-12 00:24:39 [INFO] guards: Received signal 15. Requesting graceful shutdown...
 2026-04-12 00:24:39 [INFO] guards: Received signal 15. Requesting graceful shutdown...
 2026-04-12 00:24:39 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:32:35 [WARNING] guards: Lock conflict for monitor: PID 29 on 33633b0d72eb is still alive.
+2026-04-12 02:32:37 [WARNING] guards: Lock conflict for decision: PID 38 on 33633b0d72eb is still alive.
+2026-04-12 02:32:37 [WARNING] guards: Lock conflict for reconcile: PID 40 on 33633b0d72eb is still alive.
+2026-04-12 02:32:38 [WARNING] guards: Lock conflict for scorer: PID 42 on 33633b0d72eb is still alive.
+2026-04-12 02:32:43 [WARNING] guards: Lock conflict for metrics: PID 64 on 33633b0d72eb is still alive.
+2026-04-12 02:32:43 [WARNING] guards: Lock conflict for scaling: PID 66 on 33633b0d72eb is still alive.
+2026-04-12 02:32:43 [WARNING] guards: Lock conflict for anomaly: PID 75 on 33633b0d72eb is still alive.
+2026-04-12 02:32:44 [WARNING] guards: Lock conflict for tunnel: PID 80 on 33633b0d72eb is still alive.
+2026-04-12 02:32:44 [WARNING] guards: Lock conflict for observer: PID 78 on 33633b0d72eb is still alive.
+2026-04-12 02:32:47 [WARNING] guards: Lock conflict for notify: PID 85 on 33633b0d72eb is still alive.
+2026-04-12 02:32:47 [WARNING] guards: Lock conflict for monitor: PID 29 on 33633b0d72eb is still alive.
+2026-04-12 02:32:48 [WARNING] guards: Lock conflict for decision: PID 38 on 33633b0d72eb is still alive.
+2026-04-12 02:32:49 [WARNING] guards: Lock conflict for reconcile: PID 40 on 33633b0d72eb is still alive.
+2026-04-12 02:32:51 [WARNING] guards: Lock conflict for scorer: PID 42 on 33633b0d72eb is still alive.
+2026-04-12 02:32:55 [WARNING] guards: Lock conflict for scaling: PID 66 on 33633b0d72eb is still alive.
+2026-04-12 02:32:55 [WARNING] guards: Lock conflict for tunnel: PID 80 on 33633b0d72eb is still alive.
+2026-04-12 02:32:56 [WARNING] guards: Lock conflict for observer: PID 78 on 33633b0d72eb is still alive.
+2026-04-12 02:32:56 [WARNING] guards: Lock conflict for anomaly: PID 75 on 33633b0d72eb is still alive.
+2026-04-12 02:32:56 [WARNING] guards: Lock conflict for metrics: PID 64 on 33633b0d72eb is still alive.
+2026-04-12 02:32:59 [WARNING] guards: Lock conflict for monitor: PID 29 on 33633b0d72eb is still alive.
+2026-04-12 02:33:01 [WARNING] guards: Lock conflict for decision: PID 38 on 33633b0d72eb is still alive.
+2026-04-12 02:33:04 [WARNING] guards: Lock conflict for reconcile: PID 40 on 33633b0d72eb is still alive.
+2026-04-12 02:33:04 [WARNING] guards: Lock conflict for scorer: PID 42 on 33633b0d72eb is still alive.
+2026-04-12 02:33:05 [WARNING] guards: Lock conflict for network_guard: PID 327 on 33633b0d72eb is still alive.
+2026-04-12 02:33:05 [WARNING] guards: Lock conflict for scaling: PID 66 on 33633b0d72eb is still alive.
+2026-04-12 02:33:06 [WARNING] guards: Lock conflict for tunnel: PID 80 on 33633b0d72eb is still alive.
+2026-04-12 02:33:07 [WARNING] guards: Lock conflict for metrics: PID 64 on 33633b0d72eb is still alive.
+2026-04-12 02:33:08 [WARNING] guards: Lock conflict for observer: PID 78 on 33633b0d72eb is still alive.
+2026-04-12 02:33:09 [WARNING] guards: Lock conflict for anomaly: PID 75 on 33633b0d72eb is still alive.
+2026-04-12 02:33:10 [WARNING] guards: Lock conflict for monitor: PID 29 on 33633b0d72eb is still alive.
+2026-04-12 02:33:13 [WARNING] guards: Lock conflict for decision: PID 38 on 33633b0d72eb is still alive.
+2026-04-12 02:33:15 [WARNING] guards: Lock conflict for network_guard: PID 327 on 33633b0d72eb is still alive.
+2026-04-12 02:33:15 [WARNING] guards: Lock conflict for scorer: PID 42 on 33633b0d72eb is still alive.
+2026-04-12 02:33:17 [WARNING] guards: Lock conflict for reconcile: PID 40 on 33633b0d72eb is still alive.
+2026-04-12 02:33:17 [WARNING] guards: Lock conflict for metrics: PID 64 on 33633b0d72eb is still alive.
+2026-04-12 02:33:18 [WARNING] guards: Lock conflict for tunnel: PID 80 on 33633b0d72eb is still alive.
+2026-04-12 02:33:18 [WARNING] guards: Lock conflict for notify: PID 85 on 33633b0d72eb is still alive.
+2026-04-12 02:33:18 [WARNING] guards: Lock conflict for observer: PID 78 on 33633b0d72eb is still alive.
+2026-04-12 02:33:19 [WARNING] guards: Lock conflict for scaling: PID 66 on 33633b0d72eb is still alive.
+2026-04-12 02:33:21 [WARNING] guards: Lock conflict for anomaly: PID 75 on 33633b0d72eb is still alive.
+2026-04-12 02:33:22 [WARNING] guards: Lock conflict for monitor: PID 29 on 33633b0d72eb is still alive.
+2026-04-12 02:33:28 [WARNING] guards: Lock conflict for tunnel: PID 80 on 33633b0d72eb is still alive.
+2026-04-12 02:33:28 [WARNING] guards: Lock conflict for decision: PID 38 on 33633b0d72eb is still alive.
+2026-04-12 02:33:28 [WARNING] guards: Lock conflict for metrics: PID 64 on 33633b0d72eb is still alive.
+2026-04-12 02:33:28 [WARNING] guards: Lock conflict for network_guard: PID 327 on 33633b0d72eb is still alive.
+2026-04-12 02:33:29 [WARNING] guards: Lock conflict for scorer: PID 42 on 33633b0d72eb is still alive.
+2026-04-12 02:33:30 [WARNING] guards: Lock conflict for reconcile: PID 40 on 33633b0d72eb is still alive.
+2026-04-12 02:33:30 [WARNING] guards: Lock conflict for observer: PID 78 on 33633b0d72eb is still alive.
+2026-04-12 02:33:32 [WARNING] guards: Lock conflict for monitor: PID 29 on 33633b0d72eb is still alive.
+2026-04-12 02:33:32 [WARNING] guards: Lock conflict for anomaly: PID 75 on 33633b0d72eb is still alive.
+2026-04-12 02:33:33 [WARNING] guards: Lock conflict for scaling: PID 66 on 33633b0d72eb is still alive.
+2026-04-12 02:33:39 [WARNING] guards: Lock conflict for metrics: PID 64 on 33633b0d72eb is still alive.
+2026-04-12 02:33:39 [WARNING] guards: Lock conflict for decision: PID 38 on 33633b0d72eb is still alive.
+2026-04-12 02:33:41 [WARNING] guards: Lock conflict for scorer: PID 42 on 33633b0d72eb is still alive.
+2026-04-12 02:33:41 [WARNING] guards: Lock conflict for reconcile: PID 40 on 33633b0d72eb is still alive.
+2026-04-12 02:33:42 [WARNING] guards: Lock conflict for tunnel: PID 80 on 33633b0d72eb is still alive.
+2026-04-12 02:33:42 [WARNING] guards: Lock conflict for anomaly: PID 75 on 33633b0d72eb is still alive.
+2026-04-12 02:33:42 [WARNING] guards: Lock conflict for network_guard: PID 327 on 33633b0d72eb is still alive.
+2026-04-12 02:33:43 [WARNING] guards: Lock conflict for scaling: PID 66 on 33633b0d72eb is still alive.
+2026-04-12 02:33:44 [WARNING] guards: Lock conflict for observer: PID 78 on 33633b0d72eb is still alive.
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:34:05 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
+2026-04-12 02:34:06 [WARNING] guards: Lock conflict for decision: PID 38 on e32103ce631f is still alive.
+2026-04-12 02:34:07 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
+2026-04-12 02:34:08 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
 
 --- ATTACHMENT: healer.log ---
-  (Processing last 107 lines)
+  (Processing last 141 lines)
 2026-04-11 19:20:27 [HEALER] M3TAL Healer Agent Started.
 [HEALER] Removing stale remote lock (310s old)
 2026-04-11 19:23:12 [HEALER] --- Runtime Healing Cycle Started ---
@@ -1551,9 +1639,43 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
   [38;2;255;105;180m★[0m System Readiness: DEGRADED
 2026-04-12 02:24:39 [HEALER] --- Cycle Complete (180.20s) Ready=True ---
 2026-04-12 02:24:39 [HEALER] WARNING: Healing cycle took 180.20s (Limit 15s)
+2026-04-12 02:26:39 [HEALER] --- Runtime Healing Cycle Started ---
+  [38;2;255;105;180m✔[0m Component filesystem status: ok
+  [38;2;255;105;180m✔[0m Component logs status: ok
+  [38;2;255;105;180m✔[0m Component state status: ok
+  [38;2;255;105;180m•[0m [DOCKER] Orchestrating stack: routing
+  [38;2;255;105;180m⏳[0m Waiting for routing readiness (timeout 60s)...
+  [38;2;255;105;180m⚠[0m routing readiness TIMEOUT of 60s reached.
+  [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Critical service cloudflared in routing stack failed readiness probes.
+  [38;2;255;105;180m⚠[0m Component docker status: partial
+  [38;2;255;105;180m•[0m [DOCKER] Orchestrating stack: network
+  [38;2;255;105;180m⏳[0m Waiting for network readiness (timeout 60s)...
+  [38;2;255;105;180m⚠[0m network readiness TIMEOUT of 60s reached.
+  [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Critical service gluetun in network stack failed readiness probes.
+  [38;2;255;105;180m⚠[0m Component docker status: partial
+  [38;2;255;105;180m•[0m [DOCKER] Orchestrating stack: maintenance
+  [38;2;255;105;180m•[0m [DOCKER] Orchestrating stack: core
+  [38;2;255;105;180m⏳[0m Waiting for core readiness (timeout 45s)...
+  [38;2;255;105;180m⚠[0m core readiness TIMEOUT of 45s reached.
+  [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Critical service m3tal-dashboard in core stack failed readiness probes.
+  [38;2;255;105;180m⚠[0m Component docker status: partial
+  [38;2;255;105;180m•[0m [DOCKER] Orchestrating stack: media
+  [38;2;255;105;180m•[0m [DOCKER] Orchestrating stack: apps/tattoo-app
+  [38;2;255;105;180m★[0m System Readiness: DEGRADED
+2026-04-12 02:29:31 [HEALER] --- Cycle Complete (171.97s) Ready=True ---
+2026-04-12 02:29:31 [HEALER] WARNING: Healing cycle took 171.97s (Limit 15s)
+2026-04-12 02:30:42 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:32:45 [HEALER] M3TAL Healer Agent Started.
+2026-04-12 02:32:45 [HEALER] --- Runtime Healing Cycle Started ---
+  [38;2;255;105;180m✔[0m Component filesystem status: ok
+  [38;2;255;105;180m✔[0m Component logs status: ok
+  [38;2;255;105;180m✔[0m Component state status: ok
+  [38;2;255;105;180m•[0m [DOCKER] Orchestrating stack: routing
+  [38;2;255;105;180m⏳[0m Waiting for routing readiness (timeout 60s)...
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
 
 --- ATTACHMENT: health_score.log ---
-  (Processing last 172 lines)
+  (Processing last 200 lines)
 2026-04-11 19:20:25 [WARNING] scorer: Docker daemon unreachable at startup. System will start in PARTIAL mode.
 2026-04-11 19:20:25 [INFO] scorer: [DEBUG] AGENT=scorer PID=19 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:25 [INFO] scorer: --- Agent scorer Persistent Loop Started ---
@@ -1726,9 +1848,37 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
 2026-04-12 00:24:38 [WARNING] guards: Lock conflict for scorer: PID 19 on c87673d775d1 is still alive.
 2026-04-12 00:24:39 [INFO] guards: Received signal 15. Requesting graceful shutdown...
 2026-04-12 00:24:40 [INFO] scorer: --- Agent scorer Shutdown Cleanly ---
+2026-04-12 02:32:38 [WARNING] scorer: Docker daemon unreachable at startup. System will start in PARTIAL mode.
+2026-04-12 02:32:38 [INFO] scorer: [DEBUG] AGENT=scorer PID=42 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:32:38 [INFO] scorer: --- Agent scorer Persistent Loop Started ---
+2026-04-12 02:32:38 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:32:38 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 0
+2026-04-12 02:32:38 [WARNING] guards: Lock conflict for scorer: PID 42 on 33633b0d72eb is still alive.
+2026-04-12 02:32:51 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:32:51 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:32:51 [WARNING] guards: Lock conflict for scorer: PID 42 on 33633b0d72eb is still alive.
+2026-04-12 02:33:03 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:33:04 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:33:04 [WARNING] guards: Lock conflict for scorer: PID 42 on 33633b0d72eb is still alive.
+2026-04-12 02:33:15 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:33:15 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:33:15 [WARNING] guards: Lock conflict for scorer: PID 42 on 33633b0d72eb is still alive.
+2026-04-12 02:33:29 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:33:29 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:33:29 [WARNING] guards: Lock conflict for scorer: PID 42 on 33633b0d72eb is still alive.
+2026-04-12 02:33:40 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:33:41 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:33:41 [WARNING] guards: Lock conflict for scorer: PID 42 on 33633b0d72eb is still alive.
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:33:45 [INFO] scorer: --- Agent scorer Shutdown Cleanly ---
+2026-04-12 02:34:08 [INFO] scorer: [DEBUG] AGENT=scorer PID=42 HOST=e32103ce631f BYPASS=False
+2026-04-12 02:34:08 [INFO] scorer: --- Agent scorer Persistent Loop Started ---
+2026-04-12 02:34:08 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:34:08 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:34:08 [WARNING] guards: Lock conflict for scorer: PID 42 on e32103ce631f is still alive.
 
 --- ATTACHMENT: init.log ---
-  (Processing last 242 lines)
+  (Processing last 271 lines)
 2026-04-12 02:18:02 [INIT] [ENV] Context: Host System
 2026-04-12 02:18:02 ✔ [INIT] Component environment status: ok
 2026-04-12 02:18:04 ✔ [INIT] Component dependencies status: ok
@@ -1971,9 +2121,38 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
 2026-04-12 02:24:38 [INIT] [DOCKER] Orchestrating stack: media
 2026-04-12 02:24:38 [INIT] [DOCKER] Orchestrating stack: apps/tattoo-app
 2026-04-12 02:24:39 ★ [INIT] System Readiness: DEGRADED
+2026-04-12 02:26:39 ✔ [INIT] Component filesystem status: ok
+2026-04-12 02:26:39 ✔ [INIT] Component logs status: ok
+2026-04-12 02:26:39 ✔ [INIT] Component state status: ok
+2026-04-12 02:26:41 [INIT] [DOCKER] Orchestrating stack: routing
+2026-04-12 02:26:41 ⏳ [INIT] Waiting for routing readiness (timeout 60s)...
+2026-04-12 02:27:42 ⚠ [INIT] routing readiness TIMEOUT of 60s reached.
+2026-04-12 02:27:42 ⚠ [INIT] [DOCKER] Stack routing failed: Critical service cloudflared in routing stack failed readiness probes.
+2026-04-12 02:27:42 ⚠ [INIT] Component docker status: partial
+2026-04-12 02:27:42 [INIT] [DOCKER] Orchestrating stack: network
+2026-04-12 02:27:42 ⏳ [INIT] Waiting for network readiness (timeout 60s)...
+2026-04-12 02:28:43 ⚠ [INIT] network readiness TIMEOUT of 60s reached.
+2026-04-12 02:28:43 ⚠ [INIT] [DOCKER] Stack network failed: Critical service gluetun in network stack failed readiness probes.
+2026-04-12 02:28:43 ⚠ [INIT] Component docker status: partial
+2026-04-12 02:28:43 [INIT] [DOCKER] Orchestrating stack: maintenance
+2026-04-12 02:28:43 [INIT] [DOCKER] Orchestrating stack: core
+2026-04-12 02:28:43 ⏳ [INIT] Waiting for core readiness (timeout 45s)...
+2026-04-12 02:29:30 ⚠ [INIT] core readiness TIMEOUT of 45s reached.
+2026-04-12 02:29:30 ⚠ [INIT] [DOCKER] Stack core failed: Critical service m3tal-dashboard in core stack failed readiness probes.
+2026-04-12 02:29:30 ⚠ [INIT] Component docker status: partial
+2026-04-12 02:29:30 [INIT] [DOCKER] Orchestrating stack: media
+2026-04-12 02:29:30 [INIT] [DOCKER] Orchestrating stack: apps/tattoo-app
+2026-04-12 02:29:31 ★ [INIT] System Readiness: DEGRADED
+2026-04-12 09:30:04 [INIT] [ENV] Context: Host System
+2026-04-12 09:30:04 ✔ [INIT] Component environment status: ok
+2026-04-12 02:32:45 ✔ [INIT] Component filesystem status: ok
+2026-04-12 02:32:45 ✔ [INIT] Component logs status: ok
+2026-04-12 02:32:45 ✔ [INIT] Component state status: ok
+2026-04-12 02:32:47 [INIT] [DOCKER] Orchestrating stack: routing
+2026-04-12 02:32:47 ⏳ [INIT] Waiting for routing readiness (timeout 60s)...
 
 --- ATTACHMENT: leader.log ---
-  (Processing last 142 lines)
+  (Processing last 162 lines)
 2026-04-11 19:20:15 [INFO] leader: --- Leader Agent Persistent Loop Started ---
 2026-04-11 19:20:15 [INFO] leader: --- Leader Agent Persistent Loop Started ---
 2026-04-11 19:20:17 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
@@ -2116,9 +2295,29 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
 2026-04-12 00:24:25 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
 2026-04-12 00:24:35 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
 2026-04-12 00:24:35 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:32:43 [INFO] leader: --- Leader Agent Persistent Loop Started ---
+2026-04-12 02:32:43 [INFO] leader: --- Leader Agent Persistent Loop Started ---
+2026-04-12 02:32:43 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:32:43 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:32:53 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:32:53 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:33:03 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:33:03 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:33:13 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:33:13 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:33:23 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:33:23 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:33:33 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:33:33 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:33:43 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:33:43 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:34:03 [INFO] leader: --- Leader Agent Persistent Loop Started ---
+2026-04-12 02:34:03 [INFO] leader: --- Leader Agent Persistent Loop Started ---
+2026-04-12 02:34:03 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+2026-04-12 02:34:03 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
 
 --- ATTACHMENT: metrics.log ---
-  (Processing last 543 lines)
+  (Processing last 747 lines)
 2026-04-11 19:20:24 [INFO] metrics: [DEBUG] AGENT=metrics PID=32 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:24 [INFO] metrics: [DEBUG] AGENT=metrics PID=32 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:24 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
@@ -2662,9 +2861,213 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
 2026-04-12 02:25:51 [INFO] metrics: Captured metrics and history.
 2026-04-12 02:25:51 [INFO] metrics: Captured metrics and history.
 2026-04-12 02:25:51 [WARNING] guards: Lock conflict for metrics: PID 24 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:03 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:26:03 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:26:03 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:26:03 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:26:03 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:26:03 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:26:03 [WARNING] guards: Lock conflict for metrics: PID 24 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:14 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:26:14 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:26:14 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:26:14 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:26:14 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:26:14 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:26:14 [WARNING] guards: Lock conflict for metrics: PID 24 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:27 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:26:27 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:26:28 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:26:28 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:26:28 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:26:28 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:26:28 [WARNING] guards: Lock conflict for metrics: PID 24 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:40 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:26:40 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:26:40 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:26:40 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:26:40 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:26:40 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:26:40 [WARNING] guards: Lock conflict for metrics: PID 24 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:54 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:26:54 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:26:54 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:26:54 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:26:54 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:26:54 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:26:54 [WARNING] guards: Lock conflict for metrics: PID 24 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:06 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:27:06 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:27:06 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:27:06 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:27:06 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:27:06 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:27:06 [WARNING] guards: Lock conflict for metrics: PID 24 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:21 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:27:21 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:27:21 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:27:21 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:27:21 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:27:21 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:27:21 [WARNING] guards: Lock conflict for metrics: PID 24 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:35 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:27:35 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:27:35 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:27:35 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:27:35 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:27:35 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:27:35 [WARNING] guards: Lock conflict for metrics: PID 24 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:45 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:27:45 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:27:45 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:27:45 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:27:45 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:27:45 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:27:45 [WARNING] guards: Lock conflict for metrics: PID 24 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:55 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:27:55 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:27:55 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:27:55 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:27:55 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:27:55 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:27:55 [WARNING] guards: Lock conflict for metrics: PID 24 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:07 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:28:07 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:28:07 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:28:07 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:28:07 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:28:07 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:28:07 [WARNING] guards: Lock conflict for metrics: PID 24 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:17 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:28:17 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:28:18 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:28:18 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:28:18 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:28:18 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:28:18 [WARNING] guards: Lock conflict for metrics: PID 24 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:31 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:28:31 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:28:31 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:28:31 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:28:31 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:28:31 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:28:32 [WARNING] guards: Lock conflict for metrics: PID 24 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:44 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:28:44 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:28:44 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:28:44 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:28:44 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:28:44 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:28:44 [WARNING] guards: Lock conflict for metrics: PID 24 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:54 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:28:54 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:28:54 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:28:54 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:28:54 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:28:54 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:28:54 [WARNING] guards: Lock conflict for metrics: PID 24 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:06 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:29:06 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:29:06 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:29:06 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:29:06 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:29:06 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:29:06 [WARNING] guards: Lock conflict for metrics: PID 24 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:20 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:29:20 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:29:20 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:29:20 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:29:20 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:29:20 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:29:20 [WARNING] guards: Lock conflict for metrics: PID 24 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:34 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:29:34 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:29:35 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:29:35 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:29:35 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:29:35 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:29:35 [WARNING] guards: Lock conflict for metrics: PID 24 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:47 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:29:47 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:29:47 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:29:47 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:29:47 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:29:47 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:29:48 [WARNING] guards: Lock conflict for metrics: PID 24 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:59 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:29:59 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:29:59 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:29:59 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:29:59 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:29:59 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:29:59 [WARNING] guards: Lock conflict for metrics: PID 24 on 7c80e011cc95 is still alive.
+2026-04-12 02:30:09 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:30:09 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:30:09 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:30:09 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:30:09 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:30:09 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:30:23 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:30:23 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:30:23 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:30:23 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:30:23 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:30:23 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:30:35 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:30:35 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:30:35 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:30:35 [ERROR] metrics: Failed to write history: [Errno 13] Permission denied: '/docker/control-plane/state/metrics-history.csv'
+2026-04-12 02:30:35 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:30:35 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:30:42 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:30:43 [INFO] metrics: --- Agent metrics Shutdown Cleanly ---
+2026-04-12 02:30:43 [INFO] metrics: --- Agent metrics Shutdown Cleanly ---
+2026-04-12 02:32:42 [INFO] metrics: [DEBUG] AGENT=metrics PID=64 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:32:42 [INFO] metrics: [DEBUG] AGENT=metrics PID=64 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:32:42 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
+2026-04-12 02:32:42 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
+2026-04-12 02:32:42 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:32:42 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:32:43 [INFO] metrics: Rotating metrics-history.csv (Pruning overflow)
+2026-04-12 02:32:43 [INFO] metrics: Rotating metrics-history.csv (Pruning overflow)
+2026-04-12 02:32:43 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:32:43 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:32:43 [WARNING] guards: Lock conflict for metrics: PID 64 on 33633b0d72eb is still alive.
+2026-04-12 02:32:56 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:32:56 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:32:56 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:32:56 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:32:56 [WARNING] guards: Lock conflict for metrics: PID 64 on 33633b0d72eb is still alive.
+2026-04-12 02:33:07 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:33:07 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:33:07 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:33:07 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:33:07 [WARNING] guards: Lock conflict for metrics: PID 64 on 33633b0d72eb is still alive.
+2026-04-12 02:33:17 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:33:17 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:33:17 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:33:17 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:33:17 [WARNING] guards: Lock conflict for metrics: PID 64 on 33633b0d72eb is still alive.
+2026-04-12 02:33:27 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:33:27 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:33:28 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:33:28 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:33:28 [WARNING] guards: Lock conflict for metrics: PID 64 on 33633b0d72eb is still alive.
+2026-04-12 02:33:39 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:33:39 [ERROR] metrics: Docker stats failed: Command '['docker', 'stats', '--no-stream', '--format', '{{json .}}']' returned non-zero exit status 1.
+2026-04-12 02:33:39 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:33:39 [INFO] metrics: Captured metrics and history.
+2026-04-12 02:33:39 [WARNING] guards: Lock conflict for metrics: PID 64 on 33633b0d72eb is still alive.
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:33:45 [INFO] metrics: --- Agent metrics Shutdown Cleanly ---
+2026-04-12 02:33:45 [INFO] metrics: --- Agent metrics Shutdown Cleanly ---
+2026-04-12 02:34:12 [INFO] metrics: [DEBUG] AGENT=metrics PID=51 HOST=e32103ce631f BYPASS=False
+2026-04-12 02:34:12 [INFO] metrics: [DEBUG] AGENT=metrics PID=51 HOST=e32103ce631f BYPASS=False
+2026-04-12 02:34:12 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
+2026-04-12 02:34:12 [INFO] metrics: --- Agent metrics Persistent Loop Started ---
 
 --- ATTACHMENT: monitor.log ---
-  (Processing last 442 lines)
+  (Processing last 597 lines)
 2026-04-11 19:20:17 [INFO] monitor: [DEBUG] AGENT=monitor PID=12 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:17 [INFO] monitor: [DEBUG] AGENT=monitor PID=12 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:17 [INFO] monitor: --- Agent monitor Persistent Loop Started ---
@@ -3107,9 +3510,164 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
 2026-04-12 02:25:49 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
 2026-04-12 02:25:49 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
 2026-04-12 02:25:49 [WARNING] guards: Lock conflict for monitor: PID 11 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:03 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:26:03 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:26:03 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:26:03 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:26:03 [WARNING] guards: Lock conflict for monitor: PID 11 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:17 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:26:17 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:26:17 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:26:17 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:26:18 [WARNING] guards: Lock conflict for monitor: PID 11 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:31 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:26:31 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:26:31 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:26:31 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:26:31 [WARNING] guards: Lock conflict for monitor: PID 11 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:41 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:26:41 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:26:41 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:26:41 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:26:41 [WARNING] guards: Lock conflict for monitor: PID 11 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:55 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:26:55 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:26:55 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:26:55 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:26:56 [WARNING] guards: Lock conflict for monitor: PID 11 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:06 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:27:06 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:27:06 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:27:06 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:27:06 [WARNING] guards: Lock conflict for monitor: PID 11 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:20 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:27:20 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:27:20 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:27:20 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:27:20 [WARNING] guards: Lock conflict for monitor: PID 11 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:31 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:27:31 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:27:31 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:27:31 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:27:31 [WARNING] guards: Lock conflict for monitor: PID 11 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:44 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:27:44 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:27:44 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:27:44 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:27:44 [WARNING] guards: Lock conflict for monitor: PID 11 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:56 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:27:56 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:27:56 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:27:56 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:27:57 [WARNING] guards: Lock conflict for monitor: PID 11 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:07 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:28:07 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:28:07 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:28:07 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:28:07 [WARNING] guards: Lock conflict for monitor: PID 11 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:19 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:28:19 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:28:19 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:28:19 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:28:19 [WARNING] guards: Lock conflict for monitor: PID 11 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:32 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:28:32 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:28:32 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:28:32 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:28:32 [WARNING] guards: Lock conflict for monitor: PID 11 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:44 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:28:44 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:28:44 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:28:44 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:28:44 [WARNING] guards: Lock conflict for monitor: PID 11 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:55 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:28:55 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:28:55 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:28:55 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:28:55 [WARNING] guards: Lock conflict for monitor: PID 11 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:09 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:29:09 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:29:09 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:29:09 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:29:10 [WARNING] guards: Lock conflict for monitor: PID 11 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:22 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:29:22 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:29:22 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:29:22 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:29:23 [WARNING] guards: Lock conflict for monitor: PID 11 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:35 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:29:35 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:29:35 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:29:35 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:29:35 [WARNING] guards: Lock conflict for monitor: PID 11 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:47 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:29:47 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:29:47 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:29:47 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:29:48 [WARNING] guards: Lock conflict for monitor: PID 11 on 7c80e011cc95 is still alive.
+2026-04-12 02:30:01 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:30:01 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:30:01 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:30:01 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:30:01 [WARNING] guards: Lock conflict for monitor: PID 11 on 7c80e011cc95 is still alive.
+2026-04-12 02:30:15 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:30:15 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:30:15 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:30:15 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:30:32 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:30:32 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:30:32 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:30:32 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:30:42 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:30:43 [INFO] monitor: --- Agent monitor Shutdown Cleanly ---
+2026-04-12 02:30:43 [INFO] monitor: --- Agent monitor Shutdown Cleanly ---
+2026-04-12 02:32:35 [INFO] monitor: [DEBUG] AGENT=monitor PID=29 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:32:35 [INFO] monitor: [DEBUG] AGENT=monitor PID=29 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:32:35 [INFO] monitor: --- Agent monitor Persistent Loop Started ---
+2026-04-12 02:32:35 [INFO] monitor: --- Agent monitor Persistent Loop Started ---
+2026-04-12 02:32:35 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:32:35 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:32:35 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:32:35 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:32:35 [WARNING] guards: Lock conflict for monitor: PID 29 on 33633b0d72eb is still alive.
+2026-04-12 02:32:47 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:32:47 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:32:47 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:32:47 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:32:47 [WARNING] guards: Lock conflict for monitor: PID 29 on 33633b0d72eb is still alive.
+2026-04-12 02:32:58 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:32:58 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:32:58 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:32:58 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:32:59 [WARNING] guards: Lock conflict for monitor: PID 29 on 33633b0d72eb is still alive.
+2026-04-12 02:33:10 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:33:10 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:33:10 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:33:10 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:33:10 [WARNING] guards: Lock conflict for monitor: PID 29 on 33633b0d72eb is still alive.
+2026-04-12 02:33:21 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:33:21 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:33:21 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:33:21 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:33:22 [WARNING] guards: Lock conflict for monitor: PID 29 on 33633b0d72eb is still alive.
+2026-04-12 02:33:32 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:33:32 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:33:32 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:33:32 [ERROR] monitor: DOCKER_STDERR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&size=1": dial unix /var/run/docker.sock: connect: permission denied
+2026-04-12 02:33:32 [WARNING] guards: Lock conflict for monitor: PID 29 on 33633b0d72eb is still alive.
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:33:45 [INFO] monitor: --- Agent monitor Shutdown Cleanly ---
+2026-04-12 02:33:45 [INFO] monitor: --- Agent monitor Shutdown Cleanly ---
+2026-04-12 02:34:05 [INFO] monitor: [DEBUG] AGENT=monitor PID=29 HOST=e32103ce631f BYPASS=False
+2026-04-12 02:34:05 [INFO] monitor: [DEBUG] AGENT=monitor PID=29 HOST=e32103ce631f BYPASS=False
+2026-04-12 02:34:05 [INFO] monitor: --- Agent monitor Persistent Loop Started ---
+2026-04-12 02:34:05 [INFO] monitor: --- Agent monitor Persistent Loop Started ---
+2026-04-12 02:34:05 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:34:05 [INFO] monitor: Health check completed for 0 containers (Available: True).
+2026-04-12 02:34:05 [WARNING] guards: Lock conflict for monitor: PID 29 on e32103ce631f is still alive.
 
 --- ATTACHMENT: network_guard.log ---
-  (Processing last 32 lines)
+  (Processing last 51 lines)
 2026-04-12 00:19:31 [INFO] network_guard: [DEBUG] AGENT=network_guard PID=49 HOST=c87673d775d1 BYPASS=False
 2026-04-12 00:19:31 [INFO] network_guard: [DEBUG] AGENT=network_guard PID=49 HOST=c87673d775d1 BYPASS=False
 2026-04-12 00:19:32 [INFO] network_guard: --- Agent network_guard Persistent Loop Started ---
@@ -3142,9 +3700,28 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
 2026-04-12 00:24:39 [INFO] guards: Received signal 15. Requesting graceful shutdown...
 2026-04-12 00:24:39 [INFO] network_guard: --- Agent network_guard Shutdown Cleanly ---
 2026-04-12 00:24:39 [INFO] network_guard: --- Agent network_guard Shutdown Cleanly ---
+2026-04-12 02:33:05 [INFO] network_guard: [DEBUG] AGENT=network_guard PID=327 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:33:05 [INFO] network_guard: [DEBUG] AGENT=network_guard PID=327 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:33:05 [INFO] network_guard: --- Agent network_guard Persistent Loop Started ---
+2026-04-12 02:33:05 [INFO] network_guard: --- Agent network_guard Persistent Loop Started ---
+2026-04-12 02:33:05 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:33:05 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:33:05 [WARNING] guards: Lock conflict for network_guard: PID 327 on 33633b0d72eb is still alive.
+2026-04-12 02:33:15 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:33:15 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:33:15 [WARNING] guards: Lock conflict for network_guard: PID 327 on 33633b0d72eb is still alive.
+2026-04-12 02:33:28 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:33:28 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:33:28 [WARNING] guards: Lock conflict for network_guard: PID 327 on 33633b0d72eb is still alive.
+2026-04-12 02:33:42 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:33:42 [WARNING] network_guard: Gluetun container not found. Is the network stack up?
+2026-04-12 02:33:42 [WARNING] guards: Lock conflict for network_guard: PID 327 on 33633b0d72eb is still alive.
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:33:44 [INFO] network_guard: --- Agent network_guard Shutdown Cleanly ---
+2026-04-12 02:33:44 [INFO] network_guard: --- Agent network_guard Shutdown Cleanly ---
 
 --- ATTACHMENT: notify.log ---
-  (Processing last 396 lines)
+  (Processing last 439 lines)
 2026-04-11 19:20:39 [INFO] notify: Telegram Config Validated: Token=87863...lZDMk (len=46), Chat=6723376693
 2026-04-11 19:20:39 [INFO] notify: Telegram Config Validated: Token=87863...lZDMk (len=46), Chat=6723376693
 2026-04-11 19:20:40 [INFO] notify: Telegram Connection Verified: @M3talMediaServerBot
@@ -3541,9 +4118,52 @@ NameError: name 'ALERT_VERDICTS' is not defined
 2026-04-12 00:24:39 [INFO] guards: Received signal 15. Requesting graceful shutdown...
 2026-04-12 00:24:40 [INFO] notify: --- Agent notify Shutdown Cleanly ---
 2026-04-12 00:24:40 [INFO] notify: --- Agent notify Shutdown Cleanly ---
+2026-04-12 02:32:47 [WARNING] notify: Telegram credentials missing (TELEGRAM_TOKEN / TELEGRAM_CHAT_ID).
+2026-04-12 02:32:47 [WARNING] notify: Telegram credentials missing (TELEGRAM_TOKEN / TELEGRAM_CHAT_ID).
+2026-04-12 02:32:47 [INFO] notify: [DEBUG] AGENT=notify PID=85 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:32:47 [INFO] notify: [DEBUG] AGENT=notify PID=85 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:32:47 [INFO] notify: --- Agent notify Persistent Loop Started ---
+2026-04-12 02:32:47 [INFO] notify: --- Agent notify Persistent Loop Started ---
+2026-04-12 02:32:47 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:32:47 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:32:47 [WARNING] guards: Lock conflict for notify: PID 85 on 33633b0d72eb is still alive.
+2026-04-12 02:33:18 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:33:18 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/notify.py", line 110, in check_and_notify
+    if verdict in ALERT_VERDICTS:
+                  ^^^^^^^^^^^^^^
+NameError: name 'ALERT_VERDICTS' is not defined
+2026-04-12 02:33:18 [WARNING] guards: Lock conflict for notify: PID 85 on 33633b0d72eb is still alive.
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:33:45 [INFO] notify: --- Agent notify Shutdown Cleanly ---
+2026-04-12 02:33:45 [INFO] notify: --- Agent notify Shutdown Cleanly ---
 
 --- ATTACHMENT: observer.log ---
-  (Processing last 531 lines)
+  (Processing last 681 lines)
 2026-04-11 19:20:26 [INFO] observer: [DEBUG] AGENT=observer PID=44 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:26 [INFO] observer: [DEBUG] AGENT=observer PID=44 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:26 [INFO] observer: --- Agent observer Persistent Loop Started ---
@@ -4075,9 +4695,159 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
 2026-04-12 02:25:56 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:25:49 [ERROR] monitor: Failed to poll docker (Status 1)
 2026-04-12 02:25:56 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:25:49 [ERROR] monitor: Failed to poll docker (Status 1)
 2026-04-12 02:25:56 [WARNING] guards: Lock conflict for observer: PID 34 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:10 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:26:10 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:26:10 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:26:03 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:26:10 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:26:03 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:26:10 [WARNING] guards: Lock conflict for observer: PID 34 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:20 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:26:20 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:26:20 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:26:17 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:26:20 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:26:17 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:26:21 [WARNING] guards: Lock conflict for observer: PID 34 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:32 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:26:32 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:26:32 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:26:31 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:26:32 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:26:31 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:26:32 [WARNING] guards: Lock conflict for observer: PID 34 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:45 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:26:45 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:26:45 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:26:41 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:26:45 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:26:41 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:26:45 [WARNING] guards: Lock conflict for observer: PID 34 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:56 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:26:56 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:26:56 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:26:55 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:26:56 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:26:55 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:26:56 [WARNING] guards: Lock conflict for observer: PID 34 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:06 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:27:06 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:27:06 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:27:06 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:27:06 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:27:06 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:27:06 [WARNING] guards: Lock conflict for observer: PID 34 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:21 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:27:21 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:27:21 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:27:20 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:27:21 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:27:20 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:27:21 [WARNING] guards: Lock conflict for observer: PID 34 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:32 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:27:32 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:27:32 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:27:31 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:27:32 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:27:31 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:27:32 [WARNING] guards: Lock conflict for observer: PID 34 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:44 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:27:44 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:27:44 [WARNING] guards: Lock conflict for observer: PID 34 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:56 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:27:56 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:27:56 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:27:44 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:27:56 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:27:44 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:27:56 [WARNING] guards: Lock conflict for observer: PID 34 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:06 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:28:06 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:28:06 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:27:56 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:28:06 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:27:56 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:28:07 [WARNING] guards: Lock conflict for observer: PID 34 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:18 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:28:18 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:28:18 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:28:07 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:28:18 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:28:07 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:28:18 [WARNING] guards: Lock conflict for observer: PID 34 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:31 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:28:31 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:28:31 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:28:19 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:28:31 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:28:19 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:28:32 [WARNING] guards: Lock conflict for observer: PID 34 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:45 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:28:45 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:28:45 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:28:32 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:28:45 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:28:32 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:28:45 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:28:44 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:28:45 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:28:44 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:28:46 [WARNING] guards: Lock conflict for observer: PID 34 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:57 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:28:57 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:28:57 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:28:55 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:28:57 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:28:55 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:28:58 [WARNING] guards: Lock conflict for observer: PID 34 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:12 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:29:12 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:29:12 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:29:09 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:29:12 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:29:09 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:29:12 [WARNING] guards: Lock conflict for observer: PID 34 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:22 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:29:22 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:29:22 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:29:22 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:29:22 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:29:22 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:29:23 [WARNING] guards: Lock conflict for observer: PID 34 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:36 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:29:36 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:29:36 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:29:35 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:29:36 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:29:35 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:29:37 [WARNING] guards: Lock conflict for observer: PID 34 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:47 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:29:47 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:29:47 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:29:47 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:29:47 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:29:47 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:29:48 [WARNING] guards: Lock conflict for observer: PID 34 on 7c80e011cc95 is still alive.
+2026-04-12 02:30:00 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:30:00 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:30:00 [WARNING] guards: Lock conflict for observer: PID 34 on 7c80e011cc95 is still alive.
+2026-04-12 02:30:11 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:30:11 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:30:11 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:30:01 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:30:11 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:30:01 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:30:25 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:30:25 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:30:25 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:30:15 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:30:25 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:30:15 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:30:38 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:30:38 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:30:38 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:30:32 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:30:38 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:30:32 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:30:42 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:30:42 [INFO] observer: --- Agent observer Shutdown Cleanly ---
+2026-04-12 02:30:42 [INFO] observer: --- Agent observer Shutdown Cleanly ---
+2026-04-12 02:32:43 [INFO] observer: [DEBUG] AGENT=observer PID=78 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:32:43 [INFO] observer: [DEBUG] AGENT=observer PID=78 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:32:43 [INFO] observer: --- Agent observer Persistent Loop Started ---
+2026-04-12 02:32:43 [INFO] observer: --- Agent observer Persistent Loop Started ---
+2026-04-12 02:32:43 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:32:43 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:32:44 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:32:35 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:32:44 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:32:35 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:32:44 [WARNING] guards: Lock conflict for observer: PID 78 on 33633b0d72eb is still alive.
+2026-04-12 02:32:55 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:32:55 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:32:55 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:32:47 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:32:55 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:32:47 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:32:56 [WARNING] guards: Lock conflict for observer: PID 78 on 33633b0d72eb is still alive.
+2026-04-12 02:33:08 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:33:08 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:33:08 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:32:58 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:33:08 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:32:58 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:33:08 [WARNING] guards: Lock conflict for observer: PID 78 on 33633b0d72eb is still alive.
+2026-04-12 02:33:18 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:33:18 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:33:18 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:33:10 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:33:18 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:33:10 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:33:18 [WARNING] guards: Lock conflict for observer: PID 78 on 33633b0d72eb is still alive.
+2026-04-12 02:33:30 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:33:30 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:33:30 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:33:21 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:33:30 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:33:21 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:33:30 [WARNING] guards: Lock conflict for observer: PID 78 on 33633b0d72eb is still alive.
+2026-04-12 02:33:43 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:33:43 [INFO] observer: Watching system logs for critical events...
+2026-04-12 02:33:43 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:33:32 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:33:43 [WARNING] observer: Critical Event detected in monitor: 2026-04-12 02:33:32 [ERROR] monitor: Failed to poll docker (Status 1)
+2026-04-12 02:33:44 [WARNING] guards: Lock conflict for observer: PID 78 on 33633b0d72eb is still alive.
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:33:45 [INFO] observer: --- Agent observer Shutdown Cleanly ---
+2026-04-12 02:33:45 [INFO] observer: --- Agent observer Shutdown Cleanly ---
 
 --- ATTACHMENT: reconcile.log ---
-  (Processing last 366 lines)
+  (Processing last 464 lines)
 2026-04-11 19:20:19 [INFO] reconcile: [DEBUG] AGENT=reconcile PID=17 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:19 [INFO] reconcile: [DEBUG] AGENT=reconcile PID=17 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:19 [INFO] reconcile: --- Agent reconcile Persistent Loop Started ---
@@ -4444,9 +5214,107 @@ Failed to initialize file logger for guards: [Errno 13] Permission denied: '/doc
 2026-04-12 02:25:56 [INFO] reconcile: Reconciliation cycle complete.
 2026-04-12 02:25:56 [INFO] reconcile: Reconciliation cycle complete.
 2026-04-12 02:25:56 [WARNING] guards: Lock conflict for reconcile: PID 16 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:10 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:26:10 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:26:11 [WARNING] guards: Lock conflict for reconcile: PID 16 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:23 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:26:23 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:26:23 [WARNING] guards: Lock conflict for reconcile: PID 16 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:37 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:26:37 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:26:37 [WARNING] guards: Lock conflict for reconcile: PID 16 on 7c80e011cc95 is still alive.
+2026-04-12 02:26:51 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:26:51 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:26:51 [WARNING] guards: Lock conflict for reconcile: PID 16 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:05 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:27:05 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:27:05 [WARNING] guards: Lock conflict for reconcile: PID 16 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:18 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:27:18 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:27:18 [WARNING] guards: Lock conflict for reconcile: PID 16 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:28 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:27:28 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:27:28 [WARNING] guards: Lock conflict for reconcile: PID 16 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:40 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:27:40 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:27:41 [WARNING] guards: Lock conflict for reconcile: PID 16 on 7c80e011cc95 is still alive.
+2026-04-12 02:27:52 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:27:52 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:27:52 [WARNING] guards: Lock conflict for reconcile: PID 16 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:06 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:28:06 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:28:06 [WARNING] guards: Lock conflict for reconcile: PID 16 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:17 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:28:17 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:28:17 [WARNING] guards: Lock conflict for reconcile: PID 16 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:30 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:28:30 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:28:31 [WARNING] guards: Lock conflict for reconcile: PID 16 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:44 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:28:44 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:28:44 [WARNING] guards: Lock conflict for reconcile: PID 16 on 7c80e011cc95 is still alive.
+2026-04-12 02:28:56 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:28:56 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:28:56 [WARNING] guards: Lock conflict for reconcile: PID 16 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:09 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:29:09 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:29:10 [WARNING] guards: Lock conflict for reconcile: PID 16 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:21 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:29:21 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:29:21 [WARNING] guards: Lock conflict for reconcile: PID 16 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:33 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:29:33 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:29:33 [WARNING] guards: Lock conflict for reconcile: PID 16 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:45 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:29:45 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:29:45 [WARNING] guards: Lock conflict for reconcile: PID 16 on 7c80e011cc95 is still alive.
+2026-04-12 02:29:57 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:29:57 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:29:57 [WARNING] guards: Lock conflict for reconcile: PID 16 on 7c80e011cc95 is still alive.
+2026-04-12 02:30:11 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:30:11 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:30:23 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:30:23 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:30:36 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:30:36 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:30:42 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:30:42 [INFO] reconcile: --- Agent reconcile Shutdown Cleanly ---
+2026-04-12 02:30:42 [INFO] reconcile: --- Agent reconcile Shutdown Cleanly ---
+2026-04-12 02:32:37 [INFO] reconcile: [DEBUG] AGENT=reconcile PID=40 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:32:37 [INFO] reconcile: [DEBUG] AGENT=reconcile PID=40 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:32:37 [INFO] reconcile: --- Agent reconcile Persistent Loop Started ---
+2026-04-12 02:32:37 [INFO] reconcile: --- Agent reconcile Persistent Loop Started ---
+2026-04-12 02:32:37 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:32:37 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:32:37 [WARNING] guards: Lock conflict for reconcile: PID 40 on 33633b0d72eb is still alive.
+2026-04-12 02:32:49 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:32:49 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:32:49 [WARNING] guards: Lock conflict for reconcile: PID 40 on 33633b0d72eb is still alive.
+2026-04-12 02:33:03 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:33:03 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:33:04 [WARNING] guards: Lock conflict for reconcile: PID 40 on 33633b0d72eb is still alive.
+2026-04-12 02:33:17 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:33:17 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:33:17 [WARNING] guards: Lock conflict for reconcile: PID 40 on 33633b0d72eb is still alive.
+2026-04-12 02:33:30 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:33:30 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:33:30 [WARNING] guards: Lock conflict for reconcile: PID 40 on 33633b0d72eb is still alive.
+2026-04-12 02:33:41 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:33:41 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:33:41 [WARNING] guards: Lock conflict for reconcile: PID 40 on 33633b0d72eb is still alive.
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:33:44 [INFO] reconcile: --- Agent reconcile Shutdown Cleanly ---
+2026-04-12 02:33:44 [INFO] reconcile: --- Agent reconcile Shutdown Cleanly ---
+2026-04-12 02:34:07 [INFO] reconcile: [DEBUG] AGENT=reconcile PID=40 HOST=e32103ce631f BYPASS=False
+2026-04-12 02:34:07 [INFO] reconcile: [DEBUG] AGENT=reconcile PID=40 HOST=e32103ce631f BYPASS=False
+2026-04-12 02:34:07 [INFO] reconcile: --- Agent reconcile Persistent Loop Started ---
+2026-04-12 02:34:07 [INFO] reconcile: --- Agent reconcile Persistent Loop Started ---
+2026-04-12 02:34:07 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:34:07 [INFO] reconcile: Reconciliation cycle complete.
+2026-04-12 02:34:07 [WARNING] guards: Lock conflict for reconcile: PID 40 on e32103ce631f is still alive.
 
 --- ATTACHMENT: registry.log ---
-  (Processing last 782 lines)
+  (Processing last 851 lines)
 2026-04-11 19:20:17 [INFO] registry: [DEBUG] AGENT=registry PID=10 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:17 [INFO] registry: [DEBUG] AGENT=registry PID=10 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:17 [INFO] registry: --- Agent registry Persistent Loop Started ---
@@ -5229,9 +6097,78 @@ Traceback (most recent call last):
 NameError: name 'time' is not defined
 2026-04-12 02:22:19 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
 2026-04-12 02:22:19 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+Failed to initialize file logger for guards: [Errno 13] Permission denied: '/docker/control-plane/state/logs/guards.log'
+2026-04-12 02:27:25 [INFO] registry: [DEBUG] AGENT=registry PID=3243 HOST=7c80e011cc95 BYPASS=False
+2026-04-12 02:27:25 [INFO] registry: [DEBUG] AGENT=registry PID=3243 HOST=7c80e011cc95 BYPASS=False
+2026-04-12 02:27:25 [INFO] registry: --- Agent registry Persistent Loop Started ---
+2026-04-12 02:27:25 [INFO] registry: --- Agent registry Persistent Loop Started ---
+2026-04-12 02:27:25 [INFO] registry: Found 2 containers in /docker/docker/apps/tattoo-app/docker-compose.yml
+2026-04-12 02:27:25 [INFO] registry: Found 2 containers in /docker/docker/apps/tattoo-app/docker-compose.yml
+2026-04-12 02:27:25 [INFO] registry: Found 2 containers in /docker/docker/core/docker-compose.yml
+2026-04-12 02:27:25 [INFO] registry: Found 2 containers in /docker/docker/core/docker-compose.yml
+2026-04-12 02:27:25 [INFO] registry: Found 4 containers in /docker/docker/maintenance/docker-compose.yml
+2026-04-12 02:27:25 [INFO] registry: Found 4 containers in /docker/docker/maintenance/docker-compose.yml
+2026-04-12 02:27:25 [INFO] registry: Found 14 containers in /docker/docker/media/docker-compose.yml
+2026-04-12 02:27:25 [INFO] registry: Found 14 containers in /docker/docker/media/docker-compose.yml
+2026-04-12 02:27:25 [INFO] registry: Found 1 containers in /docker/docker/network/docker-compose.yml
+2026-04-12 02:27:25 [INFO] registry: Found 1 containers in /docker/docker/network/docker-compose.yml
+2026-04-12 02:27:25 [INFO] registry: Found 2 containers in /docker/docker/routing/docker-compose.yml
+2026-04-12 02:27:25 [INFO] registry: Found 2 containers in /docker/docker/routing/docker-compose.yml
+2026-04-12 02:27:25 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/registry.py", line 68, in scan_for_containers
+    "updated_at": int(time.time())
+                      ^^^^
+NameError: name 'time' is not defined
+2026-04-12 02:27:25 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/registry.py", line 68, in scan_for_containers
+    "updated_at": int(time.time())
+                      ^^^^
+NameError: name 'time' is not defined
+2026-04-12 02:27:25 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+2026-04-12 02:27:25 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+2026-04-12 02:32:34 [INFO] registry: [DEBUG] AGENT=registry PID=27 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:32:34 [INFO] registry: [DEBUG] AGENT=registry PID=27 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:32:34 [INFO] registry: --- Agent registry Persistent Loop Started ---
+2026-04-12 02:32:34 [INFO] registry: --- Agent registry Persistent Loop Started ---
+2026-04-12 02:32:34 [INFO] registry: Found 2 containers in /docker/docker/apps/tattoo-app/docker-compose.yml
+2026-04-12 02:32:34 [INFO] registry: Found 2 containers in /docker/docker/apps/tattoo-app/docker-compose.yml
+2026-04-12 02:32:34 [INFO] registry: Found 3 containers in /docker/docker/core/docker-compose.yml
+2026-04-12 02:32:34 [INFO] registry: Found 3 containers in /docker/docker/core/docker-compose.yml
+2026-04-12 02:32:34 [INFO] registry: Found 4 containers in /docker/docker/maintenance/docker-compose.yml
+2026-04-12 02:32:34 [INFO] registry: Found 4 containers in /docker/docker/maintenance/docker-compose.yml
+2026-04-12 02:32:34 [INFO] registry: Found 14 containers in /docker/docker/media/docker-compose.yml
+2026-04-12 02:32:34 [INFO] registry: Found 14 containers in /docker/docker/media/docker-compose.yml
+2026-04-12 02:32:34 [INFO] registry: Found 1 containers in /docker/docker/network/docker-compose.yml
+2026-04-12 02:32:34 [INFO] registry: Found 1 containers in /docker/docker/network/docker-compose.yml
+2026-04-12 02:32:34 [INFO] registry: Found 2 containers in /docker/docker/routing/docker-compose.yml
+2026-04-12 02:32:34 [INFO] registry: Found 2 containers in /docker/docker/routing/docker-compose.yml
+2026-04-12 02:32:34 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/registry.py", line 68, in scan_for_containers
+    "updated_at": int(time.time())
+                      ^^^^
+NameError: name 'time' is not defined
+2026-04-12 02:32:34 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+Traceback (most recent call last):
+  File "/docker/control-plane/agents/utils/guards.py", line 217, in wrap_agent
+    func()
+  File "/docker/control-plane/agents/registry.py", line 68, in scan_for_containers
+    "updated_at": int(time.time())
+                      ^^^^
+NameError: name 'time' is not defined
+2026-04-12 02:32:34 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+2026-04-12 02:32:34 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
 
 --- ATTACHMENT: scaling.log ---
-  (Processing last 70 lines)
+  (Processing last 83 lines)
 2026-04-11 19:20:25 [INFO] scaling: [DEBUG] AGENT=scaling PID=40 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:25 [INFO] scaling: [DEBUG] AGENT=scaling PID=40 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:25 [INFO] scaling: --- Agent scaling Persistent Loop Started ---
@@ -5302,9 +6239,22 @@ NameError: name 'time' is not defined
 2026-04-12 00:24:39 [INFO] guards: Received signal 15. Requesting graceful shutdown...
 2026-04-12 00:24:39 [INFO] scaling: --- Agent scaling Shutdown Cleanly ---
 2026-04-12 00:24:39 [INFO] scaling: --- Agent scaling Shutdown Cleanly ---
+2026-04-12 02:32:42 [INFO] scaling: [DEBUG] AGENT=scaling PID=66 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:32:42 [INFO] scaling: [DEBUG] AGENT=scaling PID=66 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:32:43 [INFO] scaling: --- Agent scaling Persistent Loop Started ---
+2026-04-12 02:32:43 [INFO] scaling: --- Agent scaling Persistent Loop Started ---
+2026-04-12 02:32:43 [WARNING] guards: Lock conflict for scaling: PID 66 on 33633b0d72eb is still alive.
+2026-04-12 02:32:55 [WARNING] guards: Lock conflict for scaling: PID 66 on 33633b0d72eb is still alive.
+2026-04-12 02:33:05 [WARNING] guards: Lock conflict for scaling: PID 66 on 33633b0d72eb is still alive.
+2026-04-12 02:33:19 [WARNING] guards: Lock conflict for scaling: PID 66 on 33633b0d72eb is still alive.
+2026-04-12 02:33:33 [WARNING] guards: Lock conflict for scaling: PID 66 on 33633b0d72eb is still alive.
+2026-04-12 02:33:43 [WARNING] guards: Lock conflict for scaling: PID 66 on 33633b0d72eb is still alive.
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:33:44 [INFO] scaling: --- Agent scaling Shutdown Cleanly ---
+2026-04-12 02:33:44 [INFO] scaling: --- Agent scaling Shutdown Cleanly ---
 
 --- ATTACHMENT: scorer.log ---
-  (Processing last 62 lines)
+  (Processing last 75 lines)
 2026-04-11 19:20:25 [WARNING] scorer: Docker daemon unreachable at startup. System will start in PARTIAL mode.
 2026-04-11 19:20:25 [INFO] scorer: [DEBUG] AGENT=scorer PID=19 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:25 [INFO] scorer: --- Agent scorer Persistent Loop Started ---
@@ -5367,9 +6317,22 @@ NameError: name 'time' is not defined
 2026-04-12 00:24:25 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
 2026-04-12 00:24:38 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
 2026-04-12 00:24:40 [INFO] scorer: --- Agent scorer Shutdown Cleanly ---
+2026-04-12 02:32:38 [WARNING] scorer: Docker daemon unreachable at startup. System will start in PARTIAL mode.
+2026-04-12 02:32:38 [INFO] scorer: [DEBUG] AGENT=scorer PID=42 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:32:38 [INFO] scorer: --- Agent scorer Persistent Loop Started ---
+2026-04-12 02:32:38 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 0
+2026-04-12 02:32:51 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:33:04 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:33:15 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:33:29 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:33:41 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+2026-04-12 02:33:45 [INFO] scorer: --- Agent scorer Shutdown Cleanly ---
+2026-04-12 02:34:08 [INFO] scorer: [DEBUG] AGENT=scorer PID=42 HOST=e32103ce631f BYPASS=False
+2026-04-12 02:34:08 [INFO] scorer: --- Agent scorer Persistent Loop Started ---
+2026-04-12 02:34:08 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
 
 --- ATTACHMENT: state.log ---
-  (Processing last 54 lines)
+  (Processing last 61 lines)
 2026-04-11 19:20:25 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
 2026-04-11 19:20:37 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
 2026-04-11 19:20:52 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
@@ -5424,12 +6387,19 @@ NameError: name 'time' is not defined
 2026-04-12 00:24:12 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
 2026-04-12 00:24:25 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
 2026-04-12 00:24:37 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:32:38 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:32:51 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:33:03 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:33:15 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:33:29 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:33:40 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
+2026-04-12 02:34:08 [WARNING] state: OWNERSHIP_VIOLATION: Agent 'scorer' is writing to 'health_report.json' (Owned by 'health_score')
 
 --- ATTACHMENT: supervisor.log ---
   (Processing last 0 lines)
 
 --- ATTACHMENT: tunnel.log ---
-  (Processing last 137 lines)
+  (Processing last 162 lines)
 2026-04-11 19:20:26 [INFO] tunnel: [DEBUG] AGENT=tunnel PID=46 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:26 [INFO] tunnel: [DEBUG] AGENT=tunnel PID=46 HOST=be83cf10cf30 BYPASS=False
 2026-04-11 19:20:26 [INFO] tunnel: --- Agent tunnel Persistent Loop Started ---
@@ -5567,3 +6537,28 @@ NameError: name 'time' is not defined
 2026-04-12 00:24:39 [INFO] guards: Received signal 15. Requesting graceful shutdown...
 2026-04-12 00:24:39 [INFO] tunnel: --- Agent tunnel Shutdown Cleanly ---
 2026-04-12 00:24:39 [INFO] tunnel: --- Agent tunnel Shutdown Cleanly ---
+2026-04-12 02:32:44 [INFO] tunnel: [DEBUG] AGENT=tunnel PID=80 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:32:44 [INFO] tunnel: [DEBUG] AGENT=tunnel PID=80 HOST=33633b0d72eb BYPASS=False
+2026-04-12 02:32:44 [INFO] tunnel: --- Agent tunnel Persistent Loop Started ---
+2026-04-12 02:32:44 [INFO] tunnel: --- Agent tunnel Persistent Loop Started ---
+2026-04-12 02:32:44 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:32:44 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:32:44 [WARNING] guards: Lock conflict for tunnel: PID 80 on 33633b0d72eb is still alive.
+2026-04-12 02:32:55 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:32:55 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:32:55 [WARNING] guards: Lock conflict for tunnel: PID 80 on 33633b0d72eb is still alive.
+2026-04-12 02:33:06 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:33:06 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:33:06 [WARNING] guards: Lock conflict for tunnel: PID 80 on 33633b0d72eb is still alive.
+2026-04-12 02:33:17 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:33:17 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:33:18 [WARNING] guards: Lock conflict for tunnel: PID 80 on 33633b0d72eb is still alive.
+2026-04-12 02:33:28 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:33:28 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:33:28 [WARNING] guards: Lock conflict for tunnel: PID 80 on 33633b0d72eb is still alive.
+2026-04-12 02:33:42 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:33:42 [WARNING] tunnel: Tunnel config missing (Token=False, Domain=False, Base=False). Skipping cycle.
+2026-04-12 02:33:42 [WARNING] guards: Lock conflict for tunnel: PID 80 on 33633b0d72eb is still alive.
+2026-04-12 02:33:44 [INFO] guards: Received signal 15. Requesting graceful shutdown...
+2026-04-12 02:33:45 [INFO] tunnel: --- Agent tunnel Shutdown Cleanly ---
+2026-04-12 02:33:45 [INFO] tunnel: --- Agent tunnel Shutdown Cleanly ---
