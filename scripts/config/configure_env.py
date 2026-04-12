@@ -18,6 +18,7 @@ EXAMPLE_FILE = os.path.join(REPO_ROOT, ".env.example")
 
 # Rex Guardrail: Required variables for system integrity
 REQUIRED_VARS = [
+    "REPO_ROOT",
     "MASTER_IP",
     "DASHBOARD_PORT",
     "HTTP_PORT",
@@ -28,7 +29,8 @@ REQUIRED_VARS = [
     "VPN_USER",
     "VPN_PASSWORD",
     "DASHBOARD_SECRET",
-    "CF_TUNNEL_TOKEN"
+    "CF_TUNNEL_TOKEN",
+    "TELEGRAM_BOT_TOKEN"
 ]
 
 def get_input(prompt, default=None):
@@ -58,6 +60,7 @@ def main():
 
     # 1. System Config
     is_windows = platform.system().lower() == "windows"
+    new_env["REPO_ROOT"] = current_env.get("REPO_ROOT", REPO_ROOT)
     
     # Platform-aware defaults for a smooth experience
     repo_media = os.path.join(REPO_ROOT, "media")
@@ -107,10 +110,18 @@ def main():
     new_env["AI_API_KEY"] = get_input("OpenAI/Anthropic API Key (Optional)", current_env.get("AI_API_KEY", ""))
     print("")
 
-    # 4. Notifications
-    print(f"{BOLD}--- [4] Notifications ---{END}")
-    new_env["TELEGRAM_TOKEN"] = get_input("Telegram Bot Token", current_env.get("TELEGRAM_TOKEN", ""))
-    new_env["TELEGRAM_CHAT_ID"] = get_input("Telegram Chat ID", current_env.get("TELEGRAM_CHAT_ID", ""))
+    # 4. Notifications (Multi-Channel Audit Fix 5.7)
+    print(f"{BOLD}--- [4] Telegram Multi-Channel Notifications ---{END}")
+    new_env["TELEGRAM_BOT_TOKEN"] = get_input("Telegram Bot Token", current_env.get("TELEGRAM_BOT_TOKEN", current_env.get("TELEGRAM_TOKEN", "")))
+    new_env["TG_CHAT_MODE"] = get_input("Telegram Chat Mode (1-4)", current_env.get("TG_CHAT_MODE", "1"))
+    new_env["TG_MAIN_CHAT_ID"] = get_input("Main/Alert Chat ID", current_env.get("TG_MAIN_CHAT_ID", current_env.get("TELEGRAM_CHAT_ID", "")))
+    new_env["TG_LOG_CHAT_ID"] = get_input("Logs Chat ID (0 to disable)", current_env.get("TG_LOG_CHAT_ID", "0"))
+    new_env["TG_ERROR_CHAT_ID"] = get_input("Errors Chat ID (0 to disable)", current_env.get("TG_ERROR_CHAT_ID", "0"))
+    new_env["TG_ALERT_CHAT_ID"] = get_input("Critical alerts Chat ID (0 to disable)", current_env.get("TG_ALERT_CHAT_ID", "0"))
+    
+    # Legacy fallbacks for backward compatibility
+    new_env["TELEGRAM_TOKEN"] = new_env["TELEGRAM_BOT_TOKEN"]
+    new_env["TELEGRAM_CHAT_ID"] = new_env["TG_MAIN_CHAT_ID"]
     print("")
 
     # 5. Cloudflare Tunnel
@@ -136,10 +147,10 @@ def main():
             
             # Sort keys into categories for readability
             categories = {
-                "SYSTEM": ["PUID", "PGID", "TZ", "MASTER_IP", "DASHBOARD_PORT", "HTTP_PORT", "DOMAIN", "BASE_DOMAIN", "DATA_DIR", "CONFIG_DIR", "CF_TUNNEL_TOKEN"],
+                "SYSTEM": ["REPO_ROOT", "PUID", "PGID", "TZ", "MASTER_IP", "DASHBOARD_PORT", "HTTP_PORT", "DOMAIN", "BASE_DOMAIN", "DATA_DIR", "CONFIG_DIR", "CF_TUNNEL_TOKEN"],
                 "VPN": ["VPN_USER", "VPN_PASSWORD"],
                 "AI": ["OLLAMA_URL", "AI_API_KEY"],
-                "NOTIFY": ["TELEGRAM_TOKEN", "TELEGRAM_CHAT_ID"],
+                "NOTIFY": ["TELEGRAM_BOT_TOKEN", "TG_CHAT_MODE", "TG_MAIN_CHAT_ID", "TG_LOG_CHAT_ID", "TG_ERROR_CHAT_ID", "TG_ALERT_CHAT_ID", "TELEGRAM_TOKEN", "TELEGRAM_CHAT_ID"],
                 "DB": ["TATTOO_DB_PASSWORD"],
                 "AUTH": ["DASHBOARD_SECRET"]
             }

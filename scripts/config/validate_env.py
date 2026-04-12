@@ -13,7 +13,7 @@ try:
     from configure_env import REQUIRED_VARS, ENV_FILE, YELLOW, RED, GREEN, BOLD, END
 except ImportError:
     # Fallback if import fails
-    REQUIRED_VARS = ["MASTER_IP", "DASHBOARD_PORT", "HTTP_PORT", "DATA_DIR", "CONFIG_DIR", "DOMAIN", "VPN_USER", "VPN_PASSWORD", "DASHBOARD_SECRET"]
+    REQUIRED_VARS = ["REPO_ROOT", "MASTER_IP", "DASHBOARD_PORT", "HTTP_PORT", "DATA_DIR", "CONFIG_DIR", "DOMAIN", "VPN_USER", "VPN_PASSWORD", "DASHBOARD_SECRET", "TELEGRAM_BOT_TOKEN"]
     ENV_FILE = os.path.join(REPO_ROOT, ".env")
     YELLOW, RED, GREEN, BOLD, END = ("", "", "", "", "")
 

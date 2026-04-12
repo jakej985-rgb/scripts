@@ -270,28 +270,24 @@ def env_validation_agent():
         dot_env = REPO_ROOT / ".env"
         has_dotenv = dot_env.exists()
         
-        # 3. Required Vars
-        required = [ENV_TELEGRAM_TOKEN, ENV_TELEGRAM_CHAT, "REPO_ROOT"]
+        # 3. Required Vars (Flexible Audit 5.9)
+        strictly_required = ["TELEGRAM_BOT_TOKEN", "REPO_ROOT"]
+        potential_chats = ["TG_MAIN_CHAT_ID", "TG_LOG_CHAT_ID", "TG_ERROR_CHAT_ID", "TG_ALERT_CHAT_ID", "TELEGRAM_CHAT_ID"]
+        
         missing = []
-        for var in required:
-            val = os.getenv(var)
-            if not val:
+        for var in strictly_required:
+            if not os.getenv(var):
                 missing.append(var)
-            elif var == ENV_TELEGRAM_TOKEN:
-                # Token-specific rules
-                if len(val) < 40:
-                    t_log(f"[ENV] WARNING: {var} looks truncated (len={len(val)})", symbol="⚠")
-                if val.strip() != val:
-                    t_log(f"[ENV] ERROR: {var} contains whitespace/newlines!", symbol="✘")
-                    missing.append(f"{var} (whitespace)")
+        
+        # Soft-check: Need at least one chat ID to be useful
+        has_chat = any(os.getenv(c) and os.getenv(c) != "0" for c in potential_chats)
+        if not has_chat:
+            t_log("[ENV] WARNING: No active Telegram Chat IDs found. Telemetry will be silent.", symbol="⚠")
         
         if missing:
-            t_log(f"[ENV] Missing/Invalid variables: {', '.join(missing)}", symbol="⚠")
-            if has_dotenv:
-                t_log("[ENV] .env file exists but variables not loaded. Check Docker environment passing.", symbol="💡")
-            else:
-                t_log("[ENV] No .env found. Ensure credentials are set.", symbol="💡")
-            update_status("environment", "degraded")
+            t_log(f"[ENV] Missing CRITICAL variables: {', '.join(missing)}", symbol="✘")
+            update_status("environment", "failed")
+            return False
         else:
             update_status("environment", "ok")
             
