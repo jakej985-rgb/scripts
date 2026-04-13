@@ -29,11 +29,10 @@ services:
     container_name: radarr
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.radarr.rule=Host(`radarr.m3tal-media-server.xyz`)"
+      - "traefik.http.routers.radarr.rule=Host(`radarr.${DOMAIN:?DOMAIN not set}`)"
+      - "traefik.http.routers.radarr.entrypoints=web"
       - "traefik.http.services.radarr.loadbalancer.server.port=7878"
-      - "traefik.http.services.radarr.loadbalancer.healthcheck.path=/api/v3/system/status"
-      - "traefik.http.services.radarr.loadbalancer.healthcheck.interval=10s"
-      - "traefik.http.services.radarr.loadbalancer.sticky.cookie=true"
+      - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
     networks:
       - proxy
@@ -56,11 +55,10 @@ services:
     container_name: sonarr
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.sonarr.rule=Host(`sonarr.m3tal-media-server.xyz`)"
+      - "traefik.http.routers.sonarr.rule=Host(`sonarr.${DOMAIN:?DOMAIN not set}`)"
+      - "traefik.http.routers.sonarr.entrypoints=web"
       - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
-      - "traefik.http.services.sonarr.loadbalancer.healthcheck.path=/api/v3/system/status"
-      - "traefik.http.services.sonarr.loadbalancer.healthcheck.interval=10s"
-      - "traefik.http.services.sonarr.loadbalancer.sticky.cookie=true"
+      - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
     networks:
       - proxy
@@ -94,8 +92,9 @@ services:
       - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.bazarr.rule=Host(`bazarr.${DOMAIN:?DOMAIN not set — run from repo root with .env}`)"
+      - "traefik.http.routers.bazarr.rule=Host(`bazarr.${DOMAIN:?DOMAIN not set}`)"
       - "traefik.http.services.bazarr.loadbalancer.server.port=6767"
+      - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
     networks:
       - proxy
@@ -118,8 +117,9 @@ services:
       - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.komga.rule=Host(`komga.${DOMAIN:?DOMAIN not set — run from repo root with .env}`)"
+      - "traefik.http.routers.komga.rule=Host(`komga.${DOMAIN:?DOMAIN not set}`)"
       - "traefik.http.services.komga.loadbalancer.server.port=25600"
+      - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
     networks:
       - proxy
@@ -139,8 +139,9 @@ services:
       - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/jellyseerr:/app/config
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.jellyseerr.rule=Host(`jellyseerr.${DOMAIN:?DOMAIN not set — run from repo root with .env}`)"
+      - "traefik.http.routers.jellyseerr.rule=Host(`jellyseerr.${DOMAIN:?DOMAIN not set}`)"
       - "traefik.http.services.jellyseerr.loadbalancer.server.port=5055"
+      - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
     networks:
       - proxy
@@ -156,8 +157,9 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.homepage.rule=Host(`home.${DOMAIN:?DOMAIN not set — run from repo root with .env}`)"
+      - "traefik.http.routers.homepage.rule=Host(`home.${DOMAIN:?DOMAIN not set}`)"
       - "traefik.http.services.homepage.loadbalancer.server.port=3000"
+      - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
     networks:
       - proxy
@@ -175,8 +177,9 @@ services:
       - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.autobrr.rule=Host(`autobrr.${DOMAIN:?DOMAIN not set — run from repo root with .env}`)"
+      - "traefik.http.routers.autobrr.rule=Host(`autobrr.${DOMAIN:?DOMAIN not set}`)"
       - "traefik.http.services.autobrr.loadbalancer.server.port=8080"
+      - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
     networks:
       - proxy
@@ -203,8 +206,9 @@ services:
       - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/maintainerr:/opt/data
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.maintainerr.rule=Host(`maintainerr.${DOMAIN:?DOMAIN not set — run from repo root with .env}`)"
+      - "traefik.http.routers.maintainerr.rule=Host(`maintainerr.${DOMAIN:?DOMAIN not set}`)"
       - "traefik.http.services.maintainerr.loadbalancer.server.port=6246"
+      - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
     networks:
       - proxy
@@ -223,8 +227,9 @@ services:
       - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.tdarr.rule=Host(`tdarr.${DOMAIN:?DOMAIN not set — run from repo root with .env}`)"
+      - "traefik.http.routers.tdarr.rule=Host(`tdarr.${DOMAIN:?DOMAIN not set}`)"
       - "traefik.http.services.tdarr.loadbalancer.server.port=8265"
+      - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
     networks:
       - proxy
@@ -241,8 +246,9 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.glances.rule=Host(`stats.${DOMAIN:?DOMAIN not set — run from repo root with .env}`)"
+      - "traefik.http.routers.glances.rule=Host(`stats.${DOMAIN:?DOMAIN not set}`)"
       - "traefik.http.services.glances.loadbalancer.server.port=61208"
+      - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
     networks:
       - proxy
@@ -275,8 +281,9 @@ services:
       - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.m3tal-media-server.xyz`)"
+      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.${DOMAIN:?DOMAIN not set}`)"
       - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
+      - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
     networks:
       - proxy
@@ -291,8 +298,9 @@ services:
       - LOG_LEVEL=info
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.flaresolverr.rule=Host(`flaresolverr.m3tal-media-server.xyz`)"
+      - "traefik.http.routers.flaresolverr.rule=Host(`flaresolverr.${DOMAIN:?DOMAIN not set}`)"
       - "traefik.http.services.flaresolverr.loadbalancer.server.port=8191"
+      - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
     networks:
       - proxy

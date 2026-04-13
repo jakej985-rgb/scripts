@@ -33,8 +33,9 @@ services:
       - USERS_FILE=/docker/dashboard/users.json
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.dashboard.rule=Host(`m3tal.${DOMAIN:?DOMAIN not set — run from repo root with .env}`)"
+      - "traefik.http.routers.dashboard.rule=Host(`m3tal.${DOMAIN:?DOMAIN not set}`)"
       - "traefik.http.services.dashboard.loadbalancer.server.port=8080"
+      - "traefik.docker.network=proxy"
     networks:
       - proxy
     env_file:

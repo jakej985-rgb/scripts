@@ -1,13 +1,27 @@
 import os
 import json
+import sys
 from pathlib import Path
 
-# --- Root Resolution (Phase 3 Hardening) --------------------------------------
-# This file is at control-plane/agents/utils/paths.py
-# We resolve the absolute path to ensure the system works from any context.
+# --- Root Resolution (Phase 4 Hardening) --------------------------------------
+# Automatically detect repo root by walking up parents until .env + docker/ are found.
+def find_root():
+    p = Path(__file__).resolve()
+    # Walk up from the current file's location
+    for parent in [p] + list(p.parents):
+        if (parent / ".env").exists() and (parent / "docker").exists():
+            return parent
+    # Fallback to current working directory if it looks like the root
+    cwd = Path.cwd()
+    if (cwd / ".env").exists() and (cwd / "docker").exists():
+        return cwd
+    return None
 
-_THIS_FILE = Path(__file__).resolve()
-REPO_ROOT = _THIS_FILE.parents[3] # Up 4 levels: utils -> agents -> control-plane -> repo_root
+REPO_ROOT = find_root()
+if not REPO_ROOT:
+    # We cannot function without a root anchor
+    print("❌ FATAL: Could not locate M3TAL repository root (missing .env or docker/)")
+    sys.exit(1)
 
 # --- Environment Variable Keys ------------------------------------------------
 ENV_TELEGRAM_TOKEN = "TELEGRAM_TOKEN"
@@ -16,6 +30,7 @@ ENV_REPO_ROOT      = "REPO_ROOT"
 
 # --- Global Component Paths ---------------------------------------------------
 CONTROL_PLANE = REPO_ROOT / "control-plane"
+CORE_LOGS_DIR = CONTROL_PLANE / "state" / "logs"
 AGENTS_DIR = CONTROL_PLANE / "agents"
 DOCKER_DIR = REPO_ROOT / "docker"
 DASHBOARD_DIR = REPO_ROOT / "dashboard"

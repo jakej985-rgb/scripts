@@ -40,17 +40,31 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 python3 install.py
 
 
-### 2. Launch (Unified Entrypoints)
+### 2. Launch (Unified Control Plane)
 
-M3TAL uses a **Centralized Authority** model. DO NOT run `docker compose` inside subdirectories.
+M3TAL provides a unified CLI for all system orchestration.
 
 ```bash
-# 1. Start all Docker stacks via the hardened operator
-./scripts/compose.sh
+# 1. Initialize/Bootstrap the system
+python m3tal.py init
 
-# 2. Launch the Control Plane (Agents + Telegram Bot)
-python control-plane/run.py
+# 2. Start the Control Plane (Agents + Telegram Bot)
+python m3tal.py run
+
+# 3. Stream secure, redacted Docker logs
+python m3tal.py logs
 ```
+
+#### CLI Reference
+| Command | Description |
+| :--- | :--- |
+| `logs [stack]` | Streams redacted Docker logs for a stack or `all`. |
+| `env` | Safe environment audit (masks secrets). |
+| `init` | Production bootstrap and repair system. |
+| `run` | Main Control Plane supervisor. |
+
+> [!TIP]
+> Add an alias for easier access: `alias m3tal="python m3tal.py"`
 
 > [!WARNING]
 > Running `docker compose` inside `docker/media/` or other subdirs is **broken by design** and will fail. Always execute from the repository root to ensure correct volume mounting and networking.

@@ -12,10 +12,13 @@ services:
       - 'npm install && npm start'
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.tattoo.rule=Host(`tattoo.${DOMAIN}`)"
+      - "traefik.http.routers.tattoo.rule=Host(`tattoo.${DOMAIN:?DOMAIN not set}`)"
       - "traefik.http.services.tattoo.loadbalancer.server.port=3000"
+      - "traefik.docker.network=proxy"
+      - "m3tal.stack=tattoo-app"
     networks:
       - proxy
+      - app_internal
     env_file:
       - ../../../.env
     depends_on:
@@ -27,10 +30,12 @@ services:
     container_name: tattoo-db
     environment:
       POSTGRES_USER: tattoo
-      POSTGRES_PASSWORD: ${TATTOO_DB_PASSWORD}
+      POSTGRES_PASSWORD: ${TATTOO_DB_PASSWORD:?TATTOO_DB_PASSWORD not set}
       POSTGRES_DB: tattooapp
     volumes:
       - ${DATA_DIR}/tattoo/db:/var/lib/postgresql/data
+    networks:
+      - app_internal
     env_file:
       - ../../../.env
     restart: unless-stopped
@@ -38,3 +43,5 @@ services:
 networks:
   proxy:
     external: true
+  app_internal:
+    driver: bridge

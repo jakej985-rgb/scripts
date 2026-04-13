@@ -13,7 +13,7 @@ REQUIRED = [
 def validate():
     """
     Validates that all required environment variables are present and non-empty.
-    Exits with code 1 if any are missing.
+    Also detects domain drift and environment leakage.
     """
     missing = [k for k in REQUIRED if not (os.getenv(k) or "").strip()]
     if missing:
@@ -26,6 +26,11 @@ def validate():
         print("See docs/GET_STARTED.md for configuration help.")
         print("=" * 60)
         sys.exit(1)
+
+    # Drift Detection: Ensure DOMAIN is correctly resolved from .env
+    domain = os.getenv("DOMAIN")
+    if domain == "m3tal-media-server.xyz" and not os.path.exists(os.path.join(os.getcwd(), ".env")):
+        print("[WARNING] Domain Drift Detected: Using default fallback. Ensure .env is loaded.")
 
 if __name__ == "__main__":
     validate()
