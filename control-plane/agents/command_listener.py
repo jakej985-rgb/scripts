@@ -24,8 +24,13 @@ def get_allowed_containers():
     try:
         with open(REGISTRY_JSON, "r") as f:
             registry = json.load(f)
-            # registry.json structure: {"containers": {"name": {...}}}
-            return list(registry.get("containers", {}).keys())
+        
+        containers = registry.get("containers", [])
+        if isinstance(containers, list):
+            return containers
+        elif isinstance(containers, dict):
+            return list(containers.keys())
+        return []
     except Exception as e:
         print(f"[CMD] Error reading registry: {e}")
         return []
@@ -105,7 +110,6 @@ def handle_docker(msg, args):
         except Exception as e:
             router.send(msg["chat"]["id"], f"❌ Error restarting {name}: {e}")
 
-import time
 _cmd_cooldowns: dict[int, float] = {}
 CMD_COOLDOWN = 5  # seconds
 

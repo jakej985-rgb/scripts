@@ -73,6 +73,9 @@ def initialize_offset() -> int:
 
 def get_updates(timeout=10):
     """Generator yielding new updates while tracking the offset."""
+    if not BOT_TOKEN:
+        return
+        
     current_offset = load_offset()
     
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/getUpdates"

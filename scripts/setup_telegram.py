@@ -6,10 +6,10 @@ from pathlib import Path
 # Resolve repo root
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.append(str(REPO_ROOT))
-sys.path.append(str(REPO_ROOT / "control-plane"))
+sys.path.append(str(REPO_ROOT / "control-plane" / "agents"))
 
 try:
-    from control_plane.agents.utils.telegram import router
+    from utils.telegram import router
     from scripts.config.configure_env import GREEN, YELLOW, RED, BLUE, BOLD, END, ENV_FILE
 except ImportError as e:
     print(f"Setup Error: {e}")

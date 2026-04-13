@@ -193,7 +193,17 @@ def main() -> None:
                     lock.unlink()
             except: pass
 
+    threads: list[threading.Thread] = []
     try:
+        # PID 1 Hardening: If we are PID 1 (Docker), we are the master. 
+        # Purge runner lock to ensure we can always start.
+        if os.getpid() == 1:
+            lock_path = STATE_DIR / "locks" / f"{RUNNER_LOCK}.pid"
+            if lock_path.exists():
+                print(f"[{time.strftime('%H:%M:%S')}] PID 1 detected. Purging main runner lock.")
+                try: lock_path.unlink()
+                except: pass
+
         if not acquire_lock(RUNNER_LOCK):
             print(f"[{time.strftime('%H:%M:%S')}] FATAL: Another Agent Runner is already active. Exiting.")
             sys.exit(1)
@@ -215,8 +225,6 @@ def main() -> None:
 
         if _shutdown_event.is_set():
             return
-
-        threads: list[threading.Thread] = []
 
         # 2. Tiered Launching (Tier 1 first)
         tier1 = [a for a in AGENTS if TIERS.get(a[0], 2) == 1]

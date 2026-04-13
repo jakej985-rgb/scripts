@@ -14,10 +14,9 @@ _worker_thread = None
 def worker():
     """Crash-proof background worker with poison pill support."""
     while True:
+        item = _q.get()
         try:
-            item = _q.get()
             if item is None:  # Poison pill
-                _q.task_done()
                 break
             chat_id, msg = item
             

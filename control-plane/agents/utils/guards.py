@@ -102,7 +102,10 @@ def acquire_lock(agent_name: str, ttl_seconds: int = 300) -> bool:
                 alive = is_pid_running(old_pid)
                 expired = (now - old_ts) > ttl_seconds
                 
-                if alive:
+                # SELF-RECLAIM: If same PID and same Host, it's safe to overwrite (Audit fix 4.10)
+                if old_pid == pid and old_host == host:
+                    logger.info(f"Self-lock detected for {agent_name} (PID {pid}). Reclaiming.")
+                elif alive:
                     logger.warning(f"Lock conflict for {agent_name}: PID {old_pid} on {old_host} is still alive.")
                     return False
                 
