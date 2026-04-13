@@ -41,7 +41,6 @@ AGENTS = [
     ("network_guard", "network_guard.py"),
     ("healer",    "healer.py"),
     ("notify",    "notify.py"),
-    ("command_listener", "command_listener.py"),
 ]
 
 # --- Master Locking -----------------------------------------------------------

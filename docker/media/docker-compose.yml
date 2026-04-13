@@ -20,6 +20,8 @@ services:
       - ${DATA_DIR}/media:/media
     env_file:
       - ../../.env
+    labels:
+      - "m3tal.stack=media"
     restart: unless-stopped
 
   radarr:
@@ -32,6 +34,7 @@ services:
       - "traefik.http.services.radarr.loadbalancer.healthcheck.path=/api/v3/system/status"
       - "traefik.http.services.radarr.loadbalancer.healthcheck.interval=10s"
       - "traefik.http.services.radarr.loadbalancer.sticky.cookie=true"
+      - "m3tal.stack=media"
     networks:
       - proxy
     env_file:
@@ -58,6 +61,7 @@ services:
       - "traefik.http.services.sonarr.loadbalancer.healthcheck.path=/api/v3/system/status"
       - "traefik.http.services.sonarr.loadbalancer.healthcheck.interval=10s"
       - "traefik.http.services.sonarr.loadbalancer.sticky.cookie=true"
+      - "m3tal.stack=media"
     networks:
       - proxy
     env_file:
@@ -92,6 +96,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.bazarr.rule=Host(`bazarr.${DOMAIN}`)"
       - "traefik.http.services.bazarr.loadbalancer.server.port=6767"
+      - "m3tal.stack=media"
     networks:
       - proxy
     env_file:
@@ -115,6 +120,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.komga.rule=Host(`komga.${DOMAIN}`)"
       - "traefik.http.services.komga.loadbalancer.server.port=25600"
+      - "m3tal.stack=media"
     networks:
       - proxy
     env_file:
@@ -135,6 +141,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.jellyseerr.rule=Host(`jellyseerr.${DOMAIN}`)"
       - "traefik.http.services.jellyseerr.loadbalancer.server.port=5055"
+      - "m3tal.stack=media"
     networks:
       - proxy
     env_file:
@@ -151,6 +158,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.homepage.rule=Host(`home.${DOMAIN}`)"
       - "traefik.http.services.homepage.loadbalancer.server.port=3000"
+      - "m3tal.stack=media"
     networks:
       - proxy
     env_file:
@@ -169,6 +177,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.autobrr.rule=Host(`autobrr.${DOMAIN}`)"
       - "traefik.http.services.autobrr.loadbalancer.server.port=8080"
+      - "m3tal.stack=media"
     networks:
       - proxy
     env_file:
@@ -183,6 +192,8 @@ services:
       - ${DATA_DIR}:/mnt
       - ${DATA_DIR}/downloads:/downloads
       - ${DATA_DIR}/media:/media
+    labels:
+      - "m3tal.stack=media"
     restart: unless-stopped
 
   maintainerr:
@@ -194,6 +205,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.maintainerr.rule=Host(`maintainerr.${DOMAIN}`)"
       - "traefik.http.services.maintainerr.loadbalancer.server.port=6246"
+      - "m3tal.stack=media"
     networks:
       - proxy
     env_file:
@@ -213,6 +225,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.tdarr.rule=Host(`tdarr.${DOMAIN}`)"
       - "traefik.http.services.tdarr.loadbalancer.server.port=8265"
+      - "m3tal.stack=media"
     networks:
       - proxy
     env_file:
@@ -230,6 +243,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.glances.rule=Host(`stats.${DOMAIN}`)"
       - "traefik.http.services.glances.loadbalancer.server.port=61208"
+      - "m3tal.stack=media"
     networks:
       - proxy
     env_file:
@@ -263,6 +277,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.m3tal-media-server.xyz`)"
       - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
+      - "m3tal.stack=media"
     networks:
       - proxy
     env_file:
@@ -278,6 +293,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.flaresolverr.rule=Host(`flaresolverr.m3tal-media-server.xyz`)"
       - "traefik.http.services.flaresolverr.loadbalancer.server.port=8191"
+      - "m3tal.stack=media"
     networks:
       - proxy
     env_file:

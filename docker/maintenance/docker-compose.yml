@@ -19,6 +19,8 @@ services:
       - proxy
     env_file:
       - ../../.env
+    labels:
+      - "m3tal.stack=maintenance"
 
   dozzle:
     image: amir20/dozzle
@@ -30,6 +32,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.dozzle.rule=Host(`logs.m3tal-media-server.xyz`)"
       - "traefik.http.services.dozzle.loadbalancer.server.port=8080"
+      - "m3tal.stack=maintenance"
     environment:
       - DOCKER_API_VERSION=${DOCKER_API_VERSION}
     networks:
@@ -48,6 +51,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.portainer.rule=Host(`portainer.m3tal-media-server.xyz`)"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+      - "m3tal.stack=maintenance"
     environment:
       - DOCKER_API_VERSION=${DOCKER_API_VERSION}
     networks:
@@ -75,6 +79,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard-maint.rule=Host(`m3tal-maint.m3tal-media-server.xyz`)"
       - "traefik.http.services.dashboard-maint.loadbalancer.server.port=8080"
+      - "m3tal.stack=maintenance"
     networks:
       - proxy
     env_file:

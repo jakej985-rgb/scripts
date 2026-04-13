@@ -1,66 +1,79 @@
 import sys
 import os
-import re
-import yaml
+import json
+import subprocess
 import time
 
 # Add current dir to path for utils
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from utils.paths import REGISTRY_JSON, DOCKER_DIR
+from utils.paths import REGISTRY_JSON
 from utils.state import save_json
 from utils.guards import wrap_agent
 from utils.logger import get_logger
 
 logger = get_logger("registry")
 
-def get_containers_from_compose(file_path):
-    containers = set()
+def get_docker_containers():
+    """Fetch containers using Docker API (cli) and filter by m3tal.stack label."""
     try:
-        with open(file_path, 'r') as f:
-            # Try proper YAML parsing
-            data = yaml.safe_load(f)
-            if data and 'services' in data:
-                for service_name, config in data['services'].items():
-                    # Prefer container_name if defined
-                    c_name = config.get('container_name', service_name)
-                    containers.add(c_name)
+        # We query for all containers with the label m3tal.stack
+        cmd = [
+            "docker", "ps", "-a", 
+            "--filter", "label=m3tal.stack",
+            "--format", "{{json .}}"
+        ]
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        
+        containers = []
+        for line in result.stdout.splitlines():
+            if line.strip():
+                containers.append(json.loads(line))
+        return containers
     except Exception as e:
-        logger.warning(f"Failed to parse YAML {file_path}, falling back to regex: {e}")
-        # Regex fallback for container_name:
-        try:
-            with open(file_path, 'r') as f:
-                content = f.read()
-                matches = re.findall(r'container_name:\s*([a-zA-Z0-9_\-\.]+)', content)
-                for name in matches:
-                    containers.add(name)
-        except:
-            pass
-    return containers
+        logger.error(f"Failed to query Docker API: {e}")
+        return []
 
-def scan_for_containers():
-    """Phase 1: Dynamic Registry scan as per Audit Batch 2 T3."""
-    all_containers = set()
+def scan_infrastructure():
+    """
+    Discovery Agent (Refactored for V2):
+    - Uses Docker labels (m3tal.stack) instead of YAML parsing.
+    - Maps container -> service -> stack.
+    - Detects unhealthy states.
+    """
+    docker_containers = get_docker_containers()
     
-    # Scan docker/ directory recursively for docker-compose.yml files
-    for root, dirs, files in os.walk(DOCKER_DIR):
-        for file in files:
-            if file.endswith('.yml') or file.endswith('.yaml'):
-                full_path = os.path.join(root, file)
-                # Skip example files or non-compose files
-                if "example" in file.lower():
-                    continue
-                
-                logger.debug(f"Scanning {full_path}")
-                found = get_containers_from_compose(full_path)
-                logger.info(f"Found {len(found)} containers in {full_path}")
-                all_containers.update(found)
+    registry_containers = []
+    stack_map = {}
     
-    # Filter out empty or invalid names
-    valid_containers = sorted([c for c in all_containers if c])
-    
+    for container in docker_containers:
+        name = container.get("Names")
+        if not name: continue
+        # Clean name (remove leading / if present)
+        name = name.lstrip("/")
+        
+        # Get labels via docker inspect for more detail
+        try:
+            inspect_cmd = ["docker", "inspect", name, "--format", "{{json .Config.Labels}}"]
+            inspect_res = subprocess.run(inspect_cmd, capture_output=True, text=True, check=True)
+            labels = json.loads(inspect_res.stdout)
+            
+            stack = labels.get("m3tal.stack", "unknown")
+            service = labels.get("com.docker.compose.service", name)
+            
+            registry_containers.append(name)
+            stack_map[name] = {
+                "stack": stack,
+                "service": service,
+                "status": container.get("Status", "unknown"),
+                "state": container.get("State", "unknown")
+            }
+        except:
+            logger.warning(f"Failed to inspect container {name}")
+
     registry_data = {
-        "containers": valid_containers,
+        "containers": sorted(registry_containers),
+        "stacks": stack_map,
         "paths": {
             "root": "/mnt",
             "downloads": "/mnt/downloads",
@@ -71,13 +84,11 @@ def scan_for_containers():
     
     try:
         if save_json(REGISTRY_JSON, registry_data, caller="registry"):
-            logger.info(f"Registry updated with {len(valid_containers)} containers. (Path: {os.path.abspath(REGISTRY_JSON)})")
+            logger.info(f"Registry updated with {len(registry_containers)} m3tal containers.")
         else:
             logger.error(f"Registry update failed for {os.path.abspath(REGISTRY_JSON)}")
-    except PermissionError:
-        logger.error(f"CRITICAL: Permission Denied while updating Registry at {REGISTRY_JSON}. Check volume permissions.")
     except Exception as e:
-        logger.error(f"Unexpected error during registry save: {e}")
+        logger.error(f"Unexpected error during registry update: {e}")
 
 if __name__ == "__main__":
-    wrap_agent("registry", scan_for_containers)
+    wrap_agent("registry", scan_infrastructure)

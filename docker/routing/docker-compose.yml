@@ -29,6 +29,7 @@ services:
       - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)"
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.routers.traefik.entrypoints=web"
+      - "m3tal.stack=routing"
     restart: unless-stopped
 
   cloudflared:
@@ -39,6 +40,8 @@ services:
       - proxy
     env_file:
       - ../../.env
+    labels:
+      - "m3tal.stack=routing"
     restart: unless-stopped
 
 networks:
