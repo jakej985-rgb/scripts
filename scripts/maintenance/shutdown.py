@@ -9,16 +9,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 DOCKER_DIR = REPO_ROOT / "docker"
 
-# Stacks to shut down in order (most dependent last)
-STACKS = ["core", "media", "apps", "maintenance", "routing"]
-
-# ANSI colors for nice UI
-GREEN = "\033[92m"
-BLUE = "\033[94m"
-YELLOW = "\033[93m"
-RED = "\033[91m"
-BOLD = "\033[1m"
-END = "\033[0m"
+ENV_FILE = REPO_ROOT / ".env"
 
 def shutdown_stack(stack_name: str):
     stack_path = DOCKER_DIR / stack_name
@@ -29,11 +20,12 @@ def shutdown_stack(stack_name: str):
 
     print(f"{YELLOW}Shutting down stack: {BOLD}{stack_name}{END}...")
     
-    cmd = ["docker", "compose", "down", "--remove-orphans"]
+    # Audit Fix: Explicitly pass env-file and compose-file to respect root-authority model
+    cmd = ["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(compose_file), "down", "--remove-orphans"]
     try:
-        # Use shell=True on Windows for better compatibility with docker-compose shims
+        # Avoid cwd shift to maintain consistency with centralized execution
         use_shell = os.name == "nt"
-        subprocess.run(cmd, cwd=str(stack_path), shell=use_shell, check=True)
+        subprocess.run(cmd, shell=use_shell, check=True)
         print(f"{GREEN}✓ Stack {stack_name} stopped.{END}")
     except subprocess.CalledProcessError as e:
         print(f"{RED}✗ Failed to shut down {stack_name}: {e}{END}")

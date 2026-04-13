@@ -23,6 +23,8 @@ for path in [AGENTS_DIR, REPO_ROOT / "scripts" / "helpers", REPO_ROOT / "scripts
     if str(path) not in sys.path:
         sys.path.append(str(path))
 
+ENV_FILE = REPO_ROOT / ".env"
+
 from typing import Dict, Any, Optional
 from utils.paths import CONTROL_PLANE, STATE_DIR, LOG_DIR, SCRIPTS_DIR, ENV_TELEGRAM_TOKEN, ENV_TELEGRAM_CHAT
 try:
@@ -354,7 +356,7 @@ def docker_agent(repair_mode: bool = False):
             while not stop_poller.is_set():
                 for name, sd, is_critical, total, services in list(active_stacks):
                     cf = sd / "docker-compose.yml"
-                    ps_res = subprocess.run(["docker", "compose", "-f", str(cf), "ps", "--format", "json"],
+                    ps_res = subprocess.run(["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "ps", "--format", "json"],
                                          capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)
                     if ps_res.returncode == 0:
                         out = ps_res.stdout.strip()
@@ -417,10 +419,9 @@ def docker_agent(repair_mode: bool = False):
             t_log(f"[DOCKER] Orchestrating stack: {name}")
             
             # Sub-item: Detect expected services
-            conf_cmd = ["docker", "compose", "-f", str(cf), "config", "--services"]
+            conf_cmd = ["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "config", "--services"]
             conf_res = subprocess.run(conf_cmd, capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)
             expected_services = conf_res.stdout.strip().splitlines() if conf_res.returncode == 0 else []
-            total_svc = len(expected_services)
             
             sub_bar = SubProgressBar(total_svc)
             live_list = LiveList(expected_services)
@@ -431,9 +432,9 @@ def docker_agent(repair_mode: bool = False):
                 active_stacks.append((name, sd, is_critical, total_svc, expected_services))
                 global_live_list.add_items(expected_services)
                 
-                proc = subprocess.Popen(["docker", "compose", "-f", str(cf), "up", "-d"], 
+                proc = subprocess.Popen(["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "up", "-d"], 
                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, 
-                                     text=True, shell=use_shell, env=GLOBAL_ENV, cwd=str(sd))
+                                     text=True, shell=use_shell, env=GLOBAL_ENV)
                 
                 # 2. Wait for Docker status (Up/Running)
                 wait_time = TIMEOUTS.get(name, 90)
@@ -524,8 +525,8 @@ def repair(scope: str = "all") -> bool:
             sd = REPO_ROOT / "docker" / stack
             if not sd.exists(): continue
             t_log(f"[REPAIR] Rebuilding {stack} stack...", symbol="🔧")
-            subprocess.run(["docker", "compose", "up", "-d", "--force-recreate"], 
-                         cwd=str(sd), shell=(os.name=="nt"), env=GLOBAL_ENV, capture_output=True)
+            subprocess.run(["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(sd / "docker-compose.yml"), "up", "-d", "--force-recreate"], 
+                         shell=(os.name=="nt"), env=GLOBAL_ENV, capture_output=True)
         return True
     except Exception as e:
         t_log(f"Repair failed: {e}", symbol="✘")

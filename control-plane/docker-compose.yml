@@ -5,7 +5,7 @@ services:
     container_name: m3tal-permission-fixer
     user: "0:0"
     volumes:
-      - ${REPO_ROOT}:/docker
+      - ${REPO_ROOT:?REPO_ROOT not set — run from repo root with .env}:/docker
     command: >
       sh -c "chown -R 1000:1000 /docker/control-plane/state && 
              chmod -R 766 /docker/control-plane/state &&
@@ -21,19 +21,19 @@ services:
       permission-fixer:
         condition: service_completed_successfully
     volumes:
-      - ${REPO_ROOT}:/docker
+      - ${REPO_ROOT:?REPO_ROOT not set — run from repo root with .env}:/docker
     working_dir: /docker/dashboard
     command: python3 server.py
     restart: unless-stopped
     # Running as non-root appuser (configured in Dockerfile)
     environment:
       - TZ=America/Denver
-      - DASHBOARD_SECRET=${DASHBOARD_SECRET}
+      - DASHBOARD_SECRET=${DASHBOARD_SECRET:?DASHBOARD_SECRET not set — run from repo root with .env}
       - STATE_DIR=/docker/control-plane/state
       - USERS_FILE=/docker/dashboard/users.json
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.dashboard.rule=Host(`m3tal.${DOMAIN}`)"
+      - "traefik.http.routers.dashboard.rule=Host(`m3tal.${DOMAIN:?DOMAIN not set — run from repo root with .env}`)"
       - "traefik.http.services.dashboard.loadbalancer.server.port=8080"
     networks:
       - proxy
@@ -49,7 +49,7 @@ services:
       permission-fixer:
         condition: service_completed_successfully
     volumes:
-      - ${REPO_ROOT}:/docker
+      - ${REPO_ROOT:?REPO_ROOT not set — run from repo root with .env}:/docker
       - /var/run/docker.sock:/var/run/docker.sock
     working_dir: /docker
     command: python3 control-plane/agents/run.py
