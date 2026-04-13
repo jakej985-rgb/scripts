@@ -389,7 +389,7 @@ def docker_agent(repair_mode: bool = False):
             ("routing", REPO_ROOT / "docker" / "routing", True),    # CRITICAL: Gateway
             ("network", REPO_ROOT / "docker" / "network", True),    # CRITICAL: VPN
             ("maintenance", REPO_ROOT / "docker" / "maintenance", False),
-            ("core", REPO_ROOT / "docker" / "core", True),         # CRITICAL: Agents/Dashboard
+            ("control-plane", REPO_ROOT / "control-plane", True),         # CRITICAL: Agents/Dashboard
             ("media", REPO_ROOT / "docker" / "media", False),
             ("apps/tattoo-app", REPO_ROOT / "docker" / "apps" / "tattoo-app", False)
         ]
@@ -433,7 +433,7 @@ def docker_agent(repair_mode: bool = False):
                 
                 proc = subprocess.Popen(["docker", "compose", "-f", str(cf), "up", "-d"], 
                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, 
-                                     text=True, shell=use_shell, env=GLOBAL_ENV)
+                                     text=True, shell=use_shell, env=GLOBAL_ENV, cwd=str(sd))
                 
                 # 2. Wait for Docker status (Up/Running)
                 wait_time = TIMEOUTS.get(name, 90)

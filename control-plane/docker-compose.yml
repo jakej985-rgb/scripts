@@ -1,0 +1,70 @@
+services:
+  # Rex Guard: Pre-flight permission fixer to recover state ownership from root
+  permission-fixer:
+    image: python:3.11-slim-bookworm
+    container_name: m3tal-permission-fixer
+    user: "0:0"
+    volumes:
+      - ${REPO_ROOT}:/docker
+    command: >
+      sh -c "chown -R 1000:1000 /docker/control-plane/state && 
+             chmod -R 766 /docker/control-plane/state &&
+             chown -R 1000:1000 /docker/dashboard/users.json &&
+             chmod 766 /docker/dashboard/users.json || true"
+
+  m3tal-dashboard:
+    build:
+      context: ..
+      dockerfile: control-plane/Dockerfile.dashboard
+    container_name: m3tal-dashboard
+    depends_on:
+      permission-fixer:
+        condition: service_completed_successfully
+    volumes:
+      - ${REPO_ROOT}:/docker
+    working_dir: /docker/dashboard
+    command: python3 server.py
+    restart: unless-stopped
+    # Running as non-root appuser (configured in Dockerfile)
+    environment:
+      - TZ=America/Denver
+      - DASHBOARD_SECRET=${DASHBOARD_SECRET}
+      - STATE_DIR=/docker/control-plane/state
+      - USERS_FILE=/docker/dashboard/users.json
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`m3tal.${DOMAIN}`)"
+      - "traefik.http.services.dashboard.loadbalancer.server.port=8080"
+    networks:
+      - proxy
+    env_file:
+      - ../.env
+
+  m3tal-runtime:
+    build:
+      context: ..
+      dockerfile: control-plane/Dockerfile.runtime
+    container_name: m3tal-runtime
+    depends_on:
+      permission-fixer:
+        condition: service_completed_successfully
+    volumes:
+      - ${REPO_ROOT}:/docker
+      - /var/run/docker.sock:/var/run/docker.sock
+    working_dir: /docker
+    command: python3 control-plane/agents/run.py
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    # Running as non-root appuser (configured in Dockerfile)
+    environment:
+      - TZ=America/Denver
+      - DOCKER_API_VERSION=${DOCKER_API_VERSION}
+      - REPO_ROOT=/docker
+      - IN_CONTAINER=true
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
