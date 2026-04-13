@@ -16,8 +16,10 @@ from utils.state import load_json, save_json
 from utils.guards import wrap_agent
 from utils.logger import get_logger
 
-# Telegram Multi-Channel Migration (Audit Phase 4)
-from utils.telegram import logger as tg_logger
+from agents import telegram
+
+# Initialize telegram background worker
+telegram.start()
 
 logger = get_logger("notify")
 
@@ -51,14 +53,14 @@ def check_and_notify():
                 f"<b>Issues:</b>\n{issue_lines}"
             )
             # Use new dynamic routing
-            tg_logger.alert(msg)
+            telegram.alert(msg)
             state["last_verdict"] = verdict
             state["last_verdict_alert_ts"] = now
             
     elif last_verdict in ALERT_VERDICTS and verdict == "HEALTHY":
         # Recovery notification
         msg = f"✅ <b>M3TAL Recovered</b>\nSystem back to HEALTHY (Score: {score}%)"
-        tg_logger.send_main(msg)
+        telegram.send_main(msg)
         state["last_verdict"] = verdict
         state["last_verdict_alert_ts"] = now
 
@@ -80,7 +82,7 @@ def check_and_notify():
                 f"Reason: {reason}\n"
                 f"M3TAL is attempting recovery."
             )
-            tg_logger.alert(msg)
+            telegram.alert(msg)
             alerted_containers[target] = now
 
     # Clear alerted containers that are no longer anomalous

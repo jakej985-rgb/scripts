@@ -18,9 +18,9 @@ from utils.paths import REPO_ROOT, CONTROL_PLANE, AGENTS_DIR, LOG_DIR, STATE_DIR
 from utils.healing import atomic_write_json
 from utils.guards import acquire_lock, release_lock, is_pid_running
 
-# Telegram System Integration (Audit Phase 4)
+# Telegram System Integration (v3 Layered)
 from config.telegram import validate as validate_telegram
-from utils.telegram.queue import start_worker as start_telegram_worker
+from agents import telegram
 
 PYTHON = sys.executable
 
@@ -178,7 +178,7 @@ def main() -> None:
     
     # 1. Initialize Telemetry System
     if validate_telegram():
-        start_telegram_worker()
+        telegram.start()
 
     print(f"[{ts}] M3TAL Agent Runner launching...")
 

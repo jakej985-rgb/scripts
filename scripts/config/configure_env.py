@@ -150,7 +150,7 @@ def main():
         try:
             # Set bot token in environment temporarily so discovery can use it
             os.environ["TELEGRAM_BOT_TOKEN"] = bot_token
-            from utils.telegram.discovery import discover_and_map
+            from agents.telegram.discovery import discover_and_map
             mapping = discover_and_map()
             
             if mapping:

@@ -9,8 +9,11 @@ from datetime import datetime
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from config.telegram import is_allowed_user, BOT_TOKEN
-from utils.telegram import router, logger
+from agents import telegram
 from utils.paths import REGISTRY_JSON, STATE_DIR
+
+# Initialize telegram background worker
+telegram.start()
 
 # M3TAL Command Listener Agent (Tier 2)
 # Hardened remote control via Telegram with sandboxed Docker access
@@ -36,18 +39,18 @@ def get_allowed_containers():
         return []
 
 def handle_ping(msg):
-    router.send(msg["chat"]["id"], "✅ <b>M3TAL Online</b>\nStatus: Healthy\nQueue: Active")
+    telegram.send_direct(msg["chat"]["id"], "✅ <b>M3TAL Online</b>\nStatus: Healthy\nQueue: Active")
 
 def handle_myid(msg):
     uid = msg["from"]["id"]
-    router.send(msg["chat"]["id"], f"Your Telegram ID: <code>{uid}</code>")
+    telegram.send_direct(msg["chat"]["id"], f"Your Telegram ID: <code>{uid}</code>")
 
 def handle_uptime(msg):
     delta = datetime.now() - START_TIME
     hours, remainder = divmod(int(delta.total_seconds()), 3600)
     minutes, seconds = divmod(remainder, 60)
     uptime_str = f"{hours}h {minutes}m {seconds}s"
-    router.send(msg["chat"]["id"], f"🕒 <b>System Uptime:</b> {uptime_str}")
+    telegram.send_direct(msg["chat"]["id"], f"🕒 <b>System Uptime:</b> {uptime_str}")
 
 def handle_help(msg):
     help_text = (
@@ -61,11 +64,11 @@ def handle_help(msg):
         "/docker logs &lt;name&gt; - Get last 20 lines\n"
         "/docker restart &lt;name&gt; - Restart container\n"
     )
-    router.send(msg["chat"]["id"], help_text)
+    telegram.send_direct(msg["chat"]["id"], help_text)
 
 def handle_docker(msg, args):
     if not args:
-        router.send(msg["chat"]["id"], "Usage: /docker [status|logs|restart] [container_name]")
+        telegram.send_direct(msg["chat"]["id"], "Usage: /docker [status|logs|restart] [container_name]")
         return
 
     cmd = args[0].lower()
@@ -74,41 +77,41 @@ def handle_docker(msg, args):
     if cmd == "status":
         try:
             result = subprocess.run(["docker", "ps", "--format", "table {{.Names}}\t{{.Status}}\t{{.Image}}"], capture_output=True, text=True, timeout=10)
-            router.send(msg["chat"]["id"], f"🐳 <b>Docker Status:</b>\n<pre>{result.stdout}</pre>")
+            telegram.send_direct(msg["chat"]["id"], f"🐳 <b>Docker Status:</b>\n<pre>{result.stdout}</pre>")
         except Exception as e:
-            router.send(msg["chat"]["id"], f"❌ Error: {e}")
+            telegram.send_direct(msg["chat"]["id"], f"❌ Error: {e}")
 
     elif cmd == "logs":
         if len(args) < 2:
-            router.send(msg["chat"]["id"], "Usage: /docker logs [container_name]")
+            telegram.send_direct(msg["chat"]["id"], "Usage: /docker logs [container_name]")
             return
         name = args[1]
         if name not in allowed:
-            router.send(msg["chat"]["id"], f"🚫 Container <code>{name}</code> is not in registry whitelist.")
+            telegram.send_direct(msg["chat"]["id"], f"🚫 Container <code>{name}</code> is not in registry whitelist.")
             return
         try:
             result = subprocess.run(["docker", "logs", "--tail", "20", name], capture_output=True, text=True, timeout=10)
             # Combine stdout and stderr since logs often go to both
             log_out = (result.stdout + result.stderr).strip()
-            router.send(msg["chat"]["id"], f"📄 <b>Logs for {name}:</b>\n<pre>{log_out}</pre>")
+            telegram.send_direct(msg["chat"]["id"], f"📄 <b>Logs for {name}:</b>\n<pre>{log_out}</pre>")
         except Exception as e:
-            router.send(msg["chat"]["id"], f"❌ Error: {e}")
+            telegram.send_direct(msg["chat"]["id"], f"❌ Error: {e}")
 
     elif cmd == "restart":
         if len(args) < 2:
-            router.send(msg["chat"]["id"], "Usage: /docker restart [container_name]")
+            telegram.send_direct(msg["chat"]["id"], "Usage: /docker restart [container_name]")
             return
         name = args[1]
         if name not in allowed:
-            router.send(msg["chat"]["id"], f"🚫 Container <code>{name}</code> is not in registry whitelist.")
+            telegram.send_direct(msg["chat"]["id"], f"🚫 Container <code>{name}</code> is not in registry whitelist.")
             return
         try:
-            router.send(msg["chat"]["id"], f"⏳ Restarting <code>{name}</code>...")
+            telegram.send_direct(msg["chat"]["id"], f"⏳ Restarting <code>{name}</code>...")
             subprocess.run(["docker", "restart", name], timeout=30)
-            router.send(msg["chat"]["id"], f"✅ Container <code>{name}</code> restarted.")
-            logger.action(f"User {msg['from']['id']} restarted {name} via Telegram")
+            telegram.send_direct(msg["chat"]["id"], f"✅ Container <code>{name}</code> restarted.")
+            telegram.action(f"User {msg['from']['id']} restarted {name} via Telegram")
         except Exception as e:
-            router.send(msg["chat"]["id"], f"❌ Error restarting {name}: {e}")
+            telegram.send_direct(msg["chat"]["id"], f"❌ Error restarting {name}: {e}")
 
 _cmd_cooldowns: dict[int, float] = {}
 CMD_COOLDOWN = 5  # seconds
@@ -132,7 +135,7 @@ def handle_command(update):
         return
 
     if is_rate_limited(uid):
-        router.send(msg["chat"]["id"], "⏳ Rate limited. Wait a moment.")
+        telegram.send_direct(msg["chat"]["id"], "⏳ Rate limited. Wait a moment.")
         return
 
     text = msg["text"].strip()
@@ -185,20 +188,29 @@ def handle_command(update):
             else:
                 status_msg += "No failure history."
         
-        router.send(msg["chat"]["id"], status_msg)
+        telegram.send_direct(msg["chat"]["id"], status_msg)
 
 def run():
     print("[TELEGRAM] Starting Listener Agent...")
     
-    # Ignore history on startup if offset not set
-    if router.load_offset() == 0:
-        print("[TELEGRAM] No offset found, initializing to latest...")
-        router.initialize_offset()
+    # Track offset locally
+    offset = 0
+    try:
+        # Initialize offset to latest to avoid flood on startup
+        updates = telegram.router.get_new_updates(offset=0)
+        if updates:
+            offset = updates[-1]["update_id"]
+            print(f"[TELEGRAM] Offset initialized to {offset}")
+    except Exception as e:
+        print(f"[TELEGRAM INIT ERR] {e}")
 
     while True:
         try:
-            for update in router.get_updates():
+            updates = telegram.router.get_new_updates(offset=offset)
+            for update in updates:
                 handle_command(update)
+                offset = update["update_id"]
+            
             time.sleep(2)
         except Exception as e:
             print(f"[TELEGRAM LOOP ERR] {e}")
