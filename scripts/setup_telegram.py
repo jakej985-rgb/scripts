@@ -3,14 +3,15 @@ import sys
 import time
 from pathlib import Path
 
-# Resolve repo root
+# Resolve repo root and inject paths
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.append(str(REPO_ROOT))
-sys.path.append(str(REPO_ROOT / "control-plane" / "agents"))
+sys.path.append(str(REPO_ROOT / "control-plane"))
 
 try:
-    from utils.telegram import router
+    from agents.telegram.discovery import discover_and_map
     from scripts.config.configure_env import GREEN, YELLOW, RED, BLUE, BOLD, END, ENV_FILE
+    from config.telegram import BOT_TOKEN
 except ImportError as e:
     print(f"Setup Error: {e}")
     sys.exit(1)
@@ -19,7 +20,7 @@ def main():
     print(f"\n{BOLD}{BLUE}📡 M3TAL Telegram Auto-Discovery Wizard{END}")
     print("This tool will help you find your Chat IDs automatically.\n")
     
-    if not router.BOT_TOKEN:
+    if not BOT_TOKEN:
         print(f"{RED}[!] Error: TELEGRAM_BOT_TOKEN not found in .env{END}")
         return
 
@@ -34,12 +35,13 @@ def main():
     
     input(f"{GREEN}Press Enter when you have sent the tags...{END}")
     
-    print(f"\n{BLUE}[*] Scanning for tags... (this may take up to 10 seconds){END}")
-    mapping = router.discover_chats()
+    print(f"\n{BLUE}[*] Scanning for tags...{END}")
+    mapping = discover_and_map()
     
     if not mapping:
         print(f"{RED}[!] No tags found. Make sure the bot is added to the groups and you sent the tags.{END}")
         return
+        
 # TODO: try again to find the chat id for the user who sent the tag 
 
     print(f"\n{GREEN}Found {len(mapping)} chat mappings:{END}")

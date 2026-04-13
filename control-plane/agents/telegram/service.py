@@ -1,18 +1,27 @@
+import atexit
 from . import worker
 from . import logger
 from . import router
 from . import client
+from config.telegram import BOT_TOKEN
 
-# M3TAL Telegram Service (v3 Layered System Orchestrator)
+# M3TAL Telegram Service (v3.1 Hardened Orchestrator)
 # Responsibility: Lifecycle management and public API exposure.
 
 def start():
-    """Wakes up the telegram subsystem."""
+    """Wakes up the telegram subsystem with fail-fast validation."""
+    if not BOT_TOKEN:
+        print("🚨 [TELEGRAM] FATAL: BOT_TOKEN is missing. Subsystem will not start.")
+        return
+        
     worker.start()
+    
+    # Register shutdown globally
+    atexit.register(stop)
 
 def stop():
-    """Graceful teardown."""
-    worker.stop()
+    """Graceful teardown with safety timeout."""
+    worker.stop(timeout=5)
 
 def send_main(msg: str):
     """Direct-to-main override."""
