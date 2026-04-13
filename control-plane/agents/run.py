@@ -182,58 +182,79 @@ def main() -> None:
 
     print(f"[{ts}] M3TAL Agent Runner launching...")
 
-    # 1.1 Wait for System Readiness (init.py must finish)
-    health_file = STATE_DIR / "health.json"
-    while not _shutdown_event.is_set():
-        if health_file.exists():
+    # 1.0 Clean up stale locks (Audit fix 4.8)
+    # If the runner crashed previously, it might have left locking debris.
+    lock_dir = STATE_DIR / "locks"
+    if lock_dir.exists():
+        for lock in lock_dir.glob("*.pid"):
             try:
-                health = json.loads(health_file.read_text())
-                if health.get("mode") == "running":
-                    print(f"[{time.strftime('%H:%M:%S')}] System READY. Releasing agents...")
-                    break
-            except:
-                pass
-        print(f"[{time.strftime('%H:%M:%S')}] System INITIALIZING... waiting for bootstrap.")
-        time.sleep(5)
-
-    if _shutdown_event.is_set():
-        return
-
-    threads: list[threading.Thread] = []
-
-    # 2. Tiered Launching (Tier 1 first)
-    tier1 = [a for a in AGENTS if TIERS.get(a[0], 2) == 1]
-    tier2 = [a for a in AGENTS if TIERS.get(a[0], 2) == 2]
-
-    for name, script in tier1:
-        t = threading.Thread(target=run_agent, args=(name, script), name=f"agent-{name}")
-        threads.append(t)
-        t.start()
-        time.sleep(1) # Small stagger
-
-    # Wait for Tier 1 to settle
-    time.sleep(3)
-
-    for name, script in tier2:
-        t = threading.Thread(target=run_agent, args=(name, script), name=f"agent-{name}")
-        threads.append(t)
-        t.start()
-        time.sleep(0.5)
-
-    print(f"[{time.strftime('%H:%M:%S')}] All agents launched.")
+                # We don't delete the runner lock if it's currently held (check logic)
+                if lock.name != f"{RUNNER_LOCK}.pid":
+                    lock.unlink()
+            except: pass
 
     try:
+        if not acquire_lock(RUNNER_LOCK):
+            print(f"[{time.strftime('%H:%M:%S')}] FATAL: Another Agent Runner is already active. Exiting.")
+            sys.exit(1)
+
+        # 1.1 Wait for System Readiness (init.py must finish)
+        health_file = STATE_DIR / "health.json"
+        while not _shutdown_event.is_set():
+            if health_file.exists():
+                try:
+                    health = json.loads(health_file.read_text())
+                    # Acceptance: Mode 'running' OR 'degraded' (Audit fix 4.9)
+                    if health.get("mode") in ["running", "degraded"]:
+                        print(f"[{time.strftime('%H:%M:%S')}] System ready ({health.get('mode')}). Releasing agents...")
+                        break
+                except:
+                    pass
+            print(f"[{time.strftime('%H:%M:%S')}] System INITIALIZING... waiting for bootstrap.")
+            time.sleep(5)
+
+        if _shutdown_event.is_set():
+            return
+
+        threads: list[threading.Thread] = []
+
+        # 2. Tiered Launching (Tier 1 first)
+        tier1 = [a for a in AGENTS if TIERS.get(a[0], 2) == 1]
+        tier2 = [a for a in AGENTS if TIERS.get(a[0], 2) == 2]
+
+        for name, script in tier1:
+            t = threading.Thread(target=run_agent, args=(name, script), name=f"agent-{name}")
+            threads.append(t)
+            t.start()
+            time.sleep(1) # Small stagger
+
+        # Wait for Tier 1 to settle
+        time.sleep(3)
+
+        for name, script in tier2:
+            t = threading.Thread(target=run_agent, args=(name, script), name=f"agent-{name}")
+            threads.append(t)
+            t.start()
+            time.sleep(0.5)
+
+        print(f"[{time.strftime('%H:%M:%S')}] All agents launched.")
+
         while not _shutdown_event.is_set():
             time.sleep(1)
+
     except KeyboardInterrupt:
         _shutdown_event.set()
-
-    print(f"[{time.strftime('%H:%M:%S')}] Waiting for threads to exit...")
-    for t in threads:
-        t.join(timeout=5)
-
-    release_lock(RUNNER_LOCK)
-    print(f"[{time.strftime('%H:%M:%S')}] Agent Runner shutdown complete.")
+    except Exception as e:
+        print(f"[{time.strftime('%H:%M:%S')}] FATAL ERROR in Runner: {e}")
+        _shutdown_event.set()
+    finally:
+        print(f"[{time.strftime('%H:%M:%S')}] Waiting for threads to exit...")
+        # Local copy to avoid modification during join
+        with _children_lock:
+            for t in threads:
+                t.join(timeout=1)
+        release_lock(RUNNER_LOCK)
+        print(f"[{time.strftime('%H:%M:%S')}] Agent Runner shutdown complete.")
 
 if __name__ == "__main__":
     main()

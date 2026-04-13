@@ -20,18 +20,24 @@ def get_logger(name):
         os.makedirs(LOG_DIR, exist_ok=True)
         log_file = os.path.join(LOG_DIR, f"{name}.log")
         try:
-            # Use RotatingFileHandler to prevent log sprawl (Batch 3 T2)
+            # Use RotatingFileHandler to prevent log sprawl
             fh = RotatingFileHandler(log_file, maxBytes=10*1024*1024, backupCount=3)
-        except PermissionError:
-            # Fallback for Windows locking issues (Audit fix 4.6)
-            # If the shared log is locked by another agent, use a unique file
-            log_file = os.path.join(LOG_DIR, f"{name}_{os.getpid()}.log")
-            fh = RotatingFileHandler(log_file, maxBytes=10*1024*1024, backupCount=3)
+        except (PermissionError, OSError):
+            # Fallback for Windows/Docker Desktop locking issues
+            # If the primary log is locked, try a PID-specific log
+            try:
+                log_file = os.path.join(LOG_DIR, f"{name}_{os.getpid()}.log")
+                fh = RotatingFileHandler(log_file, maxBytes=10*1024*1024, backupCount=3)
+            except (PermissionError, OSError):
+                # Final fallback: just skip file logging for this instance
+                # The orchestrator is likely already capturing stdout
+                return logger
             
         fh.setFormatter(formatter)
         logger.addHandler(fh)
     except Exception as e:
-        print(f"Failed to initialize file logger for {name}: {e}")
+        # Avoid crashing the agent just because logging failed
+        pass
 
     # Console Handler (Stdout for run.sh capture)
     ch = logging.StreamHandler(sys.stdout)

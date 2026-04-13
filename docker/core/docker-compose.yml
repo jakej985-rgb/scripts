@@ -8,7 +8,9 @@ services:
       - ${REPO_ROOT}:/docker
     command: >
       sh -c "chown -R 1000:1000 /docker/control-plane/state && 
-             chown -R 1000:1000 /docker/dashboard/users.json || true"
+             chmod -R 766 /docker/control-plane/state &&
+             chown -R 1000:1000 /docker/dashboard/users.json &&
+             chmod 766 /docker/dashboard/users.json || true"
 
   m3tal-dashboard:
     build:

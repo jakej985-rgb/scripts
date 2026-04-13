@@ -1,0 +1,5 @@
+# M3TAL Cluster Configuration
+nodes:
+  primary:
+    role: control
+    host: localhost

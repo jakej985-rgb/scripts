@@ -21,7 +21,10 @@ DOCKER_CHAT_ID = int(os.getenv("TG_DOCKER_CHAT_ID", "0"))
 
 # NEW: Security Whitelist
 _allowed_raw = os.getenv("ALLOWED_USERS", "0")
-ALLOWED_USERS = [int(x.strip()) for x in _allowed_raw.split(",") if x.strip().isdigit()]
+ALLOWED_USERS = [
+    int(x.strip()) for x in _allowed_raw.split(",") 
+    if x.strip().isdigit() and int(x.strip()) > 0
+]
 
 def is_allowed_user(user_id: int) -> bool:
     """Security check for remote commands."""

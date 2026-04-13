@@ -45,25 +45,30 @@ def get_system_metrics():
 def get_container_metrics():
     container_stats = []
     try:
+        # Increased timeout to 30s for slow Windows hosts (Audit fix 4.7)
         cmd = ["docker", "stats", "--no-stream", "--format", "{{json .}}"]
-        # Tweak 4: Subprocess timeout and explicit error handling
-        result = subprocess.run(cmd, capture_output=True, text=True, check=True, timeout=10)
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True, timeout=30)
         for line in result.stdout.strip().split('\n'):
             if line:
                 try:
                     raw = json.loads(line)
+                    # Normalize percentages (sometimes they have % symbol)
+                    cpu_str = str(raw.get("CPUPerc", "0")).replace("%", "")
+                    mem_str = str(raw.get("MemPerc", "0")).replace("%", "")
                     container_stats.append({
                         "name": raw.get("Name"),
-                        "cpu": float(raw.get("CPUPerc", "0").replace("%", "")),
-                        "mem": float(raw.get("MemPerc", "0").replace("%", "")),
+                        "cpu": float(cpu_str) if cpu_str else 0.0,
+                        "mem": float(mem_str) if mem_str else 0.0,
                         "mem_usage": raw.get("MemUsage"),
                     })
                 except (json.JSONDecodeError, ValueError):
                     continue
     except subprocess.TimeoutExpired:
-        logger.error("Docker stats timed out (10s)")
+        logger.error("Docker stats timed out (30s)")
     except subprocess.CalledProcessError as e:
-        logger.error(f"Docker stats failed: {e}")
+        # Don't flood logs if docker is just busy
+        if time.time() % 60 < 10: # Log only every minute
+            logger.error(f"Docker stats failed (exit {e.returncode})")
     except Exception as e:
         logger.error(f"Failed to get container stats: {e}")
     return container_stats

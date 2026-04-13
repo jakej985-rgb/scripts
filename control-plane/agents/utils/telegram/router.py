@@ -6,9 +6,15 @@ from ..paths import TELEGRAM_OFFSET_TXT
 # M3TAL Telegram Router (v2 Hardened)
 # Minimal dependency architecture with persistent offset tracking
 
+import threading
+_offset_lock = threading.Lock()
+
 def send(chat_id: int, message: str) -> bool:
     """Synchronous send using requests with 5s timeout."""
-    if not BOT_TOKEN or not chat_id:
+    if not BOT_TOKEN:
+        print("[TELEGRAM] BOT_TOKEN not set. Skipping send.")
+        return False
+    if not chat_id or chat_id == 0:
         return False
         
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
@@ -30,25 +36,29 @@ def send(chat_id: int, message: str) -> bool:
         return False
 
 def save_offset(offset: int):
-    """Persist the last processed update ID."""
-    try:
-        with open(TELEGRAM_OFFSET_TXT, "w") as f:
-            f.write(str(offset))
-    except Exception as e:
-        print(f"[TELEGRAM OFFSET SAVE ERR] {e}")
+    """Persist the last processed update ID with thread safety."""
+    with _offset_lock:
+        try:
+            with open(TELEGRAM_OFFSET_TXT, "w") as f:
+                f.write(str(offset))
+        except Exception as e:
+            print(f"[TELEGRAM OFFSET SAVE ERR] {e}")
 
 def load_offset() -> int:
-    """Load the last processed update ID from state."""
-    if not TELEGRAM_OFFSET_TXT.exists():
-        return 0
-    try:
-        with open(TELEGRAM_OFFSET_TXT, "r") as f:
-            return int(f.read().strip())
-    except:
-        return 0
+    """Load the last processed update ID from state with thread safety."""
+    with _offset_lock:
+        if not TELEGRAM_OFFSET_TXT.exists():
+            return 0
+        try:
+            with open(TELEGRAM_OFFSET_TXT, "r") as f:
+                return int(f.read().strip())
+        except:
+            return 0
 
 def initialize_offset() -> int:
     """Discard all history by jumping to the latest update ID on startup."""
+    if not BOT_TOKEN:
+        return 0
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/getUpdates"
     try:
         # Use longer timeout for polling

@@ -105,6 +105,18 @@ def handle_docker(msg, args):
         except Exception as e:
             router.send(msg["chat"]["id"], f"❌ Error restarting {name}: {e}")
 
+import time
+_cmd_cooldowns: dict[int, float] = {}
+CMD_COOLDOWN = 5  # seconds
+
+def is_rate_limited(uid: int) -> bool:
+    now = time.time()
+    last = _cmd_cooldowns.get(uid, 0)
+    if now - last < CMD_COOLDOWN:
+        return True
+    _cmd_cooldowns[uid] = now
+    return False
+
 def handle_command(update):
     msg = update.get("message")
     if not msg or "text" not in msg:
@@ -113,6 +125,10 @@ def handle_command(update):
     uid = msg["from"]["id"]
     if not is_allowed_user(uid):
         # Silent fail for unauthorized
+        return
+
+    if is_rate_limited(uid):
+        router.send(msg["chat"]["id"], "⏳ Rate limited. Wait a moment.")
         return
 
     text = msg["text"].strip()
@@ -136,7 +152,7 @@ def handle_command(update):
     elif cmd == "/docker":
         handle_docker(msg, args)
     elif cmd == "/status":
-        from control_plane.agents.utils.paths import HEALTH_JSON
+        from utils.paths import HEALTH_JSON
         status_msg = "🏥 <b>M3TAL System Health:</b>\n"
         if HEALTH_JSON.exists():
             try:
@@ -151,7 +167,7 @@ def handle_command(update):
             status_msg += "Status: [FILE MISSING]\n"
         
         if len(args) > 0 and args[0].lower() == "agents":
-            from control_plane.agents.utils.paths import RESTARTS_JSON
+            from utils.paths import RESTARTS_JSON
             status_msg += "\n🤖 <b>Agent Stability:</b>\n"
             if RESTARTS_JSON.exists():
                 try:

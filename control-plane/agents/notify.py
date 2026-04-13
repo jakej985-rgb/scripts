@@ -58,7 +58,7 @@ def check_and_notify():
     elif last_verdict in ALERT_VERDICTS and verdict == "HEALTHY":
         # Recovery notification
         msg = f"✅ <b>M3TAL Recovered</b>\nSystem back to HEALTHY (Score: {score}%)"
-        tg_logger.main(msg)
+        tg_logger.send_main(msg)
         state["last_verdict"] = verdict
         state["last_verdict_alert_ts"] = now
 

@@ -64,6 +64,6 @@ def docker(msg: str):
     else:
         _push(MAIN_CHAT_ID, text)
 
-def main(msg: str):
+def send_main(msg: str):
     """Direct to main channel."""
     _push(MAIN_CHAT_ID, msg)

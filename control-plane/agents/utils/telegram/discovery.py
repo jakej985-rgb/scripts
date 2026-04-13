@@ -4,6 +4,8 @@ import sys
 import time
 from .router import get_updates
 
+from config.telegram import BOT_TOKEN
+
 # ANSI colors for nice UI
 GREEN = "\033[92m"
 YELLOW = "\033[93m"
@@ -45,7 +47,7 @@ def discover_and_map():
     found_tags = set()
     
     # Force a look at history
-    url = f"https://api.telegram.org/bot{os.environ.get('TELEGRAM_BOT_TOKEN')}/getUpdates"
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/getUpdates"
     
     for attempt in range(10): # 20 second window
         try:
