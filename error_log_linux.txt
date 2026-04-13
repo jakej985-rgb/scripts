@@ -1,0 +1,1034 @@
+M3TAL ERROR LOG (LINUX)
+Generated: 2026-04-12 17:39:53
+================================================================================
+
+        "environment": "failed"
+|   └── Restart VPN on healthcheck failure: yes
+[anomaly.log] 2026-04-11 16:00:28 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
+[anomaly.log] 2026-04-11 16:00:28 [WARNING] anomaly: System health degraded: CRITICAL (Score: 0%)
+[anomaly.log] 2026-04-11 16:00:39 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:00:39 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:00:53 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:00:53 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:01:08 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:01:08 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:01:24 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:01:24 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:01:37 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:01:37 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:01:48 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:01:48 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:02:00 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:02:00 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:02:14 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:02:14 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:02:27 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:02:27 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:02:41 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:02:41 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:02:52 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:02:52 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:03:04 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:03:04 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:03:19 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:03:19 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:03:29 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:03:29 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:03:44 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:03:44 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:03:57 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:03:57 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:04:13 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:04:13 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:04:25 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:04:25 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:04:38 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:04:38 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:04:50 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:04:50 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:05:01 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:05:01 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:05:15 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:05:15 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:05:27 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:05:27 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:05:37 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:05:37 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:05:50 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:05:50 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:06:01 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:06:01 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:06:13 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:06:13 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:06:25 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] 2026-04-11 16:06:25 [WARNING] anomaly: System health degraded: CRITICAL (Score: 40%)
+[anomaly.log] Failed to initialize file logger for guards: [Errno 13] Permission denied: '/docker/control-plane/state/logs/guards.log'
+[decision.log] Failed to initialize file logger for guards: [Errno 13] Permission denied: '/docker/control-plane/state/logs/guards.log'
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[healer.log]   [38;2;255;105;180m⚠[0m [DOCKER] Stack routing failed: Critical service cloudflared in routing stack failed readiness probes.
+[health_score.log] 2026-04-11 16:00:24 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 0
+[health_score.log] 2026-04-11 16:00:38 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:00:50 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:01:02 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:01:14 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:01:29 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:01:44 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:01:59 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:02:12 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:02:23 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:02:39 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:02:52 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:03:04 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:03:18 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:03:30 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:03:41 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:03:56 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:04:08 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:04:24 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:04:35 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:04:50 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:05:00 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:05:13 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:05:27 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:05:42 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:05:53 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:06:05 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:06:19 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[health_score.log] 2026-04-11 16:06:33 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[init.log] 2026-04-12 02:06:45 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:06:47 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:06:49 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:06:50 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:08:55 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:08:57 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:08:58 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:09:00 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:09:02 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:09:03 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:11:08 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:11:10 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:11:11 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:11:13 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:11:14 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:11:16 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:13:21 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:13:22 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:13:24 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:13:26 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:13:27 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:13:29 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:15:34 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:15:35 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:15:37 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:15:38 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:15:40 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:15:42 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:17:47 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:17:48 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:17:50 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:17:51 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:17:53 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:17:54 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:19:59 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:20:01 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:20:03 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:20:04 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:20:06 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:20:07 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:22:12 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:22:14 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:22:15 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:22:17 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:22:19 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:22:20 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:24:25 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:24:27 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:24:28 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:24:30 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:24:31 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:24:33 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:26:38 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:26:39 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:26:41 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:26:43 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:26:44 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:26:46 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:28:51 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:28:52 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:28:54 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:28:56 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:28:57 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:28:59 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:31:04 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:31:05 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:31:07 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:31:08 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:31:10 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:31:12 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:33:16 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:33:18 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:33:20 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:33:21 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:33:23 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:33:24 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:35:29 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:35:31 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:35:32 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:35:34 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:35:36 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:35:37 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:37:42 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:37:44 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:37:45 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:37:47 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:37:48 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:37:50 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:39:55 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:39:57 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:39:58 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:40:00 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:40:01 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:40:03 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:42:08 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:42:10 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:42:11 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:42:13 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:42:14 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:42:16 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:44:21 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:44:22 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:44:24 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:44:26 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:44:27 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:44:29 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:46:34 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:46:35 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:46:37 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:46:38 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:46:40 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:46:42 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:48:46 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:48:48 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:48:50 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:48:51 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:48:53 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:48:54 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:50:59 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:51:01 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:51:02 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:51:04 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:51:06 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:51:07 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:53:12 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:53:14 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:53:15 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:53:17 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:53:18 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:53:20 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:55:25 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:55:27 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:55:28 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:55:30 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:55:32 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:55:33 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:57:38 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:57:40 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:57:41 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:57:43 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:57:44 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:57:46 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 02:59:51 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 02:59:52 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 02:59:54 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 02:59:56 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 02:59:57 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 02:59:59 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 03:02:04 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 03:02:05 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 03:02:07 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 03:02:08 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 03:02:10 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 03:02:12 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 03:04:17 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 03:04:18 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 03:04:20 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 03:04:21 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 03:04:23 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 03:04:25 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 03:06:29 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 03:06:31 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 03:06:33 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 03:06:34 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 03:06:36 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 03:06:37 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 03:08:42 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 03:08:44 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 03:08:45 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 03:08:47 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 03:08:49 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 03:08:50 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 03:10:55 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 03:10:57 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 03:10:58 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 03:11:00 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 03:11:01 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 03:11:03 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 03:13:08 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 03:13:10 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 03:13:11 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 03:13:13 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 03:13:14 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 03:13:16 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 03:15:22 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 03:15:23 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 03:15:25 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 03:15:26 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 03:15:28 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 03:15:29 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 03:17:34 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 03:17:36 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 03:17:38 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 03:17:39 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 03:17:41 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 03:17:42 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 03:19:47 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 03:19:49 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 03:19:50 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 03:19:52 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 03:19:54 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 03:19:55 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 03:22:00 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 03:22:02 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 03:22:03 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 03:22:05 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 03:22:06 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 03:22:08 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 03:24:13 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 03:24:15 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 03:24:16 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 03:24:18 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 03:24:19 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 03:24:21 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 03:26:26 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 03:26:27 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 03:26:29 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 03:26:31 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 03:26:32 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 03:26:34 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 03:28:39 ⚠ [INIT] [DOCKER] Stack routing failed: Docker Launch Error (Exit 1) for routing
+[init.log] 2026-04-12 03:28:40 ⚠ [INIT] [DOCKER] Stack network failed: Docker Launch Error (Exit 1) for network
+[init.log] 2026-04-12 03:28:42 ⚠ [INIT] [DOCKER] Stack maintenance failed: Docker Launch Error (Exit 1) for maintenance
+[init.log] 2026-04-12 03:28:43 ⚠ [INIT] [DOCKER] Stack core failed: Docker Launch Error (Exit 1) for core
+[init.log] 2026-04-12 03:28:45 ⚠ [INIT] [DOCKER] Stack media failed: Docker Launch Error (Exit 1) for media
+[init.log] 2026-04-12 03:28:47 ⚠ [INIT] [DOCKER] Stack apps/tattoo-app failed: Docker Launch Error (Exit 1) for apps/tattoo-app
+[init.log] 2026-04-12 17:18:53 ✘ [INIT] [ENV] Missing CRITICAL variables: DOCKER_API_VERSION
+[init.log] 2026-04-12 17:18:53 ⚠ [INIT] Component environment status: failed
+[init.log] 2026-04-12 17:20:31 ⚠ [INIT] [DOCKER] Stack routing failed: Critical service cloudflared in routing stack failed readiness probes.
+[init.log] 2026-04-12 17:22:06 ⚠ [INIT] [DOCKER] Stack network failed: Critical service gluetun in network stack failed readiness probes.
+[init.log] 2026-04-12 17:24:01 ✘ [INIT] [ENV] Missing CRITICAL variables: DOCKER_API_VERSION
+[init.log] 2026-04-12 17:24:01 ⚠ [INIT] Component environment status: failed
+[init.log] 2026-04-12 17:25:40 ⚠ [INIT] [DOCKER] Stack routing failed: Critical service cloudflared in routing stack failed readiness probes.
+[init.log] 2026-04-12 17:27:15 ⚠ [INIT] [DOCKER] Stack network failed: Critical service gluetun in network stack failed readiness probes.
+[init.log] 2026-04-12 18:32:20 ⚠ [INIT] [DOCKER] Stack routing failed: Critical service cloudflared in routing stack failed readiness probes.
+[leader.log] 2026-04-12 18:28:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:28:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:28:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:28:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:28:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:28:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:28:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:28:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:28:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:28:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:28:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:28:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:29:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:29:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:29:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:29:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:29:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:29:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:29:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:29:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:29:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:29:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:29:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:29:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:30:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:30:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:30:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:30:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:30:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:30:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:30:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:30:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:30:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:30:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:30:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:30:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:31:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:31:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:31:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:31:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:31:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:31:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:31:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:31:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:31:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:31:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:31:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:31:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:32:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:32:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:32:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:32:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:32:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:32:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:32:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:32:34 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:32:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:32:44 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:32:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:32:54 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:33:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:33:04 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:33:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:33:14 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:33:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[leader.log] 2026-04-12 18:33:24 [ERROR] leader: Failed to read cluster.yml: [Errno 2] No such file or directory: '/docker/control-plane/config/cluster.yml'
+[metrics.log] 2026-04-11 16:00:52 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:00:52 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:01:15 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:01:15 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:01:37 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:01:37 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:02:00 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:02:00 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:02:23 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:02:23 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:02:46 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:02:46 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:03:11 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:03:11 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:03:34 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:03:34 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:03:57 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:03:57 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:04:21 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:04:21 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:04:42 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:04:42 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:05:03 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:05:03 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:05:28 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:05:28 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:05:53 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:05:53 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:06:37 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] 2026-04-11 16:06:37 [ERROR] metrics: Docker stats timed out (10s)
+[metrics.log] Failed to initialize file logger for guards: [Errno 13] Permission denied: '/docker/control-plane/state/logs/guards.log'
+[monitor.log] Failed to initialize file logger for guards: [Errno 13] Permission denied: '/docker/control-plane/state/logs/guards.log'
+[network_guard.log] Failed to initialize file logger for guards: [Errno 13] Permission denied: '/docker/control-plane/state/logs/guards.log'
+[notify.log] 2026-04-11 11:57:06 [ERROR] notify: Telegram API error 401: {"ok":false,"error_code":401,"description":"Unauthorized"}
+[notify.log] 2026-04-11 11:57:06 [ERROR] notify: Telegram API error 401: {"ok":false,"error_code":401,"description":"Unauthorized"}
+[notify.log] 2026-04-11 11:57:37 [ERROR] notify: Telegram API error 401: {"ok":false,"error_code":401,"description":"Unauthorized"}
+[notify.log] 2026-04-11 11:57:37 [ERROR] notify: Telegram API error 401: {"ok":false,"error_code":401,"description":"Unauthorized"}
+[notify.log] 2026-04-11 11:58:07 [ERROR] notify: Telegram API error 401: {"ok":false,"error_code":401,"description":"Unauthorized"}
+[notify.log] 2026-04-11 11:58:07 [ERROR] notify: Telegram API error 401: {"ok":false,"error_code":401,"description":"Unauthorized"}
+[notify.log] 2026-04-11 12:23:42 [ERROR] notify: Telegram API error 401: {"ok":false,"error_code":401,"description":"Unauthorized"}
+[notify.log] 2026-04-11 12:23:42 [ERROR] notify: Telegram API error 401: {"ok":false,"error_code":401,"description":"Unauthorized"}
+[notify.log] 2026-04-11 12:24:13 [ERROR] notify: Telegram API error 401: {"ok":false,"error_code":401,"description":"Unauthorized"}
+[notify.log] 2026-04-11 12:24:13 [ERROR] notify: Telegram API error 401: {"ok":false,"error_code":401,"description":"Unauthorized"}
+[notify.log] 2026-04-11 12:24:44 [ERROR] notify: Telegram API error 401: {"ok":false,"error_code":401,"description":"Unauthorized"}
+[notify.log] 2026-04-11 12:24:44 [ERROR] notify: Telegram API error 401: {"ok":false,"error_code":401,"description":"Unauthorized"}
+[notify.log] 2026-04-11 12:25:14 [ERROR] notify: Telegram API error 401: {"ok":false,"error_code":401,"description":"Unauthorized"}
+[notify.log] 2026-04-11 12:25:14 [ERROR] notify: Telegram API error 401: {"ok":false,"error_code":401,"description":"Unauthorized"}
+[notify.log] 2026-04-11 16:00:40 [ERROR] notify: Telegram Connection FAILED (401): {"ok":false,"error_code":401,"description":"Unauthorized"}
+[notify.log] 2026-04-11 16:00:40 [ERROR] notify: Telegram Connection FAILED (401): {"ok":false,"error_code":401,"description":"Unauthorized"}
+[notify.log] 2026-04-11 16:00:40 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-11 16:00:40 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-11 16:01:15 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-11 16:01:15 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-11 16:01:47 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-11 16:01:47 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-11 16:02:17 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-11 16:02:17 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-11 16:02:51 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-11 16:02:51 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-11 16:03:24 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-11 16:03:24 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-11 16:03:55 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-11 16:03:55 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-11 16:04:30 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-11 16:04:30 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-11 16:05:04 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-11 16:05:04 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-11 16:05:37 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-11 16:05:37 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-11 16:06:07 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[notify.log] 2026-04-11 16:06:07 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[observer.log] 2026-04-11 03:08:37 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 03:08:37 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 03:08:47 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 03:08:47 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 03:08:47 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+[observer.log] 2026-04-11 03:08:47 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+[observer.log] 2026-04-11 03:08:57 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 03:08:57 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 03:08:57 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+[observer.log] 2026-04-11 03:08:57 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+[observer.log] 2026-04-11 03:09:07 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 03:09:07 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 03:09:08 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+[observer.log] 2026-04-11 03:09:08 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+[observer.log] 2026-04-11 03:09:18 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 03:09:18 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 03:09:18 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+[observer.log] 2026-04-11 03:09:18 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+[observer.log] 2026-04-11 03:09:28 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 03:09:28 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 03:09:28 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+[observer.log] 2026-04-11 03:09:28 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+[observer.log] 2026-04-11 03:09:38 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 03:09:38 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 03:09:38 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+[observer.log] 2026-04-11 03:09:38 [ERROR] observer: Failed to scan log registry.log: cannot access local variable '_seen_events' where it is not associated with a value
+[observer.log] 2026-04-11 11:56:59 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 11:56:59 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 11:56:59 [WARNING] observer: Critical Event detected in registry: 2026-04-11 03:08:38 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:56:59 [WARNING] observer: Critical Event detected in registry: 2026-04-11 03:08:38 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:56:59 [WARNING] observer: Critical Event detected in registry: 2026-04-11 03:08:48 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:56:59 [WARNING] observer: Critical Event detected in registry: 2026-04-11 03:08:48 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:56:59 [WARNING] observer: Critical Event detected in registry: 2026-04-11 03:08:58 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:56:59 [WARNING] observer: Critical Event detected in registry: 2026-04-11 03:08:58 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:56:59 [WARNING] observer: Critical Event detected in registry: 2026-04-11 03:09:08 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:56:59 [WARNING] observer: Critical Event detected in registry: 2026-04-11 03:09:08 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:56:59 [WARNING] observer: Critical Event detected in registry: 2026-04-11 03:09:18 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:56:59 [WARNING] observer: Critical Event detected in registry: 2026-04-11 03:09:18 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:56:59 [WARNING] observer: Critical Event detected in registry: 2026-04-11 03:09:28 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:56:59 [WARNING] observer: Critical Event detected in registry: 2026-04-11 03:09:28 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:56:59 [WARNING] observer: Critical Event detected in registry: 2026-04-11 03:09:39 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:56:59 [WARNING] observer: Critical Event detected in registry: 2026-04-11 03:09:39 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:56:59 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:56:59 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:56:59 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:56:59 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:57:09 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 11:57:09 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 11:57:09 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:57:09 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:57:09 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:57:09 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:57:09 [WARNING] observer: Critical Event detected in notify: 2026-04-11 11:57:06 [ERROR] notify: Telegram API error 401: {"ok":false,"error_code":401,"description":"Unauthorized"}
+[observer.log] 2026-04-11 11:57:09 [WARNING] observer: Critical Event detected in notify: 2026-04-11 11:57:06 [ERROR] notify: Telegram API error 401: {"ok":false,"error_code":401,"description":"Unauthorized"}
+[observer.log] 2026-04-11 11:57:19 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 11:57:19 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 11:57:19 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:57:19 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:57:19 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:57:19 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:57:29 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 11:57:29 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 11:57:29 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:57:29 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:57:29 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:57:29 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:57:39 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 11:57:39 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 11:57:39 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:57:39 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:57:39 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:57:39 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:57:49 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 11:57:49 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 11:57:59 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 11:57:59 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 11:57:59 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:57:49 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:57:59 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:57:49 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:58:09 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 11:58:09 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 11:58:09 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:58:00 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:58:09 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:58:00 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:58:19 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 11:58:19 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 11:58:19 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:58:10 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 11:58:19 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:58:10 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:23:39 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 12:23:39 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 12:23:39 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:56:59 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:23:39 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:56:59 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:23:39 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:57:09 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:23:39 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:57:09 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:23:39 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:57:19 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:23:39 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:57:19 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:23:39 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:57:29 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:23:39 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:57:29 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:23:39 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:57:39 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:23:39 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:57:39 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:23:39 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:57:49 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:23:39 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:57:49 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:23:39 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:58:00 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:23:39 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:58:00 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:23:39 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:58:10 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:23:39 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:58:10 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:23:39 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:58:20 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:23:39 [WARNING] observer: Critical Event detected in registry: 2026-04-11 11:58:20 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:23:39 [WARNING] observer: Critical Event detected in notify: 2026-04-11 11:57:06 [ERROR] notify: Telegram API error 401: {"ok":false,"error_code":401,"description":"Unauthorized"}
+[observer.log] 2026-04-11 12:23:39 [WARNING] observer: Critical Event detected in notify: 2026-04-11 11:57:06 [ERROR] notify: Telegram API error 401: {"ok":false,"error_code":401,"description":"Unauthorized"}
+[observer.log] 2026-04-11 12:23:49 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 12:23:49 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 12:23:49 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:23:39 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:23:49 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:23:39 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:23:59 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 12:23:59 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 12:23:59 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:23:50 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:23:59 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:23:50 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:24:09 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 12:24:09 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 12:24:09 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:24:00 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:24:09 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:24:00 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:24:19 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 12:24:19 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 12:24:19 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:24:10 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:24:19 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:24:10 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:24:29 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 12:24:29 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 12:24:29 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:24:20 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:24:29 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:24:20 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:24:39 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 12:24:39 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 12:24:39 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:24:30 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:24:39 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:24:30 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:24:49 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 12:24:49 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 12:24:49 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:24:40 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:24:49 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:24:40 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:24:59 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 12:24:59 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 12:24:59 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:24:50 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:24:59 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:24:50 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:25:09 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 12:25:09 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 12:25:09 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:25:00 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 12:25:09 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:25:00 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 16:00:28 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:00:28 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:00:28 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:24:20 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 16:00:28 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:24:20 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 16:00:28 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:24:30 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 16:00:28 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:24:30 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 16:00:28 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:24:40 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 16:00:28 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:24:40 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 16:00:28 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:24:50 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 16:00:28 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:24:50 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 16:00:28 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:25:00 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 16:00:28 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:25:00 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 16:00:28 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:25:10 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 16:00:28 [WARNING] observer: Critical Event detected in registry: 2026-04-11 12:25:10 [ERROR] registry: Failed to save registry.json
+[observer.log] 2026-04-11 16:00:28 [WARNING] observer: Critical Event detected in registry: 2026-04-11 16:00:19 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+[observer.log] 2026-04-11 16:00:28 [WARNING] observer: Critical Event detected in registry: 2026-04-11 16:00:19 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+[observer.log] 2026-04-11 16:00:29 [WARNING] observer: Critical Event detected in notify: 2026-04-11 11:57:06 [ERROR] notify: Telegram API error 401: {"ok":false,"error_code":401,"description":"Unauthorized"}
+[observer.log] 2026-04-11 16:00:29 [WARNING] observer: Critical Event detected in notify: 2026-04-11 11:57:06 [ERROR] notify: Telegram API error 401: {"ok":false,"error_code":401,"description":"Unauthorized"}
+[observer.log] 2026-04-11 16:00:41 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:00:41 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:00:41 [WARNING] observer: Critical Event detected in notify: 2026-04-11 16:00:40 [ERROR] notify: Telegram Connection FAILED (401): {"ok":false,"error_code":401,"description":"Unauthorized"}
+[observer.log] 2026-04-11 16:00:41 [WARNING] observer: Critical Event detected in notify: 2026-04-11 16:00:40 [ERROR] notify: Telegram Connection FAILED (401): {"ok":false,"error_code":401,"description":"Unauthorized"}
+[observer.log] 2026-04-11 16:00:41 [WARNING] observer: Critical Event detected in notify: 2026-04-11 16:00:40 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[observer.log] 2026-04-11 16:00:41 [WARNING] observer: Critical Event detected in notify: 2026-04-11 16:00:40 [ERROR] notify: Agent notify tick failed (CODE): name 'ALERT_VERDICTS' is not defined
+[observer.log] 2026-04-11 16:00:52 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:00:52 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:01:04 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:01:04 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:01:04 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:00:52 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:01:04 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:00:52 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:01:18 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:01:18 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:01:18 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:01:15 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:01:18 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:01:15 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:01:30 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:01:30 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:01:45 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:01:45 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:01:45 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:01:37 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:01:45 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:01:37 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:01:58 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:01:58 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:02:11 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:02:11 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:02:11 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:02:00 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:02:11 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:02:00 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:02:27 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:02:27 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:02:27 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:02:23 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:02:27 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:02:23 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:02:38 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:02:38 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:02:50 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:02:50 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:02:50 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:02:46 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:02:50 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:02:46 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:03:06 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:03:06 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:03:16 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:03:16 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:03:16 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:03:11 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:03:16 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:03:11 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:03:31 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:03:31 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:03:45 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:03:45 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:03:45 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:03:34 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:03:45 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:03:34 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:03:58 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:03:58 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:03:58 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:03:57 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:03:58 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:03:57 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:04:14 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:04:14 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:04:28 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:04:28 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:04:28 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:04:21 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:04:28 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:04:21 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:04:38 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:04:38 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:04:52 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:04:52 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:04:52 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:04:42 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:04:52 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:04:42 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:05:03 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:05:03 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:05:16 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:05:16 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:05:16 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:05:03 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:05:16 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:05:03 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:05:29 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:05:29 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:05:29 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:05:28 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:05:29 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:05:28 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:05:40 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:05:40 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:05:54 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:05:54 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:05:54 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:05:53 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:05:54 [WARNING] observer: Critical Event detected in metrics: 2026-04-11 16:05:53 [ERROR] metrics: Docker stats timed out (10s)
+[observer.log] 2026-04-11 16:06:05 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:06:05 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:06:16 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:06:16 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:06:31 [INFO] observer: Watching system logs for critical events...
+[observer.log] 2026-04-11 16:06:31 [INFO] observer: Watching system logs for critical events...
+[observer.log] Failed to initialize file logger for guards: [Errno 13] Permission denied: '/docker/control-plane/state/logs/guards.log'
+[reconcile.log] Failed to initialize file logger for guards: [Errno 13] Permission denied: '/docker/control-plane/state/logs/guards.log'
+[registry.log] 2026-04-11 11:57:19 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 11:57:19 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 11:57:29 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 11:57:29 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 11:57:39 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 11:57:39 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 11:57:49 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 11:57:49 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 11:58:00 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 11:58:00 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 11:58:10 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 11:58:10 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 11:58:20 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 11:58:20 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 12:23:39 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 12:23:39 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 12:23:50 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 12:23:50 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 12:24:00 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 12:24:00 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 12:24:10 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 12:24:10 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 12:24:20 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 12:24:20 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 12:24:30 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 12:24:30 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 12:24:40 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 12:24:40 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 12:24:50 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 12:24:50 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 12:25:00 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 12:25:00 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 12:25:10 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 12:25:10 [ERROR] registry: Failed to save registry.json
+[registry.log] 2026-04-11 16:00:19 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+[registry.log] 2026-04-11 16:00:19 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+[registry.log] 2026-04-11 16:00:19 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+[registry.log] 2026-04-11 16:00:19 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+[registry.log] 2026-04-11 16:00:31 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+[registry.log] 2026-04-11 16:00:31 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+[registry.log] 2026-04-11 16:00:31 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+[registry.log] 2026-04-11 16:00:31 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+[registry.log] 2026-04-11 16:00:43 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+[registry.log] 2026-04-11 16:00:43 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+[registry.log] 2026-04-11 16:00:43 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+[registry.log] 2026-04-11 16:00:43 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+[registry.log] 2026-04-11 16:00:57 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+[registry.log] 2026-04-11 16:00:57 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+[registry.log] 2026-04-11 16:00:57 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+[registry.log] 2026-04-11 16:00:57 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+[registry.log] 2026-04-11 16:01:13 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+[registry.log] 2026-04-11 16:01:13 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+[registry.log] 2026-04-11 16:01:13 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+[registry.log] 2026-04-11 16:01:13 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+[registry.log] 2026-04-11 16:06:20 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+[registry.log] 2026-04-11 16:06:20 [ERROR] registry: Agent registry tick failed (CODE): name 'time' is not defined
+[registry.log] 2026-04-11 16:06:20 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+[registry.log] 2026-04-11 16:06:20 [CRITICAL] registry: FATAL CODE error in Tier 1 agent. Shutting down.
+[registry.log] Failed to initialize file logger for guards: [Errno 13] Permission denied: '/docker/control-plane/state/logs/guards.log'
+[scorer.log] 2026-04-11 16:00:24 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 0
+[scorer.log] 2026-04-11 16:00:38 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:00:50 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:01:02 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:01:14 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:01:29 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:01:44 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:01:59 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:02:12 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:02:23 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:02:39 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:02:52 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:03:04 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:03:18 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:03:30 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:03:41 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:03:56 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:04:08 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:04:24 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:04:35 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:04:50 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:05:00 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:05:13 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:05:27 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:05:42 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:05:53 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:06:05 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:06:19 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
+[scorer.log] 2026-04-11 16:06:33 [INFO] scorer: Health check completed. Mode: CRITICAL, Score: 40
