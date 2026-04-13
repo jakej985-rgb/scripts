@@ -16,7 +16,9 @@ services:
       - TZ=America/Denver
       - DOCKER_API_VERSION=${DOCKER_API_VERSION}
     networks:
-      - m3tal
+      - proxy
+    env_file:
+      - ../../.env
 
   dozzle:
     image: amir20/dozzle
@@ -31,7 +33,9 @@ services:
     environment:
       - DOCKER_API_VERSION=${DOCKER_API_VERSION}
     networks:
-      - m3tal
+      - proxy
+    env_file:
+      - ../../.env
 
   portainer:
     image: portainer/portainer-ce
@@ -47,7 +51,9 @@ services:
     environment:
       - DOCKER_API_VERSION=${DOCKER_API_VERSION}
     networks:
-      - m3tal
+      - proxy
+    env_file:
+      - ../../.env
 
   dashboard:
     image: python:3.11-slim
@@ -70,8 +76,10 @@ services:
       - "traefik.http.routers.dashboard-maint.rule=Host(`m3tal-maint.m3tal-media-server.xyz`)"
       - "traefik.http.services.dashboard-maint.loadbalancer.server.port=8080"
     networks:
-      - m3tal
+      - proxy
+    env_file:
+      - ../../.env
 
 networks:
-  m3tal:
+  proxy:
     external: true

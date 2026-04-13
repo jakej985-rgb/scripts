@@ -357,16 +357,16 @@ def main() -> None:
     # 7. Docker network
     log(f"\n{BOLD}=== Docker Network ==={END}")
     try:
-        should_prune = ask("Prune existing 'm3tal' network before creation? (y/n)", "n").lower() == "y"
+        should_prune = ask("Prune existing 'proxy' network before creation? (y/n)", "n").lower() == "y"
         if should_prune:
-            subprocess.run(["docker", "network", "rm", "m3tal"], check=False)
+            subprocess.run(["docker", "network", "rm", "proxy"], check=False)
             
         result = subprocess.run(["docker", "network", "ls"], capture_output=True, text=True)
-        if "m3tal" in result.stdout and not should_prune:
+        if "proxy" in result.stdout and not should_prune:
             log(f"  {GREEN}[OK]{END} network exists")
         else:
-            subprocess.run(["docker", "network", "create", "m3tal"], check=True)
-            log(f"  {GREEN}[CREATED]{END} m3tal network")
+            subprocess.run(["docker", "network", "create", "proxy"], check=True)
+            log(f"  {GREEN}[CREATED]{END} proxy network")
     except FileNotFoundError:
         warn("Docker not available — network not created")
 

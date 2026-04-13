@@ -15,7 +15,9 @@ services:
       - "traefik.http.routers.tattoo.rule=Host(`tattoo.${DOMAIN}`)"
       - "traefik.http.services.tattoo.loadbalancer.server.port=3000"
     networks:
-      - m3tal
+      - proxy
+    env_file:
+      - ../../../.env
     depends_on:
       - db
     restart: unless-stopped
@@ -29,8 +31,10 @@ services:
       POSTGRES_DB: tattooapp
     volumes:
       - ${DATA_DIR}/tattoo/db:/var/lib/postgresql/data
+    env_file:
+      - ../../../.env
     restart: unless-stopped
 
 networks:
-  m3tal:
+  proxy:
     external: true

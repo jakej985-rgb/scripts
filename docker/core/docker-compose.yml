@@ -33,10 +33,10 @@ services:
       - USERS_FILE=/docker/dashboard/users.json
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.dashboard.rule=Host(`m3tal.m3tal-media-server.xyz`)"
+      - "traefik.http.routers.dashboard.rule=Host(`proxy.m3tal-media-server.xyz`)"
       - "traefik.http.services.dashboard.loadbalancer.server.port=8080"
     networks:
-      - m3tal
+      - proxy
 
   m3tal-runtime:
     build:
@@ -61,8 +61,8 @@ services:
       - REPO_ROOT=/docker
       - IN_CONTAINER=true
     networks:
-      - m3tal
+      - proxy
 
 networks:
-  m3tal:
+  proxy:
     external: true

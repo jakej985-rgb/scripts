@@ -339,9 +339,9 @@ def docker_agent(repair_mode: bool = False):
     try:
         use_shell = os.name == "nt"
         try:
-            retry(lambda: subprocess.run(["docker", "network", "create", "m3tal"], 
+            retry(lambda: subprocess.run(["docker", "network", "create", "proxy"], 
                                        capture_output=True, shell=use_shell, env=GLOBAL_ENV, check=True))
-            t_log("[DOCKER] Shared network 'm3tal' ready")
+            t_log("[DOCKER] Shared network 'proxy' ready")
         except: pass 
         
         # Shared UI State
