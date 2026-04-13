@@ -14,10 +14,10 @@ services:
       - PGID=1000
       - WEBUI_PORT=8080
     volumes:
-      - ${CONFIG_DIR}/qbittorrent:/config
-      - ${DATA_DIR}:/mnt
-      - ${DATA_DIR}/downloads:/downloads
-      - ${DATA_DIR}/media:/media
+      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/qbittorrent:/config
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}:/mnt
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/downloads:/downloads
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
     env_file:
       - ../../.env
     labels:
@@ -45,10 +45,10 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - ${CONFIG_DIR}/radarr:/config
-      - ${DATA_DIR}:/mnt
-      - ${DATA_DIR}/downloads:/downloads
-      - ${DATA_DIR}/media:/media
+      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/radarr:/config
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}:/mnt
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/downloads:/downloads
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
     restart: unless-stopped
 
   sonarr:
@@ -72,10 +72,10 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - ${CONFIG_DIR}/sonarr:/config
-      - ${DATA_DIR}:/mnt
-      - ${DATA_DIR}/downloads:/downloads
-      - ${DATA_DIR}/media:/media
+      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/sonarr:/config
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}:/mnt
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/downloads:/downloads
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
 
     restart: unless-stopped
 
@@ -88,13 +88,13 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - ${CONFIG_DIR}/bazarr:/config
-      - ${DATA_DIR}:/mnt
-      - ${DATA_DIR}/downloads:/downloads
-      - ${DATA_DIR}/media:/media
+      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/bazarr:/config
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}:/mnt
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/downloads:/downloads
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.bazarr.rule=Host(`bazarr.${DOMAIN}`)"
+      - "traefik.http.routers.bazarr.rule=Host(`bazarr.${DOMAIN:?DOMAIN not set — run from repo root with .env}`)"
       - "traefik.http.services.bazarr.loadbalancer.server.port=6767"
       - "m3tal.stack=media"
     networks:
@@ -112,13 +112,13 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - ${CONFIG_DIR}/komga:/config
-      - ${DATA_DIR}:/mnt
-      - ${DATA_DIR}/downloads:/downloads
-      - ${DATA_DIR}/media:/media
+      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/komga:/config
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}:/mnt
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/downloads:/downloads
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.komga.rule=Host(`komga.${DOMAIN}`)"
+      - "traefik.http.routers.komga.rule=Host(`komga.${DOMAIN:?DOMAIN not set — run from repo root with .env}`)"
       - "traefik.http.services.komga.loadbalancer.server.port=25600"
       - "m3tal.stack=media"
     networks:
@@ -136,10 +136,10 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - ${CONFIG_DIR}/jellyseerr:/app/config
+      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/jellyseerr:/app/config
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.jellyseerr.rule=Host(`jellyseerr.${DOMAIN}`)"
+      - "traefik.http.routers.jellyseerr.rule=Host(`jellyseerr.${DOMAIN:?DOMAIN not set — run from repo root with .env}`)"
       - "traefik.http.services.jellyseerr.loadbalancer.server.port=5055"
       - "m3tal.stack=media"
     networks:
@@ -152,11 +152,11 @@ services:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
     volumes:
-      - ${CONFIG_DIR}/homepage:/app/config
+      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/homepage:/app/config
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.homepage.rule=Host(`home.${DOMAIN}`)"
+      - "traefik.http.routers.homepage.rule=Host(`home.${DOMAIN:?DOMAIN not set — run from repo root with .env}`)"
       - "traefik.http.services.homepage.loadbalancer.server.port=3000"
       - "m3tal.stack=media"
     networks:
@@ -169,13 +169,13 @@ services:
     image: ghcr.io/autobrr/autobrr:v1.39
     container_name: autobrr
     volumes:
-      - ${CONFIG_DIR}/autobrr:/config
-      - ${DATA_DIR}:/mnt
-      - ${DATA_DIR}/downloads:/downloads
-      - ${DATA_DIR}/media:/media
+      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/autobrr:/config
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}:/mnt
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/downloads:/downloads
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.autobrr.rule=Host(`autobrr.${DOMAIN}`)"
+      - "traefik.http.routers.autobrr.rule=Host(`autobrr.${DOMAIN:?DOMAIN not set — run from repo root with .env}`)"
       - "traefik.http.services.autobrr.loadbalancer.server.port=8080"
       - "m3tal.stack=media"
     networks:
@@ -188,10 +188,10 @@ services:
     image: ghcr.io/recyclarr/recyclarr
     container_name: recyclarr
     volumes:
-      - ${CONFIG_DIR}/recyclarr:/config
-      - ${DATA_DIR}:/mnt
-      - ${DATA_DIR}/downloads:/downloads
-      - ${DATA_DIR}/media:/media
+      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/recyclarr:/config
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}:/mnt
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/downloads:/downloads
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
     labels:
       - "m3tal.stack=media"
     restart: unless-stopped
@@ -200,10 +200,10 @@ services:
     image: ghcr.io/maintainerr/maintainerr:latest
     container_name: maintainerr
     volumes:
-      - ${CONFIG_DIR}/maintainerr:/opt/data
+      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/maintainerr:/opt/data
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.maintainerr.rule=Host(`maintainerr.${DOMAIN}`)"
+      - "traefik.http.routers.maintainerr.rule=Host(`maintainerr.${DOMAIN:?DOMAIN not set — run from repo root with .env}`)"
       - "traefik.http.services.maintainerr.loadbalancer.server.port=6246"
       - "m3tal.stack=media"
     networks:
@@ -216,14 +216,14 @@ services:
     image: ghcr.io/haveagitgat/tdarr:latest
     container_name: tdarr
     volumes:
-      - ${CONFIG_DIR}/tdarr:/app/config
-      - ${CONFIG_DIR}/tdarr:/app/logs
-      - ${DATA_DIR}:/mnt
-      - ${DATA_DIR}/downloads:/downloads
-      - ${DATA_DIR}/media:/media
+      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/tdarr:/app/config
+      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/tdarr:/app/logs
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}:/mnt
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/downloads:/downloads
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.tdarr.rule=Host(`tdarr.${DOMAIN}`)"
+      - "traefik.http.routers.tdarr.rule=Host(`tdarr.${DOMAIN:?DOMAIN not set — run from repo root with .env}`)"
       - "traefik.http.services.tdarr.loadbalancer.server.port=8265"
       - "m3tal.stack=media"
     networks:
@@ -241,7 +241,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.glances.rule=Host(`stats.${DOMAIN}`)"
+      - "traefik.http.routers.glances.rule=Host(`stats.${DOMAIN:?DOMAIN not set — run from repo root with .env}`)"
       - "traefik.http.services.glances.loadbalancer.server.port=61208"
       - "m3tal.stack=media"
     networks:
@@ -269,10 +269,10 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - ${CONFIG_DIR}/prowlarr:/config
-      - ${DATA_DIR}:/mnt
-      - ${DATA_DIR}/downloads:/downloads
-      - ${DATA_DIR}/media:/media
+      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/prowlarr:/config
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}:/mnt
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/downloads:/downloads
+      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.m3tal-media-server.xyz`)"

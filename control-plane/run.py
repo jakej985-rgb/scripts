@@ -78,6 +78,15 @@ def start_bot():
 
 # --- Main Entry ---------------------------------------------------------------
 def main():
+    print("=" * 40)
+    print("📡 M3TAL CONTROL PLANE v2.0")
+    print("=" * 40)
+    
+    # Audit Check: Soft CWD Warning
+    if Path.cwd() != REPO_ROOT:
+        print(f"⚠️  WARNING: Not running from repo root. (Current: {Path.cwd()})")
+        print(f"   Recommended: Run from {REPO_ROOT} for deterministic pathing.")
+
     # 0. Global Lock
     if not acquire_global_lock():
         print("❌ FATAL: Another instance of M3TAL Control Plane is already running.")
@@ -85,10 +94,13 @@ def main():
         
     try:
         # 1. Validate Env
+        print("[M3TAL] Validating environment contract...")
         validate_env()
+        print("[M3TAL] Env Loaded: OK")
         
         # 2. Ensure Network
         ensure_proxy_network()
+        print("[M3TAL] Network: proxy (shared external)")
         
         # 3. Start Supervisor
         supervisor_proc = start_supervisor()
@@ -98,7 +110,9 @@ def main():
         time.sleep(2)
         bot_thread = start_bot()
         
-        print("[MASTER] M3TAL Control Plane is fully operational.")
+        print("=" * 40)
+        print("✅ M3TAL Control Plane is fully operational.")
+        print("=" * 40)
         
         # 5. Keep alive and monitor
         while not _shutdown_event.is_set():

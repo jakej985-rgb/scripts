@@ -39,11 +39,23 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 # Cross-platform installer (recommended)
 python3 install.py
 
-# Or on Linux/macOS only:
-# bash install.sh
+
+### 2. Launch (Unified Entrypoints)
+
+M3TAL uses a **Centralized Authority** model. DO NOT run `docker compose` inside subdirectories.
+
+```bash
+# 1. Start all Docker stacks via the hardened operator
+./scripts/compose.sh
+
+# 2. Launch the Control Plane (Agents + Telegram Bot)
+python control-plane/run.py
 ```
 
-### 2. Login
+> [!WARNING]
+> Running `docker compose` inside `docker/media/` or other subdirs is **broken by design** and will fail. Always execute from the repository root to ensure correct volume mounting and networking.
+
+### 3. Login
 
 Open your browser to `http://YOUR_SERVER_IP:8080`.
 

@@ -30,7 +30,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.dozzle.rule=Host(`logs.m3tal-media-server.xyz`)"
+      - "traefik.http.routers.dozzle.rule=Host(`logs.${DOMAIN:?DOMAIN not set — run from repo root with .env}`)"
       - "traefik.http.services.dozzle.loadbalancer.server.port=8080"
       - "m3tal.stack=maintenance"
     environment:
@@ -46,10 +46,10 @@ services:
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${CONFIG_DIR}/portainer:/data
+      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/portainer:/data
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.portainer.rule=Host(`portainer.m3tal-media-server.xyz`)"
+      - "traefik.http.routers.portainer.rule=Host(`portainer.${DOMAIN:?DOMAIN not set — run from repo root with .env}`)"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
       - "m3tal.stack=maintenance"
     environment:
@@ -64,7 +64,7 @@ services:
     container_name: m3tal-dashboard-maintenance
     restart: unless-stopped
     volumes:
-      - ${REPO_ROOT}:/docker
+      - ${REPO_ROOT:?REPO_ROOT not set — run from repo root with .env}:/docker
       - /var/run/docker.sock:/var/run/docker.sock
     working_dir: /docker/dashboard
     command: >
@@ -77,7 +77,7 @@ services:
       - USERS_FILE=/docker/dashboard/users.json
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.dashboard-maint.rule=Host(`m3tal-maint.m3tal-media-server.xyz`)"
+      - "traefik.http.routers.dashboard-maint.rule=Host(`m3tal-maint.${DOMAIN:?DOMAIN not set — run from repo root with .env}`)"
       - "traefik.http.services.dashboard-maint.loadbalancer.server.port=8080"
       - "m3tal.stack=maintenance"
     networks:
