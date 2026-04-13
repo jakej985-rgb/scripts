@@ -16,6 +16,12 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fi
 ENV_FILE = os.path.join(REPO_ROOT, ".env")
 EXAMPLE_FILE = os.path.join(REPO_ROOT, ".env.example")
 
+# Inject M3TAL Control Plane paths for discovery tools
+CONTROL_PLANE = os.path.join(REPO_ROOT, "control-plane")
+if CONTROL_PLANE not in sys.path:
+    sys.path.append(CONTROL_PLANE)
+    sys.path.append(os.path.join(CONTROL_PLANE, "agents"))
+
 # Rex Guardrail: Required variables for system integrity
 REQUIRED_VARS = [
     "REPO_ROOT",
@@ -112,23 +118,66 @@ def main():
     new_env["AI_API_KEY"] = get_input("OpenAI/Anthropic API Key (Optional)", current_env.get("AI_API_KEY", ""))
     print("")
 
-    # 4. Notifications (Multi-Channel Audit Phase 4 - Upgraded to 6-Channel v2)
+    # 4. Notifications (Multi-Channel v2 - Smart Discovery)
     print(f"{BOLD}--- [4] Telegram Multi-Channel Notifications ---{END}")
-    new_env["TELEGRAM_BOT_TOKEN"] = get_input("Telegram Bot Token", current_env.get("TELEGRAM_BOT_TOKEN", current_env.get("TELEGRAM_TOKEN", "")))
-    new_env["TG_CHAT_COUNT"] = get_input("Telegram Chat Count (1-6)", current_env.get("TG_CHAT_COUNT", current_env.get("TG_CHAT_MODE", "1")))
-    new_env["TG_AUTO_DISCOVER"] = get_input("Enable Auto-Discovery (true/false)", current_env.get("TG_AUTO_DISCOVER", "false"))
-    new_env["ALLOWED_USERS"] = get_input("Allowed User IDs (comma-separated)", current_env.get("ALLOWED_USERS", "0"))
     
-    new_env["TG_MAIN_CHAT_ID"] = get_input("Main Chat ID", current_env.get("TG_MAIN_CHAT_ID", current_env.get("TELEGRAM_CHAT_ID", "")))
-    new_env["TG_LOG_CHAT_ID"] = get_input("Logs Chat ID (0 to disable)", current_env.get("TG_LOG_CHAT_ID", "0"))
-    new_env["TG_ERROR_CHAT_ID"] = get_input("Errors Chat ID (0 to disable)", current_env.get("TG_ERROR_CHAT_ID", "0"))
-    new_env["TG_ALERT_CHAT_ID"] = get_input("Critical Alerts Chat ID (0 to disable)", current_env.get("TG_ALERT_CHAT_ID", "0"))
-    new_env["TG_ACTION_CHAT_ID"] = get_input("Action/Command Chat ID (0 to disable)", current_env.get("TG_ACTION_CHAT_ID", "0"))
-    new_env["TG_DOCKER_CHAT_ID"] = get_input("Docker Telemetry Chat ID (0 to disable)", current_env.get("TG_DOCKER_CHAT_ID", "0"))
+    bot_token = get_input("Telegram Bot Token", current_env.get("TELEGRAM_BOT_TOKEN", current_env.get("TELEGRAM_TOKEN", "")))
+    new_env["TELEGRAM_BOT_TOKEN"] = bot_token
     
+    chat_count = int(get_input("Telegram Chat Count (1-6)", current_env.get("TG_CHAT_COUNT", "1")))
+    new_env["TG_CHAT_COUNT"] = str(chat_count)
+    
+    auto_discover = get_input("Enable Auto-Discovery (true/false)", current_env.get("TG_AUTO_DISCOVER", "false")).lower()
+    new_env["TG_AUTO_DISCOVER"] = auto_discover
+    
+    allowed_users = get_input("Allowed User IDs (comma-separated)", current_env.get("ALLOWED_USERS", "0"))
+    new_env["ALLOWED_USERS"] = allowed_users
+
+    mapping = {}
+    if auto_discover == "true":
+        try:
+            # Set bot token in environment temporarily so discovery can use it
+            os.environ["TELEGRAM_BOT_TOKEN"] = bot_token
+            from utils.telegram.discovery import discover_and_map
+            mapping = discover_and_map()
+            
+            if mapping:
+                print(f"\n{GREEN}--- Discovered Chats ---{END}")
+                for k, v in mapping.items():
+                    print(f"  ✅ {k} = {v}")
+            else:
+                print(f"\n{YELLOW}⚠ No tags discovered. Falling back to manual input.{END}")
+        except Exception as e:
+            print(f"\n{RED}[!] Auto-discovery error: {e}{END}")
+
+    # Helper to ask only if not in mapping
+    def get_chat_id(key, label):
+        val = mapping.get(key)
+        if val:
+            return str(val)
+        return get_input(label, current_env.get(key, "0"))
+
+    if chat_count >= 1:
+        new_env["TG_MAIN_CHAT_ID"] = get_chat_id("TG_MAIN_CHAT_ID", "Main Chat ID")
+    
+    if chat_count >= 2:
+        new_env["TG_ERROR_CHAT_ID"] = get_chat_id("TG_ERROR_CHAT_ID", "Errors Chat ID")
+        
+    if chat_count >= 3:
+        new_env["TG_LOG_CHAT_ID"] = get_chat_id("TG_LOG_CHAT_ID", "Logs Chat ID")
+        
+    if chat_count >= 4:
+        new_env["TG_ALERT_CHAT_ID"] = get_chat_id("TG_ALERT_CHAT_ID", "Critical Alerts Chat ID")
+        
+    if chat_count >= 5:
+        new_env["TG_ACTION_CHAT_ID"] = get_chat_id("TG_ACTION_CHAT_ID", "Action/Command Chat ID")
+        
+    if chat_count == 6:
+        new_env["TG_DOCKER_CHAT_ID"] = get_chat_id("TG_DOCKER_CHAT_ID", "Docker Telemetry Chat ID")
+
     # Legacy fallbacks for backward compatibility
     new_env["TELEGRAM_TOKEN"] = new_env["TELEGRAM_BOT_TOKEN"]
-    new_env["TELEGRAM_CHAT_ID"] = new_env["TG_MAIN_CHAT_ID"]
+    new_env["TELEGRAM_CHAT_ID"] = new_env.get("TG_MAIN_CHAT_ID", "0")
     print("")
 
     # 5. Cloudflare Tunnel
@@ -137,13 +186,28 @@ def main():
     new_env["CF_TUNNEL_TOKEN"] = get_input("Cloudflare Tunnel Token", current_env.get("CF_TUNNEL_TOKEN", "replace_me"))
     print("")
 
-    # 6. Security (Auto-gen tokens if 'secret' or 'replace_me')
+    # 6. Security & Final Review
     print(f"{BOLD}--- [6] Security & Access ---{END}")
     if current_env.get("DASHBOARD_SECRET", "replace_me") == "replace_me":
         new_val = secrets.token_hex(32)
         print(f"Generated new Persistent Session Secret (DASHBOARD_SECRET)")
         new_env["DASHBOARD_SECRET"] = new_val
     print("")
+
+    # FINAL REVIEW
+    print(f"{BOLD}--- Final Configuration Review ---{END}")
+    for k, v in new_env.items():
+        if "PASSWORD" in k or "TOKEN" in k or "SECRET" in k or "KEY" in k:
+            # Mask secrets
+            masked = v[:5] + "..." if len(str(v)) > 5 else "***"
+            print(f"  {k}: {masked}")
+        else:
+            print(f"  {k}: {v}")
+    
+    confirm = input(f"\n{YELLOW}Accept this configuration and write to .env? (y/n): {END}").strip().lower()
+    if confirm != "y":
+        print(f"\n{RED}Aborted. No changes made.{END}")
+        return
 
     # Write to .env
     print(f"{BOLD}Writing configuration to .env...{END}")

@@ -1,7 +1,7 @@
 import requests
 import os
 from config.telegram import BOT_TOKEN
-from .paths import TELEGRAM_OFFSET_TXT
+from ..paths import TELEGRAM_OFFSET_TXT
 
 # M3TAL Telegram Router (v2 Hardened)
 # Minimal dependency architecture with persistent offset tracking

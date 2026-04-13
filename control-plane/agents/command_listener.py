@@ -1,11 +1,16 @@
+import os
+import sys
+import json
 import time
 import subprocess
-import json
-import os
 from datetime import datetime
-from control_plane.config.telegram import is_allowed_user, BOT_TOKEN
-from control_plane.agents.utils.telegram import router, logger
-from control_plane.agents.utils.paths import REGISTRY_JSON, STATE_DIR
+
+# Standardize path for agent execution
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+from config.telegram import is_allowed_user, BOT_TOKEN
+from utils.telegram import router, logger
+from utils.paths import REGISTRY_JSON, STATE_DIR
 
 # M3TAL Command Listener Agent (Tier 2)
 # Hardened remote control via Telegram with sandboxed Docker access
