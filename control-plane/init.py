@@ -422,6 +422,7 @@ def docker_agent(repair_mode: bool = False):
             conf_cmd = ["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "config", "--services"]
             conf_res = subprocess.run(conf_cmd, capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)
             expected_services = conf_res.stdout.strip().splitlines() if conf_res.returncode == 0 else []
+            total_svc = len(expected_services)
             
             sub_bar = SubProgressBar(total_svc)
             live_list = LiveList(expected_services)
