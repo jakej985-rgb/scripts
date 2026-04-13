@@ -5,18 +5,32 @@ import sys
 import re
 from pathlib import Path
 
-# Core Infrastructure Auditor for M3TAL
-# Responsibility: Enforce Networking & Routing Contracts
+# Advanced Infrastructure Auditor for M3TAL (v6.5.1 Tightened)
+# Responsibility: Enforce Networking & Routing Contracts with Hard Invariants
 
-def find_root():
-    anchor = ".env"
-    curr = Path(__file__).resolve()
-    for parent in [curr] + list(curr.parents):
-        if (parent / anchor).exists():
-            return parent
-    return Path.cwd()
+# Attempting catastrophic import of paths module
+try:
+    # Anchor to root then find control-plane
+    def find_root():
+        p = Path(__file__).resolve()
+        for parent in [p] + list(p.parents):
+            if (parent / ".env").exists() and (parent / "docker").exists():
+                return parent
+        return None
 
-ROOT = find_root()
+    root = find_root()
+    if not root: raise RuntimeError("Root not found")
+    sys.path.append(str(root / "control-plane"))
+    from agents.utils.paths import REPO_ROOT
+except Exception as e:
+    print(f"❌ FATAL: Critical path module missing or corrupted: {e}")
+    sys.exit(1)
+
+# Configuration Enforcement: NO FALLBACKS
+DOMAIN = os.getenv("DOMAIN")
+if not DOMAIN:
+    print("[X] FATAL: DOMAIN environment variable is NOT set. Aborting audit.")
+    sys.exit(1)
 
 # Severity Levels
 CRITICAL = "CRITICAL"
@@ -29,15 +43,26 @@ STARTING = "STARTING"
 DEGRADED = "DEGRADED"
 FAILED = "FAILED"
 
+def is_enabled(val):
+    """Normalize Docker label booleans."""
+    v = str(val or "").lower().strip()
+    return v in ("true", "1", "yes", "y")
+
+def safe_host_match(host, domain):
+    """Secure domain matching to prevent malicious overlap."""
+    h = str(host or "").lower().strip()
+    d = str(domain).lower().strip()
+    return h == d or h.endswith("." + d)
+
 class AuditScanner:
     def __init__(self, domain=None):
-        self.domain = domain or os.getenv("DOMAIN", "m3tal-media-server.xyz")
+        self.domain = domain or DOMAIN
         self.inspect_cache = {}
         self.results = []
         self.status = HEALTHY
 
     def _get_inspect(self, container_id):
-        """Defensive Docker inspection with caching."""
+        """Defensive Docker inspection with caching and hard failure."""
         if container_id in self.inspect_cache:
             return self.inspect_cache[container_id]
         
@@ -48,12 +73,16 @@ class AuditScanner:
             self.inspect_cache[container_id] = data
             return data
         except Exception as e:
+            # V6.5.1 Hardening: Failures to inspect are CRITICAL
+            self._add_issue(container_id, container_id, CRITICAL, 
+                           f"Failed to inspect container: {e}", 
+                           "Check Docker permissions or daemon health")
             return None
 
     def _normalize_labels(self, labels):
         """Safe label key/value normalization."""
         if not labels: return {}
-        return {k.lower(): str(v).lower() for k, v in labels.items()}
+        return {k.lower(): str(v) for k, v in labels.items()}
 
     def _add_issue(self, container, service_id, severity, message, hint=None):
         self.results.append({
@@ -69,18 +98,41 @@ class AuditScanner:
             self.status = DEGRADED
 
     def scan(self):
-        """Runs the audit loop across all managed containers."""
+        """Runs the audit loop across all managed containers + Tier 1 Tier."""
         try:
             cmd = ["docker", "ps", "-a", "--format", "{{.Names}}"]
-            names = subprocess.run(cmd, capture_output=True, text=True, check=True).stdout.splitlines()
-        except:
-            print("[!] CRITICAL: Docker daemon unreachable.")
+            all_names = subprocess.run(cmd, capture_output=True, text=True, check=True).stdout.splitlines()
+        except Exception as e:
+            print(f"❌ FATAL: Docker daemon unreachable: {e}")
             sys.exit(1)
 
-        for name in names:
-            data = self._get_inspect(name)
-            if not data:
+        # Tier 1 Invariants: MUST EXIST & BE HEALTHY
+        TIER_1 = ["traefik", "cloudflared"]
+        for t1 in TIER_1:
+            if t1 not in all_names:
+                self._add_issue(t1, t1, CRITICAL, f"Tier 1 component '{t1}' is MISSING.", 
+                               f"Run 'm3tal run routing' to restore stack.")
                 continue
+            
+            data = self._get_inspect(t1)
+            if not data: continue
+            
+            state = data.get("State", {})
+            if not state.get("Running"):
+                self._add_issue(t1, t1, CRITICAL, f"Tier 1 component '{t1}' is NOT running.", 
+                               "Ensure the container is started and not crashing.")
+            
+            networks = data.get("NetworkSettings", {}).get("Networks", {})
+            if "proxy" not in networks:
+                self._add_issue(t1, t1, CRITICAL, f"Tier 1 component '{t1}' is NOT on the proxy network.", 
+                               "Correct the docker-compose.yml and rejoin the proxy subnet.")
+
+        # Managed Services Scan
+        for name in all_names:
+            if name in TIER_1: continue # Handled by Tier 1 logic above
+
+            data = self._get_inspect(name)
+            if not data: continue
 
             labels = self._normalize_labels(data.get("Config", {}).get("Labels", {}))
             
@@ -91,7 +143,7 @@ class AuditScanner:
             service_id = labels.get("com.docker.compose.service") or name
             state = data.get("State", {})
             is_running = state.get("Running", False)
-            is_optional = labels.get("m3tal.optional") == "true"
+            is_optional = is_enabled(labels.get("m3tal.optional"))
             networks = data.get("NetworkSettings", {}).get("Networks", {})
 
             # 1. State Validation
@@ -104,9 +156,8 @@ class AuditScanner:
 
             # 2. Networking Contract
             if "proxy" not in networks:
-                # Ghost Network Detection (Running but detached)
-                msg = f"Service '{service_id}' is running but NOT attached to 'proxy' network."
-                hint = "Add 'networks: - proxy' to the service in docker-compose.yml."
+                msg = f"Service '{service_id}' is attached to the wrong network."
+                hint = f"Service MUST join 'proxy' network. Found: {list(networks.keys())}"
                 self._add_issue(name, service_id, CRITICAL, msg, hint)
             else:
                 ip = networks["proxy"].get("IPAddress")
@@ -117,7 +168,7 @@ class AuditScanner:
                     self._add_issue(name, service_id, WARNING, msg, hint)
 
             # 3. Routing Contract (If enabled)
-            if labels.get("traefik.enable") == "true":
+            if is_enabled(labels.get("traefik.enable")):
                 # Missing Internal Subnet Hint
                 if labels.get("traefik.docker.network") != "proxy":
                     msg = f"Service '{service_id}' missing 'traefik.docker.network=proxy' label."
@@ -125,8 +176,6 @@ class AuditScanner:
                     self._add_issue(name, service_id, CRITICAL, msg, hint)
 
                 # Missing Port Enforcement
-                port_key = f"traefik.http.services.{service_id}.loadbalancer.server.port"
-                # Support generic service naming if literal fails
                 found_port = any(k.endswith(".loadbalancer.server.port") for k in labels.keys())
                 if not found_port:
                     msg = f"Service '{service_id}' missing explicit loadbalancer port label."
@@ -134,14 +183,13 @@ class AuditScanner:
                     self._add_issue(name, service_id, CRITICAL, msg, hint)
 
                 # Domain/Host Validation
-                host_labels = [v for k, v in labels.items() if ".rule" in k and "host(" in v]
+                host_labels = [v for k, v in labels.items() if ".rule" in k and "host(" in v.lower()]
                 for rule in host_labels:
-                    # Extract domain(s) from Host(`...`)
-                    found_hosts = re.findall(r"host\(`([^`]+)`\)", rule)
+                    found_hosts = re.findall(r"host\(`([^`]+)`\)", rule.lower())
                     for h in found_hosts:
-                        if h != self.domain and not h.endswith(f".{self.domain}"):
+                        if not safe_host_match(h, self.domain):
                             msg = f"Router rule for '{service_id}' uses unexpected domain: {h}"
-                            hint = f"Replace with: Host(`{service_id}.{self.domain}`)"
+                            hint = f"Domain MUST match '{self.domain}' or '*.{self.domain}'"
                             self._add_issue(name, service_id, WARNING, msg, hint)
 
         return self.results
@@ -168,7 +216,7 @@ class AuditScanner:
                     print(f"      Hint: {issue['hint']}")
 
         print("\n" + "="*60)
-        print(f" Checked: {len(self.inspect_cache)} core services")
+        print(f" Checked: {len(self.inspect_cache)} services")
         print(f" Status:  {self.status}")
         print("="*60 + "\n")
 

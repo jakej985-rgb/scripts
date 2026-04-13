@@ -7,71 +7,90 @@ import requests
 import concurrent.futures
 from pathlib import Path
 
-# Advanced Health Validator for M3TAL
+# Advanced Health Validator for M3TAL (v6.5.1 Tightened)
 # Responsibility: Verify End-to-End Routing (Truth Tests)
 
-def find_root():
-    anchor = ".env"
-    curr = Path(__file__).resolve()
-    for parent in [curr] + list(curr.parents):
-        if (parent / anchor).exists():
-            return parent
-    return Path.cwd()
+# Attempting catastrophic import of paths module
+try:
+    def find_root():
+        p = Path(__file__).resolve()
+        for parent in [p] + list(p.parents):
+            if (parent / ".env").exists() and (parent / "docker").exists():
+                return parent
+        return None
 
-ROOT = find_root()
+    root = find_root()
+    if not root: raise RuntimeError("Root not found")
+    sys.path.append(str(root / "control-plane"))
+except Exception as e:
+    print(f"❌ FATAL: Critical path module missing or corrupted: {e}")
+    sys.exit(1)
 
 class HealthValidator:
     def __init__(self, services=None, domain=None):
-        self.domain = domain or os.getenv("DOMAIN", "m3tal-media-server.xyz")
-        self.services = services or [] # List of service dicts with 'id' and 'domain'
+        self.domain = domain or os.getenv("DOMAIN")
+        if not self.domain:
+            raise RuntimeError("DOMAIN env var missing - cannot run Truth Test")
+            
+        self.services = services or [] 
         self.results = {}
-        self.base_url = "http://localhost" # Testing Traefik internally
+        self.base_url = "http://localhost" 
 
     def _probe_service(self, service):
-        """Standard probe with jittered retries and timeout."""
+        """Standard probe with jittered retries and strict success criteria."""
         sid = service["id"]
         host = service.get("host") or f"{sid}.{self.domain}"
         
-        # Dashboard is usually at 'm3tal.domain'
+        # Dashboard mapping override
         if sid == "m3tal-dashboard": 
             host = f"m3tal.{self.domain}"
         
         headers = {"Host": host}
         
+        # V6.5.1 Hardening: Randomized jitter to prevent stampeding herd
         for attempt in range(2):
             try:
                 # 2s timeout as per V6.3 spec
                 response = requests.get(self.base_url, headers=headers, timeout=2)
-                if response.status_code < 500:
+                
+                # V6.5 Hardening: Success = 200-399. 404 is a failure.
+                if 200 <= response.status_code < 400:
                     return sid, "HEALTHY", f"Status: {response.status_code}"
-                return sid, "FAILED", f"Status: {response.status_code}"
+                
+                return sid, "FAILED", f"Status: {response.status_code} (Non-Success Routing)"
             except Exception as e:
                 if attempt < 1:
-                    # Defensive Jitter: Randomized sleep (0.2s - 0.5s)
                     time.sleep(0.2 + random.random() * 0.3)
                     continue
-                return sid, "FAILED", str(e)
+                # V6.5 Hardening: Timeouts and connection errors are hard failures
+                return sid, "FAILED", f"Reachability Error: {type(e).__name__}"
 
     def _internal_bridge_test(self):
-        """Validates the Cloudflared -> Traefik path."""
+        """Validates the Cloudflared -> Traefik path via internal EXEC."""
         try:
-            # Wrapped with 3s timeout to prevent CLI hang
+            # V6.5 Hardening: 3s subprocess timeout to prevent CLI lockup
             cmd = ["docker", "exec", "cloudflared", "curl", "-s", "-o", "/dev/null", "-w", "%{http_code}", "http://traefik:80"]
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=3)
             code = result.stdout.strip()
-            if code.startswith("2") or code.startswith("3") or code.startswith("4"): # Any valid HTTP response
+            
+            # 000 typically means curl failed to connect at all
+            if code == "000":
+                return "cloudflared-bridge", "FAILED", "Tunnel cannot reach Traefik (Connection Refused)"
+            
+            if code.startswith("2") or code.startswith("3"): # Only 2xx/3xx on the bridge
                 return "cloudflared-bridge", "HEALTHY", f"Internal resolution OK ({code})"
-            return "cloudflared-bridge", "FAILED", f"HTTP {code}"
+            
+            return "cloudflared-bridge", "FAILED", f"HTTP {code} (Internal Routing Error)"
         except Exception as e:
             return "cloudflared-bridge", "FAILED", f"Bridge Timeout/Failure: {str(e)}"
 
     def run_full_test(self):
-        """Executes parallel probes across all services."""
+        """Executes parallel probes with correlated results."""
         print(f"\n--- [TRUTH TEST] Routing Validation for {self.domain} ---")
         
         all_checks = []
         
-        # 1. Internal Path
+        # 1. Internal Path (The Backbone)
         all_checks.append(self._internal_bridge_test())
 
         # 2. Parallel Service Probes
@@ -85,36 +104,25 @@ class HealthValidator:
         failed = False
         for name, status, detail in all_checks:
             icon = "[OK]" if status == "HEALTHY" else "[FAIL]"
-            print(f"{icon} {name:20} -> {status:8} ({detail})")
+            print(f"{icon} {name:25} -> {status:8} ({detail})")
             if status == "FAILED": failed = True
             self.results[name] = {"status": status, "detail": detail}
         
-        print("-" * 50)
+        print("-" * 65)
         return not failed
 
 def run_standalone():
-    # Attempt to auto-discover services from Audit if none provided
-    # Avoid circular import at top level
     try:
-        from config.audit import AuditScanner
+        from config.audit import AuditScanner, is_enabled
         scanner = AuditScanner()
-        issues = scanner.scan()
+        scanner.scan()
         
-        # Extract services with Traefik enabled
-        # This uses the normalization from V6.4
-        system_services = []
-        for issue in scanner.results:
-            # If audit found it, we should test it
-            # But let's only test running containers
-            pass # The loop below is better
-
-        # Real discovery from inspect cache
+        # Reuse IDs and labels from Audit cache for 100% correlation
         routed = []
         for name, data in scanner.inspect_cache.items():
             labels = scanner._normalize_labels(data.get("Config", {}).get("Labels", {}))
-            if labels.get("traefik.enable") == "true":
+            if is_enabled(labels.get("traefik.enable")):
                 sid = labels.get("com.docker.compose.service") or name
-                # Extract Host rule if possible
                 host = None
                 for k, v in labels.items():
                     if ".rule" in k and "host(" in v.lower():
@@ -128,10 +136,9 @@ def run_standalone():
         success = validator.run_full_test()
         sys.exit(0 if success else 1)
         
-    except ImportError:
-        # Fallback for minimal testing
-        validator = HealthValidator(services=[{"id": "m3tal-dashboard"}])
-        validator.run_full_test()
+    except Exception as e:
+        print(f"❌ FATAL: Health engine failure: {e}")
+        sys.exit(1)
 
 if __name__ == "__main__":
     run_standalone()

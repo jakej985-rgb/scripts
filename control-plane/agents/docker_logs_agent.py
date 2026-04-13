@@ -8,33 +8,27 @@ import argparse
 from datetime import datetime
 from pathlib import Path
 
-# M3TAL Docker Logs Agent (v2.3 Hardened + Alerting)
+# M3TAL Docker Logs Agent (v2.4 Hardened + Clean Shutdown)
 # Responsibility: Multi-stack log persistence with redaction and proactive alerting.
 
-# --- Root Resolution & Path Hardening (Phase 5) -------------------------------
-def find_root():
-    """Auto-detect repo root by walking up parents."""
-    p = Path(__file__).resolve()
-    for parent in [p] + list(p.parents):
-        if (parent / ".env").exists() and (parent / "docker").exists():
-            return parent
-    return None
+# Attempting catastrophic import of paths module
+try:
+    def find_root():
+        p = Path(__file__).resolve()
+        for parent in [p] + list(p.parents):
+            if (parent / ".env").exists() and (parent / "docker").exists():
+                return parent
+        return None
 
-ROOT = find_root()
-if not ROOT:
-    print("❌ FATAL: Could not locate M3TAL repository root.")
+    root = find_root()
+    if not root: raise RuntimeError("Root not found")
+    sys.path.append(str(root / "control-plane"))
+    from agents.utils.paths import DOCKER_DIR, CORE_LOGS_DIR, REPO_ROOT
+except Exception as e:
+    print(f"❌ FATAL: Critical path module missing or corrupted: {e}")
     sys.exit(1)
 
-# Ensure control-plane is in sys.path for agents.telegram import
-sys.path.append(str(ROOT / "control-plane"))
-
-try:
-    from agents.utils.paths import DOCKER_DIR, CORE_LOGS_DIR
-except ImportError:
-    # Standalone fallback
-    DOCKER_DIR = ROOT / "docker"
-    CORE_LOGS_DIR = ROOT / "control-plane" / "state" / "logs"
-
+ROOT = REPO_ROOT
 ENV_FILE = ROOT / ".env"
 SENSITIVE_KEYS = ["TOKEN", "SECRET", "KEY", "PASSWORD"]
 
@@ -48,95 +42,66 @@ SEVERITY_MAP = {
 
 ALERT_CACHE = {}
 MAX_ALERT_CACHE = 1000
-ALERT_COOLDOWN = 60  # seconds
-MULTILINE_WINDOW = 2  # seconds
+ALERT_COOLDOWN = 60  
+MULTILINE_WINDOW = 2 
 LAST_ALERT_TIME = 0.0
+
+# V6.5.1: Clean Shutdown Event
+SHUTDOWN_EVENT = threading.Event()
 
 # --- Security: Redaction & Detection Engines ---------------------------------
 
 def load_secrets():
-    """Hardened .env secrets loader."""
     secrets = set()
-    if not ENV_FILE.exists():
-        return []
-    
+    if not ENV_FILE.exists(): return []
     try:
         with open(ENV_FILE, "r") as f:
             for line in f:
                 line = line.strip()
-                if not line or line.startswith("#"): continue
-                if "=" not in line: continue
-                
+                if not line or line.startswith("#") or "=" not in line: continue
                 k, v = line.split("=", 1)
                 if any(s in k.upper() for s in SENSITIVE_KEYS):
                     val = v.strip().strip('"').strip("'")
-                    if val and len(val) > 4:
-                        secrets.add(val)
+                    if val and len(val) > 4: secrets.add(val)
     except Exception as e:
-        print(f"⚠️  Logging Security: Could not load secrets for redaction: {e}")
-        
+        print(f"⚠️  Logging Security: Could not load secrets: {e}")
     return sorted(list(secrets), key=len, reverse=True)
 
 def redact(line, secrets):
-    """Case-insensitive regex redaction pipe."""
-    if not secrets or not line:
-        return line
-    
+    if not secrets or not line: return line
     for secret in secrets:
-        pattern = re.escape(secret)
-        line = re.sub(pattern, "***REDACTED***", line, flags=re.IGNORECASE)
+        line = re.sub(re.escape(secret), "***REDACTED***", line, flags=re.IGNORECASE)
     return line
 
 def normalize(msg: str) -> str:
-    """Hardens deduplication by masking dynamic numeric/hex values."""
     msg = msg.lower()
-    # Mask hex hashes / IDs (6+ chars) FIRST
     msg = re.sub(r'\b[0-9a-f]{6,}\b', '<hex>', msg)
-    # Mask numbers SECOND
     msg = re.sub(r'\d+', '<num>', msg)
     return msg[:200]
 
 def get_severity(line: str) -> str:
-    """Maps log content to severity levels."""
     l = line.lower()
     for level, keywords in SEVERITY_MAP.items():
-        if any(k in l for k in keywords):
-            return level
+        if any(k in l for k in keywords): return level
     return "INFO"
 
 def should_alert(msg: str) -> bool:
-    """Deduplication logic with multi-line suppression and memory safety."""
     global LAST_ALERT_TIME, ALERT_CACHE
-    
     now = time.time()
-    
-    # 1. Multi-line suppression (Prevents spam from a single Traceback)
-    if now - LAST_ALERT_TIME < MULTILINE_WINDOW:
-        return False
-        
-    # 2. Memory safety cap
-    if len(ALERT_CACHE) > MAX_ALERT_CACHE:
-        ALERT_CACHE.clear()
-        
-    # 3. Deduplication via normalization
+    if now - LAST_ALERT_TIME < MULTILINE_WINDOW: return False
+    if len(ALERT_CACHE) > MAX_ALERT_CACHE: ALERT_CACHE.clear()
     key = normalize(msg)
     last_trigger = ALERT_CACHE.get(key, 0)
-    
     if now - last_trigger > ALERT_COOLDOWN:
         ALERT_CACHE[key] = now
         LAST_ALERT_TIME = now
         return True
-        
     return False
 
 def send_alert(stack, severity, message):
-    """Dispatches redacted notification to Telegram."""
     try:
-        # Lazy import to ensure subsystem is ready
         from agents import telegram
-        if not telegram.is_available():
-            return
-            
+        if not telegram.is_available(): return
         formatted = f"[{severity}] {stack.upper()} ALERT\n{message[:3000]}"
         telegram.alert(formatted)
     except Exception as e:
@@ -145,11 +110,8 @@ def send_alert(stack, severity, message):
 # --- Infrastructure: Discovery & Execution ------------------------------------
 
 def discover_stacks():
-    """Auto-scan /docker directory for compose projects."""
     stacks = {}
-    if not DOCKER_DIR.exists():
-        return stacks
-    
+    if not DOCKER_DIR.exists(): return stacks
     for path in DOCKER_DIR.iterdir():
         compose = path / "docker-compose.yml"
         if path.is_dir() and compose.exists():
@@ -157,51 +119,50 @@ def discover_stacks():
     return stacks
 
 def stream_logs(stack_name, compose_file, secrets, alerts_enabled=False):
-    """Streams logs from a specific stack to console and disk with redaction & alerting."""
-    CORE_LOGS_DIR.mkdir(parents=True, exist_ok=True)
-    
+    """Streams logs with graceful SHUTDOWN_EVENT awareness."""
     timestamp = datetime.now().strftime("%Y-%m-%d_%H%M%S")
     log_file = CORE_LOGS_DIR / f"{stack_name}_logs_{timestamp}.txt"
+    CORE_LOGS_DIR.mkdir(parents=True, exist_ok=True)
     
     cmd = [
-        "docker", "compose",
-        "--env-file", str(ENV_FILE),
-        "-f", str(compose_file),
-        "logs", "-f", "--tail", "100"
+        "docker", "compose", "--env-file", str(ENV_FILE),
+        "-f", str(compose_file), "logs", "-f", "--tail", "50"
     ]
     
-    print(f"🚀 [LOGGER] Streaming {stack_name} -> {log_file.name} {'(Alerts Active)' if alerts_enabled else ''}")
+    print(f"🚀 [LOGGER] Streaming {stack_name} -> {log_file.name}")
     
+    process = None
     try:
         with open(log_file, "a", encoding="utf-8") as f:
             process = subprocess.Popen(
-                cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                text=True,
-                bufsize=1,
-                shell=(os.name == "nt")
+                cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                text=True, bufsize=1, shell=(os.name == "nt")
             )
             
-            for line in process.stdout:
-                safe_line = redact(line, secrets)
+            # Non-blocking read loop
+            while not SHUTDOWN_EVENT.is_set():
+                line = process.stdout.readline()
+                if not line:
+                    if process.poll() is not None: break
+                    time.sleep(0.1)
+                    continue
                 
-                # Proactive Alerting Trigger
-                if alerts_enabled:
-                    l_lower = safe_line.lower()
-                    if any(p in l_lower for p in ALERT_PATTERNS):
-                        if should_alert(safe_line):
-                            severity = get_severity(safe_line)
-                            send_alert(stack_name, severity, safe_line)
+                safe_line = redact(line, secrets)
+                if alerts_enabled and should_alert(safe_line):
+                    send_alert(stack_name, get_severity(safe_line), safe_line)
                 
                 f.write(safe_line)
                 f.flush()
                 print(f"[{stack_name}] {safe_line}", end="")
                 
     except Exception as e:
-        print(f"❌ [LOGGER] Error in {stack_name} stream: {e}")
-
-# --- CLI Dispatcher -----------------------------------------------------------
+        if not SHUTDOWN_EVENT.is_set():
+            print(f"❌ [LOGGER] Error in {stack_name}: {e}")
+    finally:
+        if process:
+            process.terminate()
+            try: process.wait(timeout=2)
+            except: process.kill()
 
 def main():
     parser = argparse.ArgumentParser(description="M3TAL Docker Logs Agent")
@@ -209,43 +170,34 @@ def main():
     parser.add_argument("--alerts", action="store_true", help="Enable proactive Telegram alerting")
     args = parser.parse_args()
     
-    target = args.stack.lower()
-    
     stacks = discover_stacks()
-    if not stacks:
-        print(f"❌ ERROR: No Docker projects found in {DOCKER_DIR}")
-        sys.exit(1)
-        
+    target = args.stack.lower()
+    if not stacks: sys.exit(1)
+    
     secrets = load_secrets()
     print(f"🔒 [SECURITY] Redaction active ({len(secrets)} secrets loaded)")
     
+    threads = []
     if target == "all":
-        print(f"📡 [LOGGER] Monitoring all stacks: {', '.join(stacks.keys())}")
-        threads = []
         for name, compose in stacks.items():
-            t = threading.Thread(
-                target=stream_logs, 
-                args=(name, compose, secrets, args.alerts), 
-                name=f"Logger-{name}", 
-                daemon=True
-            )
+            t = threading.Thread(target=stream_logs, args=(name, compose, secrets, args.alerts), daemon=False)
             t.start()
             threads.append(t)
-            
-        try:
-            while True:
-                time.sleep(1)
-        except KeyboardInterrupt:
-            print("\n🛑 [LOGGER] Stopping log streams...")
     else:
-        if target not in stacks:
-            print(f"❌ ERROR: Stack '{target}' not found.")
-            sys.exit(1)
-        
-        try:
-            stream_logs(target, stacks[target], secrets, args.alerts)
-        except KeyboardInterrupt:
-            print("\n🛑 [LOGGER] Stopped.")
+        if target not in stacks: sys.exit(1)
+        t = threading.Thread(target=stream_logs, args=(target, stacks[target], secrets, args.alerts), daemon=False)
+        t.start()
+        threads.append(t)
+
+    try:
+        while any(t.is_alive() for t in threads):
+            time.sleep(0.5)
+    except KeyboardInterrupt:
+        print("\n🛑 [LOGGER] Initiating graceful shutdown...")
+        SHUTDOWN_EVENT.set()
+        for t in threads:
+            t.join(timeout=5)
+        print("✅ [LOGGER] All streams stopped.")
 
 if __name__ == "__main__":
     main()
