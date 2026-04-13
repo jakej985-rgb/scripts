@@ -84,6 +84,18 @@ def main():
         if current_config == "/docker/configs": current_config = default_config
 
     print(f"{BOLD}--- [1] System Settings ---{END}")
+    
+    # Docker API Discovery
+    default_api = current_env.get("DOCKER_API_VERSION", "1.41")
+    try:
+        import subprocess
+        auto_api = subprocess.check_output(["docker", "version", "--format", "{{.Client.APIVersion}}"], text=True, stderr=subprocess.DEVNULL).strip()
+        if auto_api:
+            default_api = auto_api
+    except:
+        pass
+        
+    new_env["DOCKER_API_VERSION"] = get_input("Docker API Version", default_api)
     new_env["MASTER_IP"] = get_input("Master Node IP", current_env.get("MASTER_IP", "127.0.0.1"))
     new_env["DASHBOARD_PORT"] = get_input("Dashboard UI Port", current_env.get("DASHBOARD_PORT", "8080"))
     new_env["HTTP_PORT"] = get_input("HTTP Gateway Port (80)", current_env.get("HTTP_PORT", "80"))
