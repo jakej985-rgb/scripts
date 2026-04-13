@@ -79,7 +79,7 @@ def _run() -> None:
             continue
 
         # ── Process item ──────────────────────────────────────────────────────
-        # task_done() must be called exactly once for every real dequeue.
+        # At this point, task_done() MUST be called in a finally block.
         try:
             chat_id, msg = item
 
@@ -90,7 +90,7 @@ def _run() -> None:
                     file=sys.stderr,
                 )
                 consecutive_failures = max(0, consecutive_failures - 1)
-                continue  # Fixed from original 'return' to avoid killing thread
+                continue 
 
             success = client.send_text(chat_id, msg)
 
@@ -136,12 +136,11 @@ def _run() -> None:
             time.sleep(1)
 
         finally:
-            # Always mark done for items that were actually dequeued
+            # Audit Fix: task_done() must be called for EVERY successful dequeue.
+            # The 'continue' above for empty queue skips this block.
             try:
                 tg_queue.task_done()
             except ValueError:
-                # task_done() called more times than items put — should not
-                # happen with the guard above, but be safe
                 pass
 
     print("[TELEGRAM] Worker loop exited cleanly.")

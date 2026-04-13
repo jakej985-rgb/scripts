@@ -2,15 +2,14 @@ import os
 import json
 from pathlib import Path
 
-# --- Root Resolution ----------------------------------------------------------
-env_root = os.getenv("REPO_ROOT")
-if env_root:
-    REPO_ROOT = Path(env_root)
-else:
-    # This file is at control-plane/agents/utils/paths.py
-    REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
+# --- Root Resolution (Phase 3 Hardening) --------------------------------------
+# This file is at control-plane/agents/utils/paths.py
+# We resolve the absolute path to ensure the system works from any context.
 
-# --- Environment Variable Keys (Audit fix 3.1) --------------------------------
+_THIS_FILE = Path(__file__).resolve()
+REPO_ROOT = _THIS_FILE.parents[3] # Up 4 levels: utils -> agents -> control-plane -> repo_root
+
+# --- Environment Variable Keys ------------------------------------------------
 ENV_TELEGRAM_TOKEN = "TELEGRAM_TOKEN"
 ENV_TELEGRAM_CHAT  = "TELEGRAM_CHAT_ID"
 ENV_REPO_ROOT      = "REPO_ROOT"

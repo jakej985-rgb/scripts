@@ -35,9 +35,10 @@ def _safe_int(raw: str | None, default: int = 0) -> int:
         return default
 
 
-# --- Token -------------------------------------------------------------------
-_raw_token = os.getenv("TELEGRAM_BOT_TOKEN") or os.getenv("TELEGRAM_TOKEN")
-BOT_TOKEN: str | None = _clean(_raw_token) or None
+# --- Token (Phase 4 Hardening) -----------------------------------------------
+_raw_token = os.getenv("TELEGRAM_BOT_TOKEN") or os.getenv("TELEGRAM_TOKEN") or ""
+# Aggressive strip handles both raw spaces and \r from Windows CRLF .env
+BOT_TOKEN: str | None = _raw_token.strip() or None
 
 # Emit an early warning if the raw token had hidden whitespace so the user
 # knows to fix their .env rather than spending hours debugging 401s.

@@ -19,6 +19,7 @@ if str(CONTROL_PLANE / "agents") not in sys.path:
     sys.path.append(str(CONTROL_PLANE / "agents"))
 
 from config.env import validate_env
+from config.validate import validate
 from utils.lock import acquire_global_lock, release_global_lock
 
 # --- Signals ------------------------------------------------------------------
@@ -93,7 +94,10 @@ def main():
         sys.exit(1)
         
     try:
-        # 1. Validate Env
+        # Audit Check: Production Config Protection
+        validate()
+
+        # 1. Validate Env (Registry/Network)
         print("[M3TAL] Validating environment contract...")
         validate_env()
         print("[M3TAL] Env Loaded: OK")
