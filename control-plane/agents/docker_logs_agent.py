@@ -13,16 +13,17 @@ from pathlib import Path
 
 # Attempting catastrophic import of paths module
 try:
-    def find_root():
-        p = Path(__file__).resolve()
-        for parent in [p] + list(p.parents):
-            if (parent / ".env").exists() and (parent / "docker").exists():
-                return parent
-        return None
-
-    root = find_root()
-    if not root: raise RuntimeError("Root not found")
-    sys.path.append(str(root / "control-plane"))
+    from pathlib import Path
+    import sys
+    
+    # Path bootstrap (V6.5.2)
+    p = Path(__file__).resolve()
+    for parent in [p] + list(p.parents):
+        if (parent / ".env").exists() and (parent / "docker").exists():
+            if str(parent / "control-plane") not in sys.path:
+                sys.path.append(str(parent / "control-plane"))
+            break
+            
     from agents.utils.paths import DOCKER_DIR, CORE_LOGS_DIR, REPO_ROOT
 except Exception as e:
     print(f"❌ FATAL: Critical path module missing or corrupted: {e}")
@@ -160,7 +161,9 @@ def stream_logs(stack_name, compose_file, secrets, alerts_enabled=False):
             print(f"❌ [LOGGER] Error in {stack_name}: {e}")
     finally:
         if process:
-            process.terminate()
+            # V6.5.2: Safe termination check
+            if process.poll() is None:
+                process.terminate()
             try: process.wait(timeout=2)
             except: process.kill()
 

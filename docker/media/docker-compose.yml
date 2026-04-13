@@ -197,6 +197,8 @@ services:
       - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
     labels:
       - "m3tal.stack=media"
+    networks:
+      - proxy
     restart: unless-stopped
 
   maintainerr:
@@ -311,3 +313,5 @@ services:
 networks:
   proxy:
     external: true
+  default:
+    name: none

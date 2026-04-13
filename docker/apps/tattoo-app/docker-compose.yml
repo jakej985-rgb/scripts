@@ -45,3 +45,5 @@ networks:
     external: true
   app_internal:
     driver: bridge
+  default:
+    name: none

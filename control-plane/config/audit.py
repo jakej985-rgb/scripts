@@ -10,17 +10,17 @@ from pathlib import Path
 
 # Attempting catastrophic import of paths module
 try:
-    # Anchor to root then find control-plane
-    def find_root():
-        p = Path(__file__).resolve()
-        for parent in [p] + list(p.parents):
-            if (parent / ".env").exists() and (parent / "docker").exists():
-                return parent
-        return None
-
-    root = find_root()
-    if not root: raise RuntimeError("Root not found")
-    sys.path.append(str(root / "control-plane"))
+    from pathlib import Path
+    import sys
+    
+    # Path bootstrap (V6.5.2)
+    p = Path(__file__).resolve()
+    for parent in [p] + list(p.parents):
+        if (parent / ".env").exists() and (parent / "docker").exists():
+            if str(parent / "control-plane") not in sys.path:
+                sys.path.append(str(parent / "control-plane"))
+            break
+            
     from agents.utils.paths import REPO_ROOT
 except Exception as e:
     print(f"❌ FATAL: Critical path module missing or corrupted: {e}")
@@ -55,8 +55,9 @@ def safe_host_match(host, domain):
     return h == d or h.endswith("." + d)
 
 class AuditScanner:
-    def __init__(self, domain=None):
+    def __init__(self, domain=None, strict=False):
         self.domain = domain or DOMAIN
+        self.strict = strict
         self.inspect_cache = {}
         self.results = []
         self.status = HEALTHY
@@ -73,7 +74,7 @@ class AuditScanner:
             self.inspect_cache[container_id] = data
             return data
         except Exception as e:
-            # V6.5.1 Hardening: Failures to inspect are CRITICAL
+            # V6.5.2 Hardening: Failures to inspect are recorded but not skipping
             self._add_issue(container_id, container_id, CRITICAL, 
                            f"Failed to inspect container: {e}", 
                            "Check Docker permissions or daemon health")
@@ -92,10 +93,15 @@ class AuditScanner:
             "message": message,
             "hint": hint
         })
+        
+        # Status Resolution
         if severity == CRITICAL:
             self.status = FAILED
-        elif severity == WARNING and self.status == HEALTHY:
-            self.status = DEGRADED
+        elif severity == WARNING:
+            if self.strict:
+                self.status = FAILED
+            elif self.status == HEALTHY:
+                self.status = DEGRADED
 
     def scan(self):
         """Runs the audit loop across all managed containers + Tier 1 Tier."""
@@ -111,11 +117,13 @@ class AuditScanner:
         for t1 in TIER_1:
             if t1 not in all_names:
                 self._add_issue(t1, t1, CRITICAL, f"Tier 1 component '{t1}' is MISSING.", 
-                               f"Run 'm3tal run routing' to restore stack.")
+                                f"Run 'm3tal run routing' to restore stack.")
                 continue
             
             data = self._get_inspect(t1)
-            if not data: continue
+            if not data:
+                # Issue already logged in _get_inspect
+                continue
             
             state = data.get("State", {})
             if not state.get("Running"):
@@ -132,7 +140,10 @@ class AuditScanner:
             if name in TIER_1: continue # Handled by Tier 1 logic above
 
             data = self._get_inspect(name)
-            if not data: continue
+            if not data:
+                # We record existence but can't check labels without inspect.
+                # However, _get_inspect already added a CRITICAL issue.
+                continue
 
             labels = self._normalize_labels(data.get("Config", {}).get("Labels", {}))
             
@@ -155,8 +166,14 @@ class AuditScanner:
                 continue
 
             # 2. Networking Contract
+            forbidden = [n for n in networks.keys() if n.endswith("_default") or n == "default"]
+            if forbidden:
+                msg = f"Service '{service_id}' is leaking default networks: {forbidden}"
+                hint = "Add 'networks: default: name: none' to your docker-compose.yml."
+                self._add_issue(name, service_id, WARNING, msg, hint)
+
             if "proxy" not in networks:
-                msg = f"Service '{service_id}' is attached to the wrong network."
+                msg = f"Service '{service_id}' is NOT attached to the 'proxy' network."
                 hint = f"Service MUST join 'proxy' network. Found: {list(networks.keys())}"
                 self._add_issue(name, service_id, CRITICAL, msg, hint)
             else:
@@ -203,7 +220,7 @@ class AuditScanner:
             return
 
         print("\n" + "="*60)
-        print(f" M3TAL INFRASTRUCTURE AUDIT | STATUS: {self.status}")
+        print(f" M3TAL INFRASTRUCTURE AUDIT | STATUS: {self.status} (Strict: {self.strict})")
         print("="*60)
 
         if not self.results:
@@ -221,8 +238,14 @@ class AuditScanner:
         print("="*60 + "\n")
 
 if __name__ == "__main__":
-    scanner = AuditScanner()
+    import argparse
+    parser = argparse.ArgumentParser(description="M3TAL Infrastructure Auditor")
+    parser.add_argument("--json", action="store_true", help="Output machine-readable JSON")
+    parser.add_argument("--strict", action="store_true", help="Fail on ANY warnings (CI/CD mode)")
+    args = parser.parse_args()
+
+    scanner = AuditScanner(strict=args.strict)
     scanner.scan()
-    scanner.report()
+    scanner.report(fmt="json" if args.json else "text")
     if scanner.status == FAILED:
         sys.exit(1)

@@ -12,16 +12,18 @@ from pathlib import Path
 
 # Attempting catastrophic import of paths module
 try:
-    def find_root():
-        p = Path(__file__).resolve()
-        for parent in [p] + list(p.parents):
-            if (parent / ".env").exists() and (parent / "docker").exists():
-                return parent
-        return None
-
-    root = find_root()
-    if not root: raise RuntimeError("Root not found")
-    sys.path.append(str(root / "control-plane"))
+    from pathlib import Path
+    import sys
+    
+    # Path bootstrap (V6.5.2)
+    p = Path(__file__).resolve()
+    for parent in [p] + list(p.parents):
+        if (parent / ".env").exists() and (parent / "docker").exists():
+            if str(parent / "control-plane") not in sys.path:
+                sys.path.append(str(parent / "control-plane"))
+            break
+            
+    from agents.utils.paths import REPO_ROOT
 except Exception as e:
     print(f"❌ FATAL: Critical path module missing or corrupted: {e}")
     sys.exit(1)
@@ -47,8 +49,8 @@ class HealthValidator:
         
         headers = {"Host": host}
         
-        # V6.5.1 Hardening: Randomized jitter to prevent stampeding herd
-        for attempt in range(2):
+        # V6.5.2 Hardening: 3 attempts with jitter
+        for attempt in range(3):
             try:
                 # 2s timeout as per V6.3 spec
                 response = requests.get(self.base_url, headers=headers, timeout=2)
@@ -59,8 +61,8 @@ class HealthValidator:
                 
                 return sid, "FAILED", f"Status: {response.status_code} (Non-Success Routing)"
             except Exception as e:
-                if attempt < 1:
-                    time.sleep(0.2 + random.random() * 0.3)
+                if attempt < 2:
+                    time.sleep(0.5 + random.random() * 0.5) # Increased sleep
                     continue
                 # V6.5 Hardening: Timeouts and connection errors are hard failures
                 return sid, "FAILED", f"Reachability Error: {type(e).__name__}"
@@ -86,6 +88,10 @@ class HealthValidator:
 
     def run_full_test(self):
         """Executes parallel probes with correlated results."""
+        # V6.5.2 Hardening: Initial Grace Period for Traefik bootstrap
+        print(f"⏳ [TRUTH TEST] Warming up for {self.domain}...")
+        time.sleep(1.5)
+        
         print(f"\n--- [TRUTH TEST] Routing Validation for {self.domain} ---")
         
         all_checks = []

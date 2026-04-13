@@ -16,6 +16,7 @@ services:
       # qBittorrent labels are here because it will share gluetun's network stack
       - "traefik.http.routers.qbittorrent.rule=Host(`qbittorrent.${DOMAIN}`)"
       - "traefik.http.services.qbittorrent.loadbalancer.server.port=8080"
+      - "traefik.docker.network=proxy"
     networks:
       - proxy
     env_file:
@@ -25,3 +26,5 @@ services:
 networks:
   proxy:
     external: true
+  default:
+    name: none

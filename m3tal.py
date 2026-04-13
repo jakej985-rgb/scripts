@@ -7,19 +7,19 @@ from pathlib import Path
 # M3TAL Unified CLI (v2.2 Production-Grade)
 # Responsibility: Centralized entrypoint for all M3TAL orchestration and observability.
 
-def find_root():
-    """Auto-detect repo root by walking up parents until .env + docker/ are found."""
+# Attempting catastrophic import of paths module
+try:
+    from pathlib import Path
+    import sys
+    
+    # Path bootstrap (V6.5.2)
     p = Path(__file__).resolve()
     for parent in [p] + list(p.parents):
         if (parent / ".env").exists() and (parent / "docker").exists():
-            return parent
-    return None
-
-# Attempting catastrophic import of paths module
-try:
-    _root = find_root()
-    if not _root: raise RuntimeError("Repo root not found")
-    sys.path.append(str(_root / "control-plane"))
+            if str(parent / "control-plane") not in sys.path:
+                sys.path.append(str(parent / "control-plane"))
+            break
+            
     from agents.utils.paths import (
         REPO_ROOT, SCRIPTS_DIR, AGENTS_DIR, CONTROL_PLANE
     )
@@ -70,6 +70,8 @@ def cmd_audit(args):
     args_list = []
     if hasattr(args, 'json') and args.json:
         args_list.append("--json")
+    if hasattr(args, 'strict') and args.strict:
+        args_list.append("--strict")
     return run_script(path, *args_list)
 
 def cmd_test():
@@ -119,6 +121,7 @@ def main():
     # audit
     p_audit = subparsers.add_parser("audit", help="Audit Docker networking and Traefik contracts")
     p_audit.add_argument("--json", action="store_true", help="Output audit results in machine-readable JSON")
+    p_audit.add_argument("--strict", action="store_true", help="Fail on ANY warnings (CI/CD mode)")
 
     # test
     subparsers.add_parser("test", help="Run end-to-end routing 'Truth Tests'")
