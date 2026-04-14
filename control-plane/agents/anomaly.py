@@ -25,8 +25,14 @@ def classify_issue(health_data, metrics_data, report_data=None):
         logger.error(f"Invalid health_data type: {type(health_data)}")
         return issues
 
+    # Extract the containers sub-dict upfront — health_data also contains
+    # metadata keys like 'docker_available' and 'timestamp' which aren't dicts.
+    containers = health_data.get("containers", health_data)
+    if not isinstance(containers, dict):
+        return issues
+
     # 1. Container Health
-    for name, info in health_data.items():
+    for name, info in containers.items():
         # Audit fix 2.12: Ignore metadata and skip non-dict entries
         if name == "_m3tal_metadata" or not isinstance(info, dict):
             continue

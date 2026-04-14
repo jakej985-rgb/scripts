@@ -17,10 +17,9 @@ _seen_events: set[str] = set(load_json(SEEN_EVENTS_JSON, default=[]))
 
 def aggregate_events():
     """Phase 2: Observer Agent — Scans logs and generates events."""
-    # This agent scans agent logs and generates a unified event stream
     logger.info("Watching system logs for critical events...")
     
-    # Audit fix 2.15: implementation of log scavenging
+    any_new = False
     for file in os.listdir(LOG_DIR):
         if file.endswith(".log") and file != "observer.log":
             agent_name = file.replace(".log", "")
@@ -29,7 +28,6 @@ def aggregate_events():
                 with open(path, "r") as f:
                     # Only check the last 100 lines to avoid overhead
                     lines = collections.deque(f, maxlen=100)
-                    new_event = False
                     for line in lines:
                         # exclude [ERROR] found inside observer's own detected messages
                         if "Critical Event detected" in line:
@@ -40,22 +38,21 @@ def aggregate_events():
                                 continue
                             
                             _seen_events.add(fingerprint)
-                            new_event = True
-                            
-                            # Audit fix 2.4: Bounded Sliding Window rotation
-                            if len(_seen_events) > 500:
-                                # Remove oldest 100 entries instead of clearing everything
-                                ordered = list(_seen_events)
-                                _seen_events.clear()
-                                _seen_events.update(ordered[100:])
-                                
+                            any_new = True
                             logger.warning(f"Critical Event detected in {agent_name}: {line.strip()}")
-                    
-                    if new_event:
-                        save_json(SEEN_EVENTS_JSON, list(_seen_events), caller="observer")
 
             except Exception as e:
                 logger.error(f"Failed to scan log {file}: {e}")
+
+    # Sliding window eviction — apply once per cycle, not per-line
+    if len(_seen_events) > 500:
+        ordered = list(_seen_events)
+        _seen_events.clear()
+        _seen_events.update(ordered[-400:])
+
+    # Batch-save: only write JSON if something changed
+    if any_new:
+        save_json(SEEN_EVENTS_JSON, list(_seen_events), caller="observer")
 
 if __name__ == "__main__":
     # Observer runs on all nodes — now uses wrap_agent for proper

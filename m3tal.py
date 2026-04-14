@@ -168,6 +168,17 @@ def main():
         print(f"   Searching in: {ROOT}")
         sys.exit(1)
 
+    # Load .env into os.environ so subprocesses (audit, health, etc.) inherit values
+    with open(ROOT / ".env", "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if "=" in line and not line.startswith("#"):
+                k, v = line.split("=", 1)
+                v = v.split("#")[0].strip()
+                if (v.startswith('"') and v.endswith('"')) or (v.startswith("'") and v.endswith("'")):
+                    v = v[1:-1]
+                os.environ.setdefault(k.strip(), v)
+
     if args.command == "logs":
         sys.exit(cmd_logs(args))
     elif args.command == "env":

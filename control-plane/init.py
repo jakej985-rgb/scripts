@@ -402,16 +402,18 @@ def docker_agent(repair_mode: bool = False):
         TIMEOUTS = {
             "routing": 90,
             "network": 90,
-            "core": 60,
+            "control-plane": 60,
             "media": 120,
+            "maintenance": 60,
             "apps/tattoo-app": 60
         }
 
         # Readiness definitions (Log Pattern, Probe Command)
+        # IMPORTANT: cloudflared and gluetun are Alpine-based — they have wget, NOT curl.
         READINESS = {
-            "routing": ("cloudflared", "Registered tunnel connection", ["curl", "-s", "-f", "https://ipinfo.io"]),
-            "network": ("gluetun", "VPN is up", ["curl", "-s", "-f", "https://ifconfig.me"]),
-            "core": ("m3tal-dashboard", None, ["curl", "-s", "-f", "http://localhost:8080/api/health"])
+            "routing": ("cloudflared", "Registered tunnel connection", ["wget", "-q", "--spider", "http://traefik:80"]),
+            "network": ("gluetun", "VPN is up", ["wget", "-q", "--spider", "--timeout=3", "http://ipinfo.io"]),
+            "control-plane": ("m3tal-dashboard", None, ["wget", "-q", "--spider", "http://localhost:8080/api/health"])
         }
         
         for name, sd, is_critical in stacks:
@@ -435,7 +437,15 @@ def docker_agent(repair_mode: bool = False):
                 active_stacks.append((name, sd, is_critical, total_svc, expected_services))
                 global_live_list.add_items(expected_services)
                 
-                proc = subprocess.Popen(["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "up", "-d"], 
+                # Add --build for stacks with custom Dockerfiles (e.g. control-plane)
+                up_cmd = ["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "up", "-d"]
+                try:
+                    with open(cf, "r") as compose_f:
+                        if "build:" in compose_f.read():
+                            up_cmd.append("--build")
+                except: pass
+                
+                proc = subprocess.Popen(up_cmd, 
                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, 
                                      text=True, shell=use_shell, env=GLOBAL_ENV)
                 
@@ -523,7 +533,7 @@ def repair(scope: str = "all") -> bool:
     """🛠️ Repair Agent: Force-recreates stacks to resolve drift or connectivity gaps."""
     t_log(f"Repairing scope: {scope}", symbol="🔧")
     try:
-        stacks_to_fix = [scope] if scope != "all" else ["routing", "maintenance", "core", "media", "apps/tattoo-app"]
+        stacks_to_fix = [scope] if scope != "all" else ["routing", "network", "maintenance", "media", "apps/tattoo-app"]
         for stack in stacks_to_fix:
             sd = REPO_ROOT / "docker" / stack
             if not sd.exists(): continue

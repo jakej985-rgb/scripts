@@ -39,9 +39,13 @@ def get_logger(name):
         # Avoid crashing the agent just because logging failed
         pass
 
-    # Console Handler (Stdout for run.sh capture)
-    ch = logging.StreamHandler(sys.stdout)
-    ch.setFormatter(formatter)
-    logger.addHandler(ch)
+    # Console Handler — Only when running standalone (not under orchestrator/run.py)
+    # When run.py spawns agents as subprocesses, it captures stdout already.
+    # Adding a stdout handler in that case causes every line to appear twice.
+    is_orchestrated = os.getenv("M3TAL_ORCHESTRATED") == "1"
+    if not is_orchestrated:
+        ch = logging.StreamHandler(sys.stdout)
+        ch.setFormatter(formatter)
+        logger.addHandler(ch)
         
     return logger

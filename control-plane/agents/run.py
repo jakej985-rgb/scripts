@@ -123,6 +123,7 @@ def run_agent(name: str, script: str) -> None:
     """Run a single agent in a supervised loop with jittered backoff."""
     env = os.environ.copy()
     env["M3TAL_ORCHESTRATOR"] = "1"
+    env["M3TAL_ORCHESTRATED"] = "1"  # Suppresses stdout handler in child loggers
     
     # Ensure children can see control-plane root (Audit Phase 4)
     python_path = env.get("PYTHONPATH", "")
