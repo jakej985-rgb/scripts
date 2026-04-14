@@ -63,33 +63,7 @@ services:
     env_file:
       - ../../.env
 
-  dashboard:
-    image: python:3.11-slim
-    container_name: m3tal-dashboard-maintenance
-    restart: unless-stopped
-    volumes:
-      - ${REPO_ROOT:?REPO_ROOT not set — run from repo root with .env}:/docker
-      - /var/run/docker.sock:/var/run/docker.sock
-    working_dir: /docker/dashboard
-    command: >
-      sh -c "pip install --quiet -r /docker/requirements.txt && python server.py"
-    environment:
-      - TZ=America/Denver
-      - DOCKER_API_VERSION=${DOCKER_API_VERSION}
-      - DASHBOARD_SECRET=${DASHBOARD_SECRET}
-      - STATE_DIR=/docker/control-plane/state
-      - USERS_FILE=/docker/dashboard/users.json
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.dashboard-maint.rule=Host(`m3tal-maint.${DOMAIN:?DOMAIN not set}`)"
-      - "traefik.http.routers.dashboard-maint.entrypoints=web"
-      - "traefik.http.services.dashboard-maint.loadbalancer.server.port=8080"
-      - "traefik.docker.network=proxy"
-      - "m3tal.stack=maintenance"
-    networks:
-      - proxy
-    env_file:
-      - ../../.env
+
 
 networks:
   proxy:

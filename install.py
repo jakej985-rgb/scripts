@@ -382,8 +382,8 @@ def main() -> None:
     # 9. Auto-start
     if auto_start:
         log(f"\n{BOLD}[START] Launching control plane...{END}")
-        supervisor = install_dir / "control-plane" / "supervisor.py"
-        subprocess.Popen([str(venv_python), str(supervisor)])
+        m3tal_cli = install_dir / "m3tal.py"
+        subprocess.Popen([str(venv_python), str(m3tal_cli), "run"])
 
     # 9. Warnings summary
     if WARNINGS:
@@ -396,7 +396,7 @@ def main() -> None:
     duration = time.time() - start_time
     log(f"\n{GREEN}{BOLD}=== INSTALL COMPLETE ==={END}")
     log(f"  Total Time:   {duration:.2f}s")
-    log(f"\n  Run manually: python3 control-plane/supervisor.py")
+    log(f"\n  Run manually: python m3tal.py run")
     log(f"  Dashboard:    http://localhost:8080\n")
 
 
