@@ -112,16 +112,23 @@ class TraefikAuditor:
             networks = data.get("NetworkSettings", {}).get("Networks", {})
             
             # PHASE 1: Label Contract
-            required = [
+            required_keys = [
+                "traefik.enable",
+                "traefik.docker.network",
                 f"traefik.http.routers.{service_id}.rule",
                 f"traefik.http.routers.{service_id}.entrypoints",
                 f"traefik.http.services.{service_id}.loadbalancer.server.port"
             ]
-            missing_labels = [l for l in required if l not in labels]
+            missing_labels = [l for l in required_keys if l not in labels]
             if missing_labels:
                 self._add_issue(name, service_id, CRITICAL, 
                                f"Missing Traefik labels: {', '.join(missing_labels)}",
                                f"Standardize labels for stack '{stack}'.")
+            
+            if labels.get("traefik.docker.network") != "proxy":
+                self._add_issue(name, service_id, CRITICAL, 
+                               f"Invalid label: traefik.docker.network={labels.get('traefik.docker.network')}",
+                               "Must be set to 'proxy'.", TYPE_A)
             
             # PHASE 1: Network Contract
             if "proxy" not in networks:

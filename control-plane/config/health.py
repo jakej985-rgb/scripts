@@ -86,6 +86,26 @@ class HealthValidator:
         except Exception as e:
             return "cloudflared-bridge", "FAILED", f"Bridge Timeout/Failure: {str(e)}"
 
+    def _internal_path_test(self, service):
+        """Phase 5: Validates internal Traefik -> Backend reachability."""
+        sid = service["id"]
+        port = service.get("port")
+        if not port:
+            # Fallback for display, but we need port for wget
+            return sid + "-internal", "INFO", "Missing port for internal test"
+        
+        try:
+            # Plan: docker exec traefik wget -qO- http://<container>:<port>
+            # We use container name from 'id' or 'name'
+            cmd = ["docker", "exec", "traefik", "wget", "-qO-", "--spider", f"http://{sid}:{port}"]
+            result = subprocess.run(cmd, capture_output=True, timeout=3)
+            
+            if result.returncode == 0:
+                return sid + "-internal", "HEALTHY", f"Internal Link OK (Port {port})"
+            return sid + "-internal", "FAILED", f"Traefik cannot reach {sid} on port {port}"
+        except Exception as e:
+            return sid + "-internal", "FAILED", f"Internal Test Error: {str(e)}"
+
     def run_full_test(self):
         """Executes parallel probes with correlated results."""
         # V6.5.2 Hardening: Initial Grace Period for Traefik bootstrap
@@ -102,8 +122,12 @@ class HealthValidator:
         # 2. Parallel Service Probes
         if self.services:
             with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+                # Local Probes
                 future_to_service = {executor.submit(self._probe_service, s): s for s in self.services}
-                for future in concurrent.futures.as_completed(future_to_service):
+                # Internal Path Probes (Phase 5)
+                future_to_internal = {executor.submit(self._internal_path_test, s): s for s in self.services}
+                
+                for future in concurrent.futures.as_completed(list(future_to_service.keys()) + list(future_to_internal.keys())):
                     all_checks.append(future.result())
 
         # 3. Correlation & Reporting
@@ -130,13 +154,16 @@ def run_standalone():
             if is_enabled(labels.get("traefik.enable")):
                 sid = labels.get("com.docker.compose.service") or name
                 host = None
+                port = None
                 for k, v in labels.items():
                     if ".rule" in k and "host(" in v.lower():
                         import re
                         m = re.search(r"host\(`([^`]+)`\)", v.lower())
                         if m: host = m.group(1)
+                    if ".loadbalancer.server.port" in k:
+                        port = v
                 
-                routed.append({"id": sid, "host": host})
+                routed.append({"id": sid, "host": host, "port": port})
 
         validator = HealthValidator(services=routed)
         success = validator.run_full_test()

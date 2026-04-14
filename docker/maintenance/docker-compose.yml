@@ -31,6 +31,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dozzle.rule=Host(`logs.${DOMAIN:?DOMAIN not set}`)"
+      - "traefik.http.routers.dozzle.entrypoints=web"
       - "traefik.http.services.dozzle.loadbalancer.server.port=8080"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=maintenance"
@@ -51,6 +52,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.portainer.rule=Host(`portainer.${DOMAIN:?DOMAIN not set}`)"
+      - "traefik.http.routers.portainer.entrypoints=web"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=maintenance"
@@ -80,6 +82,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard-maint.rule=Host(`m3tal-maint.${DOMAIN:?DOMAIN not set}`)"
+      - "traefik.http.routers.dashboard-maint.entrypoints=web"
       - "traefik.http.services.dashboard-maint.loadbalancer.server.port=8080"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=maintenance"

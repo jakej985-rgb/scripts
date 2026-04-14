@@ -93,6 +93,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bazarr.rule=Host(`bazarr.${DOMAIN:?DOMAIN not set}`)"
+      - "traefik.http.routers.bazarr.entrypoints=web"
       - "traefik.http.services.bazarr.loadbalancer.server.port=6767"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
@@ -118,6 +119,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.komga.rule=Host(`komga.${DOMAIN:?DOMAIN not set}`)"
+      - "traefik.http.routers.komga.entrypoints=web"
       - "traefik.http.services.komga.loadbalancer.server.port=25600"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
@@ -140,6 +142,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.jellyseerr.rule=Host(`jellyseerr.${DOMAIN:?DOMAIN not set}`)"
+      - "traefik.http.routers.jellyseerr.entrypoints=web"
       - "traefik.http.services.jellyseerr.loadbalancer.server.port=5055"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
@@ -158,6 +161,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.homepage.rule=Host(`home.${DOMAIN:?DOMAIN not set}`)"
+      - "traefik.http.routers.homepage.entrypoints=web"
       - "traefik.http.services.homepage.loadbalancer.server.port=3000"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
@@ -178,6 +182,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.autobrr.rule=Host(`autobrr.${DOMAIN:?DOMAIN not set}`)"
+      - "traefik.http.routers.autobrr.entrypoints=web"
       - "traefik.http.services.autobrr.loadbalancer.server.port=8080"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
@@ -209,6 +214,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.maintainerr.rule=Host(`maintainerr.${DOMAIN:?DOMAIN not set}`)"
+      - "traefik.http.routers.maintainerr.entrypoints=web"
       - "traefik.http.services.maintainerr.loadbalancer.server.port=6246"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
@@ -230,6 +236,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.tdarr.rule=Host(`tdarr.${DOMAIN:?DOMAIN not set}`)"
+      - "traefik.http.routers.tdarr.entrypoints=web"
       - "traefik.http.services.tdarr.loadbalancer.server.port=8265"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
@@ -249,6 +256,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.glances.rule=Host(`stats.${DOMAIN:?DOMAIN not set}`)"
+      - "traefik.http.routers.glances.entrypoints=web"
       - "traefik.http.services.glances.loadbalancer.server.port=61208"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
@@ -284,6 +292,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.${DOMAIN:?DOMAIN not set}`)"
+      - "traefik.http.routers.prowlarr.entrypoints=web"
       - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
@@ -301,6 +310,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.flaresolverr.rule=Host(`flaresolverr.${DOMAIN:?DOMAIN not set}`)"
+      - "traefik.http.routers.flaresolverr.entrypoints=web"
       - "traefik.http.services.flaresolverr.loadbalancer.server.port=8191"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
