@@ -5,15 +5,18 @@ from pathlib import Path
 # M3TAL Environment Audit Tool (v2.2 Hardened)
 # Responsibility: Safely inspect environment variables with secret masking.
 
-def find_root():
-    """Auto-detect repo root by walking up parents."""
-    p = Path(__file__).resolve()
-    for parent in [p] + list(p.parents):
-        if (parent / ".env").exists() and (parent / "docker").exists():
-            return parent
-    return None
+# Import paths module
+p = Path(__file__).resolve()
+for parent in [p] + list(p.parents):
+    agents_dir = parent / "control-plane" / "agents"
+    if agents_dir.exists() and (parent / ".env").exists():
+        if str(agents_dir.parent) not in sys.path:
+            sys.path.append(str(agents_dir.parent))
+        break
 
-ROOT = find_root()
+from agents.utils.paths import REPO_ROOT
+
+ROOT = REPO_ROOT
 ENV_FILE = ROOT / ".env" if ROOT else None
 
 SENSITIVE_KEYS = ["TOKEN", "SECRET", "KEY", "PASSWORD"]

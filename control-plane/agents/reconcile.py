@@ -66,12 +66,15 @@ def perform_scale(action):
         for file in files:
             if file.endswith('.yml') or file.endswith('.yaml'):
                 full_path = os.path.join(root, file)
+                env_file = os.path.join(REPO_ROOT, ".env")
+                env_arg = ["--env-file", env_file] if os.path.exists(env_file) else []
                 try:
                     res = subprocess.run(["docker", "compose", "-f", full_path, "ps", target], capture_output=True, text=True, timeout=10)
                     if res.returncode == 0 and target in res.stdout:
                         num = 2 if direction == "up" else 1
                         logger.info(f"Scaling {target} {direction} to {num} replicas")
-                        subprocess.run(["docker", "compose", "-f", full_path, "up", "-d", "--scale", f"{target}={num}"], check=True, timeout=30)
+                        cmd = ["docker", "compose", "-f", full_path] + env_arg + ["up", "-d", "--scale", f"{target}={num}"]
+                        subprocess.run(cmd, check=True, timeout=30)
                         return True
                 except subprocess.TimeoutExpired:
                     logger.error(f"Scale check timed out for {target} in {full_path}")

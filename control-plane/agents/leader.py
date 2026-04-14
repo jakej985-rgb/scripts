@@ -1,6 +1,7 @@
 import sys
 import os
 import socket
+import time
 
 # Add current dir to path for utils
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -8,6 +9,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from utils.paths import CLUSTER_YML, LEADER_TXT
 from utils.identity import get_local_identity, is_local_host, normalize_host_identifier
 from utils.logger import get_logger
+from utils.guards import wrap_agent
 
 logger = get_logger("leader")
 
@@ -75,19 +77,5 @@ def elect_leader():
     else:
         logger.info(f"Identity: {my_id} | STATUS: [FOLLOWER] (Leader: {leader_identity})")
 
-def run_leader_cycle():
-    """Batch 16 T1: Persistent Leader Election Loop."""
-    logger.info("--- Leader Agent Persistent Loop Started ---")
-    while True:
-        try:
-            elect_leader()
-        except Exception as e:
-            logger.error(f"Election cycle failed: {e}")
-        
-        # Check for shutdown signal file or similar? 
-        # For now, 10s election interval.
-        time.sleep(10)
-
 if __name__ == "__main__":
-    import time
-    run_leader_cycle()
+    wrap_agent("leader", elect_leader, interval=10)

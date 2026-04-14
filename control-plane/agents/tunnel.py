@@ -64,14 +64,17 @@ def _recover_tunnel(current_status: str):
     Performs autonomous recovery based on the container state.
     """
     try:
+        env_file = REPO_ROOT / ".env"
+        env_arg = ["--env-file", str(env_file)] if env_file.exists() else []
+
         if current_status == "missing":
             logger.info("Recreating missing tunnel container...")
-            cmd = ["docker", "compose", "up", "-d", "cloudflared"]
+            cmd = ["docker", "compose"] + env_arg + ["up", "-d", "cloudflared"]
             subprocess.run(cmd, cwd=ROUTING_DIR, check=True, timeout=60)
         else:
             logger.info(f"Restarting unhealthy tunnel container ({current_status})...")
             # Force recreate is safer for cloudflared to ensure token sync
-            cmd = ["docker", "compose", "up", "-d", "--force-recreate", "cloudflared"]
+            cmd = ["docker", "compose"] + env_arg + ["up", "-d", "--force-recreate", "cloudflared"]
             subprocess.run(cmd, cwd=ROUTING_DIR, check=True, timeout=60)
         
         logger.info("Tunnel recovery successful.")

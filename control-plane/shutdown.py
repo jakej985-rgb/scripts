@@ -29,6 +29,7 @@ STATE_DIR = BASE_DIR / "state"
 
 # Stacks to shut down in order (most dependent first)
 STACKS = [
+    "control-plane",
     "media", 
     "apps/tattoo-app", 
     "network", 
@@ -106,7 +107,10 @@ def terminate_agents():
 
 def shutdown_stack(stack_name: str, bar: ProgressBar, current_step: int):
     """Surgically stops and removes a specific Docker stack."""
-    stack_path = DOCKER_DIR / stack_name
+    if stack_name == "control-plane":
+        stack_path = REPO_ROOT / "control-plane"
+    else:
+        stack_path = DOCKER_DIR / stack_name
     compose_file = stack_path / "docker-compose.yml"
     use_shell = os.name == "nt"
     

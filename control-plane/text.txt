@@ -1,7 +1,0 @@
-m3tal@m3tal-media-server:/M3tal-Media-Server/control-plane$ python3 init.py
-Traceback (most recent call last):
-  File "/M3tal-Media-Server/control-plane/init.py", line 35, in <module>
-    from auth import inspect_users_file, reset_admin_user, resolve_users_path
-  File "/M3tal-Media-Server/dashboard/auth.py", line 9, in <module>
-    import bcrypt
-ModuleNotFoundError: No module named 'bcrypt'

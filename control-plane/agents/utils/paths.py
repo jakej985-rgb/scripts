@@ -82,6 +82,8 @@ TIERS = {
     "tunnel": 2,
     "healer": 2,
     "command_listener": 2,
+    "scaling": 2,
+    "network_guard": 2,
 }
 
 # The absolute minimum files/dirs required for each agent to start
@@ -95,6 +97,8 @@ CONTRACTS = {
     "reconcile": [DECISIONS_JSON, REGISTRY_JSON],
     "health_score": [METRICS_JSON, CONTAINER_HEALTH_JSON],
     "notify": [HEALTH_REPORT_JSON],
+    "scaling": [METRICS_JSON],
+    "network_guard": [DOCKER_DIR],
 }
 
 def ensure_dirs():

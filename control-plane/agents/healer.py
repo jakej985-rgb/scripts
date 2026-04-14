@@ -68,27 +68,14 @@ def run_healing_cycle():
         if duration > MAX_CYCLE_TIME:
             log_event("healer", f"WARNING: Healing cycle took {duration:.2f}s (Limit {MAX_CYCLE_TIME}s)")
 
-        # Returns health status for adaptive interval logic
-        return is_ready
+        # Adaptive Timing: wrap_agent uses interval=15. 
+        # If healthy, we sleep an extra 105s here to reach 120s total interval.
+        if is_ready:
+            time.sleep(105)
 
     finally:
         release_healer_lock()
 
-def adaptive_loop():
-    """Main loop with adaptive intervals based on system health."""
-    while True:
-        try:
-            is_healthy = run_healing_cycle()
-            
-            # Adaptive Timing: 15s if unhealthy, 120s if healthy
-            interval = 120 if is_healthy else 15
-            time.sleep(interval)
-        except Exception as e:
-            log_event("healer", f"FATAL ERROR in healer loop: {e}")
-            time.sleep(30) # Wait before retry
-
 if __name__ == "__main__":
-    # We don't use wrap_agent here because healer has its own interval logic 
-    # and needs to handle its own locking with init.py
     log_event("healer", "M3TAL Healer Agent Started.")
-    adaptive_loop()
+    wrap_agent("healer", run_healing_cycle, interval=15)
