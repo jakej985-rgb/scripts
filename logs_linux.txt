@@ -1,5 +1,5 @@
 M3TAL SYSTEM DEBUG BUNDLE (LINUX)
-Generated: 2026-04-12 17:39:53
+Generated: 2026-04-12 18:52:59
 Repo Root: /M3tal-Media-Server
 ================================================================================
 
@@ -45,7 +45,7 @@ Server:
 
 --- Docker Container Status ---
 CONTAINER ID   IMAGE                   COMMAND                 CREATED        STATUS                  PORTS                                    NAMES
-6bc218df7310   qmcgaw/gluetun:latest   "/gluetun-entrypoint"   17 hours ago   Up 17 hours (healthy)   8000/tcp, 8388/tcp, 8888/tcp, 8388/udp   gluetun
+6bc218df7310   qmcgaw/gluetun:latest   "/gluetun-entrypoint"   18 hours ago   Up 18 hours (healthy)   8000/tcp, 8388/tcp, 8888/tcp, 8388/udp   gluetun
 
 
 --- Network Configuration ---
@@ -58,29 +58,29 @@ CONTAINER ID   IMAGE                   COMMAND                 CREATED        ST
 2: enp6s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
     link/ether 48:5b:39:36:19:3c brd ff:ff:ff:ff:ff:ff
     inet 192.168.12.156/24 brd 192.168.12.255 scope global dynamic noprefixroute enp6s0
-       valid_lft 325788sec preferred_lft 325788sec
+       valid_lft 321402sec preferred_lft 321402sec
     inet6 2607:fb90:f15:ca11:dac0:273d:ec29:aeec/64 scope global temporary dynamic 
-       valid_lft 258sec preferred_lft 258sec
+       valid_lft 252sec preferred_lft 252sec
     inet6 fdfe:5e6c:2e69:98de:deda:34a1:b7cb:28fb/64 scope global temporary dynamic 
-       valid_lft 86358sec preferred_lft 46758sec
+       valid_lft 86352sec preferred_lft 46752sec
     inet6 2607:fb90:f15:ca11:fb93:51b0:b64b:547d/64 scope global temporary deprecated dynamic 
-       valid_lft 258sec preferred_lft 0sec
+       valid_lft 252sec preferred_lft 0sec
     inet6 fdfe:5e6c:2e69:98de:d8d6:701b:6431:db9b/64 scope global temporary deprecated dynamic 
-       valid_lft 86358sec preferred_lft 0sec
+       valid_lft 86352sec preferred_lft 0sec
     inet6 fdfe:5e6c:2e69:98de:4289:3355:283e:c68c/64 scope global temporary deprecated dynamic 
-       valid_lft 86358sec preferred_lft 0sec
+       valid_lft 86352sec preferred_lft 0sec
     inet6 2607:fb90:f15:ca11:8abf:9935:5ca:56b0/64 scope global temporary deprecated dynamic 
-       valid_lft 258sec preferred_lft 0sec
+       valid_lft 252sec preferred_lft 0sec
     inet6 2607:fb90:f15:ca11::a257/128 scope global dynamic noprefixroute 
-       valid_lft 1962sec preferred_lft 1962sec
+       valid_lft 2747sec preferred_lft 2747sec
     inet6 2607:fb90:f15:ca11:38da:3ec5:395a:70d7/64 scope global temporary deprecated dynamic 
-       valid_lft 258sec preferred_lft 0sec
+       valid_lft 252sec preferred_lft 0sec
     inet6 2607:fb90:f15:ca11:7b3c:e466:a544:ab43/64 scope global dynamic mngtmpaddr noprefixroute 
-       valid_lft 258sec preferred_lft 258sec
+       valid_lft 252sec preferred_lft 252sec
     inet6 fdfe:5e6c:2e69:98de:82a9:6cd9:af14:aae0/64 scope global temporary deprecated dynamic 
-       valid_lft 86358sec preferred_lft 0sec
+       valid_lft 86352sec preferred_lft 0sec
     inet6 fdfe:5e6c:2e69:98de:504b:ca1b:cb24:9778/64 scope global dynamic mngtmpaddr noprefixroute 
-       valid_lft 86358sec preferred_lft 46758sec
+       valid_lft 86352sec preferred_lft 46752sec
     inet6 fe80::632d:3827:55c2:28d6/64 scope link noprefixroute 
        valid_lft forever preferred_lft forever
 3: tailscale0: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1280 qdisc fq_codel state UNKNOWN group default qlen 500
@@ -113,12 +113,12 @@ CONTAINER ID   IMAGE                   COMMAND                 CREATED        ST
 Filesystem      Size  Used Avail Use% Mounted on
 tmpfs           1.6G   15M  1.6G   1% /run
 /dev/sdc1       293G  109G  169G  40% /
-tmpfs           7.9G  2.5M  7.9G   1% /dev/shm
+tmpfs           7.9G  2.2M  7.9G   1% /dev/shm
 tmpfs           5.0M   12K  5.0M   1% /run/lock
 /dev/sdb1       586G  6.3M  556G   1% /mnt/tattoo
 /dev/sdd1       586G   38G  519G   7% /mnt/downloads
 /dev/sda1       3.6T  2.8T  638G  82% /mnt/disk1
-tmpfs           1.6G  104K  1.6G   1% /run/user/1000
+tmpfs           1.6G  108K  1.6G   1% /run/user/1000
 
 
 ================================================================================

@@ -206,24 +206,24 @@ services:
       - proxy
     restart: unless-stopped
 
-  maintainerr:
-    image: ghcr.io/maintainerr/maintainerr:latest
-    container_name: maintainerr
-    volumes:
-      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/maintainerr:/opt/data
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.maintainerr.rule=Host(`maintainerr.${DOMAIN:?DOMAIN not set}`)"
-      - "traefik.http.routers.maintainerr.entrypoints=web"
-      - "traefik.http.services.maintainerr.loadbalancer.server.port=6246"
-      - "traefik.docker.network=proxy"
-      - "m3tal.stack=media"
-    networks:
-      - proxy
-    env_file:
-      - ../../.env
-    restart: unless-stopped
-
+#  maintainerr:
+#    image: ghcr.io/maintainerr/maintainerr:latest
+#    container_name: maintainerr
+#    volumes:
+#      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/maintainerr:/opt/data
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.maintainerr.rule=Host(`maintainerr.${DOMAIN:?DOMAIN not set}`)"
+#      - "traefik.http.routers.maintainerr.entrypoints=web"
+#      - "traefik.http.services.maintainerr.loadbalancer.server.port=6246"
+#      - "traefik.docker.network=proxy"
+#      - "m3tal.stack=media"
+#    networks:
+#      - proxy
+#    env_file:
+#      - ../../.env
+#    restart: unless-stopped
+#
   tdarr:
     image: ghcr.io/haveagitgat/tdarr:latest
     container_name: tdarr
