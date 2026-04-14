@@ -27,11 +27,11 @@ from progress_utils import (
 DOCKER_DIR = REPO_ROOT / "docker"
 STATE_DIR = BASE_DIR / "state"
 
-# Stacks to shut down in order (most dependent last)
+# Stacks to shut down in order (most dependent first)
 STACKS = [
     "media", 
     "apps/tattoo-app", 
-    "core", 
+    "network", 
     "maintenance", 
     "routing"
 ]
