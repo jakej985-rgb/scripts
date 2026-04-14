@@ -97,6 +97,19 @@ def cmd_run():
     path = AGENTS_DIR / "run.py"
     return run_script(path)
 
+def cmd_traefik(args):
+    """Handles Traefik-specific orchestration and auditing."""
+    if args.subcommand == "audit":
+        path = CONTROL_PLANE / "config" / "traefik_audit.py"
+        args_list = []
+        if hasattr(args, 'strict') and args.strict:
+            args_list.append("--strict")
+        return run_script(path, *args_list)
+    elif args.subcommand == "test":
+        path = CONTROL_PLANE / "config" / "health.py"
+        return run_script(path)
+    return 1
+
 # --- CLI Structure ------------------------------------------------------------
 def main():
     if not ROOT:
@@ -123,7 +136,16 @@ def main():
     p_audit.add_argument("--json", action="store_true", help="Output audit results in machine-readable JSON")
     p_audit.add_argument("--strict", action="store_true", help="Fail on ANY warnings (CI/CD mode)")
 
-    # test
+    # traefik [audit|test]
+    p_traefik = subparsers.add_parser("traefik", help="Traefik routing operations")
+    p_t_sub = p_traefik.add_subparsers(dest="subcommand", help="Traefik subcommand")
+    
+    p_t_audit = p_t_sub.add_parser("audit", help="Verify labels vs Traefik runtime API")
+    p_t_audit.add_argument("--strict", action="store_true", help="Fail on warnings")
+    
+    p_t_test = p_t_sub.add_parser("test", help="Execute curl-based truth tests")
+
+    # test (Shortcut for m3tal traefik test)
     subparsers.add_parser("test", help="Run end-to-end routing 'Truth Tests'")
 
     # init
@@ -152,6 +174,8 @@ def main():
         sys.exit(cmd_env())
     elif args.command == "audit":
         sys.exit(cmd_audit(args))
+    elif args.command == "traefik":
+        sys.exit(cmd_traefik(args))
     elif args.command == "test":
         sys.exit(cmd_test())
     elif args.command == "init":
