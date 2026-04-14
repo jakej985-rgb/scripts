@@ -4,6 +4,13 @@ import subprocess
 import argparse
 from pathlib import Path
 
+# Batch 16 Hardening: Force UTF-8 for Windows console resilience
+if sys.stdout.encoding.lower() != 'utf-8':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except (AttributeError, Exception):
+        pass
+
 # M3TAL Unified CLI (v2.2 Production-Grade)
 # Responsibility: Centralized entrypoint for all M3TAL orchestration and observability.
 

@@ -28,6 +28,37 @@ ENV_FILE = REPO_ROOT / ".env"
 from config.telegram import validate as validate_telegram
 from typing import Dict, Any, Optional
 from utils.paths import CONTROL_PLANE, STATE_DIR, LOG_DIR, SCRIPTS_DIR, ENV_TELEGRAM_TOKEN, ENV_TELEGRAM_CHAT
+
+import builtins
+import warnings
+import logging
+
+logging.basicConfig(
+    filename=str(LOG_DIR / "m3tal.log"),
+    filemode="a",
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    level=logging.INFO
+)
+
+def warning_to_log(message, category, filename, lineno, file=None, line=None):
+    logging.warning(f"{filename}:{lineno}: {category.__name__}: {message}")
+
+warnings.showwarning = warning_to_log
+
+USE_SAFE_PRINT = True
+
+def m3tal_print(*args, **kwargs):
+    if USE_SAFE_PRINT:
+        try:
+            from progress_utils import safe_print
+            safe_print(*args, **kwargs)
+        except ImportError:
+            builtins.print(*args, **kwargs)
+    else:
+        builtins.print(*args, **kwargs)
+
+builtins.print = m3tal_print
+
 try:
     from preflight import run_preflight
 except ImportError:
@@ -347,10 +378,14 @@ def docker_agent(repair_mode: bool = False):
             t_log("[DOCKER] Shared network 'proxy' ready")
         except: pass 
         
-        # Shared UI State
-        global_live_list = LiveList([])
+        # Shared State 
+        global_statuses = {}
         active_stacks = [] # List of (stack_name, path, is_critical, total_svc, expected_services_list)
         stop_poller = threading.Event()
+        
+        # UI Reference for Poller
+        active_ui_lock = threading.Lock()
+        shared_live_list_ref = None
 
         def ui_status_poller():
             """Continuously updates the GlobalLiveList for all active stacks."""
@@ -380,9 +415,15 @@ def docker_agent(repair_mode: bool = False):
                                 elif state == "running": smart_state = "healthy" if "healthy" in status_text else "running"
                                 elif state == "created": smart_state = "creating..."
                                 
-                                global_live_list.update(item, smart_state)
-                            else:
-                                pass
+                                global_statuses[item] = smart_state
+                                with active_ui_lock:
+                                    if shared_live_list_ref and item in shared_live_list_ref.items:
+                                        # Batching: Update state silently
+                                        shared_live_list_ref.update(item, smart_state, redraw=False)
+                
+                # Redraw ONCE after all stacks and services are processed
+                from progress_utils import request_render
+                request_render()
                 time.sleep(2)
 
         poller_thread = threading.Thread(target=ui_status_poller, daemon=True)
@@ -427,67 +468,77 @@ def docker_agent(repair_mode: bool = False):
             expected_services = conf_res.stdout.strip().splitlines() if conf_res.returncode == 0 else []
             total_svc = len(expected_services)
             
-            sub_bar = SubProgressBar(total_svc)
-            live_list = LiveList(expected_services)
-            sub_bar.update(0, f"Initializing {total_svc} services ({name})")
-
-            try:
-                # 1. Register stack and start launch
-                active_stacks.append((name, sd, is_critical, total_svc, expected_services))
-                global_live_list.add_items(expected_services)
+            with SubProgressBar(total_svc) as sub_bar, LiveList(expected_services) as active_live_list:
+                with active_ui_lock:
+                    # Provide access to the live list for the poller
+                    shared_live_list_ref = active_live_list
                 
-                # Add --build for stacks with custom Dockerfiles (e.g. control-plane)
-                up_cmd = ["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "up", "-d"]
+                sub_bar.update(0, f"Initializing {total_svc} services ({name})")
+                
+                # Seed the status dictionary
+                for svc in expected_services:
+                    global_statuses[svc] = "queued"
+
                 try:
-                    with open(cf, "r") as compose_f:
-                        if "build:" in compose_f.read():
-                            up_cmd.append("--build")
-                except: pass
-                
-                proc = subprocess.Popen(up_cmd, 
-                                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, 
-                                     text=True, shell=use_shell, env=GLOBAL_ENV)
-                
-                # 2. Wait for Docker status (Up/Running)
-                wait_time = TIMEOUTS.get(name, 90)
-                start_time = time.time()
-                while time.time() - start_time < wait_time:
-                    if proc.poll() is not None and proc.returncode != 0:
-                        raise RuntimeError(f"Docker Launch Error (Exit {proc.returncode}) for {name}")
+                    # 1. Register stack and start launch
+                    active_stacks.append((name, sd, is_critical, total_svc, expected_services))
                     
-                    ready_count = sum(1 for item in expected_services 
-                                    if global_live_list.statuses.get(item) in ["running", "healthy", "done"])
+                    # Add --build for stacks with custom Dockerfiles (e.g. control-plane)
+                    up_cmd = ["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "up", "-d"]
+                    try:
+                        with open(cf, "r") as compose_f:
+                            if "build:" in compose_f.read():
+                                up_cmd.append("--build")
+                    except: pass
                     
-                    sub_bar.update(ready_count, f"Processed {ready_count}/{total_svc} ({name})")
-                    if ready_count >= total_svc: break
+                    proc = subprocess.Popen(up_cmd, 
+                                         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, 
+                                         text=True, shell=use_shell, env=GLOBAL_ENV)
                     
-                    if ready_count == 0 and proc.poll() is None:
-                        for item in expected_services:
-                            if global_live_list.statuses.get(item) == "queued":
-                                global_live_list.update(item, "pulling")
-                    time.sleep(1.5)
+                    # 2. Wait for Docker status (Up/Running)
+                    wait_time = TIMEOUTS.get(name, 90)
+                    start_time = time.time()
+                    while time.time() - start_time < wait_time:
+                        if proc.poll() is not None and proc.returncode != 0:
+                            raise RuntimeError(f"Docker Launch Error (Exit {proc.returncode}) for {name}")
+                        
+                        ready_count = sum(1 for item in expected_services 
+                                        if global_statuses.get(item) in ["running", "healthy", "done"])
+                        
+                        sub_bar.update(ready_count, f"Processed {ready_count}/{total_svc} ({name})")
+                        if ready_count >= total_svc: break
+                        
+                        if ready_count == 0 and proc.poll() is None:
+                            for item in expected_services:
+                                if global_statuses.get(item) == "queued":
+                                    global_statuses[item] = "pulling"
+                                    with active_ui_lock:
+                                        active_live_list.update(item, "pulling")
+                        time.sleep(1.5)
 
-                # 3. Enhanced Readiness Check (Multi-Signal)
-                if name in READINESS:
-                    c_name, l_pat, p_cmd = READINESS[name]
-                    if not wait_for_readiness(name, c_name, l_pat, p_cmd, timeout=wait_time):
+                    # 3. Enhanced Readiness Check (Multi-Signal)
+                    if name in READINESS:
+                        c_name, l_pat, p_cmd = READINESS[name]
+                        if not wait_for_readiness(name, c_name, l_pat, p_cmd, timeout=wait_time):
+                            if is_critical:
+                                raise RuntimeError(f"Critical service {c_name} in {name} stack failed readiness probes.")
+
+                    if ready_count < total_svc:
                         if is_critical:
-                            raise RuntimeError(f"Critical service {c_name} in {name} stack failed readiness probes.")
-
-                if ready_count < total_svc:
-                    if is_critical:
-                        t_log(f"[DOCKER] Stack {name} timed out. Proceeding in DEGRADED mode.", symbol="⚠")
-                        update_status("docker", "partial")
-                    else:
-                        t_log(f"[DOCKER] Stack {name} launched in background. Moving on.", symbol="🚀")
+                            t_log(f"[DOCKER] Stack {name} timed out. Proceeding in DEGRADED mode.", symbol="⚠")
+                            update_status("docker", "partial")
+                        else:
+                            t_log(f"[DOCKER] Stack {name} launched in background. Moving on.", symbol="🚀")
+                    
+                    # Clear reference for poller before exiting context
+                    with active_ui_lock:
+                        shared_live_list_ref = None
                 
-                # Lock the lines
-                live_list.reset()
-                
-            except Exception as e:
-                t_log(f"[DOCKER] Stack {name} failed: {e}", symbol="⚠")
-                update_status("docker", "partial")
-                if 'live_list' in locals(): live_list.reset()
+                except Exception as e:
+                    t_log(f"[DOCKER] Stack {name} failed: {e}", symbol="⚠")
+                    update_status("docker", "partial")
+                    with active_ui_lock:
+                        shared_live_list_ref = None
         
         if SYSTEM_STATUS["docker"] == "unknown":
             update_status("docker", "ok")

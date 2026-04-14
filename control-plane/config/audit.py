@@ -13,6 +13,13 @@ try:
     from pathlib import Path
     import sys
     
+    # Batch 16 Hardening: Force UTF-8 for Windows console resilience
+    if sys.stdout.encoding.lower() != 'utf-8':
+        try:
+            sys.stdout.reconfigure(encoding='utf-8')
+        except (AttributeError, Exception):
+            pass
+
     # Path bootstrap (V6.5.2)
     p = Path(__file__).resolve()
     for parent in [p] + list(p.parents):
@@ -23,7 +30,7 @@ try:
             
     from agents.utils.paths import REPO_ROOT
 except Exception as e:
-    print(f"❌ FATAL: Critical path module missing or corrupted: {e}")
+    print(f"[X] FATAL: Critical path module missing or corrupted: {e}")
     sys.exit(1)
 
 # Configuration Enforcement: NO FALLBACKS
@@ -109,7 +116,7 @@ class AuditScanner:
             cmd = ["docker", "ps", "-a", "--format", "{{.Names}}"]
             all_names = subprocess.run(cmd, capture_output=True, text=True, check=True).stdout.splitlines()
         except Exception as e:
-            print(f"❌ FATAL: Docker daemon unreachable: {e}")
+            print(f"[X] FATAL: Docker daemon unreachable: {e}")
             sys.exit(1)
 
         # Tier 1 Invariants: MUST EXIST & BE HEALTHY
