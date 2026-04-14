@@ -94,5 +94,4 @@ def collect_health():
     logger.info(f"Health check completed for {len(targets)} containers (Available: True).")
 
 if __name__ == "__main__":
-    import time
     wrap_agent("monitor", collect_health)

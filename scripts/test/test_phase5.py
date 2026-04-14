@@ -3,7 +3,7 @@ import time
 from pathlib import Path
 
 # Add control-plane and agents to path
-repo_root = Path(__file__).resolve().parent.parent
+repo_root = Path(__file__).resolve().parent.parent.parent
 sys.path.append(str(repo_root / "control-plane"))
 sys.path.append(str(repo_root / "control-plane" / "agents"))
 

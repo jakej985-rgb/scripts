@@ -14,7 +14,7 @@ services:
       - "600"
     environment:
       - TZ=America/Denver
-      - DOCKER_API_VERSION=${DOCKER_API_VERSION}
+      - DOCKER_API_VERSION=${DOCKER_API_VERSION:-1.41}
     networks:
       - proxy
     env_file:
@@ -36,7 +36,7 @@ services:
       - "traefik.docker.network=proxy"
       - "m3tal.stack=maintenance"
     environment:
-      - DOCKER_API_VERSION=${DOCKER_API_VERSION}
+      - DOCKER_API_VERSION=${DOCKER_API_VERSION:-1.41}
     networks:
       - proxy
     env_file:
@@ -57,7 +57,7 @@ services:
       - "traefik.docker.network=proxy"
       - "m3tal.stack=maintenance"
     environment:
-      - DOCKER_API_VERSION=${DOCKER_API_VERSION}
+      - DOCKER_API_VERSION=${DOCKER_API_VERSION:-1.41}
     networks:
       - proxy
     env_file:

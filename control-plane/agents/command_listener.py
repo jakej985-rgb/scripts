@@ -129,7 +129,10 @@ def handle_command(update):
     if not msg or "text" not in msg:
         return
 
-    uid = msg["from"]["id"]
+    uid = msg.get("from", {}).get("id")
+    if not uid:
+        return
+
     if not is_allowed_user(uid):
         # Silent fail for unauthorized
         return
@@ -190,31 +193,50 @@ def handle_command(update):
         
         telegram.send_direct(msg["chat"]["id"], status_msg)
 
-def run():
-    print("[TELEGRAM] Starting Listener Agent...")
-    
-    # Track offset locally
+def listen_commands():
+    from utils.paths import TELEGRAM_OFFSET_TXT
     offset = 0
-    try:
-        # Initialize offset to latest to avoid flood on startup
-        updates = telegram.router.get_new_updates(offset=0)
-        if updates:
-            offset = updates[-1]["update_id"]
-            print(f"[TELEGRAM] Offset initialized to {offset}")
-    except Exception as e:
-        print(f"[TELEGRAM INIT ERR] {e}")
-
-    while True:
+    if TELEGRAM_OFFSET_TXT.exists():
         try:
-            updates = telegram.router.get_new_updates(offset=offset)
-            for update in updates:
-                handle_command(update)
-                offset = update["update_id"]
+            offset = int(TELEGRAM_OFFSET_TXT.read_text().strip())
+        except:
+            pass
+
+    try:
+        updates = telegram.router.get_new_updates(offset=offset)
+        if not updates:
+            return
             
-            time.sleep(2)
-        except Exception as e:
-            print(f"[TELEGRAM LOOP ERR] {e}")
-            time.sleep(5)
+        for update in updates:
+            try:
+                handle_command(update)
+            except Exception as e:
+                print(f"[TELEGRAM CMD ERR] {e}")
+            finally:
+                offset = update["update_id"]
+                
+        TELEGRAM_OFFSET_TXT.write_text(str(offset))
+    except Exception as e:
+        print(f"[TELEGRAM LOOP ERR] {e}")
 
 if __name__ == "__main__":
-    run()
+    from utils.guards import wrap_agent
+    from utils.paths import TELEGRAM_OFFSET_TXT
+    
+    print("[TELEGRAM] Initializing Listener Agent...")
+    
+    # Optional drain on first boot
+    if not TELEGRAM_OFFSET_TXT.exists():
+        offset = 0
+        try:
+            while True:
+                updates = telegram.router.get_new_updates(offset=offset)
+                if not updates:
+                    break
+                offset = updates[-1]["update_id"]
+            TELEGRAM_OFFSET_TXT.write_text(str(offset))
+            print(f"[TELEGRAM] Offset safely initialized to {offset}")
+        except Exception as e:
+            print(f"[TELEGRAM INIT ERR] {e}")
+            
+    wrap_agent("command_listener", listen_commands, interval=2)

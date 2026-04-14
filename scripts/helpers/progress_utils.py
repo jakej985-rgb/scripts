@@ -18,7 +18,7 @@ if sys.stdout.encoding.lower() != 'utf-8':
 UI_LOCK = threading.Lock()
 
 # --- Configuration & Theme Loading --------------------------------------------
-BASE_DIR = Path(__file__).resolve().parent.parent # Root
+BASE_DIR = Path(__file__).resolve().parent.parent.parent # Repo Root
 THEME_FILE = BASE_DIR / "control-plane" / "state" / "theme.json"
 
 # Default Neon Hot Pink & Orange

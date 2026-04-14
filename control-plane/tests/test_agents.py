@@ -116,13 +116,13 @@ class TestMaintenance:
 # =============================================================================
 
 class TestOrchestration:
-    def test_supervisor_signal_handling(self):
-        """Verify supervisor correctly handles shutdown signals."""
-        import supervisor as supervisor_module
+    def test_runner_signal_handling(self):
+        """Verify agent runner correctly handles shutdown signals."""
+        from agents import run as run_module
         
-        supervisor_module._shutdown_event.clear()
-        supervisor_module._handle_signal(signal.SIGTERM, None)
-        assert supervisor_module._shutdown_event.is_set() is True
+        run_module._shutdown_event.clear()
+        run_module._handle_signal(signal.SIGTERM, None)
+        assert run_module._shutdown_event.is_set() is True
 
     def test_leader_election_logic(self, tmp_path, monkeypatch):
         """Verify leader election logic handles local identification."""

@@ -21,3 +21,10 @@ pytest_temp_*/
 pytest_tmp_*/
 codex-validate-*/
 hidden.txt
+disk1/
+downloads/
+logs/
+media/
+tattoo/
+scratch/
+M3tal-Media-Server/

@@ -246,7 +246,7 @@ def main():
                 f.write("\n")
                 
         print(f"\n{GREEN}{BOLD}✅ Configuration complete!{END}")
-        print(f"You can now run {BOLD}bash control-plane/run.sh{END} to start the server.\n")
+        print(f"You can now run {BOLD}python m3tal.py run{END} to start the server.\n")
     except Exception as e:
         print(f"{RED}Error writing .env: {e}{END}")
 
