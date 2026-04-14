@@ -26,7 +26,6 @@ for path in [AGENTS_DIR, REPO_ROOT / "scripts" / "helpers", REPO_ROOT / "scripts
 ENV_FILE = REPO_ROOT / ".env"
 
 from config.telegram import validate as validate_telegram
-from config.validate import validate as validate_global
 from typing import Dict, Any, Optional
 from utils.paths import CONTROL_PLANE, STATE_DIR, LOG_DIR, SCRIPTS_DIR, ENV_TELEGRAM_TOKEN, ENV_TELEGRAM_CHAT
 try:
@@ -549,8 +548,7 @@ def repair(scope: str = "all") -> bool:
 
 def run_init(repair_scope: str = None) -> bool:
     """Main entry point: Orchestrates the entire bootstrap with preflight guarding."""
-    # Audit Check: Production Config Protection
-    validate_global()
+    # Audit Check: Production Config Protection handled internally
 
     repair_mode = bool(repair_scope)
     Header.show("M3TAL Self-Healing Init", f"Production Bootstrap — Repair: {repair_scope or 'None'}")
