@@ -181,12 +181,15 @@ def shutdown_stack(stack_name: str, bar: ProgressBar, current_step: int):
                 sub_bar.update(removed_count, f"Removed {removed_count}/{total_svc} ({stack_name})")
                 if remaining_count == 0: break
             time.sleep(1.5)
-        
-        live_list.reset()
+        live_list._unregister()
+        sub_bar._unregister()
             
     except Exception as e:
         HB.log(f"Dismantle Error in {stack_name}: {e}", symbol="✘")
-        if 'live_list' in locals(): live_list.reset()
+        if 'live_list' in locals():
+            live_list._unregister()
+        if 'sub_bar' in locals():
+            sub_bar._unregister()
 
     bar.update(current_step, f"Dismantled {stack_name}")
 
