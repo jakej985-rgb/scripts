@@ -310,7 +310,7 @@ def main() -> None:
     venv_name = ask("Virtual environment name", "venv")
     auto_install = ask("Auto-install missing dependencies? (y/n)", "y").lower() == "y"
     fix_perms = ask("Fix permissions for data directories? (y/n)", "y").lower() == "y"
-    auto_start = ask("Start system after install? (y/n)", "y").lower() == "y"
+    auto_start = ask("Start system after install? (y/n)", "n").lower() == "y"
 
     log(f"\n{BOLD}=== Summary ==={END}")
     log(f"  Install Dir:  {install_dir}")
@@ -349,6 +349,8 @@ def main() -> None:
         if env_example.exists():
             shutil.copy2(env_example, install_dir / ".env")
 
+
+
     # 6. Init
     log(f"\n{BOLD}=== Initializing M3TAL Control Plane ==={END}")
     init_script = install_dir / "control-plane" / "init.py"
@@ -379,13 +381,15 @@ def main() -> None:
         except FileNotFoundError:
             warn(f"{cmd_label} not found")
 
+
+
     # 9. Auto-start
     if auto_start:
         log(f"\n{BOLD}[START] Launching control plane...{END}")
         m3tal_cli = install_dir / "m3tal.py"
         subprocess.Popen([str(venv_python), str(m3tal_cli), "run"])
 
-    # 9. Warnings summary
+    # 10. Warnings summary
     if WARNINGS:
         log(f"\n{YELLOW}{BOLD}=== WARNINGS ==={END}")
         for w in WARNINGS:
@@ -395,9 +399,14 @@ def main() -> None:
     # 10. Done
     duration = time.time() - start_time
     log(f"\n{GREEN}{BOLD}=== INSTALL COMPLETE ==={END}")
-    log(f"  Total Time:   {duration:.2f}s")
-    log(f"\n  Run manually: python m3tal.py run")
-    log(f"  Dashboard:    http://localhost:8080\n")
+    log(f"  Total Time:   {duration:.2f}s\n")
+    
+    if auto_start:
+        log(f"  m3tal media server started, use m3tal.py to start")
+    else:
+        log(f"  m3tal media server not started, use m3tal.py to start")
+        
+    log(f"  Dashboard will be at:     http://localhost:8080\n")
 
 
 if __name__ == "__main__":
