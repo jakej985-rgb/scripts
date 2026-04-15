@@ -191,20 +191,38 @@ def shutdown_stack(stack_name: str, bar: ProgressBar, current_step: int):
     bar.update(current_step, f"Dismantled {stack_name}")
 
 def main():
-    Header.show("M3TAL Global Blackout", "Autonomous Deconstruction Sequence")
+    target_stacks = STACKS
+    
+    # Simple argument parsing for selective shutdown
+    if len(sys.argv) > 1:
+        provided = sys.argv[1:]
+        # Filter global STACKS based on user input, preserving order
+        target_stacks = [s for s in STACKS if any(p.lower() == s.split("/")[-1].lower() or p.lower() == s.lower() for p in provided)]
+        
+        if not target_stacks:
+            print(f"{RED}Error: None of the provided stacks match known M3TAL stacks.{END}")
+            print(f"Known stacks: {', '.join(STACKS)}")
+            sys.exit(1)
+            
+        Header.show("M3TAL Selective Shutdown", f"Terminating: {', '.join(target_stacks)}")
+    else:
+        Header.show("M3TAL Global Blackout", "Autonomous Deconstruction Sequence")
     
     HB.start()
-    bar = ProgressBar(len(STACKS) + 1, prefix="Blackout")
+    # Progress: Agents (step 0) + Target Stacks + Network Prune (final step)
+    bar = ProgressBar(len(target_stacks) + 1, prefix="Blackout")
     HB.tether(bar)
 
     try:
-        # 1. Agents
+        # 1. Agents (Only if we are doing a broad shutdown or control-plane is involved)
+        # For safety and predictability, we always run agent cleanup unless specifically told otherwise,
+        # but for selective stack shutdown, we'll keep it as the first step.
         bar.update(0, "Agents")
         terminate_agents()
         time.sleep(1)
 
         # 2. Stacks
-        for i, stack in enumerate(STACKS, 1):
+        for i, stack in enumerate(target_stacks, 1):
             shutdown_stack(stack, bar, i)
         
         # 3. Networks
@@ -216,12 +234,12 @@ def main():
             HB.log("Global network space cleared", symbol="✔")
         except: pass
 
-        bar.update(len(STACKS) + 1, "Complete")
+        bar.update(len(target_stacks) + 1, "Complete")
         
     finally:
         HB.stop()
 
-    print(f"\n{GREEN}{BOLD}[SUCCESS] M3TAL Shutdown Sequence Complete.{END}\n")
+    print(f"\n{GREEN}{BOLD}[SUCCESS] Shutdown Sequence Complete.{END}\n")
 
 if __name__ == "__main__":
     try:

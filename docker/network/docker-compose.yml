@@ -19,6 +19,7 @@ services:
       - "traefik.http.services.qbittorrent.loadbalancer.server.port=8080"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=network"
+      - "m3tal.role=edge"
     networks:
       - proxy
     env_file:

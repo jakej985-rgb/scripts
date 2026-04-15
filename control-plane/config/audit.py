@@ -163,6 +163,12 @@ class AuditScanner:
             is_running = state.get("Running", False)
             is_optional = is_enabled(labels.get("m3tal.optional"))
             networks = data.get("NetworkSettings", {}).get("Networks", {})
+            
+            # Network Mode & Role Classification (V6.6.0)
+            host_config = data.get("HostConfig", {})
+            network_mode = host_config.get("NetworkMode", "default")
+            role = labels.get("m3tal.role", "").lower().strip()
+            is_container_ns = network_mode.startswith("container:")
 
             # 1. State Validation
             if not is_running:
@@ -179,17 +185,40 @@ class AuditScanner:
                 hint = "Add 'networks: default: name: none' to your docker-compose.yml."
                 self._add_issue(name, service_id, WARNING, msg, hint)
 
-            if "proxy" not in networks:
-                msg = f"Service '{service_id}' is NOT attached to the 'proxy' network."
-                hint = f"Service MUST join 'proxy' network. Found: {list(networks.keys())}"
-                self._add_issue(name, service_id, CRITICAL, msg, hint)
+            # Role-Based Network Enforcement
+            if role == "vpn":
+                if not is_container_ns:
+                    msg = f"VPN Service '{service_id}' is NOT using container network mode."
+                    hint = "Add 'network_mode: container:<provider>' to docker-compose.yml."
+                    self._add_issue(name, service_id, CRITICAL, msg, hint)
+                else:
+                    # Validate parent if possible
+                    parent_name = network_mode.split(":")[-1]
+                    if parent_name not in all_names:
+                        msg = f"VPN Service '{service_id}' targets missing container: {parent_name}"
+                        hint = f"Ensure '{parent_name}' is defined and running."
+                        self._add_issue(name, service_id, CRITICAL, msg, hint)
+            
+            elif is_container_ns:
+                # Sidecars or shared namespaces are allowed to skip direct proxy check
+                pass
+
             else:
-                ip = networks["proxy"].get("IPAddress")
-                if not ip:
-                    # Lifecycle Awareness: Starting vs Detached
-                    msg = f"Service '{service_id}' has joined 'proxy' but has no IPAddress yet."
-                    hint = "Wait for container bootstrap or check for internal crash loops."
-                    self._add_issue(name, service_id, WARNING, msg, hint)
+                # Standard Container: Enforce Proxy Network
+                if "proxy" not in networks:
+                    # Roles: 'edge' MUST have proxy. Others WARN.
+                    is_edge = role == "edge" or is_enabled(labels.get("traefik.enable"))
+                    sev = CRITICAL if is_edge else WARNING
+                    msg = f"Service '{service_id}' is NOT attached to the 'proxy' network."
+                    hint = f"Service MUST join 'proxy' network to communicate. Found: {list(networks.keys())}"
+                    self._add_issue(name, service_id, sev, msg, hint)
+                else:
+                    ip = networks["proxy"].get("IPAddress")
+                    if not ip:
+                        # Lifecycle Awareness: Starting vs Detached
+                        msg = f"Service '{service_id}' has joined 'proxy' but has no IPAddress yet."
+                        hint = "Wait for container bootstrap or check for internal crash loops."
+                        self._add_issue(name, service_id, WARNING, msg, hint)
 
             # 3. Routing Contract (If enabled)
             if is_enabled(labels.get("traefik.enable")):

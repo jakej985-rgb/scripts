@@ -602,6 +602,8 @@ def run_init(repair_scope: str = None) -> bool:
     # Audit Check: Production Config Protection handled internally
 
     repair_mode = bool(repair_scope)
+    repair_parts = repair_scope.split(",") if repair_scope else []
+    
     Header.show("M3TAL Self-Healing Init", f"Production Bootstrap — Repair: {repair_scope or 'None'}")
     
     # 0. Preflight Gate
@@ -634,16 +636,16 @@ def run_init(repair_scope: str = None) -> bool:
 
         # Step 1: FS
         BAR.update(2, "Filesystem")
-        if not fs_agent(repair_mode=(repair_scope in ["all", "fs"])):
+        if not fs_agent(repair_mode=("all" in repair_parts or "fs" in repair_parts)):
             return False
             
         # Step 2: Logs
         BAR.update(3, "Logs")
-        log_agent(repair_mode=(repair_scope in ["all", "logs"]))
+        log_agent(repair_mode=("all" in repair_parts or "logs" in repair_parts))
         
         # Step 3: State
         BAR.update(4, "State")
-        if not state_agent(repair_mode=(repair_scope in ["all", "state"])):
+        if not state_agent(repair_mode=("all" in repair_parts or "state" in repair_parts)):
             return False
             
         # Step 4: Auth
@@ -652,7 +654,7 @@ def run_init(repair_scope: str = None) -> bool:
         
         # Step 5: Docker
         BAR.update(6, "Docker")
-        docker_agent(repair_mode=(repair_scope == "all"))
+        docker_agent(repair_mode=("all" in repair_parts))
         
         # Step 6: Final Health
         BAR.update(7, "Health")

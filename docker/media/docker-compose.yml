@@ -21,6 +21,7 @@ services:
       - ../../.env
     labels:
       - "m3tal.stack=media"
+      - "m3tal.role=vpn"
     restart: unless-stopped
 
   radarr:
@@ -33,6 +34,7 @@ services:
       - "traefik.http.services.radarr.loadbalancer.server.port=7878"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
+      - "m3tal.role=edge"
     networks:
       - proxy
     env_file:
@@ -59,6 +61,7 @@ services:
       - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
+      - "m3tal.role=edge"
     networks:
       - proxy
     env_file:
@@ -96,6 +99,7 @@ services:
       - "traefik.http.services.bazarr.loadbalancer.server.port=6767"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
+      - "m3tal.role=edge"
     networks:
       - proxy
     env_file:
@@ -122,6 +126,7 @@ services:
       - "traefik.http.services.komga.loadbalancer.server.port=25600"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
+      - "m3tal.role=edge"
     networks:
       - proxy
     env_file:
@@ -145,6 +150,7 @@ services:
       - "traefik.http.services.jellyseerr.loadbalancer.server.port=5055"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
+      - "m3tal.role=edge"
     networks:
       - proxy
     env_file:
@@ -164,6 +170,7 @@ services:
       - "traefik.http.services.homepage.loadbalancer.server.port=3000"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
+      - "m3tal.role=edge"
     networks:
       - proxy
     env_file:
@@ -185,6 +192,7 @@ services:
       - "traefik.http.services.autobrr.loadbalancer.server.port=8080"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
+      - "m3tal.role=edge"
     networks:
       - proxy
     env_file:
@@ -201,6 +209,7 @@ services:
       - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
     labels:
       - "m3tal.stack=media"
+      - "m3tal.role=internal"
     networks:
       - proxy
     restart: unless-stopped
@@ -239,6 +248,7 @@ services:
       - "traefik.http.services.tdarr.loadbalancer.server.port=8265"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
+      - "m3tal.role=edge"
     networks:
       - proxy
     env_file:
@@ -259,6 +269,7 @@ services:
       - "traefik.http.services.glances.loadbalancer.server.port=61208"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
+      - "m3tal.role=edge"
     networks:
       - proxy
     env_file:
@@ -295,6 +306,7 @@ services:
       - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
+      - "m3tal.role=edge"
     networks:
       - proxy
     env_file:
@@ -313,6 +325,7 @@ services:
       - "traefik.http.services.flaresolverr.loadbalancer.server.port=8191"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=media"
+      - "m3tal.role=edge"
     networks:
       - proxy
     env_file:

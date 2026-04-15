@@ -33,6 +33,7 @@ services:
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.routers.traefik.entrypoints=web"
       - "m3tal.stack=routing"
+      - "m3tal.role=edge"
     restart: unless-stopped
 
   cloudflared:
@@ -45,6 +46,7 @@ services:
       - ../../.env
     labels:
       - "m3tal.stack=routing"
+      - "m3tal.role=edge"
     restart: unless-stopped
 
 networks:

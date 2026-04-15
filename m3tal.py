@@ -104,6 +104,20 @@ def cmd_run():
     path = AGENTS_DIR / "run.py"
     return run_script(path)
 
+def cmd_shutdown(args):
+    """Executes the Global Blackout or selective shutdown."""
+    path = CONTROL_PLANE / "shutdown.py"
+    return run_script(path, *args.stacks)
+
+def cmd_heal():
+    """Performs lightweight runtime healing (FS, logs, state)."""
+    path = CONTROL_PLANE / "init.py"
+    return run_script(path, "--repair=fs,logs,state")
+
+def cmd_bootstrap(args):
+    """Alias for full system initialization."""
+    return cmd_init(args)
+
 def cmd_traefik(args):
     """Handles Traefik-specific orchestration and auditing."""
     if args.subcommand == "audit":
@@ -162,6 +176,17 @@ def main():
     # run
     subparsers.add_parser("run", help="Start the persistent Control Plane agent")
 
+    # shutdown [stacks...]
+    p_shutdown = subparsers.add_parser("shutdown", help="Safely stop M3TAL agents and Docker stacks")
+    p_shutdown.add_argument("stacks", nargs="*", help="Optional specific stacks to stop (default: all)")
+
+    # heal
+    subparsers.add_parser("heal", help="Run lightweight runtime healing (FS, logs, state)")
+
+    # bootstrap
+    p_bootstrap = subparsers.add_parser("bootstrap", help="Full system initialization and first-run orchestration")
+    p_bootstrap.add_argument("--repair", help="Repair scope (e.g. all, docker, fs, state, logs)")
+
     # If no args, show help
     if len(sys.argv) == 1:
         parser.print_help()
@@ -200,6 +225,12 @@ def main():
         sys.exit(cmd_init(args))
     elif args.command == "run":
         sys.exit(cmd_run())
+    elif args.command == "shutdown":
+        sys.exit(cmd_shutdown(args))
+    elif args.command == "heal":
+        sys.exit(cmd_heal())
+    elif args.command == "bootstrap":
+        sys.exit(cmd_bootstrap(args))
     else:
         parser.print_help()
 

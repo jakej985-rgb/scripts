@@ -131,7 +131,11 @@ class TraefikAuditor:
                                "Must be set to 'proxy'.", TYPE_A)
             
             # PHASE 1: Network Contract
-            if "proxy" not in networks:
+            host_config = data.get("HostConfig", {})
+            network_mode = host_config.get("NetworkMode", "default")
+            is_container_ns = network_mode.startswith("container:")
+
+            if "proxy" not in networks and not is_container_ns:
                 self._add_issue(name, service_id, CRITICAL, 
                                "Service NOT attached to 'proxy' network.",
                                f"Update {stack}/docker-compose.yml to join 'proxy'.", TYPE_A)
