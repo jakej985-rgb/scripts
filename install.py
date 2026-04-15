@@ -351,10 +351,7 @@ def main() -> None:
 
 
 
-    # 6. Init
-    log(f"\n{BOLD}=== Initializing M3TAL Control Plane ==={END}")
-    init_script = install_dir / "control-plane" / "init.py"
-    subprocess.run([str(venv_python), str(init_script)], check=True)
+
 
     # 7. Docker network
     log(f"\n{BOLD}=== Docker Network ==={END}")
@@ -387,7 +384,7 @@ def main() -> None:
     if auto_start:
         log(f"\n{BOLD}[START] Launching control plane...{END}")
         m3tal_cli = install_dir / "m3tal.py"
-        subprocess.Popen([str(venv_python), str(m3tal_cli), "run"])
+        subprocess.Popen([str(venv_python), str(m3tal_cli), "init"])
 
     # 10. Warnings summary
     if WARNINGS:
