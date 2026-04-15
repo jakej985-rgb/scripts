@@ -67,6 +67,7 @@ class AuditScanner:
         self.strict = strict
         self.inspect_cache = {}
         self.results = []
+        self.successes = []
         self.status = HEALTHY
 
     def _get_inspect(self, container_id):
@@ -186,6 +187,8 @@ class AuditScanner:
                 self._add_issue(name, service_id, WARNING, msg, hint)
 
             # Role-Based Network Enforcement
+            network_ok = False
+            ok_msg = ""
             if role == "vpn":
                 if not is_container_ns:
                     msg = f"VPN Service '{service_id}' is NOT using container network mode."
@@ -198,10 +201,14 @@ class AuditScanner:
                         msg = f"VPN Service '{service_id}' targets missing container: {parent_name}"
                         hint = f"Ensure '{parent_name}' is defined and running."
                         self._add_issue(name, service_id, CRITICAL, msg, hint)
+                    else:
+                        network_ok = True
+                        ok_msg = f"VPN network ({parent_name})"
             
             elif is_container_ns:
                 # Sidecars or shared namespaces are allowed to skip direct proxy check
-                pass
+                network_ok = True
+                ok_msg = f"shared namespace ({network_mode})"
 
             else:
                 # Standard Container: Enforce Proxy Network
@@ -219,6 +226,12 @@ class AuditScanner:
                         msg = f"Service '{service_id}' has joined 'proxy' but has no IPAddress yet."
                         hint = "Wait for container bootstrap or check for internal crash loops."
                         self._add_issue(name, service_id, WARNING, msg, hint)
+                    else:
+                        network_ok = True
+                        ok_msg = "proxy network"
+                        
+            if network_ok:
+                self.successes.append(f"{service_id} \u2192 {ok_msg}")
 
             # 3. Routing Contract (If enabled)
             if is_enabled(labels.get("traefik.enable")):
@@ -259,9 +272,11 @@ class AuditScanner:
         print(f" M3TAL INFRASTRUCTURE AUDIT | STATUS: {self.status} (Strict: {self.strict})")
         print("="*60)
 
-        if not self.results:
-            print("  [OK] All managed services adhere to networking contracts.")
+        if not self.results and not self.successes:
+            print("  [OK] No managed services found.")
         else:
+            for s in self.successes:
+                print(f"  [OK] {s}")
             for issue in self.results:
                 icon = "[X]" if issue["severity"] == CRITICAL else "[!]"
                 print(f"\n[{issue['severity']}] {icon} {issue['message']}")
