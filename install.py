@@ -255,10 +255,40 @@ def merge_install_tree(source_dir: Path, install_dir: Path) -> None:
         remove_path(preserve_stash)
 
 
-def setup_repo(install_dir: Path) -> bool:
-    """Clone the repo into a temp dir, then move/merge into install_dir."""
+def is_valid_m3tal_repo(path: Path) -> bool:
+    return (
+        (path / "m3tal.py").exists() and
+        (path / "control-plane").exists()
+    )
+
+
+def setup_repo(install_dir: Path, source_mode: str) -> bool:
+    """Clone the repo or use local files, then move/merge to install_dir."""
     log(f"\n{BOLD}=== Repository Setup ==={END}")
 
+    cwd = Path.cwd()
+
+    # 🔥 LOCAL MODE
+    if source_mode == "local":
+        if not is_valid_m3tal_repo(cwd):
+            log(f"{RED}[ERROR] Current directory is not a valid M3TAL repo{END}")
+            return False
+
+        log("[LOCAL] Using current directory as source")
+
+        if install_dir.resolve() == cwd.resolve():
+            log("[OK] Using current directory directly")
+            return True
+
+        if install_dir.exists() and any(install_dir.iterdir()):
+            log(f"{RED}[ERROR] Target directory not empty: {install_dir}{END}")
+            return False
+
+        log(f"[COPY] {cwd} → {install_dir}")
+        shutil.copytree(cwd, install_dir, dirs_exist_ok=True)
+        return True
+
+    # 🔥 CLONE MODE
     if install_dir.exists():
         log(f"\nInstall directory exists: {install_dir}")
         log("  1) Merge (safe — preserves .env, users, state, and config)")
@@ -269,9 +299,14 @@ def setup_repo(install_dir: Path) -> bool:
         if action == "1":
             log("[MERGE] Updating install...")
             tmp_dir = create_staging_dir(install_dir.parent, "m3tal-clone")
-            subprocess.run(["git", "clone", REPO_URL, str(tmp_dir)], check=True)
-            merge_install_tree(tmp_dir, install_dir)
-            remove_path(tmp_dir)
+            try:
+                subprocess.run(["git", "clone", REPO_URL, str(tmp_dir)], check=True)
+                merge_install_tree(tmp_dir, install_dir)
+            except subprocess.CalledProcessError:
+                log(f"{RED}[ERROR] Clone failed{END}")
+                return False
+            finally:
+                remove_path(tmp_dir)
             return True
 
         elif action == "2":
@@ -303,9 +338,15 @@ def main() -> None:
 
     # Config wizard
     working_dir = Path.cwd()
-    is_already_in_repo = (working_dir / ".git").exists() or (working_dir / "control-plane").exists()
-    default_dir = str(working_dir) if is_already_in_repo else str(Path.home() / "M3tal-Media-Server")
     
+    if is_valid_m3tal_repo(working_dir):
+        default_source = "local"
+        default_dir = str(working_dir)
+    else:
+        default_source = "clone"
+        default_dir = str(Path.home() / "M3tal-Media-Server")
+        
+    source_mode = ask("Installation source (clone/local)", default_source).lower()
     install_dir = Path(ask("Install directory", default_dir))
     venv_name = ask("Virtual environment name", "venv")
     auto_install = ask("Auto-install missing dependencies? (y/n)", "y").lower() == "y"
@@ -327,7 +368,7 @@ def main() -> None:
     check_and_install_deps(os_type, auto_install)
 
     # 2. Repository
-    if not setup_repo(install_dir):
+    if not setup_repo(install_dir, source_mode):
         sys.exit(1)
 
     os.chdir(install_dir)
