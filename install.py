@@ -269,7 +269,7 @@ def setup_repo(install_dir: Path, source_mode: str) -> bool:
     cwd = Path.cwd()
 
     # 🔥 LOCAL MODE
-    if source_mode == "local":
+    if source_mode == "2":
         if not is_valid_m3tal_repo(cwd):
             log(f"{RED}[ERROR] Current directory is not a valid M3TAL repo{END}")
             return False
@@ -340,13 +340,13 @@ def main() -> None:
     working_dir = Path.cwd()
     
     if is_valid_m3tal_repo(working_dir):
-        default_source = "local"
+        default_source = "2"
         default_dir = str(working_dir)
     else:
-        default_source = "clone"
+        default_source = "1"
         default_dir = str(Path.home() / "M3tal-Media-Server")
         
-    source_mode = ask("Installation source (clone/local)", default_source).lower()
+    source_mode = ask("Installation source (1=clone / 2=local)", default_source).lower()
     install_dir = Path(ask("Install directory", default_dir))
     venv_name = ask("Virtual environment name", "venv")
     auto_install = ask("Auto-install missing dependencies? (y/n)", "y").lower() == "y"

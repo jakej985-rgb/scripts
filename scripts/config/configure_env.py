@@ -139,14 +139,16 @@ def main():
     chat_count = int(get_input("Telegram Chat Count (1-6)", current_env.get("TG_CHAT_COUNT", "1")))
     new_env["TG_CHAT_COUNT"] = str(chat_count)
     
-    auto_discover = get_input("Enable Auto-Discovery (true/false)", current_env.get("TG_AUTO_DISCOVER", "false")).lower()
-    new_env["TG_AUTO_DISCOVER"] = auto_discover
+    cur_auto = current_env.get("TG_AUTO_DISCOVER", "false").lower()
+    def_auto = "y" if cur_auto in ("true", "y") else "n"
+    auto_discover = get_input("Enable Auto-Discovery (y/n)", def_auto).lower()
+    new_env["TG_AUTO_DISCOVER"] = "true" if auto_discover == "y" else "false"
     
     allowed_users = get_input("Allowed User IDs (comma-separated)", current_env.get("ALLOWED_USERS", "0"))
     new_env["ALLOWED_USERS"] = allowed_users
 
     mapping = {}
-    if auto_discover == "true":
+    if auto_discover == "y":
         try:
             # Set bot token in environment temporarily so discovery can use it
             os.environ["TELEGRAM_BOT_TOKEN"] = bot_token
