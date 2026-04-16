@@ -275,6 +275,11 @@ def setup_repo(install_dir: Path, source_mode: str) -> bool:
             return False
 
         log("[LOCAL] Using current directory as source")
+        try:
+            log("  [GIT] Pulling latest repository updates...")
+            subprocess.run(["git", "pull"], cwd=str(cwd), check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        except Exception as e:
+            warn(f"Failed to automatically pull latest commit: {e}")
 
         if install_dir.resolve() == cwd.resolve():
             log("[OK] Using current directory directly")

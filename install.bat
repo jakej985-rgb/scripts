@@ -50,7 +50,10 @@ if not exist install.py (
         echo Exiting.
         pause
         exit /b 1
-    )
+) else (
+    echo [OK] Valid M3TAL repository found.
+    echo Pulling latest updates from GitHub...
+    git pull
 )
 
 :: 3. Hand off to Python
