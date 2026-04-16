@@ -262,6 +262,17 @@ def is_valid_m3tal_repo(path: Path) -> bool:
     )
 
 
+def print_commit(repo_path: Path) -> None:
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "--short", "HEAD"], 
+            cwd=str(repo_path), capture_output=True, text=True, check=True
+        )
+        log(f"  {BLUE}[GIT]{END} Using commit: {BOLD}{result.stdout.strip()}{END}")
+    except Exception:
+        pass
+
+
 def setup_repo(install_dir: Path, source_mode: str) -> bool:
     """Clone the repo or use local files, then move/merge to install_dir."""
     log(f"\n{BOLD}=== Repository Setup ==={END}")
@@ -283,6 +294,7 @@ def setup_repo(install_dir: Path, source_mode: str) -> bool:
 
         if install_dir.resolve() == cwd.resolve():
             log("[OK] Using current directory directly")
+            print_commit(cwd)
             return True
 
         if install_dir.exists() and any(install_dir.iterdir()):
@@ -291,6 +303,7 @@ def setup_repo(install_dir: Path, source_mode: str) -> bool:
 
         log(f"[COPY] {cwd} → {install_dir}")
         shutil.copytree(cwd, install_dir, dirs_exist_ok=True)
+        print_commit(install_dir)
         return True
 
     # 🔥 CLONE MODE
@@ -306,6 +319,7 @@ def setup_repo(install_dir: Path, source_mode: str) -> bool:
             tmp_dir = create_staging_dir(install_dir.parent, "m3tal-clone")
             try:
                 subprocess.run(["git", "clone", REPO_URL, str(tmp_dir)], check=True)
+                print_commit(tmp_dir)
                 merge_install_tree(tmp_dir, install_dir)
             except subprocess.CalledProcessError:
                 log(f"{RED}[ERROR] Clone failed{END}")
@@ -326,6 +340,7 @@ def setup_repo(install_dir: Path, source_mode: str) -> bool:
     log(f"[CLONE] Cloning into {install_dir}...")
     try:
         subprocess.run(["git", "clone", REPO_URL, str(install_dir)], check=True)
+        print_commit(install_dir)
         return True
     except subprocess.CalledProcessError:
         log(f"{RED}[ERROR] Clone failed{END}")
