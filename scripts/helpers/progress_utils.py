@@ -5,6 +5,7 @@ import time
 import threading
 import shutil
 import json
+import re
 import ctypes
 try:
     if os.name == 'nt':
@@ -38,6 +39,8 @@ IS_TTY = sys.stdout.isatty()
 ACTIVE_UIS = []
 GLOBAL_LAST_LINES = 0  # CRITICAL: Tracks what's actually on the terminal
 GLOBAL_COUNTER = 0      # For deterministic creation order
+SESSION_START = time.time()  # Global session timer for right-aligned total
+_LAST_FRAME = ""  # Dedup cache to prevent identical redraws
 
 # --- Configuration & Theme Loading --------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent.parent # Repo Root
@@ -73,6 +76,9 @@ BLUE = ORANGE
 MAGENTA = PINK
 YELLOW = ORANGE
 
+# Pre-compiled ANSI stripper for width calculations
+_ANSI_RE = re.compile(r'\033\[[0-9;]*m')
+
 # --- Global UI Management Engine ---
 
 def _clear_ui_unlocked():
@@ -94,9 +100,7 @@ def _clear_ui_unlocked():
 def _refresh_ui_unlocked():
     """Grand Architect: Batch collect and redraw."""
     if not IS_TTY: return
-    global GLOBAL_LAST_LINES
-    
-    _clear_ui_unlocked()
+    global GLOBAL_LAST_LINES, _LAST_FRAME
     
     # Snapshot and sort for deterministic rendering
     with UI_LOCK:
@@ -107,8 +111,17 @@ def _refresh_ui_unlocked():
         all_lines.extend(ui._render_lines())
     
     if not all_lines:
+        _clear_ui_unlocked()
         GLOBAL_LAST_LINES = 0
+        _LAST_FRAME = ""
         return
+
+    # Dedup: Skip identical redraws to prevent flicker
+    frame_str = "\n".join(all_lines)
+    if frame_str == _LAST_FRAME and GLOBAL_LAST_LINES == len(all_lines):
+        return
+    
+    _clear_ui_unlocked()
 
     # Write entire frame with per-line clearing
     output = []
@@ -119,6 +132,7 @@ def _refresh_ui_unlocked():
     sys.stdout.flush() # User Fix Tip: Always flush batch writes
     
     GLOBAL_LAST_LINES = len(all_lines)
+    _LAST_FRAME = frame_str
 
 def request_render():
     """Unified entry point for UI updates."""
@@ -132,16 +146,22 @@ def refresh_ui():
         if UI_ACTIVE:
             _refresh_ui_unlocked()
 
+def reset_session_timer():
+    """Reset the global session timer (call at orchestration start)."""
+    global SESSION_START
+    SESSION_START = time.time()
+
 def safe_print(*args, **kwargs):
     """Thread-safe, layout-aware print with TTY and Encoding fallback."""
     with UI_LOCK:
-        global UI_ACTIVE
+        global UI_ACTIVE, _LAST_FRAME
         
         # Snapshot state
         was_active = UI_ACTIVE
         UI_ACTIVE = False
         
         _clear_ui_unlocked()
+        _LAST_FRAME = ""  # Invalidate dedup cache after log output
         
         msg = " ".join(str(a) for a in args)
         try:
@@ -250,6 +270,10 @@ def _format_elapsed(seconds: int) -> str:
     m, s = divmod(seconds, 60)
     return f"{m}m {s}s"
 
+def _format_timer(seconds: float) -> str:
+    m, s = divmod(int(seconds), 60)
+    return f"{m:02}:{s:02}"
+
 class Heartbeat:
     def __init__(self, interval: int = 1):
         self.interval = interval
@@ -312,15 +336,30 @@ class ProgressBar(BaseUI):
         super().__init__()
 
     def _render_lines(self) -> List[str]:
+        term_width = shutil.get_terminal_size().columns
         percent = 100 * (self.current / float(self.total))
-        filled = int(self.width * self.current // self.total)
-        bar = f"{PINK}█{END}" * filled + f"{DIM}░{END}" * (self.width - filled)
-        timer_str = ""
+        
+        # Dynamic bar width: use ~1/3 of terminal, min 15, max 40
+        bar_width = max(15, min(40, term_width // 3))
+        filled = int(bar_width * self.current // self.total)
+        bar = f"{PINK}█{END}" * filled + f"{DIM}░{END}" * (bar_width - filled)
+        
+        # Left side: label + bar + percent + suffix
+        left = f"  {ORANGE}{self.prefix}{END} {bar} {PINK}{BOLD}{percent:.0f}%{END} {DIM}{self.suffix}{END}"
+        
+        # Right side: idle timer + total session timer
+        idle_sec = 0
         if self._tethered_hb:
-            elapsed = int(time.time() - self._tethered_hb._last_activity)
-            timer_str = f" {DIM}[idle {_format_elapsed(elapsed)}]{END}"
-            
-        return [f"  {ORANGE}{self.prefix}{END} {bar} {PINK}{BOLD}{percent:.0f}%{END} {DIM}{self.suffix}{END}{timer_str}"]
+            idle_sec = time.time() - self._tethered_hb._last_activity
+        total_sec = time.time() - SESSION_START
+        right = f"{DIM}[idle {_format_timer(idle_sec)} | total {_format_timer(total_sec)}]{END}"
+        
+        # Calculate raw text lengths (strip ANSI for spacing math)
+        left_len = len(_ANSI_RE.sub('', left))
+        right_len = len(_ANSI_RE.sub('', right))
+        spacing = max(1, term_width - left_len - right_len)
+        
+        return [left + (" " * spacing) + right]
 
     def update(self, current: int, suffix: str = "", redraw: bool = True):
         # User Tip: Components MUST NOT redraw in tight loops unnecessarily
@@ -349,8 +388,11 @@ class SubProgressBar(BaseUI):
             request_render()
 
     def _render_lines(self) -> List[str]:
-        filled = int(self.width * self.current_val // self.total)
-        bar = f"{PINK}━{END}" * filled + f"{DIM}━{END}" * (self.width - filled)
+        term_width = shutil.get_terminal_size().columns
+        # Sub bar: smaller, ~1/4 terminal width
+        bar_width = max(10, min(25, term_width // 4))
+        filled = int(bar_width * self.current_val // self.total)
+        bar = f"{PINK}━{END}" * filled + f"{DIM}━{END}" * (bar_width - filled)
         return [f"    {DIM}└─{END} {bar} {PINK}{BOLD}{self.current_val}/{self.total}{END} {ORANGE}{self.current_label}{END}"]
 
 

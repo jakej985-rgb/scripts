@@ -71,6 +71,7 @@ from utils.healing import (
 from auth import inspect_users_file, reset_admin_user, resolve_users_path
 from progress_utils import (
     Header, ProgressBar, SubProgressBar, LiveList, Heartbeat, Spinner,
+    reset_session_timer,
     CYAN, GREEN, YELLOW, RED, BOLD, END, DIM
 )
 
@@ -605,6 +606,7 @@ def run_init(repair_scope: str = None) -> bool:
     repair_parts = repair_scope.split(",") if repair_scope else []
     
     Header.show("M3TAL Self-Healing Init", f"Production Bootstrap — Repair: {repair_scope or 'None'}")
+    reset_session_timer()  # Zero the progress timer from this moment
     
     # 0. Preflight Gate
     if run_preflight:
