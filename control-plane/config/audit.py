@@ -139,7 +139,9 @@ class AuditScanner:
             networks = data.get("NetworkSettings", {}).get("Networks", {})
             if "proxy" not in networks:
                 self._add_issue(t1, t1, CRITICAL, f"Tier 1 component '{t1}' is NOT on the proxy network.", 
-                               "Correct the docker-compose.yml and rejoin the proxy subnet.")
+                                "Correct the docker-compose.yml and rejoin the proxy subnet.")
+            else:
+                self.successes.append(f"Tier 1: {t1} \u2192 HEALTHY")
 
         # Managed Services Scan
         for name in all_names:

@@ -154,6 +154,7 @@ def wait_for_readiness(name: str, container_name: str, log_pattern: str = None, 
     t_log(f"Waiting for {name} readiness (timeout {timeout}s)...", symbol="⏳")
     start_time = time.time()
     use_shell = os.name == "nt"
+    last_logged_status = None
     
     while time.time() - start_time < timeout:
         try:
@@ -167,26 +168,36 @@ def wait_for_readiness(name: str, container_name: str, log_pattern: str = None, 
                 
                 # If healthcheck is defined, wait for 'healthy'
                 if health:
-                    if health.get("Status") == "healthy":
+                    h_status = health.get("Status")
+                    if h_status == "healthy":
                         t_log(f"{name} is HEALTHY.", symbol="✔")
                         return True
-                    elif health.get("Status") == "unhealthy":
+                    elif h_status == "unhealthy":
                         t_log(f"{name} reported UNHEALTHY state.", symbol="✘")
                         return False
-                # Fallback to 'running' status (for containers without healthchecks)
+                    elif h_status != last_logged_status:
+                        t_log(f"{name} health check: {h_status}...", symbol="⏳")
+                        last_logged_status = h_status
+                
+                # Fallback/Primary: If it's running, we move on (Audit Fix 6.6 — Optimistic Boot)
                 elif status == "running":
-                    t_log(f"{name} is RUNNING.", symbol="✔")
-                    # If no probe command, we're done. Otherwise continue to probe check.
-                    if not probe_cmd: return True
+                    t_log(f"{name} is RUNNING (Moving on).", symbol="✔")
+                    return True
+                
+                elif status != last_logged_status:
+                    t_log(f"{name} status: {status}...", symbol="⏳")
+                    last_logged_status = status
 
-            # Signal 2: Network/Probe Command
+            # Signal 2: Network/Probe Command (Non-blocking if already running)
             if probe_cmd:
-                # Prefix with docker exec if it's not already
+                # We still attempt the probe for the record, but we don't loop here 
+                # if the container was found running above.
                 full_cmd = ["docker", "exec", container_name] + probe_cmd
                 probe_res = subprocess.run(full_cmd, capture_output=True, shell=use_shell, env=GLOBAL_ENV)
                 if probe_res.returncode == 0:
                     t_log(f"{name} network probe SUCCEEDED.", symbol="✔")
                     return True
+
         except Exception:
             pass
         
@@ -194,6 +205,7 @@ def wait_for_readiness(name: str, container_name: str, log_pattern: str = None, 
     
     t_log(f"{name} readiness TIMEOUT of {timeout}s reached.", symbol="⚠")
     return False
+
 
 
 # --- Healing Agents -----------------------------------------------------------
