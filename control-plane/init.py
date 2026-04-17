@@ -150,42 +150,51 @@ def update_status(component: str, status: str):
     t_log(f"Component {component} status: {status}", symbol="✔" if status == "ok" else "⚠")
 
 def wait_for_readiness(name: str, container_name: str, log_pattern: str = None, probe_cmd: list = None, timeout: int = 60) -> bool:
-    """Multi-signal readiness: Polls logs and runs network probes until service is ready."""
+    """Multi-signal readiness: Polls Docker health/status and runs network probes until service is ready."""
     t_log(f"Waiting for {name} readiness (timeout {timeout}s)...", symbol="⏳")
     start_time = time.time()
     use_shell = os.name == "nt"
     
     while time.time() - start_time < timeout:
-        # Signal 1: Log Pattern
-        if log_pattern:
-            try:
-                log_res = subprocess.run(["docker", "logs", "--tail", "50", container_name], 
-                                      capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)
-                if log_pattern in log_res.stdout or log_pattern in log_res.stderr:
-                    t_log(f"{name} log signal caught: '{log_pattern}'", symbol="✔")
-                    # If no probe command, we're done
+        try:
+            # Signal 1: Docker Health/Status (Primary source of truth - Audit Fix 6.6)
+            inspect_cmd = ["docker", "inspect", container_name, "--format", "{{json .State}}"]
+            res = subprocess.run(inspect_cmd, capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)
+            if res.returncode == 0:
+                state = json.loads(res.stdout)
+                status = state.get("Status", "").lower()
+                health = state.get("Health", {})
+                
+                # If healthcheck is defined, wait for 'healthy'
+                if health:
+                    if health.get("Status") == "healthy":
+                        t_log(f"{name} is HEALTHY.", symbol="✔")
+                        return True
+                    elif health.get("Status") == "unhealthy":
+                        t_log(f"{name} reported UNHEALTHY state.", symbol="✘")
+                        return False
+                # Fallback to 'running' status (for containers without healthchecks)
+                elif status == "running":
+                    t_log(f"{name} is RUNNING.", symbol="✔")
+                    # If no probe command, we're done. Otherwise continue to probe check.
                     if not probe_cmd: return True
-                    # Otherwise, continue to probe check
-            except Exception:
-                pass
 
-        # Signal 2: Network/Probe Command
-        if probe_cmd:
-            try:
+            # Signal 2: Network/Probe Command
+            if probe_cmd:
                 # Prefix with docker exec if it's not already
                 full_cmd = ["docker", "exec", container_name] + probe_cmd
                 probe_res = subprocess.run(full_cmd, capture_output=True, shell=use_shell, env=GLOBAL_ENV)
                 if probe_res.returncode == 0:
                     t_log(f"{name} network probe SUCCEEDED.", symbol="✔")
                     return True
-            except Exception:
-                pass
+        except Exception:
+            pass
         
-        # If neither signal hit but container is running, we wait
         time.sleep(2)
     
     t_log(f"{name} readiness TIMEOUT of {timeout}s reached.", symbol="⚠")
     return False
+
 
 # --- Healing Agents -----------------------------------------------------------
 
@@ -523,11 +532,15 @@ def docker_agent(repair_mode: bool = False):
                                 raise RuntimeError(f"Critical service {c_name} in {name} stack failed readiness probes.")
 
                     if ready_count < total_svc:
-                        if is_critical:
+                        if is_critical and name in ["routing", "network"]:
+                            # Fail-Fast: Core infrastructure CANNOT be degraded (Audit Fix Branch)
+                            raise RuntimeError(f"FATAL: Critical stack '{name}' failed to reach ready state. Aborting.")
+                        elif is_critical:
                             t_log(f"[DOCKER] Stack {name} timed out. Proceeding in DEGRADED mode.", symbol="⚠")
                             update_status("docker", "partial")
                         else:
                             t_log(f"[DOCKER] Stack {name} launched in background. Moving on.", symbol="🚀")
+
                     
                     # Clear reference for poller before exiting context
                     with active_ui_lock:

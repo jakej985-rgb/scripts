@@ -27,7 +27,7 @@ def classify_issue(health_data, metrics_data, report_data=None):
 
     # Extract the containers sub-dict upfront — health_data also contains
     # metadata keys like 'docker_available' and 'timestamp' which aren't dicts.
-    containers = health_data.get("containers", health_data)
+    containers = health_data.get("containers", {})
     if not isinstance(containers, dict):
         return issues
 
@@ -74,9 +74,9 @@ def classify_issue(health_data, metrics_data, report_data=None):
         })
 
     # 3. Aggregated per-container resource alerts
-    containers = safe_get(metrics_data, "containers", [])
-    if isinstance(containers, list):
-        for c in containers:
+    container_metrics = safe_get(metrics_data, "containers", [])
+    if isinstance(container_metrics, list):
+        for c in container_metrics:
              if not isinstance(c, dict): continue
              if safe_get(c, "cpu", 0) > 90:
                  issues.append({
@@ -84,6 +84,7 @@ def classify_issue(health_data, metrics_data, report_data=None):
                     "target": safe_get(c, "name", "unknown"),
                     "reason": f"High Container CPU: {safe_get(c, 'cpu', 0)}%"
                 })
+
 
     return issues
 

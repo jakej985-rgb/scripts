@@ -29,6 +29,8 @@ try:
     from agents.utils.paths import (
         REPO_ROOT, SCRIPTS_DIR, AGENTS_DIR, CONTROL_PLANE
     )
+    # Centralized Audit Import (Phase 2)
+    from config.audit import run_audit, FAILED as AUDIT_FAILED
 except Exception as e:
     print(f"[X] FATAL: Critical path module missing or corrupted: {e}")
     sys.exit(1)
@@ -71,14 +73,24 @@ def cmd_env():
     return run_script(path)
 
 def cmd_audit(args):
-    """Runs the infrastructure contract auditor."""
-    path = CONTROL_PLANE / "config" / "audit.py"
-    args_list = []
-    if hasattr(args, 'json') and args.json:
-        args_list.append("--json")
-    if hasattr(args, 'strict') and args.strict:
-        args_list.append("--strict")
-    return run_script(path, *args_list)
+    """Runs the infrastructure contract auditor (Centralized Import)."""
+    json_out = hasattr(args, 'json') and args.json
+    strict = hasattr(args, 'strict') and args.strict
+    status = run_audit(json_out=json_out, strict=strict)
+    return 0 if status != AUDIT_FAILED else 1
+
+def cmd_build(args):
+    """Enforces a clean rebuild of the control plane containers."""
+    print("\n[BUILD] Triggering no-cache build of M3TAL Control Plane...")
+    cmd = ["docker", "compose", "build", "--no-cache", "control-plane"]
+    target_stack = REPO_ROOT / "control-plane"
+    try:
+        subprocess.run(cmd, cwd=str(target_stack), check=True)
+        print("[INIT] Build successful. Containers are up to date.")
+        return 0
+    except Exception as e:
+        print(f"[X] Build failed: {e}")
+        return 1
 
 def cmd_test():
     """Runs the end-to-end truth tests (routing validation)."""
@@ -184,6 +196,9 @@ def main():
     # heal
     subparsers.add_parser("heal", help="Run lightweight runtime healing (FS, logs, state)")
 
+    # build
+    subparsers.add_parser("build", help="Enforce no-cache rebuild of control-plane agents")
+
     # bootstrap
     p_bootstrap = subparsers.add_parser("bootstrap", help="Full system initialization and first-run orchestration")
     p_bootstrap.add_argument("--repair", help="Repair scope (e.g. all, docker, fs, state, logs)")
@@ -230,6 +245,8 @@ def main():
         sys.exit(cmd_shutdown(args))
     elif args.command == "heal":
         sys.exit(cmd_heal())
+    elif args.command == "build":
+        sys.exit(cmd_build(args))
     elif args.command == "bootstrap":
         sys.exit(cmd_bootstrap(args))
     else:

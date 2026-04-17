@@ -157,20 +157,37 @@ def reconcile():
     enforce_dependencies()
     
     # 2. Process Decisions (from decision.py)
-    decisions = load_json(DECISIONS_JSON, default={"actions": []})
-    actions = decisions.get("actions", [])
+    decisions_data = load_json(DECISIONS_JSON, default={"actions": []})
+    decision_actions = decisions_data.get("actions", [])
     
-    # 2b. Merge scaling actions (from scaling.py — Audit fix 2.3)
+    # 2b. Process scaling actions (from scaling.py)
     scaling_file = os.path.join(STATE_DIR, "scaling_actions.json")
     scaling_data = load_json(scaling_file, default={"actions": []})
-    actions.extend(scaling_data.get("actions", []))
+    scaling_actions = scaling_data.get("actions", [])
     
-    if actions:
-        logger.info(f"Processing {len(actions)} actions...")
-        for action in actions:
-            perform_action(action)
-        save_json(DECISIONS_JSON, {"actions": []}, caller="reconcile")
-        save_json(scaling_file, {"actions": []}, caller="reconcile")
+    # Durability logic (Audit Fix 6.6 — M7 Durability)
+    # Only remove actions that successfully completed
+    remaining_decisions = []
+    remaining_scaling = []
+
+    if decision_actions or scaling_actions:
+        logger.info(f"Reconciling: {len(decision_actions)} decisions, {len(scaling_actions)} scaling requests")
+        
+        for action in decision_actions:
+            if not perform_action(action):
+                remaining_decisions.append(action)
+        
+        for action in scaling_actions:
+            if not perform_action(action):
+                remaining_scaling.append(action)
+
+        # Update queues with ONLY the failed/remaining items
+        save_json(DECISIONS_JSON, {"actions": remaining_decisions}, caller="reconcile")
+        save_json(scaling_file, {"actions": remaining_scaling}, caller="reconcile")
+        
+        if remaining_decisions or remaining_scaling:
+            logger.warning(f"Durability: {len(remaining_decisions) + len(remaining_scaling)} actions failed and were retained in queue.")
+
         
     # 3. Storage Enforcement (Time-gated to 5 mins - Audit fix 2.9)
     last_storage_file = os.path.join(STATE_DIR, "last_storage.json")

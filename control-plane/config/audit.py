@@ -5,8 +5,10 @@ import sys
 import re
 from pathlib import Path
 
-# Advanced Infrastructure Auditor for M3TAL (v6.5.1 Tightened)
+# Advanced Infrastructure Auditor for M3TAL (v6.6.0 Source-of-Truth)
 # Responsibility: Enforce Networking & Routing Contracts with Hard Invariants
+# Priority: network_mode (container:*) > m3tal.role (vpn/edge/internal)
+
 
 # Attempting catastrophic import of paths module
 try:
@@ -186,46 +188,45 @@ class AuditScanner:
             network_ok = False
             ok_msg = ""
             
-            # ✅ 1. Handle shared network namespace FIRST (True Source of Truth)
-            if is_container_ns:
+            # ✅ 1. Handle shared network namespace FIRST (source of truth)
+            if network_mode.startswith("container:"):
                 network_ok = True
                 ok_msg = f"Uses shared network namespace ({network_mode})"
-            
-            # ✅ 2. VPN role (Explicit classificaton)
+
+            # ✅ 2. VPN role (explicit override)
             elif role == "vpn":
                 network_ok = True
                 ok_msg = "VPN-designated service"
-            
-            # ✅ 3. Standard Direct Network Checks
-            elif "proxy" in networks:
-                ip = networks["proxy"].get("IPAddress")
-                if not ip:
-                    # Lifecycle Awareness: Starting vs Detached
-                    msg = f"Service '{service_id}' has joined 'proxy' but has no IPAddress yet."
-                    hint = "Wait for container bootstrap or check for internal crash loops."
-                    self._add_issue(name, service_id, WARNING, msg, hint)
-                else:
-                    network_ok = True
-                    ok_msg = "Attached to proxy network"
-            
-            # ✅ 4. Role-Based Fallbacks for missing proxy
-            else:
-                is_edge = role == "edge" or is_enabled(labels.get("traefik.enable"))
-                if is_edge:
-                    # Edge services MUST have proxy.
+
+            # ✅ 3. Edge services (STRICT)
+            elif role == "edge":
+                if "proxy" not in networks:
                     msg = f"Service '{service_id}' is NOT attached to the 'proxy' network."
                     hint = f"Edge services REQUIRE 'proxy' network. Found: {list(networks.keys())}"
                     self._add_issue(name, service_id, CRITICAL, msg, hint)
-                elif role == "internal":
-                    # Internal services warn if missing proxy.
+                else:
+                    network_ok = True
+                    ok_msg = "Attached to proxy network"
+
+            # ✅ 4. Internal services (SOFT)
+            elif role == "internal":
+                if "proxy" not in networks:
                     msg = f"Service '{service_id}' is not on the 'proxy' network (Internal Role)."
                     hint = f"Check if Internal service needs cross-service communication. Found: {list(networks.keys())}"
                     self._add_issue(name, service_id, WARNING, msg, hint)
                 else:
-                    # Unknown/Unclassified: Warning only (Soft Fallback)
-                    msg = f"Service '{service_id}' has no 'proxy' network (Unclassified)."
+                    network_ok = True
+                    ok_msg = "Attached to proxy network"
+
+            # ✅ 5. Fallback (SAFE DEFAULT)
+            else:
+                if "proxy" not in networks:
+                    msg = f"Service '{service_id}' has no 'proxy' network (unclassified service)."
                     hint = f"Consider adding 'm3tal.role' label. Found: {list(networks.keys())}"
                     self._add_issue(name, service_id, WARNING, msg, hint)
+                else:
+                    network_ok = True
+                    ok_msg = "Attached to proxy network"
 
             if network_ok:
                 self.successes.append(f"{service_id} \u2192 {ok_msg}")
@@ -285,6 +286,13 @@ class AuditScanner:
         print(f" Status:  {self.status}")
         print("="*60 + "\n")
 
+def run_audit(json_out=False, strict=False):
+    """Entrypoint for external callers (m3tal.py)."""
+    scanner = AuditScanner(strict=strict)
+    scanner.scan()
+    scanner.report(fmt="json" if json_out else "text")
+    return scanner.status
+
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="M3TAL Infrastructure Auditor")
@@ -292,8 +300,7 @@ if __name__ == "__main__":
     parser.add_argument("--strict", action="store_true", help="Fail on ANY warnings (CI/CD mode)")
     args = parser.parse_args()
 
-    scanner = AuditScanner(strict=args.strict)
-    scanner.scan()
-    scanner.report(fmt="json" if args.json else "text")
-    if scanner.status == FAILED:
+    status = run_audit(json_out=args.json, strict=args.strict)
+    if status == FAILED:
         sys.exit(1)
+

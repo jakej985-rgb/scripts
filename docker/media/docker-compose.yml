@@ -332,23 +332,7 @@ services:
       - ../../.env
     restart: unless-stopped
 
-########### Same Network Different IP ##########
-  jellyfin-remote:
-    image: alpine
-    container_name: jellyfin-remote
-    command: ["sh", "-c", "sleep infinity"]
-    networks:
-      - proxy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=proxy"
 
-      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.m3tal-media-server.xyz`)"
-      - "traefik.http.routers.jellyfin.entrypoints=web"
-      # 🔥 IMPORTANT: use web for now (matches your other services)
-      # remove TLS until everything works
-
-      - "traefik.http.routers.jellyfin.service=jellyfin"
 
 networks:
   proxy:

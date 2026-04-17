@@ -63,14 +63,26 @@ def evaluate_scaling():
             })
             cooldowns[service] = now
 
-    if new_actions:
-        # Write to own state file to avoid racing with decision.py (Audit fix 2.3)
-        save_json(SCALING_ACTIONS, {"actions": new_actions}, caller="scaling")
+    # Merge with existing actions to prevent loss (Audit Fix 6.6 — M7 Merge)
+    existing_data = load_json(SCALING_ACTIONS, default={"actions": []})
+    existing_actions = existing_data.get("actions", [])
+    
+    # Simple merge: use a dict to deduplicate by {type}:{target}
+    merged = {(a["type"], a["target"]): a for a in existing_actions}
+    for a in new_actions:
+        merged[(a["type"], a["target"])] = a
+        
+    final_actions = list(merged.values())
+
+    if final_actions:
+        save_json(SCALING_ACTIONS, {"actions": final_actions}, caller="scaling")
         save_json(COOLDOWN_FILE, cooldowns, caller="scaling")
-        logger.info(f"Issued {len(new_actions)} scaling actions.")
+        logger.info(f"Updated scaling queue: {len(final_actions)} actions pending.")
     else:
-        # Clear stale scaling actions
-        save_json(SCALING_ACTIONS, {"actions": []}, caller="scaling")
+        # Only clear if we explicitly have nothing new and nothing existing
+        if existing_actions:
+            save_json(SCALING_ACTIONS, {"actions": []}, caller="scaling")
+
 
 if __name__ == "__main__":
     wrap_agent("scaling", evaluate_scaling)

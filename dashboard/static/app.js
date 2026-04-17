@@ -18,7 +18,7 @@ async function init() {
 }
 
 async function refreshHealth() {
-    const res = await fetch('/api/health'); // This should point to health_report.json
+    const res = await fetch('/api/health/report'); // Use report for score/verdict (Audit Fix 6.6)
     const data = await res.json();
     
     if (data.score !== undefined) {
@@ -38,7 +38,9 @@ async function refreshFleet() {
     
     containerList.innerHTML = '';
     for (const [name, info] of Object.entries(data)) {
-        if (name === 'score' || name === 'verdict' || name.startsWith('_')) continue;
+        // Only process container objects, skip metadata like status, mode, timestamp
+        if (typeof info !== 'object' || name.startsWith('_')) continue;
+
         
         const item = document.createElement('div');
         item.className = 'container-item';

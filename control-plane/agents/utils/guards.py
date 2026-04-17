@@ -3,6 +3,7 @@ import os
 import time
 import signal
 import random
+import errno
 from typing import Callable, Any
 
 # Root addition for utils
@@ -14,8 +15,8 @@ from utils.state import save_json, load_json
 from utils.logger import get_logger
 
 logger = get_logger("guards")
-HEALTH_SUBDIR = os.path.join(STATE_DIR, "health")
-LOCK_SUBDIR = os.path.join(STATE_DIR, "locks")
+HEALTH_SUBDIR = STATE_DIR / "health"
+LOCK_SUBDIR = STATE_DIR / "locks"
 
 # --- Lifecycle Globals --------------------------------------------------------
 _SHUTDOWN_SIGNALED = False
@@ -53,14 +54,13 @@ def is_pid_running(pid: int) -> bool:
         try:
             os.kill(pid, 0)
             return True
-        except OSError:
-            # On Unix, ESRCH means dead. EPERM means alive but no permission.
-            pass
-            # Note: os.kill(pid, 0) on Windows throws PermissionError or ProcessLookupError
-            # We treat any error that isn't 'not found' as 'potentially alive'
-            return True
+        except OSError as e:
+            # ESRCH (No such process) means dead.
+            # EPERM/EACCES (Permission denied) means alive but restricted.
+            return e.errno in (errno.EPERM, errno.EACCES)
         except Exception:
             return False
+
 
 def is_leader():
     if not os.path.exists(LEADER_TXT):

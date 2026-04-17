@@ -115,6 +115,7 @@ def validate_state(path: str, expected_type: type = list) -> bool:
         return False
     try:
         data = load_json(path)
-        return isinstance(data, expected_type) and bool(data)
+        return isinstance(data, expected_type)
+
     except Exception:
         return False

@@ -258,9 +258,10 @@ def main() -> None:
     finally:
         print(f"[{time.strftime('%H:%M:%S')}] Waiting for threads to exit...")
         # Local copy to avoid modification during join
-        with _children_lock:
-            for t in threads:
-                t.join(timeout=1)
+        # Join threads outside the lock to avoid deadlocks with _unregister_child
+        for t in threads:
+            t.join(timeout=2)
+
         release_lock(RUNNER_LOCK)
         print(f"[{time.strftime('%H:%M:%S')}] Agent Runner shutdown complete.")
 

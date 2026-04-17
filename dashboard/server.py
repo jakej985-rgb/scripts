@@ -34,6 +34,7 @@ METRICS_JSON = os.path.join(STATE_DIR, "metrics.json")
 ANOMALIES_JSON = os.path.join(STATE_DIR, "anomalies.json")
 DECISIONS_JSON = os.path.join(STATE_DIR, "decisions.json")
 REGISTRY_JSON = os.path.join(STATE_DIR, "registry.json")
+HEALTH_REPORT_JSON = os.path.join(STATE_DIR, "health_report.json")
 
 # Historical metrics (Batch 4 T8)
 METRICS_HISTORY_CSV = os.path.join(STATE_DIR, "metrics-history.csv")
@@ -104,6 +105,13 @@ def logout():
 @login_required()
 def get_health():
     return jsonify(load_json_safe(HEALTH_JSON))
+
+@app.route('/api/health/report')
+@login_required()
+def get_health_report():
+    """Returns the full health score and verdict report (Audit fix 6.6 — C1)"""
+    return jsonify(load_json_safe(HEALTH_REPORT_JSON))
+
 
 @app.route('/api/metrics')
 @login_required()

@@ -57,7 +57,10 @@ services:
     working_dir: /docker
     command: python3 control-plane/agents/run.py
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     env_file:
+
       - ../.env
     # Running as non-root appuser (configured in Dockerfile)
     environment:

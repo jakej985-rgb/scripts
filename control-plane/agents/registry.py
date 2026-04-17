@@ -43,33 +43,41 @@ def scan_infrastructure():
     """
     docker_containers = get_docker_containers()
     
-    registry_containers = []
-    stack_map = {}
+    # 1. Batch Discovery (Audit Fix 6.6 — M5 Performance Win)
+    # Collect all names for a single batched inspect call
+    container_names = [c.get("Names", "").lstrip("/") for c in docker_containers if c.get("Names")]
+    inspect_data = {}
     
-    for container in docker_containers:
-        name = container.get("Names")
-        if not name: continue
-        # Clean name (remove leading / if present)
-        name = name.lstrip("/")
-        
-        # Get labels via docker inspect for more detail
+    if container_names:
         try:
-            inspect_cmd = ["docker", "inspect", name, "--format", "{{json .Config.Labels}}"]
-            inspect_res = subprocess.run(inspect_cmd, capture_output=True, text=True, check=True)
-            labels = json.loads(inspect_res.stdout)
-            
-            stack = labels.get("m3tal.stack", "unknown")
-            service = labels.get("com.docker.compose.service", name)
-            
-            registry_containers.append(name)
-            stack_map[name] = {
-                "stack": stack,
-                "service": service,
-                "status": container.get("Status", "unknown"),
-                "state": container.get("State", "unknown")
-            }
+            # We fetch both labels and config in one go
+            inspect_cmd = ["docker", "inspect"] + container_names + ["--format", "{{json .Config.Labels}}"]
+            inspect_res = subprocess.run(inspect_cmd, capture_output=True, text=True, check=True, timeout=15)
+            # Docker inspect returns one JSON object per line with this format
+            raw_labels = inspect_res.stdout.strip().splitlines()
+            for i, name in enumerate(container_names):
+                if i < len(raw_labels):
+                    inspect_data[name] = json.loads(raw_labels[i])
         except Exception as e:
-            logger.warning(f"Failed to inspect container {name}: {e}")
+            logger.error(f"Batched inspect failed: {e}")
+
+    # 2. Map and Register
+    for container in docker_containers:
+        name = container.get("Names", "").lstrip("/")
+        if not name: continue
+        
+        labels = inspect_data.get(name, {})
+        stack = labels.get("m3tal.stack", "unknown")
+        service = labels.get("com.docker.compose.service", name)
+        
+        registry_containers.append(name)
+        stack_map[name] = {
+            "stack": stack,
+            "service": service,
+            "status": container.get("Status", "unknown"),
+            "state": container.get("State", "unknown")
+        }
+
 
     registry_data = {
         "containers": sorted(registry_containers),
