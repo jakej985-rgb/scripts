@@ -1,7 +1,6 @@
 import os
 import sys
 import time
-import json
 
 # Standardize path resolution
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -158,7 +157,7 @@ def check_docker_connectivity():
     try:
         subprocess.run(["docker", "ps", "-q"], capture_output=True, timeout=5, check=True)
         return True
-    except:
+    except Exception:
         return False
 
 if __name__ == "__main__":

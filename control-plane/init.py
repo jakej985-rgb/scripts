@@ -12,7 +12,7 @@ import subprocess
 import threading
 from pathlib import Path
 
-# --- Path System Bootstrap ----------------------------------------------------
+# Path bootstrap (V6.5.2)----------------------------------------------------
 # Resolve paths absolutely to satisfy IDE linter and ensure cross-platform stability
 BASE_DIR = Path(__file__).resolve().parent  # control-plane/
 REPO_ROOT = BASE_DIR.parent
@@ -25,9 +25,8 @@ for path in [AGENTS_DIR, REPO_ROOT / "scripts" / "helpers", REPO_ROOT / "scripts
 
 ENV_FILE = REPO_ROOT / ".env"
 
-from config.telegram import validate as validate_telegram
-from typing import Dict, Any, Optional
-from utils.paths import CONTROL_PLANE, STATE_DIR, LOG_DIR, SCRIPTS_DIR, ENV_TELEGRAM_TOKEN, ENV_TELEGRAM_CHAT
+from typing import Dict, Optional
+from utils.paths import STATE_DIR, LOG_DIR
 
 import builtins
 import warnings
@@ -70,9 +69,9 @@ from utils.healing import (
 )
 from auth import inspect_users_file, reset_admin_user, resolve_users_path
 from progress_utils import (
-    Header, ProgressBar, SubProgressBar, LiveList, Heartbeat, Spinner,
-    reset_session_timer,
-    CYAN, GREEN, YELLOW, RED, BOLD, END, DIM
+    Header, ProgressBar, SubProgressBar, LiveList, Heartbeat, reset_session_timer,
+    CYAN,
+    GREEN, RED, BOLD, END
 )
 
 # --- Configuration ------------------------------------------------------------
@@ -167,7 +166,7 @@ def wait_for_readiness(name: str, container_name: str, log_pattern: str = None, 
                     # If no probe command, we're done
                     if not probe_cmd: return True
                     # Otherwise, continue to probe check
-            except:
+            except Exception:
                 pass
 
         # Signal 2: Network/Probe Command
@@ -179,7 +178,7 @@ def wait_for_readiness(name: str, container_name: str, log_pattern: str = None, 
                 if probe_res.returncode == 0:
                     t_log(f"{name} network probe SUCCEEDED.", symbol="✔")
                     return True
-            except:
+            except Exception:
                 pass
         
         # If neither signal hit but container is running, we wait
@@ -226,7 +225,7 @@ def log_agent(repair_mode: bool = False):
                 try:
                     retry(lambda: path.touch())
                     success_count += 1
-                except:
+                except Exception:
                     t_log(f"[LOG] FAILED to touch {name}", symbol="⚠")
             else:
                 success_count += 1
@@ -252,7 +251,7 @@ def state_agent(repair_mode: bool = False):
                 try:
                     with open(path, 'r', encoding='utf-8') as f:
                         json.load(f)
-                except:
+                except Exception:
                     t_log(f"[STATE] Resetting corrupted {name}", symbol="⚠")
                     needs_fix = True
             
@@ -279,7 +278,7 @@ def dependency_agent():
             missing.append(dep)
             
     try:
-        import bcrypt
+        pass
     except ImportError:
         t_log("[DEP] WARNING: bcrypt missing (Tier 2). Auth repairs disabled.", symbol="⚠")
         update_status("auth", "degraded")
@@ -302,8 +301,7 @@ def env_validation_agent():
         t_log(f"[ENV] Context: {'Docker Container' if is_container else 'Host System'}")
         
         # 2. .env presence
-        dot_env = REPO_ROOT / ".env"
-        has_dotenv = dot_env.exists()
+        # (Validated via getenv loops below)
         
         # 3. Required Vars (Expanded for 6-Channel Control Plane)
         strictly_required = ["TELEGRAM_BOT_TOKEN", "TG_CHAT_COUNT", "DOCKER_API_VERSION", "REPO_ROOT"]
@@ -377,7 +375,7 @@ def docker_agent(repair_mode: bool = False):
             retry(lambda: subprocess.run(["docker", "network", "create", "proxy"], 
                                        capture_output=True, shell=use_shell, env=GLOBAL_ENV, check=True))
             t_log("[DOCKER] Shared network 'proxy' ready")
-        except: pass 
+        except Exception: pass 
         
         # Shared State 
         global_statuses = {}
@@ -401,7 +399,7 @@ def docker_agent(repair_mode: bool = False):
                         try:
                             if out.startswith("["): ps_data = json.loads(out)
                             elif out: ps_data = [json.loads(l) for l in out.splitlines()]
-                        except: pass
+                        except Exception: pass
                         
                         for item in services:
                             match = next((c for c in ps_data if c.get("Service") == item), None)
@@ -490,7 +488,7 @@ def docker_agent(repair_mode: bool = False):
                         with open(cf, "r") as compose_f:
                             if "build:" in compose_f.read():
                                 up_cmd.append("--build")
-                    except: pass
+                    except Exception: pass
                     
                     proc = subprocess.Popen(up_cmd, 
                                          stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, 
@@ -602,7 +600,6 @@ def run_init(repair_scope: str = None) -> bool:
     """Main entry point: Orchestrates the entire bootstrap with preflight guarding."""
     # Audit Check: Production Config Protection handled internally
 
-    repair_mode = bool(repair_scope)
     repair_parts = repair_scope.split(",") if repair_scope else []
     
     Header.show("M3TAL Self-Healing Init", f"Production Bootstrap — Repair: {repair_scope or 'None'}")

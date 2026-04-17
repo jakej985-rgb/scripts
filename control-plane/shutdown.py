@@ -10,7 +10,7 @@ import sys
 import time
 import json
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Dict
 
 # Fix for imports
 BASE_DIR = Path(__file__).resolve().parent  # control-plane/
@@ -19,8 +19,8 @@ SCRIPTS_DIR = REPO_ROOT / "scripts"
 sys.path.insert(0, str(SCRIPTS_DIR / "helpers"))
 
 from progress_utils import (
-    Header, ProgressBar, SubProgressBar, LiveList, Heartbeat, Spinner,
-    CYAN, GREEN, YELLOW, RED, BOLD, END, DIM
+    Header, ProgressBar, SubProgressBar, LiveList, Heartbeat, GREEN,
+    YELLOW, RED, BOLD, END
 )
 
 # --- Configuration ------------------------------------------------------------
@@ -81,16 +81,15 @@ def terminate_agents():
                     HB.log(f"Terminating orphan process {proc.info['pid']} ({' '.join(cmdline[:3])})", symbol="⚠")
                     try:
                         proc.terminate()
-                    except:
-                        subprocess.run(["taskkill", "/F", "/PID", str(proc.info['pid'])], capture_output=True, shell=True)
+                    except Exception:
+                        subprocess.run(["taskkill", "/F", "/PID", str(proc.info['pid'])], capture_output=True)
         except ImportError:
             for script in target_scripts:
-                # Filter out current process by checking if it's NOT shutdown.py (which is us)
                 subprocess.run(["taskkill", "/F", "/FI", f"cmdline eq *{script}*", "/FI", "IMAGENAME ne python.exe"], 
-                             capture_output=True, shell=True)
+                             capture_output=True)
                 # Fallback: kill based on script name if we can match it
                 subprocess.run(["taskkill", "/F", "/FI", f"cmdline eq *{script}*"], 
-                             capture_output=True, shell=True)
+                             capture_output=True)
     else:
         for script in target_scripts:
             subprocess.run(["pkill", "-f", script], capture_output=True)
@@ -103,7 +102,7 @@ def terminate_agents():
         for f in locks_dir.glob("*"):
             try:
                 if f.is_file(): f.unlink()
-            except: pass
+            except Exception: pass
 
 def shutdown_stack(stack_name: str, bar: ProgressBar, current_step: int):
     """Surgically stops and removes a specific Docker stack."""
@@ -165,7 +164,7 @@ def shutdown_stack(stack_name: str, bar: ProgressBar, current_step: int):
                 try:
                     if out.startswith("["): ps_data = json.loads(out)
                     elif out: ps_data = [json.loads(l) for l in out.splitlines()]
-                except: pass
+                except Exception: pass
                 
                 remaining_items = [item for item in expected_services if any(c.get("Service") == item for c in ps_data)]
                 remaining_count = len(remaining_items)
@@ -235,7 +234,7 @@ def main():
             subprocess.run(["docker", "network", "prune", "-f"], check=False, 
                          shell=(os.name == "nt"), env=GLOBAL_ENV, capture_output=True)
             HB.log("Global network space cleared", symbol="✔")
-        except: pass
+        except Exception: pass
 
         bar.update(len(target_stacks) + 1, "Complete")
         

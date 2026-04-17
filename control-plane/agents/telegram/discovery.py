@@ -1,6 +1,4 @@
 import requests
-import os
-import sys
 import time
 
 from config.telegram import BOT_TOKEN
@@ -21,15 +19,6 @@ def discover_and_map():
     Polls getUpdates and maps tags to Chat IDs.
     Supports both #m3tal_ prefix and simplified version.
     """
-    tags_info = {
-        "#main": "Main Notifications",
-        "#logs": "System Logs",
-        "#error": "Error Alerts",
-        "#alert": "Critical Alerts",
-        "#action": "Command/Action Channel",
-        "#docker": "Docker Telemetry"
-    }
-
     print(f"\n🔍 {BOLD}Telegram Auto-Discovery Mode{END}")
     print("M3TAL is looking for tags like #main or #m3tal_main.")
     

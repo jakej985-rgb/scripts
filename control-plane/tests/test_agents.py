@@ -8,9 +8,7 @@ import signal
 import sys
 import tarfile
 from pathlib import Path
-from unittest.mock import MagicMock, patch
 
-import pytest
 
 # Add repo root to path so we can import control-plane modules
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent

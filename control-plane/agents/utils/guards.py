@@ -2,9 +2,7 @@ import sys
 import os
 import time
 import signal
-import socket
 import random
-from pathlib import Path
 from typing import Callable, Any
 
 # Root addition for utils
@@ -22,7 +20,7 @@ LOCK_SUBDIR = os.path.join(STATE_DIR, "locks")
 # --- Lifecycle Globals --------------------------------------------------------
 _SHUTDOWN_SIGNALED = False
 
-def handle_signal(signum, frame):
+def handle_signal(signum, _frame):
     global _SHUTDOWN_SIGNALED
     logger.info(f"Received signal {signum}. Requesting graceful shutdown...")
     _SHUTDOWN_SIGNALED = True
@@ -57,11 +55,11 @@ def is_pid_running(pid: int) -> bool:
             return True
         except OSError:
             # On Unix, ESRCH means dead. EPERM means alive but no permission.
-            import errno
+            pass
             # Note: os.kill(pid, 0) on Windows throws PermissionError or ProcessLookupError
             # We treat any error that isn't 'not found' as 'potentially alive'
             return True
-        except:
+        except Exception:
             return False
 
 def is_leader():
@@ -71,7 +69,7 @@ def is_leader():
         with open(LEADER_TXT, 'r') as f:
             leader_name = f.read().strip()
         return is_local_host(leader_name)
-    except:
+    except Exception:
         return True
 
 # --- Hardened Locking (V4) ----------------------------------------------------
@@ -119,7 +117,7 @@ def acquire_lock(agent_name: str, ttl_seconds: int = 300) -> bool:
         except Exception as e:
             logger.error(f"Error checking lock for {agent_name}: {e}")
             try: os.remove(lock_file)
-            except: pass
+            except Exception: pass
 
     try:
         with open(lock_file, 'w') as f:
@@ -136,7 +134,7 @@ def heartbeat_lock(agent_name: str):
         try:
             # We just overwrite with current state to keep it atomic and fresh
             acquire_lock(agent_name)
-        except:
+        except Exception:
             pass
 
 def release_lock(agent_name: str):
@@ -144,7 +142,7 @@ def release_lock(agent_name: str):
     if os.path.exists(lock_file):
         try:
             os.remove(lock_file)
-        except:
+        except Exception:
             pass
 
 # --- Health & Execution -------------------------------------------------------

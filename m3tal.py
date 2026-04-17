@@ -16,7 +16,6 @@ if sys.stdout.encoding.lower() != 'utf-8':
 
 # Attempting catastrophic import of paths module
 try:
-    from pathlib import Path
     import sys
     
     # Path bootstrap (V6.5.2)
@@ -89,12 +88,14 @@ def cmd_test():
 def cmd_init(args):
     """Initializes the M3TAL environment."""
     path = CONTROL_PLANE / "init.py"
-    code = 0
     if args.repair:
-        code = run_script(path, f"--repair={args.repair}", check=True)
+        status = run_script(path, f"--repair={args.repair}", check=True)
     else:
-        code = run_script(path, check=True)
+        status = run_script(path, check=True)
     
+    if status != 0:
+        return status
+
     # Bootstrap Guard: Automatically audit after init
     print("\n[INIT] Performing post-bootstrap infrastructure audit...")
     return cmd_audit(args)
@@ -164,7 +165,7 @@ def main():
     p_t_audit = p_t_sub.add_parser("audit", help="Verify labels vs Traefik runtime API")
     p_t_audit.add_argument("--strict", action="store_true", help="Fail on warnings")
     
-    p_t_test = p_t_sub.add_parser("test", help="Execute curl-based truth tests")
+    p_t_sub.add_parser("test", help="Execute curl-based truth tests")
 
     # test (Shortcut for m3tal traefik test)
     subparsers.add_parser("test", help="Run end-to-end routing 'Truth Tests'")

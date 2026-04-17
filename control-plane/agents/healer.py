@@ -11,17 +11,15 @@ from pathlib import Path
 
 # --- Path System Bootstrap ----------------------------------------------------
 # healer.py (v1.1.0) — Path stability fix
-from pathlib import Path
-import sys
 
 AGENTS_DIR = Path(__file__).resolve().parent
 if str(AGENTS_DIR) not in sys.path:
     sys.path.append(str(AGENTS_DIR))
 
-from utils.paths import REPO_ROOT, STATE_DIR, CONTROL_PLANE
+from utils.paths import CONTROL_PLANE
 from utils.guards import wrap_agent
 from utils.healing import (
-    acquire_healer_lock, release_healer_lock, log_event, is_writable
+    acquire_healer_lock, release_healer_lock, log_event
 )
 
 # Use absolute path from paths.py for init import

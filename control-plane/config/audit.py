@@ -10,9 +10,6 @@ from pathlib import Path
 
 # Attempting catastrophic import of paths module
 try:
-    from pathlib import Path
-    import sys
-    
     # Batch 16 Hardening: Force UTF-8 for Windows console resilience
     if sys.stdout.encoding.lower() != 'utf-8':
         try:
@@ -28,7 +25,6 @@ try:
                 sys.path.append(str(parent / "control-plane"))
             break
             
-    from agents.utils.paths import REPO_ROOT
 except Exception as e:
     print(f"[X] FATAL: Critical path module missing or corrupted: {e}")
     sys.exit(1)
@@ -125,7 +121,7 @@ class AuditScanner:
         for t1 in TIER_1:
             if t1 not in all_names:
                 self._add_issue(t1, t1, CRITICAL, f"Tier 1 component '{t1}' is MISSING.", 
-                                f"Run 'm3tal run routing' to restore stack.")
+                                "Run 'm3tal run routing' to restore stack.")
                 continue
             
             data = self._get_inspect(t1)

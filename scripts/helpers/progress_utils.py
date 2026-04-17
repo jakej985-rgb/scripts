@@ -23,7 +23,7 @@ except ImportError:
     if os.name == 'nt':
         os.system('') # Fallback for Windows ANSI
 from pathlib import Path
-from typing import Optional, Any, List, Dict
+from typing import Optional, List, Dict
 
 # Batch 16 Hardening: Force UTF-8 for Windows console resilience
 if sys.stdout.encoding.lower() != 'utf-8':
@@ -56,7 +56,7 @@ try:
             t_data = json.load(f)
             p_rgb = t_data.get("primary", {}).get("rgb", p_rgb)
             s_rgb = t_data.get("secondary", {}).get("rgb", s_rgb)
-except:
+except Exception:
     pass
 
 def _rgb_ansi(rgb: List[int]) -> str:
@@ -209,7 +209,7 @@ class BaseUI:
     def __enter__(self):
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, _exc_type, _exc_val, _exc_tb):
         self._unregister()
 
     def _render_lines(self) -> List[str]:
@@ -422,7 +422,7 @@ class LiveList(BaseUI):
             self.count = len(self.items)
             request_render()
 
-    def update(self, item: str, status: str, note: str = "", redraw: bool = True):
+    def update(self, item: str, status: str, _note: str = "", redraw: bool = True):
         if item not in self.statuses: return
         
         changed = (self.statuses[item] != status)

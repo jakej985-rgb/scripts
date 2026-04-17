@@ -35,7 +35,7 @@ def get_logger(name):
             
         fh.setFormatter(formatter)
         logger.addHandler(fh)
-    except Exception as e:
+    except Exception:
         # Avoid crashing the agent just because logging failed
         pass
 

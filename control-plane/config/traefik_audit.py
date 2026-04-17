@@ -2,10 +2,8 @@ import subprocess
 import json
 import os
 import sys
-import re
 import requests
 from pathlib import Path
-from typing import Dict, List, Any
 
 # M3TAL Traefik Contract Enforcer (v1.0.0)
 # Responsibility: Correlate Docker Labels with Traefik Runtime API
@@ -18,7 +16,6 @@ try:
             if str(parent / "control-plane") not in sys.path:
                 sys.path.append(str(parent / "control-plane"))
             break
-    from agents.utils.paths import REPO_ROOT
 except Exception as e:
     print(f"❌ FATAL: Critical path module missing or corrupted: {e}")
     sys.exit(1)
@@ -101,7 +98,8 @@ class TraefikAuditor:
                 inspect_res = subprocess.run(inspect_cmd, capture_output=True, text=True, check=True)
                 data = json.loads(inspect_res.stdout)[0]
                 labels = {k.lower(): v for k, v in data.get("Config", {}).get("Labels", {}).items()}
-            except: continue
+            except Exception:
+                continue
 
             # Filter for M3TAL managed routed services
             if "m3tal.stack" not in labels: continue
@@ -150,7 +148,6 @@ class TraefikAuditor:
 
             # PHASE 2: Runtime Correlation
             # Traefik router name is usually service@docker or just service
-            router_name = f"{service_id}@{labels.get('com.docker.compose.project', stack)}"
             # Fallback to simple matching if compose names vary
             found_router = None
             for rname, rdata in self.traefik_data["routers"].items():

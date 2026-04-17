@@ -92,7 +92,7 @@ def main():
         auto_api = subprocess.check_output(["docker", "version", "--format", "{{.Client.APIVersion}}"], text=True, stderr=subprocess.DEVNULL).strip()
         if auto_api:
             default_api = auto_api
-    except:
+    except Exception:
         pass
         
     new_env["DOCKER_API_VERSION"] = get_input("Docker API Version", default_api)
@@ -204,7 +204,7 @@ def main():
     print(f"{BOLD}--- [6] Security & Access ---{END}")
     if current_env.get("DASHBOARD_SECRET", "replace_me") == "replace_me":
         new_val = secrets.token_hex(32)
-        print(f"Generated new Persistent Session Secret (DASHBOARD_SECRET)")
+        print("Generated new Persistent Session Secret (DASHBOARD_SECRET)")
         new_env["DASHBOARD_SECRET"] = new_val
     print("")
 

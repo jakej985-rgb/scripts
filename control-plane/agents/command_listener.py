@@ -8,9 +8,9 @@ from datetime import datetime
 # Standardize path for agent execution
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from config.telegram import is_allowed_user, BOT_TOKEN
+from config.telegram import is_allowed_user
 from agents import telegram
-from utils.paths import REGISTRY_JSON, STATE_DIR
+from utils.paths import REGISTRY_JSON
 
 # Initialize telegram background worker
 telegram.start()
@@ -171,7 +171,7 @@ def handle_command(update):
                 mode = data.get("mode", "unknown")
                 ts = datetime.fromtimestamp(data.get("timestamp", 0)).strftime("%H:%M:%S")
                 status_msg += f"Status: {status}\nMode: {mode}\nLast update: {ts}\n"
-            except:
+            except Exception:
                 status_msg += "Status: [CORRUPT]\n"
         else:
             status_msg += "Status: [FILE MISSING]\n"
@@ -186,7 +186,7 @@ def handle_command(update):
                         count = meta.get("count", 0)
                         icon = "✅" if count == 0 else "⚠️" if count < 5 else "❌"
                         status_msg += f"{icon} {name}: {count} fails\n"
-                except:
+                except Exception:
                     status_msg += "Error reading agent state."
             else:
                 status_msg += "No failure history."
@@ -199,7 +199,7 @@ def listen_commands():
     if TELEGRAM_OFFSET_TXT.exists():
         try:
             offset = int(TELEGRAM_OFFSET_TXT.read_text().strip())
-        except:
+        except Exception:
             pass
 
     try:

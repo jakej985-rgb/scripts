@@ -185,12 +185,12 @@ def setup_venv(install_dir: Path, venv_name: str) -> Path:
 
 def remove_path(path: Path) -> None:
     """Robust path removal that handles read-only files on Windows."""
-    def on_error(func, path, exc_info):
+    def on_error(func, path, _exc_info):
         import stat
         try:
             os.chmod(path, stat.S_IWRITE)
             func(path)
-        except:
+        except Exception:
             pass
 
     if path.is_dir():
@@ -199,7 +199,7 @@ def remove_path(path: Path) -> None:
         try:
             if os.name == "nt": os.chmod(path, 0o777)
             path.unlink()
-        except:
+        except Exception:
             pass
 
 
@@ -452,7 +452,7 @@ def main() -> None:
         log(f"\n{YELLOW}{BOLD}=== WARNINGS ==={END}")
         for w in WARNINGS:
             log(f"  - {w}")
-        log(f"  ⚠️  Some dependencies may need manual installation")
+        log("  ⚠️  Some dependencies may need manual installation")
 
     # 10. Done
     duration = time.time() - start_time
@@ -472,11 +472,11 @@ def main() -> None:
     log(f"  Total Time:   {duration:.2f}s\n")
     
     if auto_start:
-        log(f"  m3tal media server started, use m3tal.py to start")
+        log("  m3tal media server started, use m3tal.py to start")
     else:
-        log(f"  m3tal media server not started, use m3tal.py to start")
+        log("  m3tal media server not started, use m3tal.py to start")
         
-    log(f"  Dashboard will be at:     http://localhost:8080\n")
+    log("  Dashboard will be at:     http://localhost:8080\n")
 
 
 if __name__ == "__main__":

@@ -13,7 +13,6 @@ import requests
 # We strip here at the lowest level so every other layer gets a clean token.
 
 try:
-    import os
     from config.telegram import BOT_TOKEN as _RAW_TOKEN
     BOT_TOKEN: str | None = (_RAW_TOKEN or "").strip() or None
 except Exception as _cfg_err:

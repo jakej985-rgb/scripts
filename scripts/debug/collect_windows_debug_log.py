@@ -18,7 +18,7 @@ ERROR_KEYWORDS = ["[ERROR]", "[FATAL]", "EXCEPTION", "✘", "FAIL", "CRITICAL", 
 def run_cmd(cmd_list, label):
     """Safely run a system command and return output."""
     try:
-        res = subprocess.run(cmd_list, capture_output=True, text=True, shell=True, timeout=15)
+        res = subprocess.run(cmd_list, capture_output=True, text=True, timeout=15)
         return f"\n--- {label} ---\n{res.stdout if res.returncode == 0 else res.stderr}\n"
     except Exception as e:
         return f"\n--- {label} FAILED ---\n{e}\n"
@@ -46,7 +46,7 @@ def collect_logs():
 
             # 1. System Info
             sys_info = "--- WINDOWS SYSTEM INFO ---\n"
-            sys_info += run_cmd(["ver"], "OS Version")
+            sys_info += run_cmd(["cmd.exe", "/c", "ver"], "OS Version")
             sys_info += run_cmd(["hostname"], "Hostname")
             sys_info += run_cmd(["docker", "version"], "Docker Version")
             sys_info += run_cmd(["docker", "ps", "-a"], "Docker Container Status")

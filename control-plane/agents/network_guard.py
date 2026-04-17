@@ -1,7 +1,5 @@
 import subprocess
-import os
 import sys
-import time
 import json
 from pathlib import Path
 
@@ -9,7 +7,7 @@ from pathlib import Path
 AGENTS_DIR = Path(__file__).resolve().parent  # control-plane/agents/
 sys.path.append(str(AGENTS_DIR))
 
-from utils.paths import REPO_ROOT, STATE_DIR, LOG_DIR
+from utils.paths import STATE_DIR
 from utils.guards import wrap_agent
 from utils.logger import get_logger
 
@@ -25,7 +23,7 @@ def get_container_info(name):
         if res.returncode == 0:
             parts = res.stdout.strip().split('|')
             return {"id": parts[0], "status": parts[1], "started_at": parts[2]}
-    except:
+    except Exception:
         pass
     return None
 
@@ -37,7 +35,7 @@ def find_dependents():
         res = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
         if res.returncode == 0:
             return [name.strip() for name in res.stdout.strip().splitlines() if name.strip()]
-    except:
+    except Exception:
         pass
     return []
 
@@ -48,7 +46,7 @@ def monitor_network():
     if STATE_FILE.exists():
         try:
             last_state = json.loads(STATE_FILE.read_text())
-        except:
+        except Exception:
             pass
 
     # 2. Get Current Gluetun Info

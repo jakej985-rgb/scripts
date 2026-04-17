@@ -13,9 +13,6 @@ from pathlib import Path
 
 # Attempting catastrophic import of paths module
 try:
-    from pathlib import Path
-    import sys
-    
     # Path bootstrap (V6.5.2)
     p = Path(__file__).resolve()
     for parent in [p] + list(p.parents):
@@ -165,7 +162,7 @@ def stream_logs(stack_name, compose_file, secrets, alerts_enabled=False):
             if process.poll() is None:
                 process.terminate()
             try: process.wait(timeout=2)
-            except: process.kill()
+            except Exception: process.kill()
 
 def main():
     parser = argparse.ArgumentParser(description="M3TAL Docker Logs Agent")

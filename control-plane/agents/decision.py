@@ -5,7 +5,7 @@ import time
 # Add current dir to path for utils
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from utils.paths import STATE_DIR, ANOMALIES_JSON, DECISIONS_JSON, COOLDOWNS_JSON
+from utils.paths import ANOMALIES_JSON, DECISIONS_JSON, COOLDOWNS_JSON
 from utils.state import load_json, save_json
 from utils.guards import wrap_agent
 from utils.logger import get_logger

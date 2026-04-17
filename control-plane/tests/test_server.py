@@ -52,7 +52,7 @@ class TestUserStore:
 
     def test_reset_admin_writes_canonical_list(self, tmp_path, monkeypatch):
         users_path = tmp_path / "users.json"
-        monkeypatch.setattr("auth.prompt_password", lambda prompt_label="Admin password": "brand-new-pass")
+        monkeypatch.setattr("auth.prompt_password", lambda _label="Admin password": "brand-new-pass")
 
         reset_admin_user(users_path=users_path)
 

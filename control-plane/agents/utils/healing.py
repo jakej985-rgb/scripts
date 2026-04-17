@@ -1,5 +1,4 @@
 import os
-import sys
 import time
 import socket
 import json
@@ -10,7 +9,7 @@ from typing import Callable, Any, TypeVar, Optional
 
 T = TypeVar('T')
 
-from .paths import REPO_ROOT, STATE_DIR, LOCK_DIR
+from .paths import STATE_DIR, LOCK_DIR
 
 LOCK_FILE = LOCK_DIR / "healer.lock"
 
@@ -77,7 +76,7 @@ def is_writable(path: Path) -> bool:
             test_file.unlink()
             return True
         return os.access(path, os.W_OK)
-    except:
+    except Exception:
         return False
 
 def atomic_write_json(path: Path, data: Any) -> bool:
@@ -125,20 +124,20 @@ def acquire_healer_lock(lock_timeout: int = 300) -> bool:
                      LOCK_FILE.unlink(missing_ok=True)
                 else:
                     return False
-            except:
+            except Exception:
                 return False
             
     try:
         STATE_DIR.mkdir(parents=True, exist_ok=True)
         LOCK_FILE.write_text(f"{os.getpid()}@{hostname}")
         return True
-    except:
+    except Exception:
         return False
 
 def release_healer_lock():
     try:
         LOCK_FILE.unlink(missing_ok=True)
-    except:
+    except Exception:
         pass
 
 def log_event(name: str, message: str, symbol: Optional[str] = None):
@@ -154,7 +153,7 @@ def log_event(name: str, message: str, symbol: Optional[str] = None):
             with open(log_file, "a", encoding="utf-8") as f:
                 f.write(f"{formatted}\n")
             return
-        except:
+        except Exception:
             LOG_MODE = "stdout"
             print(f"{ts} [HEALER_CORE] Falling back to stdout.")
     print(formatted)

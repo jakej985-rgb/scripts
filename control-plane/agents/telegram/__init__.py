@@ -55,10 +55,11 @@ except ImportError as _e:
 
 except Exception as _e:
     _AVAILABLE = False
+    _import_err_msg = str(_e)
 
     def _critical(*args, **kwargs):
         print(
-            f"[TELEGRAM] CRITICAL: Unexpected error loading subsystem: {_e}. "
+            f"[TELEGRAM] CRITICAL: Unexpected error loading subsystem: {_import_err_msg}. "
             "Message dropped.",
             file=sys.stderr,
         )

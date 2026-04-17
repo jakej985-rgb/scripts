@@ -1,6 +1,5 @@
 import sys
 import os
-import time
 import collections
 
 # Add current dir to path for utils

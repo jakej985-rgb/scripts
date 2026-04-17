@@ -68,8 +68,8 @@ def scan_infrastructure():
                 "status": container.get("Status", "unknown"),
                 "state": container.get("State", "unknown")
             }
-        except:
-            logger.warning(f"Failed to inspect container {name}")
+        except Exception as e:
+            logger.warning(f"Failed to inspect container {name}: {e}")
 
     registry_data = {
         "containers": sorted(registry_containers),

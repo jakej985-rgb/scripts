@@ -35,11 +35,9 @@ def get_system_metrics():
             if sys.platform != "win32":
                 # Manual /proc reads are safer than shell=True + grep/awk
                 if os.path.exists("/proc/stat"):
-                    with open("/proc/stat", "r") as f:
-                        lines = f.readlines()
                     # Calculation logic removed for brevity/safety
                     pass
-        except: pass
+        except Exception: pass
     return metrics
 
 def get_container_metrics():
@@ -105,7 +103,7 @@ def append_history(system, containers):
             if os.path.exists(last_prune_file):
                 with open(last_prune_file, 'r') as pf:
                     last_prune_ts = json.loads(pf.read().strip() or '{}').get("ts", 0)
-        except: pass
+        except Exception: pass
 
         if ts - last_prune_ts > 600:
             try:
@@ -144,7 +142,7 @@ def collect_all_metrics():
     
     if save_json(METRICS_JSON, data, caller="metrics"):
         append_history(system, containers)
-        logger.info(f"Captured metrics and history.")
+        logger.info("Captured metrics and history.")
 
 if __name__ == "__main__":
     wrap_agent("metrics", collect_all_metrics)

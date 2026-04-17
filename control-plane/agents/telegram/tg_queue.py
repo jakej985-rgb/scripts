@@ -17,7 +17,7 @@ def enqueue(chat_id: int, message: str):
             _q.get_nowait()
             _q.task_done()
             _q.put_nowait((chat_id, message))
-        except:
+        except queue.Empty:
             pass
 
 def dequeue(timeout: int = 1):

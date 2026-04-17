@@ -1,8 +1,6 @@
 import atexit
 from . import worker
 from . import logger
-from . import router
-from . import client
 from config.telegram import BOT_TOKEN
 
 # M3TAL Telegram Service (v3.1 Hardened Orchestrator)

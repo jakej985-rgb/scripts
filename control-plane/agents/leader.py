@@ -1,7 +1,6 @@
 import sys
 import os
 import socket
-import time
 
 # Add current dir to path for utils
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -19,7 +18,7 @@ def get_node_identity():
         hostname = socket.gethostname()
         ip = socket.gethostbyname(hostname)
         return f"{hostname}@{ip}"
-    except:
+    except Exception:
         return socket.gethostname()
 
 def elect_leader():
@@ -64,7 +63,7 @@ def elect_leader():
             # Simple socket connect to test reachability
             socket.create_connection((primary_identity, 22), timeout=1).close()
             is_primary_up = True
-        except:
+        except Exception:
             is_primary_up = False
 
         leader_identity = primary_identity if is_primary_up else my_identity

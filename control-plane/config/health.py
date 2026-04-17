@@ -12,9 +12,6 @@ from pathlib import Path
 
 # Attempting catastrophic import of paths module
 try:
-    from pathlib import Path
-    import sys
-    
     # Path bootstrap (V6.5.2)
     p = Path(__file__).resolve()
     for parent in [p] + list(p.parents):
@@ -23,7 +20,6 @@ try:
                 sys.path.append(str(parent / "control-plane"))
             break
             
-    from agents.utils.paths import REPO_ROOT
 except Exception as e:
     print(f"❌ FATAL: Critical path module missing or corrupted: {e}")
     sys.exit(1)

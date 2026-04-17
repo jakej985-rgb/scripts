@@ -5,8 +5,6 @@ Launched by: control-plane/run.py
 """
 
 import time
-import sys
-import os
 from . import service as tg_service
 from . import router
 from . import logger

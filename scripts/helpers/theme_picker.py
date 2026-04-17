@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 import json
-import os
-import sys
 import tkinter as tk
 from tkinter import colorchooser, messagebox
 from pathlib import Path

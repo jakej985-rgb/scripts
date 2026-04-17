@@ -71,7 +71,7 @@ def prune_old_backups(dest: Path, keep: int = KEEP_BACKUPS) -> None:
         old.unlink()
         print(f"[PRUNE] Removed {old.name}")
     if len(backups) > keep:
-        print(f"[BACKUP] Retention cleanup complete.")
+        print("[BACKUP] Retention cleanup complete.")
 
 
 def main() -> None:

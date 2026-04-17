@@ -80,7 +80,7 @@ def main() -> None:
         print("Usage: python3 scripts/maintenance/restore.py [path_to_tar.gz]")
         sys.exit(1)
 
-    print(f"\n=== M3TAL RESTORE WIZARD ===")
+    print("\n=== M3TAL RESTORE WIZARD ===")
     print(f"[TARGET] Restoring from: {backup_file}")
     print(f"⚠️  This will OVERWRITE existing config and docker files in {REPO_ROOT}.")
 

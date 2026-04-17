@@ -7,7 +7,7 @@ repo_root = Path(__file__).resolve().parent.parent.parent
 sys.path.append(str(repo_root / "control-plane"))
 sys.path.append(str(repo_root / "control-plane" / "agents"))
 
-from docker_logs_agent import redact, load_secrets, normalize, should_alert, get_severity
+from docker_logs_agent import load_secrets, normalize, should_alert, get_severity
 
 def test_phase5_logic():
     secrets = load_secrets()

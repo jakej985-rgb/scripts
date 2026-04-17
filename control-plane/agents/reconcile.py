@@ -1,7 +1,6 @@
 import sys
 import os
 import subprocess
-import json
 import time
 
 # Add current dir to path for utils
@@ -79,7 +78,7 @@ def perform_scale(action):
                 except subprocess.TimeoutExpired:
                     logger.error(f"Scale check timed out for {target} in {full_path}")
                     continue
-                except:
+                except Exception:
                     continue
     return False
 

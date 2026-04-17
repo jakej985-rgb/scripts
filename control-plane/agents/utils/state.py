@@ -57,7 +57,7 @@ def safe_replace(src: str, dst: str):
         if e.errno == errno.EXDEV or os.name == 'nt':
             shutil.copy2(src, dst)
             try: os.remove(src)
-            except: pass
+            except Exception: pass
         else:
             raise
 
@@ -106,7 +106,7 @@ def save_json(path: str, data: Any, caller: str = "unknown") -> bool:
         
         if os.path.exists(tmp_path):
             try: os.remove(tmp_path)
-            except: pass
+            except Exception: pass
         return False
 
 def validate_state(path: str, expected_type: type = list) -> bool:
@@ -116,5 +116,5 @@ def validate_state(path: str, expected_type: type = list) -> bool:
     try:
         data = load_json(path)
         return isinstance(data, expected_type) and bool(data)
-    except:
+    except Exception:
         return False

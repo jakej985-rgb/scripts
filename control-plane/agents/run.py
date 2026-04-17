@@ -14,9 +14,9 @@ CONTROL_PLANE = AGENTS_DIR.parent             # control-plane/
 sys.path.append(str(AGENTS_DIR))
 sys.path.append(str(CONTROL_PLANE))
 
-from utils.paths import REPO_ROOT, CONTROL_PLANE, AGENTS_DIR, LOG_DIR, STATE_DIR, RESTARTS_JSON, ensure_dirs, TIERS
+from utils.paths import CONTROL_PLANE, AGENTS_DIR, LOG_DIR, STATE_DIR, RESTARTS_JSON, ensure_dirs, TIERS
 from utils.healing import atomic_write_json
-from utils.guards import acquire_lock, release_lock, is_pid_running
+from utils.guards import acquire_lock, release_lock
 
 # Telegram System Integration (v3 Layered)
 from config.telegram import validate as validate_telegram
@@ -81,7 +81,7 @@ def _get_restart_state() -> dict:
     if RESTARTS_JSON.exists():
         try:
             return json.loads(RESTARTS_JSON.read_text())
-        except:
+        except Exception:
             return {}
     return {}
 
@@ -191,7 +191,7 @@ def main() -> None:
                 # We don't delete the runner lock if it's currently held (check logic)
                 if lock.name != f"{RUNNER_LOCK}.pid":
                     lock.unlink()
-            except: pass
+            except Exception: pass
 
     threads: list[threading.Thread] = []
     try:
@@ -202,7 +202,7 @@ def main() -> None:
             if lock_path.exists():
                 print(f"[{time.strftime('%H:%M:%S')}] PID 1 detected. Purging main runner lock.")
                 try: lock_path.unlink()
-                except: pass
+                except Exception: pass
 
         if not acquire_lock(RUNNER_LOCK):
             print(f"[{time.strftime('%H:%M:%S')}] FATAL: Another Agent Runner is already active. Exiting.")
@@ -218,7 +218,7 @@ def main() -> None:
                     if health.get("mode") in ["running", "degraded"]:
                         print(f"[{time.strftime('%H:%M:%S')}] System ready ({health.get('mode')}). Releasing agents...")
                         break
-                except:
+                except Exception:
                     pass
             print(f"[{time.strftime('%H:%M:%S')}] System INITIALIZING... waiting for bootstrap.")
             time.sleep(5)

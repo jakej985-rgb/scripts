@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import os
 import sys
-import subprocess
 from pathlib import Path
 
 # --- Configuration ------------------------------------------------------------
@@ -41,7 +40,7 @@ def check_mount() -> bool:
         print(f"[!] WARNING: DATA_DIR path does not exist. Attempting to create: {path}")
         try:
             path.mkdir(parents=True, exist_ok=True)
-            print(f"[OK] DATA_DIR created successfully.")
+            print("[OK] DATA_DIR created successfully.")
         except Exception as e:
             print(f"[X] CRITICAL: Failed to create DATA_DIR at {path}: {e}")
             return False

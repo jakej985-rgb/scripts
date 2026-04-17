@@ -5,7 +5,6 @@ Simulates brutal system failures and verifies autonomous recovery.
 """
 
 import os
-import shutil
 import subprocess
 import time
 from pathlib import Path
@@ -100,4 +99,4 @@ if __name__ == "__main__":
         try:
             os.chmod(LOG_DIR / "monitor.log", 0o644)
             (STATE_DIR / "healer.lock").unlink(missing_ok=True)
-        except: pass
+        except Exception: pass
