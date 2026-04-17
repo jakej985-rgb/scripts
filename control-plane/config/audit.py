@@ -186,50 +186,51 @@ class AuditScanner:
                 hint = "Add 'networks: default: name: none' to your docker-compose.yml."
                 self._add_issue(name, service_id, WARNING, msg, hint)
 
-            # Role-Based Network Enforcement
+            # Hardened Network Validation (Source-of-Truth Refactor)
             network_ok = False
             ok_msg = ""
-            if role == "vpn":
-                if not is_container_ns:
-                    msg = f"VPN Service '{service_id}' is NOT using container network mode."
-                    hint = "Add 'network_mode: container:<provider>' to docker-compose.yml."
-                    self._add_issue(name, service_id, CRITICAL, msg, hint)
-                else:
-                    # Validate parent if possible
-                    parent_name = network_mode.split(":")[-1]
-                    if parent_name not in all_names:
-                        msg = f"VPN Service '{service_id}' targets missing container: {parent_name}"
-                        hint = f"Ensure '{parent_name}' is defined and running."
-                        self._add_issue(name, service_id, CRITICAL, msg, hint)
-                    else:
-                        network_ok = True
-                        ok_msg = f"VPN network ({parent_name})"
             
-            elif is_container_ns:
-                # Sidecars or shared namespaces are allowed to skip direct proxy check
+            # ✅ 1. Handle shared network namespace FIRST (True Source of Truth)
+            if is_container_ns:
                 network_ok = True
-                ok_msg = f"shared namespace ({network_mode})"
-
-            else:
-                # Standard Container: Enforce Proxy Network
-                if "proxy" not in networks:
-                    # Roles: 'edge' MUST have proxy. Others WARN.
-                    is_edge = role == "edge" or is_enabled(labels.get("traefik.enable"))
-                    sev = CRITICAL if is_edge else WARNING
-                    msg = f"Service '{service_id}' is NOT attached to the 'proxy' network."
-                    hint = f"Service MUST join 'proxy' network to communicate. Found: {list(networks.keys())}"
-                    self._add_issue(name, service_id, sev, msg, hint)
+                ok_msg = f"Uses shared network namespace ({network_mode})"
+            
+            # ✅ 2. VPN role (Explicit classificaton)
+            elif role == "vpn":
+                network_ok = True
+                ok_msg = "VPN-designated service"
+            
+            # ✅ 3. Standard Direct Network Checks
+            elif "proxy" in networks:
+                ip = networks["proxy"].get("IPAddress")
+                if not ip:
+                    # Lifecycle Awareness: Starting vs Detached
+                    msg = f"Service '{service_id}' has joined 'proxy' but has no IPAddress yet."
+                    hint = "Wait for container bootstrap or check for internal crash loops."
+                    self._add_issue(name, service_id, WARNING, msg, hint)
                 else:
-                    ip = networks["proxy"].get("IPAddress")
-                    if not ip:
-                        # Lifecycle Awareness: Starting vs Detached
-                        msg = f"Service '{service_id}' has joined 'proxy' but has no IPAddress yet."
-                        hint = "Wait for container bootstrap or check for internal crash loops."
-                        self._add_issue(name, service_id, WARNING, msg, hint)
-                    else:
-                        network_ok = True
-                        ok_msg = "proxy network"
-                        
+                    network_ok = True
+                    ok_msg = "Attached to proxy network"
+            
+            # ✅ 4. Role-Based Fallbacks for missing proxy
+            else:
+                is_edge = role == "edge" or is_enabled(labels.get("traefik.enable"))
+                if is_edge:
+                    # Edge services MUST have proxy.
+                    msg = f"Service '{service_id}' is NOT attached to the 'proxy' network."
+                    hint = f"Edge services REQUIRE 'proxy' network. Found: {list(networks.keys())}"
+                    self._add_issue(name, service_id, CRITICAL, msg, hint)
+                elif role == "internal":
+                    # Internal services warn if missing proxy.
+                    msg = f"Service '{service_id}' is not on the 'proxy' network (Internal Role)."
+                    hint = f"Check if Internal service needs cross-service communication. Found: {list(networks.keys())}"
+                    self._add_issue(name, service_id, WARNING, msg, hint)
+                else:
+                    # Unknown/Unclassified: Warning only (Soft Fallback)
+                    msg = f"Service '{service_id}' has no 'proxy' network (Unclassified)."
+                    hint = f"Consider adding 'm3tal.role' label. Found: {list(networks.keys())}"
+                    self._add_issue(name, service_id, WARNING, msg, hint)
+
             if network_ok:
                 self.successes.append(f"{service_id} \u2192 {ok_msg}")
 

@@ -456,7 +456,19 @@ def main() -> None:
 
     # 10. Done
     duration = time.time() - start_time
-    log(f"\n{GREEN}{BOLD}=== INSTALL COMPLETE ==={END}")
+    
+    # Source tag: show commit hash for clone, or (local) for local mode
+    if source_mode == "2":
+        source_tag = "(local)"
+    else:
+        try:
+            result = subprocess.run(["git", "rev-parse", "--short", "HEAD"], 
+                                    cwd=str(install_dir), capture_output=True, text=True, check=True)
+            source_tag = f"({result.stdout.strip()})"
+        except Exception:
+            source_tag = "(clone)"
+    
+    log(f"\n{GREEN}{BOLD}=== INSTALL COMPLETE {source_tag} ==={END}")
     log(f"  Total Time:   {duration:.2f}s\n")
     
     if auto_start:
