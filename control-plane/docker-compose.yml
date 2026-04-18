@@ -11,6 +11,8 @@ services:
              chmod -R 766 /docker/control-plane/state &&
              chown -R 1000:1000 /docker/dashboard/users.json &&
              chmod 766 /docker/dashboard/users.json || true"
+    networks:
+      - proxy
 
   m3tal-dashboard:
     build:

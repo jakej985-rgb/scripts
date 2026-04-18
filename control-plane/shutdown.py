@@ -16,6 +16,8 @@ from typing import Dict
 BASE_DIR = Path(__file__).resolve().parent  # control-plane/
 REPO_ROOT = BASE_DIR.parent
 SCRIPTS_DIR = REPO_ROOT / "scripts"
+AGENTS_DIR = BASE_DIR / "agents"
+sys.path.insert(0, str(AGENTS_DIR))
 sys.path.insert(0, str(SCRIPTS_DIR / "helpers"))
 
 from progress_utils import (
