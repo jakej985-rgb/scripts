@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("InfernalInkSteelSuite.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+40dfc99b92a0155d55ab00ec10b87a71170bd774")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ceeeeaae141446429aad15e91fecf4cafcf3bd3e")]
 [assembly: System.Reflection.AssemblyProductAttribute("InfernalInkSteelSuite.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("InfernalInkSteelSuite.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

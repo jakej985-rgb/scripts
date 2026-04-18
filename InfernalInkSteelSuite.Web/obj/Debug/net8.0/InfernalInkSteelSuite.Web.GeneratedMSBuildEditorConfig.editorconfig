@@ -9,313 +9,313 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = InfernalInkSteelSuite.Web
 build_property.RootNamespace = InfernalInkSteelSuite.Web
-build_property.ProjectDir = c:\Users\jakej\Documents\GitHub\Infernal-Ink-Steel-Suite\InfernalInkSteelSuite.Web\
+build_property.ProjectDir = c:\Users\jakej\Documents\GitHub\M3tal-Media-Server\InfernalInkSteelSuite.Web\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = c:\Users\jakej\Documents\GitHub\Infernal-Ink-Steel-Suite\InfernalInkSteelSuite.Web
+build_property.MSBuildProjectDirectory = c:\Users\jakej\Documents\GitHub\M3tal-Media-Server\InfernalInkSteelSuite.Web
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Account/Login.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Account/Logout.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Account/Logout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudFxMb2dvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Account/TwoFactor.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Account/TwoFactor.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudFxUd29GYWN0b3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Admin/Achievements.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Admin/Achievements.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQWNoaWV2ZW1lbnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Admin/CrystalBall.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Admin/CrystalBall.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQ3J5c3RhbEJhbGwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Admin/Heartbeat.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Admin/Heartbeat.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cSGVhcnRiZWF0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Admin/KarmaLogs.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Admin/KarmaLogs.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cS2FybWFMb2dzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Admin/MarkOfTheBeast.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Admin/MarkOfTheBeast.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cTWFya09mVGhlQmVhc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Admin/SoulJar.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Admin/SoulJar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cU291bEphci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Admin/Webhooks.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Admin/Webhooks.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cV2ViaG9va3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Appointments/Edit.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Appointments/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXBwb2ludG1lbnRzXEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Appointments/Index.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Appointments/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXBwb2ludG1lbnRzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Appointments/Purgatory.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Appointments/Purgatory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXBwb2ludG1lbnRzXFB1cmdhdG9yeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Appointments/_AppointmentCard.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Appointments/_AppointmentCard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXBwb2ludG1lbnRzXF9BcHBvaW50bWVudENhcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Appointments/_AppointmentDetailsModal.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Appointments/_AppointmentDetailsModal.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXBwb2ludG1lbnRzXF9BcHBvaW50bWVudERldGFpbHNNb2RhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Appointments/_KanbanCard.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Appointments/_KanbanCard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXBwb2ludG1lbnRzXF9LYW5iYW5DYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Appointments/_MagmaCalendar.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Appointments/_MagmaCalendar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXBwb2ludG1lbnRzXF9NYWdtYUNhbGVuZGFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Artists/Grimoire.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Artists/Grimoire.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXJ0aXN0c1xHcmltb2lyZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Clients/Edit.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Clients/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50c1xFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Clients/Index.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Clients/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50c1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Communications/CovenChat.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Communications/CovenChat.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbXVuaWNhdGlvbnNcQ292ZW5DaGF0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Communications/HealingSpells.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Communications/HealingSpells.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbXVuaWNhdGlvbnNcSGVhbGluZ1NwZWxscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Dashboard/Index.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Dashboard/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvYXJkXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Debug.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Debug.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGVidWcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Documents/Index.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Documents/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRG9jdW1lbnRzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Error.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Financial/Deposits.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Financial/Deposits.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmluYW5jaWFsXERlcG9zaXRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Inventory/TheHoard.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Inventory/TheHoard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW52ZW50b3J5XFRoZUhvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Legal/SoulContract.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Legal/SoulContract.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTGVnYWxcU291bENvbnRyYWN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Marketing/Infection.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Marketing/Infection.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFya2V0aW5nXEluZmVjdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Marketing/SoulShards.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Marketing/SoulShards.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFya2V0aW5nXFNvdWxTaGFyZHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Marketing/Whispers.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Marketing/Whispers.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFya2V0aW5nXFdoaXNwZXJzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Portal/Index.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Portal/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUG9ydGFsXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Privacy.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Quotes/Index.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Quotes/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUXVvdGVzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Quotes/New.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Quotes/New.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUXVvdGVzXE5ldy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Settings/Index.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Settings/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ3NcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_Account.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_Account.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ3NcUGFydGlhbHNcX0FjY291bnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_Integrations.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_Integrations.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ3NcUGFydGlhbHNcX0ludGVncmF0aW9ucy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_Notifications.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_Notifications.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ3NcUGFydGlhbHNcX05vdGlmaWNhdGlvbnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_Shop_Branding.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_Shop_Branding.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ3NcUGFydGlhbHNcX1Nob3BfQnJhbmRpbmcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_Shop_Hours.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_Shop_Hours.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ3NcUGFydGlhbHNcX1Nob3BfSG91cnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_Shop_Inventory.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_Shop_Inventory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ3NcUGFydGlhbHNcX1Nob3BfSW52ZW50b3J5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_Shop_Profile.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_Shop_Profile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ3NcUGFydGlhbHNcX1Nob3BfUHJvZmlsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_Shop_Services.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_Shop_Services.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ3NcUGFydGlhbHNcX1Nob3BfU2VydmljZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_Staff_Schedule.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_Staff_Schedule.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ3NcUGFydGlhbHNcX1N0YWZmX1NjaGVkdWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_Staff_UserManagement.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_Staff_UserManagement.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ3NcUGFydGlhbHNcX1N0YWZmX1VzZXJNYW5hZ2VtZW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_System_Audit.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_System_Audit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ3NcUGFydGlhbHNcX1N5c3RlbV9BdWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_System_Backup.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Settings/Partials/_System_Backup.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ3NcUGFydGlhbHNcX1N5c3RlbV9CYWNrdXAuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Shared/404.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Shared/404.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXDQwNC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Shared/500.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Shared/500.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXDUwMC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Shared/_DashboardLayout.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Shared/_DashboardLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9EYXNoYm9hcmRMYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Shared/_LoginLayout.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Shared/_LoginLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9Mb2dpbkxheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Shared/_ValidationScriptsPartial.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Stats/Index.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Stats/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3RhdHNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Tools/FlashRoulette.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Tools/FlashRoulette.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVG9vbHNcRmxhc2hSb3VsZXR0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Tools/FleshCanvas.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Tools/FleshCanvas.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVG9vbHNcRmxlc2hDYW52YXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Tools/ImageAlchemy.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Tools/ImageAlchemy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVG9vbHNcSW1hZ2VBbGNoZW15LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Tools/PainEstimator.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Tools/PainEstimator.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVG9vbHNcUGFpbkVzdGltYXRvci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Tools/RitualBeats.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Tools/RitualBeats.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVG9vbHNcUml0dWFsQmVhdHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Tools/SkinToneSim.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Tools/SkinToneSim.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVG9vbHNcU2tpblRvbmVTaW0uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/_ViewImports.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/_ViewStart.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Views/Appointments/Index.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Views/Appointments/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXBwb2ludG1lbnRzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Views/Clients/Index.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Views/Clients/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50c1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Views/Dashboard/Index.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Views/Dashboard/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Views/Documents/Index.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Views/Documents/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdW1lbnRzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Views/Quotes/Create.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Views/Quotes/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUXVvdGVzXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Views/Quotes/Index.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Views/Quotes/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUXVvdGVzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Views/Shared/_DashboardLayout.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Views/Shared/_DashboardLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9EYXNoYm9hcmRMYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Views/Shared/_Layout.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Views/Statistics/Index.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Views/Statistics/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhdGlzdGljc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Views/_ViewImports.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Views/_ViewStart.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/jakej/Documents/GitHub/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/Pages/Shared/_Layout.cshtml]
+[c:/Users/jakej/Documents/GitHub/M3tal-Media-Server/InfernalInkSteelSuite.Web/Pages/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-yxzpbnlx8h
