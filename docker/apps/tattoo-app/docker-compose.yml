@@ -4,7 +4,7 @@ services:
     container_name: tattoo-api
     working_dir: /app
     volumes:
-      - ${REPO_ROOT}/InfernalInkSteelSuite.Web/publish:/app
+      - ${REPO_ROOT}/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/publish:/app
       - ${DATA_DIR}/tattoo/db:/data
       - ${DATA_DIR}/tattoo/uploads:/app/wwwroot/uploads
     environment:
