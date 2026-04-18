@@ -38,8 +38,11 @@ REQUIRED_VARS = [
     "CF_TUNNEL_TOKEN",
     "TELEGRAM_BOT_TOKEN",
     "TG_CHAT_COUNT",
-    "DOCKER_API_VERSION"
+    "DOCKER_API_VERSION",
+    "TRAEFIK_AUTH_USER",
+    "TRAEFIK_AUTH_PASS"
 ]
+
 
 def get_input(prompt, default=None):
     if default:
@@ -200,8 +203,38 @@ def main():
     new_env["CF_TUNNEL_TOKEN"] = get_input("Cloudflare Tunnel Token", current_env.get("CF_TUNNEL_TOKEN", "replace_me"))
     print("")
 
-    # 6. Security & Final Review
-    print(f"{BOLD}--- [6] Security & Access ---{END}")
+    # 6. Traefik Authentication (H1 Hardening)
+    print(f"{BOLD}--- [6] Traefik Dashboard Authentication ---{END}")
+    auth_user = get_input("Traefik Admin Username", current_env.get("TRAEFIK_AUTH_USER", "m3tal_admin"))
+    new_env["TRAEFIK_AUTH_USER"] = auth_user
+    
+    auth_mode = get_input("Password Mode (1=auto / 2=manual)", "1")
+    if auth_mode == "1":
+        auto_pass = secrets.token_urlsafe(16)
+        print(f"Generated secure Traefik password: {GREEN}{auto_pass}{END}")
+        new_env["TRAEFIK_AUTH_PASS"] = auto_pass
+    else:
+        new_env["TRAEFIK_AUTH_PASS"] = get_input("Enter Traefik password")
+    
+    # Generate Bcrypt hash for Traefik (using $$ to escape $ for docker-compose)
+    try:
+        import bcrypt
+        passwd = new_env["TRAEFIK_AUTH_PASS"].encode('utf-8')
+        salt = bcrypt.gensalt(rounds=10)
+        # Traefik requires $$ in compose files to avoid interpolation, but we store single $ in .env 
+        # as compose will handle the mapping if we use the right syntax in the label.
+        # Actually, it's safer to store the raw hash here.
+        hash_val = bcrypt.hashpw(passwd, salt).decode('utf-8')
+        new_env["TRAEFIK_AUTH_HASH"] = hash_val.replace('$', '$$')
+        print(f"Generated Bcrypt hash for Traefik middleware.")
+    except Exception as e:
+        print(f"{RED}Warning: Could not generate bcrypt hash (bcrypt module missing?): {e}{END}")
+        new_env["TRAEFIK_AUTH_HASH"] = "replace_me_with_bcrypt_hash"
+    print("")
+
+    # 7. Security & Final Review
+    print(f"{BOLD}--- [7] Security & Final Review ---{END}")
+
     if current_env.get("DASHBOARD_SECRET", "replace_me") == "replace_me":
         new_val = secrets.token_hex(32)
         print("Generated new Persistent Session Secret (DASHBOARD_SECRET)")
@@ -236,7 +269,9 @@ def main():
                 "VPN": ["VPN_USER", "VPN_PASSWORD"],
                 "AI": ["OLLAMA_URL", "AI_API_KEY"],
                 "NOTIFY": ["TELEGRAM_BOT_TOKEN", "TG_CHAT_COUNT", "TG_AUTO_DISCOVER", "ALLOWED_USERS", "TG_MAIN_CHAT_ID", "TG_LOG_CHAT_ID", "TG_ERROR_CHAT_ID", "TG_ALERT_CHAT_ID", "TG_ACTION_CHAT_ID", "TG_DOCKER_CHAT_ID", "TELEGRAM_TOKEN", "TELEGRAM_CHAT_ID"],
+                "EDGE": ["TRAEFIK_AUTH_USER", "TRAEFIK_AUTH_PASS", "TRAEFIK_AUTH_HASH"],
                 "DB": ["TATTOO_DB_PASSWORD"],
+
                 "AUTH": ["DASHBOARD_SECRET"]
             }
 

@@ -11,7 +11,8 @@ from utils.guards import wrap_agent
 from utils.logger import get_logger
 
 logger = get_logger("scorer")
-HEALTH_SUBDIR = os.path.join(STATE_DIR, "health")
+HEALTH_SUBDIR = STATE_DIR / "health"
+
 
 # Files to check for corruption/freshness
 MONITORED_FILES = [
@@ -22,14 +23,16 @@ MONITORED_FILES = [
     "registry.json"
 ]
 
-CHAOS_EVENTS_JSON = os.path.join(STATE_DIR, "chaos_events.json")
+CHAOS_EVENTS_JSON = STATE_DIR / "chaos_events.json"
+
 MAX_RECOVERY_TIME = 15
 
 file_timer = {}
 recovery_metrics = {"total_events": 0, "avg_ttr": 0, "failures": 0}
 
 def get_file_status(path):
-    if not os.path.exists(path):
+    if not path.exists():
+
         return "missing"
     data = load_json(path, default=None)
     if data is None:
@@ -55,11 +58,12 @@ def update_ttr(file_name, duration):
 def aggregate_agent_health():
     """Batch 5 T3: Aggregate health from per-agent files."""
     aggregated = {}
-    if os.path.isdir(HEALTH_SUBDIR):
+    if HEALTH_SUBDIR.is_dir():
         for f in os.listdir(HEALTH_SUBDIR):
             if f.endswith(".json"):
                 agent_name = f.replace(".json", "")
-                aggregated[agent_name] = load_json(os.path.join(HEALTH_SUBDIR, f))
+                aggregated[agent_name] = load_json(HEALTH_SUBDIR / f)
+
     return aggregated
 
 def calculate_health():
@@ -68,9 +72,9 @@ def calculate_health():
     now = time.time()
     
     # Tweak 5: Health Modes & Docker Guard
-    from utils.paths import STATE_DIR
-    monitor_path = os.path.join(STATE_DIR, "health", "monitor_containers.json")
+    monitor_path = STATE_DIR / "health" / "monitor_containers.json"
     monitor_data = load_json(monitor_path, default={"docker_available": True})
+
     docker_available = monitor_data.get("docker_available", True)
     
     # 1. File Health
@@ -110,8 +114,8 @@ def calculate_health():
                 tier1_fail = True
 
     # 3. Pipeline Integrity
-    decision_path = os.path.join(STATE_DIR, "decisions.json")
-    if os.path.exists(decision_path):
+    decision_path = STATE_DIR / "decisions.json"
+    if decision_path.exists():
         decision_data = load_json(decision_path, default={})
         meta_ts = decision_data.get("_m3tal_metadata", {}).get("updated_at", 0)
         age = now - meta_ts if meta_ts else 999

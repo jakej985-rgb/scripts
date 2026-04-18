@@ -42,6 +42,8 @@ def scan_infrastructure():
     - Detects unhealthy states.
     """
     docker_containers = get_docker_containers()
+    registry_containers = []
+    stack_map = {}
     
     # 1. Batch Discovery (Audit Fix 6.6 — M5 Performance Win)
     # Collect all names for a single batched inspect call

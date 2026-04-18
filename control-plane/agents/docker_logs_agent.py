@@ -134,8 +134,9 @@ def stream_logs(stack_name, compose_file, secrets, alerts_enabled=False):
         with open(log_file, "a", encoding="utf-8") as f:
             process = subprocess.Popen(
                 cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                text=True, bufsize=1, shell=(os.name == "nt")
+                text=True, bufsize=1
             )
+
             
             # Non-blocking read loop
             while not SHUTDOWN_EVENT.is_set():

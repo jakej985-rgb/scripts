@@ -126,9 +126,14 @@ def check_and_install_deps(os_type: str, auto_install: bool) -> None:
             if auto_install and os_type in info:
                 log(f"  {YELLOW}[INSTALLING]{END} {name}")
                 try:
-                    subprocess.run(info[os_type], shell=True, check=True)
+                    cmd = info[os_type]
+                    if "|" in cmd:
+                        subprocess.run(cmd, shell=True, check=True)
+                    else:
+                        subprocess.run(cmd.split(), check=True)
                 except subprocess.CalledProcessError:
                     warn(f"Failed to install {name}")
+
             else:
                 warn(f"{name} not found — install manually")
 

@@ -4,7 +4,7 @@ services:
     image: traefik:v3.0
     container_name: traefik
     command:
-      - "--api.insecure=true"
+      - "--api.dashboard=true"
       - "--providers.docker=true"
       - "--providers.docker.endpoint=unix:///var/run/docker.sock"
       - "--providers.docker.exposedbydefault=false"
@@ -19,6 +19,7 @@ services:
       - "127.0.0.1:8080:8080"
     environment:
       - DOCKER_API_VERSION=${DOCKER_API_VERSION:-1.41}
+      - DOMAIN=${DOMAIN}
     env_file:
       - ../../.env
     user: root
@@ -32,8 +33,11 @@ services:
       - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN:?DOMAIN not set — run from repo root with .env}`)"
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.routers.traefik.entrypoints=web"
+      - "traefik.http.routers.traefik.middlewares=m3tal-auth"
+      - "traefik.http.middlewares.m3tal-auth.basicauth.users=${TRAEFIK_AUTH_USER}:${TRAEFIK_AUTH_HASH}"
       - "m3tal.stack=routing"
-      - "m3tal.role=edge"
+      - "m3tal.role=gateway"
+
     restart: unless-stopped
 
   cloudflared:

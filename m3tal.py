@@ -16,9 +16,8 @@ if sys.stdout.encoding.lower() != 'utf-8':
 
 # Attempting catastrophic import of paths module
 try:
-    import sys
-    
     # Path bootstrap (V6.5.2)
+
     p = Path(__file__).resolve()
     for parent in [p] + list(p.parents):
         if (parent / ".env").exists() and (parent / "docker").exists():

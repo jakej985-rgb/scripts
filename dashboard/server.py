@@ -141,17 +141,16 @@ def get_metrics_history():
         return jsonify([])
     
     try:
-        # Pure-Python tail for cross-platform support (Audit fix 2.6)
+        from collections import deque
         with open(METRICS_HISTORY_CSV, 'r') as f:
-            all_lines = f.readlines()
-        
-        # Skip header line, get last 200 data lines
-        data_lines = [l for l in all_lines if l.strip() and not l.startswith('timestamp,')]
-        recent = data_lines[-200:]
+            # Efficiently tail the last 200 lines
+            recent = deque(f, maxlen=200)
         
         results = []
         for line in recent:
+            if line.startswith('timestamp,'): continue
             parts = line.strip().split(',')
+
             # CSV format: timestamp,name,cpu,mem (4 columns — Audit fix 2.7)
             if len(parts) >= 4:
                 try:

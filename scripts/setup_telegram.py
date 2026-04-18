@@ -8,11 +8,19 @@ sys.path.append(str(REPO_ROOT / "control-plane"))
 
 try:
     from agents.telegram.discovery import discover_and_map
-    from scripts.config.configure_env import GREEN, YELLOW, RED, BLUE, BOLD, END, ENV_FILE
-    from config.telegram import BOT_TOKEN
+    from scripts.config.configure_env import GREEN, YELLOW, RED, BOLD, END, ENV_FILE
 except ImportError as e:
-    print(f"Setup Error: {e}")
-    sys.exit(1)
+    # Double fallback if running from root vs scripts dir
+    try:
+        from config.configure_env import GREEN, YELLOW, RED, BOLD, END, ENV_FILE
+        from agents.telegram.discovery import discover_and_map
+    except ImportError:
+        print(f"Setup Error: {e}")
+        sys.exit(1)
+
+# Ensure BLUE is defined (L5 fix)
+BLUE = "\033[94m"
+
 
 def main():
     print(f"\n{BOLD}{BLUE}📡 M3TAL Telegram Auto-Discovery Wizard{END}")

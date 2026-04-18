@@ -122,7 +122,8 @@ def shutdown_stack(stack_name: str, bar: ProgressBar, current_step: int):
     
     # Pre-check: Is the stack actually up?
     ps_inspect = subprocess.run(["docker", "compose", "-f", str(compose_file), "ps", "--format", "json"],
-                                 capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)
+                                 capture_output=True, text=True, env=GLOBAL_ENV)
+
     is_up = False
     if ps_inspect.returncode == 0 and ps_inspect.stdout.strip():
         # If ps returns any json objects, the stack has containers (even if exited)
@@ -135,7 +136,8 @@ def shutdown_stack(stack_name: str, bar: ProgressBar, current_step: int):
 
     # Identify containers before removal
     conf_cmd = ["docker", "compose", "-f", str(compose_file), "config", "--services"]
-    conf_res = subprocess.run(conf_cmd, capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)
+    conf_res = subprocess.run(conf_cmd, capture_output=True, text=True, env=GLOBAL_ENV)
+
     expected_services = conf_res.stdout.strip().splitlines() if conf_res.returncode == 0 else []
     total_svc = len(expected_services)
     
@@ -147,8 +149,9 @@ def shutdown_stack(stack_name: str, bar: ProgressBar, current_step: int):
         # 1. Start deconstruction asynchronously
         # FIXED: Using stderr=DEVNULL to avoid "Pipe Deadlock" during teardown
         proc = subprocess.Popen(["docker", "compose", "down", "--remove-orphans"], 
-                                cwd=str(stack_path), shell=use_shell, 
+                                cwd=str(stack_path), 
                                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, env=GLOBAL_ENV)
+
         
         # Settle time
         time.sleep(1)
@@ -157,7 +160,8 @@ def shutdown_stack(stack_name: str, bar: ProgressBar, current_step: int):
         start_time = time.time()
         while time.time() - start_time < 120:
             ps_res = subprocess.run(["docker", "compose", "-f", str(compose_file), "ps", "--format", "json"],
-                                 capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)
+                                 capture_output=True, text=True, env=GLOBAL_ENV)
+
             if ps_res.returncode == 0:
                 out = ps_res.stdout.strip()
                 ps_data = []
@@ -232,7 +236,8 @@ def main():
         HB.log("Pruning dangling Docker networks...")
         try:
             subprocess.run(["docker", "network", "prune", "-f"], check=False, 
-                         shell=(os.name == "nt"), env=GLOBAL_ENV, capture_output=True)
+                         env=GLOBAL_ENV, capture_output=True)
+
             HB.log("Global network space cleared", symbol="✔")
         except Exception: pass
 
