@@ -210,7 +210,9 @@ def background_metrics_stream():
     while True:
         socketio.sleep(2)
         emit_metrics_update()
-
+def start_background_tasks():
+    """Initialize background workers for SocketIO."""
+    socketio.start_background_task(background_metrics_stream)
 
 # Audit fix 2.3 — Start outside main for Docker/WSGI visibility
 # Guarded for test environment to prevent background task proliferation
