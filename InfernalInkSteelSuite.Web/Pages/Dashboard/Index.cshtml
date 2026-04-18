@@ -1,0 +1,171 @@
+@page
+@model InfernalInkSteelSuite.Web.Pages.Dashboard.IndexModel
+
+@{
+    ViewData["Title"] = "The Altar";
+}
+
+<div class="row mb-5">
+    <div class="col-12">
+        <h1 class="text-uppercase mb-4"
+            style="letter-spacing: 4px; border-bottom: 2px solid var(--primary-color); display: inline-block; padding-bottom: 5px;">
+            The Altar <span class="text-muted fs-6" style="vertical-align: middle; letter-spacing: 1px;">// Command
+                Center</span>
+        </h1>
+    </div>
+</div>
+
+<!-- Holographic Runes (Metrics) -->
+<div class="row mb-5 g-4">
+    <div class="col-md-3">
+        <div class="holo-rune-card rune-blood">
+            <span class="rune-label">Today's Rituals</span>
+            <div class="rune-value">@Model.Stats?.AppointmentsToday</div>
+            <i class="bi bi-calendar-event rune-icon"></i>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="holo-rune-card rune-arcane">
+            <span class="rune-label">Bound Souls</span>
+            <div class="rune-value">@Model.Stats?.TotalClients</div>
+            <i class="bi bi-people rune-icon"></i>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="holo-rune-card rune-gold">
+            <span class="rune-label">Open Scrolls</span>
+            <div class="rune-value">@Model.Stats?.OpenQuotes</div>
+            <i class="bi bi-file-text rune-icon"></i>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="holo-rune-card rune-void">
+            <span class="rune-label">Pending</span>
+            <div class="rune-value">@Model.Stats?.UpcomingAppointments</div>
+            <i class="bi bi-hourglass-split rune-icon"></i>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Blood Moon Timeline -->
+    <div class="col-lg-8 mb-4">
+        <div class="infernal-machine-panel h-100">
+            <div class="section-header-metal">
+                <span>Blood Moon Timeline</span>
+                <i class="bi bi-clock-history"></i>
+            </div>
+
+            <div class="timeline-container">
+                <div class="timeline-track">
+                    <!-- Now Marker (Position based on current hour 9am-9pm schedule) -->
+                    @{
+                        var now = DateTime.Now;
+                        var startHour = 9;
+                        var endHour = 21; // 9 PM
+                        var totalHours = endHour - startHour;
+
+                        var currentHour = now.Hour + (now.Minute / 60.0);
+                        var nowPercent = (currentHour - startHour) / totalHours * 100;
+                        if (nowPercent < 0) nowPercent = 0;
+                        if (nowPercent > 100) nowPercent = 100;
+                    }
+                    <div class="timeline-now-marker"
+                        style="left: @(nowPercent.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture))%;">
+                    </div>
+
+                    @foreach (var appt in Model.TodaysAppointments)
+                    {
+                        // Calculate position
+                        var apptStart = appt.StartTime.Hour + (appt.StartTime.Minute / 60.0);
+                        var duration = (appt.EndTime - appt.StartTime).TotalHours;
+                        if (duration < 1) duration = 1; // min visual width
+
+                        var leftPercent = (apptStart - startHour) / totalHours * 100;
+                        var widthPercent = duration / totalHours * 100;
+
+                        if (leftPercent < 0) leftPercent = 0;
+
+                        <div class="timeline-event-block"
+                            style="left: @(leftPercent.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture))%; 
+                                    width: @(widthPercent.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture))%;"
+                            title="@appt.Client?.FullName - @appt.ServiceType">
+                            <span class="text-truncate">@appt.Client?.FullName</span>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="mt-4">
+                @if (Model.TodaysAppointments.Count == 0)
+                {
+                    <div class="alert alert-secondary bg-transparent border-secondary text-muted text-center">
+                        <i class="bi bi-moon-stars fs-4 d-block mb-2"></i>
+                        No rituals scheduled for this moon phase.
+                    </div>
+                }
+                else
+                {
+                    <table class="table table-borderless text-white small">
+                        <thead>
+                            <tr class="text-muted text-uppercase border-bottom border-secondary">
+                                <th>Time</th>
+                                <th>Client</th>
+                                <th>Artist</th>
+                                <th>Service</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var appt in Model.TodaysAppointments)
+                            {
+                                <tr>
+                                    <td class="text-accent font-monospace">@appt.StartTime.ToString("h:mm tt")</td>
+                                    <td>@appt.Client?.FullName</td>
+                                    <td>@appt.ArtistName</td>
+                                    <td>@appt.ServiceType</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Summoning Grid -->
+    <div class="col-lg-4">
+        <div class="infernal-machine-panel h-100">
+            <div class="section-header-metal">
+                <span>Summoning Grid</span>
+                <i class="bi bi-grid-3x3-gap"></i>
+            </div>
+
+            <div class="summon-grid">
+                <a asp-page="/Appointments/New" class="summon-btn">
+                    <i class="bi bi-calendar-plus"></i>
+                    <span>New Appointment</span>
+                </a>
+                <a asp-page="/Clients/Edit" class="summon-btn">
+                    <i class="bi bi-person-plus"></i>
+                    <span>Inscribe Soul</span>
+                </a>
+                <a asp-page="/Quotes/New" class="summon-btn">
+                    <i class="bi bi-lightning-charge"></i>
+                    <span>Smart Quote</span>
+                </a>
+                <a asp-page="/Documents/Index" class="summon-btn">
+                    <i class="bi bi-folder2-open"></i>
+                    <span>Archives</span>
+                </a>
+                <a asp-page="/Clients/Index" class="summon-btn">
+                    <i class="bi bi-people"></i>
+                    <span>Ledger</span>
+                </a>
+                <a asp-page="/Settings/Index" class="summon-btn">
+                    <i class="bi bi-gear"></i>
+                    <span>Machine Spirit</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

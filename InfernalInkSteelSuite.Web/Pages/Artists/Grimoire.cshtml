@@ -1,0 +1,77 @@
+@page
+@model InfernalInkSteelSuite.Web.Pages.Artists.GrimoireModel
+@{
+    ViewData["Title"] = "Grimoire: Damien Thorn";
+    Layout = "_Layout";
+}
+
+<div class="grimoire-header mb-5">
+    <div class="row align-items-end">
+        <div class="col-md-3">
+            <img src="https://via.placeholder.com/300x300/111/333?text=Profile"
+                class="img-fluid rounded border border-secondary shadow-lg" alt="Artist Profile">
+        </div>
+        <div class="col-md-9">
+            <h1 class="display-3 text-uppercase fw-bold" style="color: var(--primary-color);">Damien Thorn</h1>
+            <p class="lead text-white font-monospace">Master of Blackwork & Occult Symbology</p>
+            <div class="d-flex gap-3 mt-4">
+                <a asp-page="/Appointments/Create" class="btn btn-primary btn-lg text-uppercase">
+                    <i class="bi bi-lightning-charge"></i> Summon Artist
+                </a>
+                <button class="btn btn-outline-light btn-lg">
+                    <i class="bi bi-instagram"></i> View Gallery
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="grimoire-manifesto mb-5 text-center px-5">
+    <i class="bi bi-quote display-4 text-muted"></i>
+    <p class="lead text-muted fst-italic">
+        "I do not merely ink skin; I etch the soul. Every line is a binding contract, every shade a whisper from the
+        void."
+    </p>
+</div>
+
+<h3 class="text-uppercase mb-4 border-bottom border-secondary pb-2">The Works</h3>
+
+<div class="gallery-grid">
+    <div class="gallery-item"><img src="https://via.placeholder.com/400x500/222/555?text=Ritual+I" class="img-fluid">
+    </div>
+    <div class="gallery-item"><img src="https://via.placeholder.com/400x300/222/555?text=Skull+Study" class="img-fluid">
+    </div>
+    <div class="gallery-item"><img src="https://via.placeholder.com/400x600/222/555?text=Full+Sleeve" class="img-fluid">
+    </div>
+    <div class="gallery-item"><img src="https://via.placeholder.com/400x400/222/555?text=Rune+Set" class="img-fluid">
+    </div>
+    <div class="gallery-item"><img src="https://via.placeholder.com/400x500/222/555?text=Demon" class="img-fluid"></div>
+    <div class="gallery-item"><img src="https://via.placeholder.com/400x350/222/555?text=Serpent" class="img-fluid">
+    </div>
+</div>
+
+<style>
+    .gallery-grid {
+        column-count: 3;
+        column-gap: 1.5rem;
+    }
+
+    .gallery-item {
+        break-inside: avoid;
+        margin-bottom: 1.5rem;
+        border: 1px solid #333;
+        transition: transform 0.3s;
+    }
+
+    .gallery-item:hover {
+        transform: scale(1.02);
+        border-color: var(--primary-color);
+        box-shadow: 0 0 20px rgba(138, 0, 0, 0.4);
+    }
+
+    @@media(max-width: 768px) {
+        .gallery-grid {
+            column-count: 1;
+        }
+    }
+</style>

@@ -1,0 +1,19 @@
+@page
+@{
+    ViewData["Title"] = "Limbo";
+    Layout = "_Layout";
+}
+
+<div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 70vh; text-align: center;">
+    <h1 class="display-1 fw-bold" style="color: #333; text-shadow: 0 0 20px rgba(255,255,255,0.1);">404</h1>
+    <h2 class="text-uppercase mb-4" style="letter-spacing: 5px; color: var(--accent-color);">Lost in Limbo</h2>
+
+    <div class="mb-5" style="max-width: 500px; color: var(--text-muted);">
+        <p>The page you seek has been consumed by the void, or perhaps it never existed at all.</p>
+        <p>Do not wander too far, lest you become part of the archives permanently.</p>
+    </div>
+
+    <a asp-page="/Dashboard/Index" class="btn btn-primary btn-lg">
+        <i class="bi bi-arrow-left"></i> Return to the Surface
+    </a>
+</div>

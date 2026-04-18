@@ -1,0 +1,98 @@
+@model InfernalInkSteelSuite.Web.Services.ApiClient.DashboardStatsDto
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-5 fw-bold text-gradient">Dashboard</h1>
+            <p class="text-muted">Welcome back to the Infernal Ink & Steel Suite.</p>
+        </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 neon-hover bg-dark text-white border-0 shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted text-uppercase small">Appointments Today</h6>
+                    <h2 class="card-title display-6 fw-bold">@Model.AppointmentsToday</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 neon-hover bg-dark text-white border-0 shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted text-uppercase small">Active Artists</h6>
+                    <h2 class="card-title display-6 fw-bold">@Model.ActiveArtistsCount</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 neon-hover bg-dark text-white border-0 shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted text-uppercase small">Shop Status</h6>
+                    <h2 class="card-title display-6 fw-bold @(Model.IsShopOpen ? "text-success" : "text-danger")">
+                        @(Model.IsShopOpen ? "OPEN" : "CLOSED")
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+             <div class="card h-100 neon-hover bg-dark text-white border-0 shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted text-uppercase small">Total Clients</h6>
+                    <h2 class="card-title display-6 fw-bold">@Model.TotalClients</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Recent Clients -->
+        <div class="col-md-6">
+            <div class="card bg-dark text-white border-secondary h-100">
+                <div class="card-header border-secondary bg-transparent">
+                    <h5 class="mb-0">Recent Clients</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    @foreach(var client in Model.RecentClients)
+                    {
+                        <div class="list-group-item bg-transparent text-white border-secondary d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-0">@client.Name</h6>
+                                <small class="text-muted">@client.Email</small>
+                            </div>
+                            <a asp-controller="Clients" asp-action="Details" asp-route-id="@client.Id" class="btn btn-sm btn-outline-light">View</a>
+                        </div>
+                    }
+                    @if(!Model.RecentClients.Any())
+                    {
+                        <div class="list-group-item bg-transparent text-muted">No recent clients.</div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="col-md-6">
+            <div class="card bg-dark text-white border-secondary h-100">
+                 <div class="card-header border-secondary bg-transparent">
+                    <h5 class="mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body d-grid gap-3">
+                    <a asp-controller="Clients" asp-action="Create" class="btn btn-outline-light text-start p-3">
+                        <i class="bi bi-person-plus me-2"></i> Register New Client
+                    </a>
+                    <a asp-controller="Quotes" asp-action="Create" class="btn btn-outline-info text-start p-3">
+                        <i class="bi bi-calculator me-2"></i> Create Smart Quote
+                    </a>
+                    <a asp-controller="Appointments" asp-action="Create" class="btn btn-outline-primary text-start p-3">
+                         <i class="bi bi-calendar-plus me-2"></i> New Appointment
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

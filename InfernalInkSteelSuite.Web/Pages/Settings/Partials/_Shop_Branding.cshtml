@@ -1,0 +1,40 @@
+@model InfernalInkSteelSuite.Web.Pages.Settings.IndexModel
+
+<div class="glass-panel p-4 mb-4">
+    <h4 class="text-uppercase mb-3 text-gradient-gold">Branding & Theme</h4>
+
+    <div class="row g-4">
+        <!-- Theme Selection -->
+        <div class="col-md-6">
+            <label asp-for="SelectedTheme" class="form-label">Application Theme</label>
+            <select asp-for="SelectedTheme" class="form-select infernal-input">
+                <option value="Neon">Neon (Default)</option>
+                <option value="Steampunk">Steampunk</option>
+                <option value="Minimal">High Contrast</option>
+            </select>
+            <div class="form-text text-muted">Choose the visual style for the dashboard.</div>
+        </div>
+
+        <!-- Login Background -->
+        <div class="col-md-6">
+            <label asp-for="Settings.LoginBackgroundPath" class="form-label">Login Background URL</label>
+            <input asp-for="Settings.LoginBackgroundPath" class="form-control infernal-input"
+                placeholder="https://..." />
+        </div>
+
+        <!-- Special Message -->
+        <div class="col-12">
+            <div class="form-check form-switch mb-2">
+                <input class="form-check-input" type="checkbox" asp-for="Settings.IsSpecialMessageEnabled">
+                <label class="form-check-label" asp-for="Settings.IsSpecialMessageEnabled">Enable Login Message</label>
+            </div>
+            <div class="collapse show" id="specialMessageGroup">
+                <label asp-for="Settings.SpecialMessageText" class="form-label">Message / Tagline</label>
+                <input asp-for="Settings.SpecialMessageText" class="form-control infernal-input" />
+            </div>
+        </div>
+    </div>
+    <div class="mt-3 text-end">
+        <button type="submit" class="btn btn-infernal-primary">Save Branding</button>
+    </div>
+</div>

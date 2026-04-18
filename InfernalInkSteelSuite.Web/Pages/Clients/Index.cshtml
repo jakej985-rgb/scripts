@@ -1,0 +1,217 @@
+@page
+@model InfernalInkSteelSuite.Web.Pages.Clients.IndexModel
+@{
+    ViewData["Title"] = "Clients";
+}
+
+<section class="clients-page">
+    <header class="page-header d-flex justify-content-between align-items-center mb-4">
+        <h1>Clients</h1>
+        <div class="d-flex gap-2">
+            <a asp-page="/Clients/Edit" class="btn btn-primary d-flex align-items-center gap-2">
+                <span>+ New Client</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form method="get" class="d-flex clients-search-form gap-2">
+                <input type="text" name="Search" value="@Model.Search" placeholder="Search by name, phone, or email..."
+                    class="form-control" />
+                <button type="submit" class="btn btn-outline-light">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        @if (Model.Clients.Count > 0)
+        {
+            <div class="btn-group" role="group" aria-label="View Mode">
+                <button type="button" class="btn btn-sm btn-outline-light active" id="btn-view-ledger"
+                    onclick="toggleView('ledger')">
+                    <i class="bi bi-list"></i> Ledger
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-light" id="btn-view-cards"
+                    onclick="toggleView('cards')">
+                    <i class="bi bi-grid-fill"></i> Soul Cards
+                </button>
+            </div>
+        }
+    </div>
+
+    <div id="view-ledger" class="ledger-container">
+        @if (Model.Clients.Count == 0)
+        {
+            <div class="void-state">
+                <div class="void-icon"><i class="bi bi-person-x"></i></div>
+                <h3>The Ledger is Empty</h3>
+                <p>No souls recorded in the archive yet.</p>
+                <a asp-page="/Clients/Edit" class="btn btn-gate-primary mt-3">Inscribe New Soul</a>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table ledger-table align-middle">
+                    <thead>
+                        <tr>
+                            <th>IDENTITY</th>
+                            <th>COMMUNICATION</th>
+                            <th>SIGIL</th>
+                            <th class="text-end">PROTOCOLS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var c in Model.Clients)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="ledger-name">@c.FullName</div>
+                                        @if (c.Status == InfernalInkSteelSuite.Domain.ClientStatus.HighValue)
+                                        {
+                                            <span class="signal-badge signal-vip"><span class="signal-dot"></span>VIP</span>
+                                        }
+                                        else if (c.Status == InfernalInkSteelSuite.Domain.ClientStatus.FreshSoul)
+                                        {
+                                            <span class="signal-badge signal-fresh"><span class="signal-dot"></span>New</span>
+                                        }
+                                        else if (c.Status == InfernalInkSteelSuite.Domain.ClientStatus.Void)
+                                        {
+                                            <span class="signal-badge signal-void"><span class="signal-dot"></span>Void</span>
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="ledger-contact">
+                                        @if (!string.IsNullOrEmpty(c.Phone))
+                                        {
+                                            <div><i class="bi bi-telephone-fill"></i> @c.Phone</div>
+                                        }
+                                        @if (!string.IsNullOrEmpty(c.Email))
+                                        {
+                                            <div><i class="bi bi-envelope-fill"></i> @c.Email</div>
+                                        }
+                                        @if (string.IsNullOrEmpty(c.Phone) && string.IsNullOrEmpty(c.Email))
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="ledger-email text-muted">@c.Status</span>
+                                </td>
+                                <td class="text-end">
+                                    <div class="d-flex justify-content-end align-items-center gap-2">
+                                        <div class="summoning-actions">
+                                            @if (!string.IsNullOrEmpty(c.Phone))
+                                            {
+                                                <a href="tel:@c.Phone" class="btn-summon" title="Summon (Call)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                        fill="currentColor" class="bi bi-telephone" viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.748 1.748 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z" />
+                                                    </svg>
+                                                </a>
+                                            }
+                                            @if (!string.IsNullOrEmpty(c.Email))
+                                            {
+                                                <a href="mailto:@c.Email" class="btn-summon" title="Write Pact (Email)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                        fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z" />
+                                                    </svg>
+                                                </a>
+                                            }
+                                        </div>
+                                        <a asp-page="/Clients/Edit" asp-route-id="@c.Id" class="btn btn-sm btn-outline-light">
+                                            ACCESS FILE
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+
+    <div id="view-cards" class="soul-cards-grid" style="display: none;">
+        @foreach (var c in Model.Clients)
+        {
+            <div class="soul-card">
+                <div class="soul-card-header">
+                    @{
+                        var initial = !string.IsNullOrEmpty(c.FirstName) ? c.FirstName.Substring(0, 1) : "?";
+                        var avatarUrl = !string.IsNullOrEmpty(c.PhotoPath) ? c.PhotoPath : null;
+                    }
+                    @if (avatarUrl != null)
+                    {
+                        <img src="@avatarUrl" class="soul-avatar" alt="@c.FullName" />
+                    }
+                    else
+                    {
+                        <div class="soul-avatar">@initial</div>
+                    }
+
+                    <div class="soul-info">
+                        <h3>@c.FullName</h3>
+                        <div class="d-flex gap-2 mt-1">
+                            @if (c.Status == InfernalInkSteelSuite.Domain.ClientStatus.HighValue)
+                            {
+                                <span class="signal-badge signal-vip"><span class="signal-dot"></span>VIP</span>
+                            }
+                            else if (c.Status == InfernalInkSteelSuite.Domain.ClientStatus.FreshSoul)
+                            {
+                                <span class="signal-badge signal-fresh"><span class="signal-dot"></span>New</span>
+                            }
+                            else if (c.Status == InfernalInkSteelSuite.Domain.ClientStatus.Void)
+                            {
+                                <span class="signal-badge signal-void"><span class="signal-dot"></span>Void</span>
+                            }
+                            else
+                            {
+                                <span class="signal-badge signal-bound"><span class="signal-dot"></span>Bound</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="soul-body">
+                    <div class="soul-meta"><i class="bi bi-telephone"></i> @(c.Phone ?? "-")</div>
+                    <div class="soul-meta"><i class="bi bi-envelope"></i> @(c.Email ?? "-")</div>
+                    <div class="soul-meta mt-2"><i class="bi bi-calendar-event"></i> Visits: @c.Visits</div>
+                </div>
+
+                <div class="soul-card-actions">
+                    <a asp-page="/Clients/Edit" asp-route-id="@c.Id" class="btn btn-sm btn-outline-light w-100">Open Case
+                        File</a>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<script>
+    function toggleView(mode) {
+        const ledgerView = document.getElementById('view-ledger');
+        const cardsView = document.getElementById('view-cards');
+        const btnLedger = document.getElementById('btn-view-ledger');
+        const btnCards = document.getElementById('btn-view-cards');
+
+        if (mode === 'cards') {
+            ledgerView.style.display = 'none';
+            cardsView.style.display = 'grid';
+            btnLedger.classList.remove('active');
+            btnCards.classList.add('active');
+        } else {
+            ledgerView.style.display = 'block';
+            cardsView.style.display = 'none';
+            btnLedger.classList.add('active');
+            btnCards.classList.remove('active');
+        }
+    }
+</script>

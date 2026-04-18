@@ -1,0 +1,67 @@
+@model InfernalInkSteelSuite.Web.Pages.Settings.IndexModel
+
+<div class="glass-panel p-4 mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="text-uppercase text-gradient-gold mb-0">Staff Management</h4>
+        <button type="button" class="btn btn-outline-light btn-sm" onclick="alert('Add User Dialog coming soon')">
+            <i class="bi bi-person-plus-fill me-2"></i> Add Staff
+        </button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-dark table-hover align-middle mb-0" style="background: transparent;">
+            <thead>
+                <tr class="text-uppercase text-muted small">
+                    <th>User</th>
+                    <th>Role</th>
+                    <th>Skills</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Users != null && Model.Users.Any())
+                {
+                    @foreach (var user in Model.Users)
+                    {
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-circle me-2 bg-secondary text-white small"
+                                        style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                                        @(user.DisplayName.Substring(0, 1))
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-light">@user.DisplayName</div>
+                                        <div class="small text-muted">@("@" + user.Username)</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span
+                                    class="badge @(user.Role == "Admin" ? "bg-danger" : "bg-dark border border-secondary") text-uppercase small">
+                                    @user.Role
+                                </span>
+                            </td>
+                            <td>
+                                <span class="small text-muted">@user.Skills</span>
+                            </td>
+                            <td class="text-end">
+                                <button class="btn btn-link text-muted p-0 me-2"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-link text-danger p-0"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center text-muted py-4">
+                            <i class="bi bi-people display-6 d-block mb-2 opacity-50"></i>
+                            No staff members found.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

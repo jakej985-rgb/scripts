@@ -1,0 +1,140 @@
+@page
+@model InfernalInkSteelSuite.Web.Pages.Tools.FleshCanvasModel
+@{
+    ViewData["Title"] = "Flesh Canvas";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-md-5 text-center">
+        <h2 class="text-uppercase mb-4" style="color: var(--primary-color);">Subject Anatomy</h2>
+
+        <!-- Interactive Body Map SVG -->
+        <div class="flesh-canvas-container position-relative">
+            <svg viewBox="0 0 200 400" class="body-map-svg" xmlns="http://www.w3.org/2000/svg">
+                <!-- Head -->
+                <g class="body-part" data-part="Head" onclick="logTissueNote('Head')">
+                    <circle cx="100" cy="40" r="25" fill="#333" stroke="#555" stroke-width="2" />
+                </g>
+                <!-- Torso -->
+                <g class="body-part" data-part="Torso" onclick="logTissueNote('Torso')">
+                    <rect x="70" y="70" width="60" height="100" rx="10" fill="#333" stroke="#555" stroke-width="2" />
+                </g>
+                <!-- Left Arm -->
+                <g class="body-part" data-part="Left Arm" onclick="logTissueNote('Left Arm')">
+                    <rect x="35" y="75" width="30" height="120" rx="5" fill="#333" stroke="#555" stroke-width="2"
+                        transform="rotate(10 35 75)" />
+                </g>
+                <!-- Right Arm -->
+                <g class="body-part" data-part="Right Arm" onclick="logTissueNote('Right Arm')">
+                    <rect x="135" y="75" width="30" height="120" rx="5" fill="#333" stroke="#555" stroke-width="2"
+                        transform="rotate(-10 135 75)" />
+                </g>
+                <!-- Left Leg -->
+                <g class="body-part" data-part="Left Leg" onclick="logTissueNote('Left Leg')">
+                    <rect x="72" y="175" width="25" height="150" rx="5" fill="#333" stroke="#555" stroke-width="2" />
+                </g>
+                <!-- Right Leg -->
+                <g class="body-part" data-part="Right Leg" onclick="logTissueNote('Right Leg')">
+                    <rect x="103" y="175" width="25" height="150" rx="5" fill="#333" stroke="#555" stroke-width="2" />
+                </g>
+            </svg>
+
+            <div id="body-tooltip" class="body-tooltip">Select Zone</div>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <h2 class="text-uppercase mb-4">Tissue Notes</h2>
+        <div class="card bg-dark border-secondary h-100">
+            <div class="card-body">
+                <div id="tissue-log" class="overflow-auto" style="max-height: 400px;">
+                    <div class="text-muted text-center mt-5">Select a body zone to log observations...</div>
+                </div>
+            </div>
+            <div class="card-footer border-secondary">
+                <button class="btn btn-primary w-100">Save Anatomy Chart</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Simple hover effect logic
+    document.querySelectorAll('.body-part').forEach(part => {
+        part.addEventListener('mouseenter', (e) => {
+            const name = part.getAttribute('data-part');
+            const tooltip = document.getElementById('body-tooltip');
+            tooltip.innerText = name;
+            tooltip.style.opacity = 1;
+            part.querySelector('circle, rect').setAttribute('fill', 'var(--primary-color)');
+        });
+
+        part.addEventListener('mouseleave', (e) => {
+            const tooltip = document.getElementById('body-tooltip');
+            tooltip.style.opacity = 0;
+            if (!part.classList.contains('active-part')) {
+                part.querySelector('circle, rect').setAttribute('fill', '#333');
+            }
+        });
+    });
+
+    function logTissueNote(partName) {
+        const log = document.getElementById('tissue-log');
+        if (log.querySelector('.text-center')) log.innerHTML = '';
+
+        const note = document.createElement('div');
+        note.className = 'alert alert-dark border-secondary mb-2 d-flex justify-content-between align-items-center animation-fade-in';
+        note.innerHTML = `
+            <div>
+                <strong style="color: var(--primary-color)">${partName}</strong>
+                <div class="small text-muted">No scarring visible. Skin elasticity normal.</div>
+            </div>
+            <button class="btn btn-sm btn-link text-muted"><i class="bi bi-x"></i></button>
+        `;
+        log.prepend(note);
+        showOmen(`Observation logged for ${partName}`, 'success');
+    }
+</script>
+
+<style>
+    .body-map-svg {
+        height: 500px;
+        filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+    }
+
+    .body-part {
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .body-tooltip {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: black;
+        border: 1px solid var(--primary-color);
+        padding: 5px 10px;
+        border-radius: 4px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+    }
+
+    .animation-fade-in {
+        animation: fadeIn 0.3s;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

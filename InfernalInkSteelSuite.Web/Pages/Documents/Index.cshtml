@@ -1,0 +1,83 @@
+@page
+@model InfernalInkSteelSuite.Web.Pages.Documents.IndexModel
+@{
+    ViewData["Title"] = "Documents";
+}
+
+<section class="documents-page">
+    <header class="page-header d-flex justify-content-between align-items-center mb-4">
+        <h1>Documents</h1>
+        <!-- Upload button could go here if we implemented upload form -->
+    </header>
+
+    @if (Model.Documents.Count == 0)
+    {
+        <div class="text-center py-5 text-muted border rounded border-secondary bg-surface">
+            <h4>No documents found.</h4>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var doc in Model.Documents)
+            {
+                <div class="col-md-3">
+                    <div class="document-card">
+                        <div class="doc-icon">
+                            <i class="bi bi-file-earmark-text"></i>
+                        </div>
+                        <div class="doc-info">
+                            <h6 class="doc-title" title="@doc.Title">@doc.Title</h6>
+                            <span class="doc-date">@doc.CreatedAt.ToString("MMM dd, yyyy")</span>
+                        </div>
+                        <div class="doc-actions">
+                            <button class="btn btn-sm btn-outline-light w-100" disabled>Download</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <style>
+            .document-card {
+                background: rgba(40, 40, 40, 0.4);
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                border-radius: 4px;
+                padding: 1.5rem;
+                text-align: center;
+                transition: all 0.2s ease;
+            }
+
+            .document-card:hover {
+                background: rgba(60, 60, 60, 0.5);
+                transform: translateY(-3px);
+                border-color: var(--accent-color);
+            }
+
+            .doc-icon {
+                font-size: 3rem;
+                color: var(--text-secondary);
+                margin-bottom: 1rem;
+            }
+
+            .document-card:hover .doc-icon {
+                color: var(--accent-color);
+            }
+
+            .doc-title {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                margin-bottom: 0.2rem;
+                color: var(--text-primary);
+            }
+
+            .doc-date {
+                font-size: 0.75rem;
+                color: var(--text-secondary);
+                display: block;
+                margin-bottom: 1rem;
+            }
+        </style>
+    }
+</section>

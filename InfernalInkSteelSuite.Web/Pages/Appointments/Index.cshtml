@@ -1,0 +1,117 @@
+@page
+@model InfernalInkSteelSuite.Web.Pages.Appointments.IndexModel
+@{
+    ViewData["Title"] = "Appointments";
+    var prevDate = Model.SelectedDate.AddDays(-1).ToString("yyyy-MM-dd");
+    var nextDate = Model.SelectedDate.AddDays(1).ToString("yyyy-MM-dd");
+    var today = DateOnly.FromDateTime(DateTime.Today).ToString("yyyy-MM-dd");
+    var currentStr = Model.SelectedDate.ToString("yyyy-MM-dd");
+}
+
+<section class="appointments-page">
+    @Html.AntiForgeryToken()
+    <header class="page-header d-flex justify-content-between align-items-center mb-4">
+        <h1>Appointments</h1>
+        <div class="d-flex gap-2">
+            <a asp-page="/Appointments/Edit" class="btn btn-primary d-flex align-items-center gap-2">
+                <span>+ New Appointment</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="appointments-container compact-calendar-mode">
+        <!-- Sidebar: Purgatory / Waitlist -->
+        <!-- Sidebar: Daily Rituals (Moved from Main Stage) -->
+        <aside class="appointments-sidebar rounded">
+            <div class="d-flex justify-content-between align-items-center border-bottom border-secondary pb-2 mb-3">
+                <div class="d-flex align-items-center gap-2">
+                    <h5 class="text-uppercase mb-0" style="font-size: 1rem;">
+                        <i class="bi bi-calendar-event me-1 text-danger"></i>Rituals
+                    </h5>
+                    <span class="badge bg-dark border border-secondary text-muted">@Model.Appointments.Count</span>
+                </div>
+                <!-- View Options Toolbar -->
+                <div class="d-flex gap-1" id="viewOptionsToolbar">
+                    <button class="view-option-btn" data-view="grid" title="Grid View"><i class="bi bi-grid-3x3"></i></button>
+                    <button class="view-option-btn" data-view="small" title="Compact List"><i class="bi bi-list"></i></button>
+                    <button class="view-option-btn active" data-view="medium" title="Standard List"><i class="bi bi-list-ul"></i></button>
+                    <button class="view-option-btn" data-view="large" title="Detailed List"><i class="bi bi-card-text"></i></button>
+                </div>
+            </div>
+            
+            <div class="mb-3 text-muted small">
+                Viewing <span class="text-white fw-bold">@Model.SelectedDate.ToString("D")</span>
+            </div>
+
+            @if (Model.Appointments.Count == 0)
+            {
+                <div class="text-muted small fst-italic text-center py-4 border rounded border-secondary bg-surface bg-opacity-10">
+                    <div class="mb-2"><i class="bi bi-moon-stars fs-3 text-muted"></i></div>
+                    No rituals scheduled<br/>for this day...
+                </div>
+            }
+            else
+            {
+                <div id="appointmentsList" class="appointments-list-container d-flex flex-column gap-3" style="min-height: 200px; max-height: calc(100vh - 250px); overflow-y: auto; padding-right: 5px;">
+                    @foreach (var appt in Model.Appointments)
+                    {
+                        <partial name="_AppointmentCard" model="appt" />
+                    }
+                </div>
+            }
+        </aside>
+
+        <!-- Main Stage -->
+        <main class="main-stage">
+            <!-- Main Stage Toolbar -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <button type="button" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-2" id="toggleCalendarBtn">
+                    <i class="bi bi-chevron-right" id="calendarToggleIcon"></i>
+                    <span>Toggle Calendar</span>
+                </button>
+
+                <div class="d-flex gap-3 align-items-center">
+                    <!-- Search "Oracle" Trigger -->
+                    <button class="btn btn-outline-light btn-sm" title="Consult the Oracle (Search)">
+                        <i class="bi bi-eye me-2"></i>Consult the Oracle
+                    </button>
+                </div>
+            </div>
+
+            <!-- Magma Calendar -->
+            <div id="magmaCalendarContainer">
+                <partial name="_MagmaCalendar" model="Model" />
+            </div>
+
+            <!-- Rituals moved to Sidebar -->
+        </main>
+    </div>
+</section>
+
+<!-- Details Modal -->
+<div class="modal fade" id="appointmentDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content infernal-modal-content" id="appointmentDetailsModalContent">
+            <!-- Content loaded via AJAX -->
+            <div class="modal-body text-center py-5">
+                <div class="spinner-border text-accent" role="status">
+                    <span class="visually-hidden">Summoning details...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Floating "Summon" Button -->
+<div class="position-fixed bottom-0 end-0 p-4" style="z-index: 1000">
+    <a asp-page="/Appointments/Edit"
+        class="btn btn-primary rounded-circle shadow-lg d-flex align-items-center justify-content-center"
+        style="width: 60px; height: 60px; font-size: 24px;">
+        <i class="bi bi-plus-lg"></i>
+    </a>
+</div>
+
+@section Scripts {
+    <script src="~/js/appointments.js" asp-append-version="true"></script>
+}
+

@@ -1,15 +1,17 @@
 services:
   api:
-    image: node:20
+    image: mcr.microsoft.com/dotnet/aspnet:8.0
     container_name: tattoo-api
     working_dir: /app
     volumes:
-      - ${DATA_DIR}/tattoo/backend:/app
-      - ${DATA_DIR}/tattoo/uploads:/app/uploads
-    command:
-      - sh
-      - -c
-      - 'npm install && npm start'
+      - ${REPO_ROOT}/InfernalInkSteelSuite.Web/publish:/app
+      - ${DATA_DIR}/tattoo/db:/data
+      - ${DATA_DIR}/tattoo/uploads:/app/wwwroot/uploads
+    environment:
+      - ASPNETCORE_URLS=http://+:3000
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Data Source=/data/tattoo.db
+    command: ["dotnet", "InfernalInkSteelSuite.Web.dll"]
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.tattoo.rule=Host(`tattoo.${DOMAIN:?DOMAIN not set}`)"
@@ -19,11 +21,8 @@ services:
       - "m3tal.stack=tattoo-app"
     networks:
       - proxy
-      - app_internal
     env_file:
       - ../../../.env
-    depends_on:
-      - db
     restart: unless-stopped
 
   db:
@@ -34,9 +33,9 @@ services:
       POSTGRES_PASSWORD: ${TATTOO_DB_PASSWORD:?TATTOO_DB_PASSWORD not set}
       POSTGRES_DB: tattooapp
     volumes:
-      - ${DATA_DIR}/tattoo/db:/var/lib/postgresql/data
+      - ${DATA_DIR}/tattoo/postgres:/var/lib/postgresql
     networks:
-      - app_internal
+      - proxy
     env_file:
       - ../../../.env
     restart: unless-stopped
@@ -44,7 +43,3 @@ services:
 networks:
   proxy:
     external: true
-  app_internal:
-    driver: bridge
-  default:
-    name: none

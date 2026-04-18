@@ -1,0 +1,108 @@
+@page
+@model InfernalInkSteelSuite.Web.Pages.Tools.FlashRouletteModel
+@{
+    ViewData["Title"] = "Flash Roulette";
+    Layout = "_Layout";
+}
+
+<div class="row justify-content-center text-center">
+    <div class="col-md-8">
+        <h1 class="text-uppercase mb-4" style="color: var(--primary-color);">Flash Roulette</h1>
+        <p class="text-muted mb-5">Let fate decide your next mark. Spin the wheel of destiny.</p>
+
+        <div class="roulette-container position-relative mx-auto mb-5" style="width: 300px; height: 300px;">
+            <div id="roulette-wheel"
+                class="rounded-circle border border-4 border-secondary w-100 h-100 position-relative overflow-hidden shadow-lg"
+                style="background: conic-gradient(from 0deg, #111 0deg 60deg, #222 60deg 120deg, #111 120deg 180deg, #222 180deg 240deg, #111 240deg 300deg, #222 300deg 360deg);">
+                <!-- Segments simulated by gradient -->
+                <div class="position-absolute top-50 start-50 translate-middle text-white fw-bold"
+                    style="transform: translate(-50%, -50%) rotate(30deg) translateY(-100px);">Skull</div>
+                <div class="position-absolute top-50 start-50 translate-middle text-white fw-bold"
+                    style="transform: translate(-50%, -50%) rotate(90deg) translateY(-100px);">Snake</div>
+                <div class="position-absolute top-50 start-50 translate-middle text-white fw-bold"
+                    style="transform: translate(-50%, -50%) rotate(150deg) translateY(-100px);">Dagger</div>
+                <div class="position-absolute top-50 start-50 translate-middle text-white fw-bold"
+                    style="transform: translate(-50%, -50%) rotate(210deg) translateY(-100px);">Rose</div>
+                <div class="position-absolute top-50 start-50 translate-middle text-white fw-bold"
+                    style="transform: translate(-50%, -50%) rotate(270deg) translateY(-100px);">Moth</div>
+                <div class="position-absolute top-50 start-50 translate-middle text-white fw-bold"
+                    style="transform: translate(-50%, -50%) rotate(330deg) translateY(-100px);">Eye</div>
+            </div>
+            <div class="position-absolute top-0 start-50 translate-middle-x">
+                <i class="bi bi-caret-down-fill text-danger display-4" style="filter: drop-shadow(0 0 5px red);"></i>
+            </div>
+        </div>
+
+        <button class="btn btn-primary btn-lg px-5 py-3 text-uppercase" onclick="spinWheel()">
+            <i class="bi bi-arrow-repeat me-2"></i> Spin The Wheel
+        </button>
+
+        <div id="result-card" class="mt-5 d-none animate-fade-up">
+            <h3 class="text-white">Destiny Hss Spoken</h3>
+            <div class="card bg-dark border-secondary d-inline-block p-3 mt-3">
+                <img src="https://via.placeholder.com/200x200/000000/ffffff?text=?" id="result-img"
+                    class="img-fluid rounded border border-secondary mb-3">
+                <h4 class="text-primary text-uppercase" id="result-name">???</h4>
+                <p class="text-muted small">Available for walk-in today.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const designs = [
+        { name: "Cursed Skull", img: "https://via.placeholder.com/200x200/111/fff?text=Skull" },
+        { name: "Venom Snake", img: "https://via.placeholder.com/200x200/111/fff?text=Snake" },
+        { name: "Ritual Dagger", img: "https://via.placeholder.com/200x200/111/fff?text=Dagger" },
+        { name: "Black Rose", img: "https://via.placeholder.com/200x200/111/fff?text=Rose" },
+        { name: "Death Moth", img: "https://via.placeholder.com/200x200/111/fff?text=Moth" },
+        { name: "All-Seeing Eye", img: "https://via.placeholder.com/200x200/111/fff?text=Eye" }
+    ];
+
+    function spinWheel() {
+        const wheel = document.getElementById('roulette-wheel');
+        const resultCard = document.getElementById('result-card');
+
+        // Hide previous result
+        resultCard.classList.add('d-none');
+
+        // Random spin calculation (at least 3 full spins + random offset)
+        const rotations = 1080 + Math.floor(Math.random() * 360);
+        wheel.style.transition = "transform 3s cubic-bezier(0.25, 0.1, 0.25, 1)";
+        wheel.style.transform = `rotate(${rotations}deg)`;
+
+        // Play sound
+        if (typeof playSound === 'function') playSound('hover');
+
+        setTimeout(() => {
+            // Calculate result based on angle (simplified random selection for demo)
+            const winner = designs[Math.floor(Math.random() * designs.length)];
+
+            document.getElementById('result-name').innerText = winner.name;
+            document.getElementById('result-img').src = winner.img;
+            resultCard.classList.remove('d-none');
+
+            showOmen("The wheel halts. Your destiny is sealed.", "success");
+
+            // Reset transition for next spin (quick reset not implemented for simplicity, just additive)
+        }, 3000);
+    }
+</script>
+
+<style>
+    .animate-fade-up {
+        animation: fadeUp 0.5s ease-out;
+    }
+
+    @@keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

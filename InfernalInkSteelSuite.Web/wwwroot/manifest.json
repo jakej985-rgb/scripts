@@ -1,0 +1,21 @@
+{
+  "name": "Infernal Ink & Steel Suite",
+  "short_name": "Infernal Ink",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050000",
+  "theme_color": "#8a0000",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://via.placeholder.com/192x192/8a0000/ffffff?text=INK",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://via.placeholder.com/512x512/8a0000/ffffff?text=INK",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

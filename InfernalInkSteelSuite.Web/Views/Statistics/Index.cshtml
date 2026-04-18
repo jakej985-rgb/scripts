@@ -1,0 +1,86 @@
+@model InfernalInkSteelSuite.Web.Services.ApiClient.DashboardStatsDto
+@{
+    ViewData["Title"] = "Statistics";
+    var chartData = ViewData["AppointmentsChart"] as List<InfernalInkSteelSuite.Web.Services.ApiClient.AppointmentStatDto>;
+}
+
+<div class="container-fluid">
+    <h1 class="mb-4">Shop Statistics</h1>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-dark text-light neon-border text-center p-3">
+                <h3 class="display-4">@Model.AppointmentsToday</h3>
+                <small class="text-muted">Appointments Today</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-dark text-light neon-border text-center p-3">
+                <h3 class="display-4">@Model.TotalClients</h3>
+                <small class="text-muted">Total Clients</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-dark text-light neon-border text-center p-3">
+                <h3 class="display-4 text-@(Model.IsShopOpen ? "success" : "danger")">@(Model.IsShopOpen ? "OPEN" : "CLOSED")</h3>
+                <small class="text-muted">Shop Status</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-dark text-light neon-border text-center p-3">
+                <h3 class="display-4">@Model.ActiveArtistsCount</h3>
+                <small class="text-muted">Active Artists</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card bg-dark text-light border-secondary">
+                <div class="card-header">
+                    Appointments (Last 30 Days)
+                </div>
+                <div class="card-body">
+                    <div style="height: 300px; display: flex; align-items: flex-end; justify-content: space-around; padding-bottom: 20px;">
+                         @if (chartData != null && chartData.Any())
+                         {
+                             var max = chartData.Max(x => x.Count);
+                             foreach(var item in chartData)
+                             {
+                                 var h = (item.Count / (double)max) * 100;
+                                 <div class="text-center" style="width: 30px;">
+                                     <div style="height: @h%; background-color: var(--accent-color); width: 100%; border-radius: 4px 4px 0 0; min-height: 2px;"></div>
+                                     <small style="font-size: 10px; transform: rotate(-45deg); display: block; margin-top: 5px;">@item.Date.ToString("MM/dd")</small>
+                                 </div>
+                             }
+                         }
+                         else
+                         {
+                             <p class="text-muted align-self-center">No data available</p>
+                         }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-dark text-light border-secondary">
+                <div class="card-header">
+                    New Clients
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush bg-dark">
+                        @foreach(var client in Model.RecentClients)
+                        {
+                            <li class="list-group-item bg-dark text-light border-secondary">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">@client.Name</h6>
+                                </div>
+                                <small class="text-muted">@client.Email</small>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

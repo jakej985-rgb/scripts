@@ -1,0 +1,42 @@
+@page
+@model InfernalInkSteelSuite.Web.Pages.DebugModel
+@{
+    ViewData["Title"] = "Debug Database";
+}
+
+<h1>Database Diagnostics</h1>
+
+<div class="card">
+    <div class="card-body">
+        <h3>Environment Info</h3>
+        <ul>
+            <li><strong>Content Root Path:</strong> @Model.ContentRootPath</li>
+            <li><strong>Web Root Path:</strong> @Model.WebRootPath</li>
+            <li><strong>Process Name:</strong> @Model.ProcessName</li>
+            <li><strong>User Name:</strong> @Model.UserName</li>
+        </ul>
+
+        <h3>Database Configuration</h3>
+        <ul>
+            <li><strong>Connection String (Config):</strong> @Model.ConnectionStringConfig</li>
+            <li><strong>Effective DB Path:</strong> @Model.DbPath</li>
+        </ul>
+
+        <h3>File System Check</h3>
+        <ul>
+            <li><strong>Directory Exists:</strong> @Model.DirExists</li>
+            <li><strong>File Exists:</strong> @Model.FileExists</li>
+            <li><strong>File Attributes:</strong> @Model.FileAttributes</li>
+            <li><strong>Can Open File Stream (Read):</strong> @Model.CanRead</li>
+            <li><strong>Can Open File Stream (Write):</strong> @Model.CanWrite</li>
+        </ul>
+
+        <h3>SQLite Connection Check</h3>
+        <ul>
+            <li><strong>Connection Attempt:</strong> @Model.ConnectionResult</li>
+            <li><strong>Error Message:</strong>
+                <pre>@Model.ConnectionError</pre>
+            </li>
+        </ul>
+    </div>
+</div>

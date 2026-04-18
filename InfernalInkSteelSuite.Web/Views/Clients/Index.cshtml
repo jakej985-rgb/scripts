@@ -1,0 +1,30 @@
+@using InfernalInkSteelSuite.Web.Models
+@model IEnumerable<ClientDto>
+
+@{
+    ViewData["Title"] = "Clients";
+}
+
+<h1>Clients</h1>
+
+<table class="table table-striped table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Notes</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.FullName</td>
+                <td>@c.Phone</td>
+                <td>@c.Email</td>
+                <td>@c.Notes</td>
+            </tr>
+        }
+    </tbody>
+</table>

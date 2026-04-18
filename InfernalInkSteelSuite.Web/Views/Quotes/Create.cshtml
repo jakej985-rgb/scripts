@@ -1,0 +1,168 @@
+@model InfernalInkSteelSuite.Web.Services.ApiClient.QuoteInput
+@{
+    ViewData["Title"] = "Smart Quote";
+}
+
+<div class="container-fluid">
+    <h1 class="mb-4">Create Smart Quote</h1>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card bg-dark text-light border-secondary">
+                <div class="card-body">
+                    <form id="quoteForm" asp-action="Create" method="post">
+                        <input type="hidden" asp-for="ClientId" />
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Placement</label>
+                                <input asp-for="Placement" class="form-control bg-secondary text-light border-0" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Style</label>
+                                <select asp-for="Style" class="form-select bg-secondary text-light border-0">
+                                    <option>Traditional</option>
+                                    <option>Realism</option>
+                                    <option>Blackwork</option>
+                                    <option>Japanese</option>
+                                    <option>Script</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Width (cm)</label>
+                                <input asp-for="Width" type="number" step="0.1" class="form-control bg-secondary text-light border-0" id="inputWidth" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Height (cm)</label>
+                                <input asp-for="Height" type="number" step="0.1" class="form-control bg-secondary text-light border-0" id="inputHeight" />
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <div class="form-check">
+                                    <input asp-for="IsCoverUp" class="form-check-input" type="checkbox" id="checkCoverUp" />
+                                    <label class="form-check-label" for="checkCoverUp">Cover Up?</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5 class="mt-4 mb-3">Complexity Factors (1-5)</h5>
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Coverage</label>
+                                <input asp-for="CoverageLevel" type="range" class="form-range" min="1" max="5" id="rngCoverage" oninput="valCoverage.innerText = this.value">
+                                <span id="valCoverage">3</span>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Lines</label>
+                                <input asp-for="LineComplexity" type="range" class="form-range" min="1" max="5" id="rngLines" oninput="valLines.innerText = this.value">
+                                <span id="valLines">3</span>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Shading</label>
+                                <input asp-for="ShadingComplexity" type="range" class="form-range" min="1" max="5" id="rngShading" oninput="valShading.innerText = this.value">
+                                <span id="valShading">3</span>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Color</label>
+                                <input asp-for="ColorComplexity" type="range" class="form-range" min="1" max="5" id="rngColor" oninput="valColor.innerText = this.value">
+                                <span id="valColor">3</span>
+                            </div>
+                             <div class="col-md-3">
+                                <label class="form-label">Difficulty</label>
+                                <input asp-for="Difficulty" type="range" class="form-range" min="1" max="5" id="rngDifficulty" oninput="valDifficulty.innerText = this.value">
+                                <span id="valDifficulty">3</span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" class="btn btn-info" onclick="previewQuote()">Preview Quote</button>
+                            <button type="submit" class="btn btn-success">Save Quote</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-dark text-light border-secondary neon-border">
+                <div class="card-header">
+                    <h4 class="mb-0">Estimate</h4>
+                </div>
+                <div class="card-body" id="estimateResult">
+                    <p class="text-muted text-center my-5">Enter details and click Preview to see the smart quote estimate.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        async function previewQuote() {
+            const formData = {
+                clientId: $('input[name="ClientId"]').val(),
+                placement: $('input[name="Placement"]').val(),
+                style: $('select[name="Style"]').val(),
+                isCoverUp: $('#checkCoverUp').is(':checked'),
+                width: parseFloat($('#inputWidth').val()) || 0,
+                height: parseFloat($('#inputHeight').val()) || 0,
+                coverageLevel: parseInt($('#rngCoverage').val()),
+                lineComplexity: parseInt($('#rngLines').val()),
+                shadingComplexity: parseInt($('#rngShading').val()),
+                colorComplexity: parseInt($('#rngColor').val()),
+                difficulty: parseInt($('#rngDifficulty').val()),
+                artistId: 0 // Will be set by server
+            };
+
+            try {
+                const response = await fetch('@Url.Action("Preview")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    renderEstimate(data);
+                } else {
+                    alert('Error calculating quote');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Error connecting to server');
+            }
+        }
+
+        function renderEstimate(data) {
+            const html = `
+                <div class="text-center mb-4">
+                    <h2 class="text-success">$${data.priceLow} - $${data.priceHigh}</h2>
+                    <small class="text-muted">Estimated Price Range</small>
+                </div>
+                <hr class="border-secondary">
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Est. Hours:</span>
+                    <span class="text-info">${data.estimatedHoursLow} - ${data.estimatedHoursHigh} hrs</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Deposit:</span>
+                    <span class="text-warning">$${data.recommendedDeposit}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Confidence:</span>
+                    <span>${Math.round(data.confidenceScore * 100)}%</span>
+                </div>
+                <div class="mt-4">
+                     <div class="alert alert-secondary small">
+                        Based on shop minimum of $${data.shopMinimum}.
+                     </div>
+                </div>
+            `;
+            $('#estimateResult').html(html);
+        }
+    </script>
+}

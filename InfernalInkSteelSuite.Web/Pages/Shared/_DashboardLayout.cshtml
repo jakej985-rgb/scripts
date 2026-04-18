@@ -1,0 +1,257 @@
+@using Microsoft.AspNetCore.Http
+@{
+    var role = Context.Session.GetString("Role");
+    bool isAdminOrManager = role == "Admin" || role == "Manager";
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Infernal Ink & Steel</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/InfernalInkSteelSuite.Web.styles.css" asp-append-version="true" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Oswald:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--bg-surface);
+            border-right: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .sidebar-brand {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex-grow: 1;
+        }
+
+        .nav-item-link {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.2s, color 0.2s;
+            font-family: var(--font-body);
+        }
+
+        .nav-item-link:hover,
+        .nav-item-link.active {
+            background-color: rgba(255, 82, 82, 0.1);
+            color: var(--accent-color);
+        }
+
+        .main-content {
+            flex-grow: 1;
+            margin-left: 250px;
+            /* Width of sidebar */
+            padding: 2rem;
+            background-color: var(--bg-dark);
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            border-top: 1px solid var(--glass-border);
+            padding-top: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                INFERNAL INK
+            </div>
+            <nav class="sidebar-nav">
+                <a asp-page="/Dashboard/Index"
+                    class="nav-item-link @(ViewContext.RouteData.Values["page"]?.ToString() == "/Dashboard/Index" ? "active" : "")">
+                    <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                </a>
+
+                <a asp-page="/Clients/Index"
+                    class="nav-item-link @(ViewContext.RouteData.Values["page"]?.ToString() == "/Clients/Index" ? "active" : "")">
+                    <i class="bi bi-people-fill me-2"></i> Clients
+                </a>
+
+                <a asp-page="/Appointments/Index"
+                    class="nav-item-link @(ViewContext.RouteData.Values["page"]?.ToString() == "/Appointments/Index" ? "active" : "")">
+                    <i class="bi bi-calendar-check-fill me-2"></i> Appointments
+                </a>
+
+                <a asp-page="/Quotes/Index"
+                    class="nav-item-link @(ViewContext.RouteData.Values["page"]?.ToString() == "/Quotes/Index" ? "active" : "")">
+                    <i class="bi bi-receipt me-2"></i> Quotes
+                </a>
+
+                <a asp-page="/Documents/Index"
+                    class="nav-item-link @(ViewContext.RouteData.Values["page"]?.ToString() == "/Documents/Index" ? "active" : "")">
+                    <i class="bi bi-file-text-fill me-2"></i> Documents
+                </a>
+
+                <!-- Dark Arts Expansion -->
+                <button
+                    class="nav-item-link d-flex align-items-center justify-content-between border-0 w-100 text-start"
+                    style="background: transparent; color: var(--text-primary);" data-bs-toggle="collapse"
+                    data-bs-target="#darkArtsMenu" aria-expanded="false">
+                    <span><i class="bi bi-stars me-2"></i> Dark Arts</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </button>
+                <div class="collapse ps-3" id="darkArtsMenu"
+                    style="border-left: 1px solid var(--glass-border); margin-left: 10px;">
+                    <div class="py-2">
+                        <small class="text-muted text-uppercase"
+                            style="font-size: 0.7rem; letter-spacing: 1px;">Financial & Legal</small>
+                        <a asp-page="/Financial/Deposits" class="nav-item-link py-1 small">Blood Oaths</a>
+                        <a asp-page="/Legal/SoulContract" class="nav-item-link py-1 small">Soul Contracts (Waivers)</a>
+                        <a asp-page="/Inventory/TheHoard" class="nav-item-link py-1 small">The Hoard (Inventory)</a>
+                    </div>
+
+                    <div class="py-2">
+                        <small class="text-muted text-uppercase"
+                            style="font-size: 0.7rem; letter-spacing: 1px;">Grimoire</small>
+                        <a asp-page="/Artists/Grimoire" class="nav-item-link py-1 small">Artist Portfolios</a>
+                        <a asp-page="/Communications/HealingSpells" class="nav-item-link py-1 small">Healing Spells</a>
+                        <a asp-page="/Tools/FleshCanvas" class="nav-item-link py-1 small">Flesh Canvas (Body Map)</a>
+                        <a asp-page="/Communications/CovenChat" class="nav-item-link py-1 small">Coven Chat</a>
+                    </div>
+
+                    <div class="py-2">
+                        <small class="text-muted text-uppercase"
+                            style="font-size: 0.7rem; letter-spacing: 1px;">Marketing</small>
+                        <a asp-page="/Marketing/SoulShards" class="nav-item-link py-1 small">Soul Shards (Gift
+                            Cards)</a>
+                        <a asp-page="/Marketing/Whispers" class="nav-item-link py-1 small">Whispers (Reviews)</a>
+                        <a asp-page="/Marketing/Infection" class="nav-item-link py-1 small">Infection (Referrals)</a>
+                    </div>
+
+                    <div class="py-2">
+                        <small class="text-muted text-uppercase"
+                            style="font-size: 0.7rem; letter-spacing: 1px;">Tools</small>
+                        <a asp-page="/Tools/ImageAlchemy" class="nav-item-link py-1 small">Image Alchemy</a>
+                        <a asp-page="/Tools/PainEstimator" class="nav-item-link py-1 small">Pain Estimator</a>
+                        <a asp-page="/Tools/RitualBeats" class="nav-item-link py-1 small">Ritual Beats</a>
+                        <a asp-page="/Tools/FlashRoulette" class="nav-item-link py-1 small">Flash Roulette</a>
+                        <a asp-page="/Tools/SkinToneSim" class="nav-item-link py-1 small">Skin Tone Sim</a>
+                    </div>
+
+                    @if (isAdminOrManager)
+                    {
+                        <div class="py-2">
+                            <small class="text-muted text-uppercase"
+                                style="font-size: 0.7rem; letter-spacing: 1px;">Admin</small>
+                            <a asp-page="/Admin/MarkOfTheBeast" class="nav-item-link py-1 small">Mark of the Beast</a>
+                            <a asp-page="/Admin/Achievements" class="nav-item-link py-1 small">Achievements</a>
+                            <a asp-page="/Admin/CrystalBall" class="nav-item-link py-1 small">Crystal Ball</a>
+                            <a asp-page="/Admin/SoulJar" class="nav-item-link py-1 small">Soul Jar</a>
+                            <a asp-page="/Admin/Heartbeat" class="nav-item-link py-1 small">Heartbeat</a>
+                        </div>
+                    }
+                </div>
+
+                @if (isAdminOrManager)
+                {
+                    <a asp-page="/Stats/Index"
+                        class="nav-item-link @(ViewContext.RouteData.Values["page"]?.ToString() == "/Stats/Index" ? "active" : "")">
+                        <i class="bi bi-graph-up me-2"></i> Statistics
+                    </a>
+
+                    <a asp-page="/Settings/Index"
+                        class="nav-item-link @(ViewContext.RouteData.Values["page"]?.ToString() == "/Settings/Index" ? "active" : "")">
+                        <i class="bi bi-gear-fill me-2"></i> Settings
+                    </a>
+                }
+            </nav>
+            <div class="sidebar-footer">
+                <a href="/" class="nav-item-link">
+                    <i class="bi bi-box-arrow-left me-2"></i> Exit to Site
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header
+                class="navbar navbar-dark bg-glass mb-4 p-3 d-flex justify-content-between align-items-center rounded">
+                <div class="d-flex align-items-center gap-3">
+                    <!-- Toggle button (Mobile) -->
+                    <button class="btn btn-link text-white p-0 d-md-none me-2">
+                        <i class="bi bi-list fs-4"></i>
+                    </button>
+
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-fire text-accent fs-4"></i>
+                        <h4 class="m-0 text-white">@ViewData["Title"]</h4>
+                    </div>
+                </div>
+                <div class="user-info d-flex align-items-center gap-3">
+                    <!-- Notification Bell (Visual) -->
+                    <div class="position-relative me-2" role="button" title="Notifications">
+                        <i class="bi bi-bell text-secondary fs-5"></i>
+                        <span
+                            class="position-absolute top-0 start-100 translate-middle p-1 bg-accent border border-dark rounded-circle"
+                            style="transform: translate(-50%, -25%) !important;">
+                            <span class="visually-hidden">New alerts</span>
+                        </span>
+                    </div>
+
+                    <div class="vr bg-secondary opacity-50 mx-2" style="height: 24px;"></div>
+
+                    <span class="text-light d-flex align-items-center gap-2">
+                        <i class="bi bi-person-circle text-muted fs-5"></i>
+                        <span>Welcome, <strong
+                                class="text-accent">@Context.Session.GetString("DisplayName")</strong></span>
+                    </span>
+
+                    <span class="badge bg-secondary d-flex align-items-center gap-1 p-2">
+                        <i class="bi bi-shield-shaded"></i>
+                        @role
+                    </span>
+
+                    @if (isAdminOrManager)
+                    {
+                        <a asp-page="/Settings/Index" class="text-muted ms-1" title="Settings"
+                            style="text-decoration: none;">
+                            <i class="bi bi-gear-fill fs-5"></i>
+                        </a>
+                    }
+                </div>
+            </header>
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

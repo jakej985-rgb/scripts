@@ -1,0 +1,35 @@
+@model InfernalInkSteelSuite.Web.Pages.Settings.IndexModel
+
+<div class="glass-panel p-4 mb-4">
+    <h4 class="text-uppercase mb-3 text-gradient-gold">Integrations</h4>
+
+    <div class="mb-3">
+        <label asp-for="LinkedAccounts.InstagramUrl" class="form-label"><i class="bi bi-instagram me-2"></i>Instagram
+            URL</label>
+        <div class="input-group">
+            <span class="input-group-text bg-transparent border-secondary text-muted">@("@")</span>
+            <input asp-for="LinkedAccounts.InstagramUrl" class="form-control infernal-input" placeholder="username" />
+        </div>
+    </div>
+    <div class="mb-3">
+        <label asp-for="LinkedAccounts.FacebookUrl" class="form-label"><i class="bi bi-facebook me-2"></i>Facebook
+            URL</label>
+        <input asp-for="LinkedAccounts.FacebookUrl" class="form-control infernal-input"
+            placeholder="https://facebook.com/..." />
+    </div>
+    <div class="mb-3">
+        <label asp-for="LinkedAccounts.TwitterUrl" class="form-label"><i class="bi bi-twitter-x me-2"></i>Twitter / X
+            URL</label>
+        <input asp-for="LinkedAccounts.TwitterUrl" class="form-control infernal-input"
+            placeholder="https://x.com/..." />
+    </div>
+    <div class="mb-3">
+        <label asp-for="LinkedAccounts.WebsiteUrl" class="form-label"><i class="bi bi-globe me-2"></i>Website
+            URL</label>
+        <input asp-for="LinkedAccounts.WebsiteUrl" class="form-control infernal-input" placeholder="https://..." />
+    </div>
+
+    <div class="mt-3 text-end">
+        <button type="submit" class="btn btn-infernal-primary">Save Uplink</button>
+    </div>
+</div>

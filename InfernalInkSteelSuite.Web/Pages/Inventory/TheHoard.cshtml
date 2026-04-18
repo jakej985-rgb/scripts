@@ -1,0 +1,110 @@
+@page
+@model InfernalInkSteelSuite.Web.Pages.Inventory.TheHoardModel
+@{
+    ViewData["Title"] = "The Hoard";
+    Layout = "_Layout";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="text-uppercase" style="color: var(--primary-color);">The Hoard</h1>
+        <p class="text-muted">Manage your stock of inks, needles, and sanitary supplies.</p>
+    </div>
+    <button class="btn btn-outline-light"><i class="bi bi-plus-lg"></i> Add Item</button>
+</div>
+
+<div class="card bg-dark border-secondary">
+    <div class="table-responsive">
+        <table class="table table-dark table-hover align-middle mb-0">
+            <thead>
+                <tr class="text-uppercase text-secondary small">
+                    <th class="ps-4">Item Name</th>
+                    <th>Category</th>
+                    <th style="width: 30%;">Stock Level</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="ps-4 fw-bold">Eternal Black Ink (8oz)</td>
+                    <td>Pigments</td>
+                    <td>
+                        <div class="progress hoard-progress">
+                            <div class="progress-bar bg-success" style="width: 80%">16 Bottles</div>
+                        </div>
+                    </td>
+                    <td><span class="badge bg-success bg-opacity-25 text-success border border-success">Plentiful</span>
+                    </td>
+                    <td><button class="btn btn-sm btn-outline-secondary" onclick="restock(this)">Restock</button></td>
+                </tr>
+                <tr>
+                    <td class="ps-4 fw-bold">Crimson Red Ink (4oz)</td>
+                    <td>Pigments</td>
+                    <td>
+                        <div class="progress hoard-progress">
+                            <div class="progress-bar bg-warning text-dark" style="width: 40%">4 Bottles</div>
+                        </div>
+                    </td>
+                    <td><span class="badge bg-warning bg-opacity-25 text-warning border border-warning">Low</span></td>
+                    <td><button class="btn btn-sm btn-outline-secondary" onclick="restock(this)">Restock</button></td>
+                </tr>
+                <tr class="hoard-critical">
+                    <td class="ps-4 fw-bold text-danger"><i class="bi bi-exclamation-circle-fill"></i> Numbing Cream
+                    </td>
+                    <td>Supplies</td>
+                    <td>
+                        <div class="progress hoard-progress">
+                            <div class="progress-bar bg-danger" style="width: 10%">2 Tubes</div>
+                        </div>
+                    </td>
+                    <td><span class="badge bg-danger bg-opacity-25 text-danger border border-danger">Critical</span>
+                    </td>
+                    <td><button class="btn btn-sm btn-danger pulsing-btn" onclick="restock(this)">Restock Now</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="ps-4 fw-bold">3RL Needles (Box)</td>
+                    <td>Hardware</td>
+                    <td>
+                        <div class="progress hoard-progress">
+                            <div class="progress-bar bg-success" style="width: 95%">48 Boxes</div>
+                        </div>
+                    </td>
+                    <td><span class="badge bg-success bg-opacity-25 text-success border border-success">Plentiful</span>
+                    </td>
+                    <td><button class="btn btn-sm btn-outline-secondary" onclick="restock(this)">Restock</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function restock(btn) {
+        const row = btn.closest('tr');
+        const bar = row.querySelector('.progress-bar');
+        const badge = row.querySelector('.badge');
+
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+
+        setTimeout(() => {
+            bar.style.width = "100%";
+            bar.className = "progress-bar bg-success";
+            bar.innerText = "Restocked";
+
+            badge.className = "badge bg-success bg-opacity-25 text-success border border-success";
+            badge.innerText = "Plentiful";
+
+            btn.className = "btn btn-sm btn-outline-secondary";
+            btn.innerText = "Restock";
+
+            row.classList.remove('hoard-critical');
+            if (row.querySelector('.text-danger')) {
+                row.querySelector('.text-danger').classList.remove('text-danger');
+            }
+
+            showOmen("Supplies replenished.", "success");
+        }, 1500);
+    }
+</script>

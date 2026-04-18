@@ -1,0 +1,280 @@
+@page
+@model InfernalInkSteelSuite.Web.Pages.Quotes.NewModel
+@{
+    ViewData["Title"] = "New Smart Quote";
+}
+
+
+
+<div class="row justify-content-center">
+    <div class="col-lg-11">
+        <form method="post" id="quote-form">
+            <header class="d-flex justify-content-between align-items-center mb-4">
+                <h1 style="color: var(--primary-color);">INFERNAL MACHINE</h1>
+                <a asp-page="/Quotes/Index" class="btn btn-outline-light">Archive Access</a>
+            </header>
+            
+            <input type="hidden" asp-for="IsPopup" />
+
+            <div class="row">
+                <!-- Control Deck -->
+                <div class="col-md-7">
+                    <div class="infernal-machine-panel mb-4">
+                        <div class="section-header-metal">
+                            <span>Subject Identity</span>
+                            <i class="bi bi-person-badge"></i>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="Quote.ClientId"
+                                    class="form-label text-muted text-uppercase small">Client</label>
+                                <select asp-for="Quote.ClientId" asp-items="Model.Clients"
+                                    class="form-control dossier-input">
+                                    <option value="">-- Unbound Soul (Guest) --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Quote.ArtistId"
+                                    class="form-label text-muted text-uppercase small">Artist</label>
+                                <select asp-for="Quote.ArtistId" asp-items="Model.Artists"
+                                    class="form-control dossier-input"></select>
+                            </div>
+                        </div>
+
+                        <div class="section-header-metal mt-4">
+                            <span>Target Parameters</span>
+                            <i class="bi bi-crosshair"></i>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="Quote.Style"
+                                    class="form-label text-muted text-uppercase small">Style</label>
+                                <select asp-for="Quote.Style" asp-items="Model.Styles"
+                                    class="form-control dossier-input" required></select>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Quote.Placement"
+                                    class="form-label text-muted text-uppercase small">Deployment Zone</label>
+                                <input asp-for="Quote.Placement" class="form-control dossier-input"
+                                    placeholder="e.g. Forearm" required />
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-6">
+                                <label class="form-label text-muted text-uppercase small">Dimensions (Inches)</label>
+                                <div class="input-group">
+                                    <input asp-for="Quote.Width" type="number" step="0.1"
+                                        class="form-control dossier-input" placeholder="W" id="input-width" required />
+                                    <span class="input-group-text bg-transparent border-secondary text-white">x</span>
+                                    <input asp-for="Quote.Height" type="number" step="0.1"
+                                        class="form-control dossier-input" placeholder="H" id="input-height" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6 d-flex align-items-end">
+                                <div class="form-check form-switch w-100 p-2 border border-secondary rounded ps-5"
+                                    style="background: rgba(255,255,255,0.05);">
+                                    <input asp-for="Quote.IsCoverUp" class="form-check-input" type="checkbox"
+                                        role="switch" id="input-coverup">
+                                    <label class="form-check-label text-white" for="input-coverup">Cover-Up
+                                        Protocol?</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="infernal-machine-panel">
+                        <div class="section-header-metal">
+                            <span>Complexity Matrix (1-10)</span>
+                            <i class="bi bi-sliders"></i>
+                        </div>
+
+                        <!-- Sliders -->
+                        <div class="mb-4">
+                            <label class="d-flex justify-content-between mb-2">
+                                <span class="text-white text-uppercase">Surface Coverage</span>
+                                <span class="range-output-val" id="val-coverage">1</span>
+                            </label>
+                            <input asp-for="Quote.CoverageLevel" type="range" min="1" max="10" class="magma-range"
+                                id="rng-coverage" />
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="d-flex justify-content-between mb-2">
+                                <span class="text-white text-uppercase">Line Work Density</span>
+                                <span class="range-output-val" id="val-lines">1</span>
+                            </label>
+                            <input asp-for="Quote.LineComplexity" type="range" min="1" max="10" class="magma-range"
+                                id="rng-lines" />
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="d-flex justify-content-between mb-2">
+                                <span class="text-white text-uppercase">Shading Depth</span>
+                                <span class="range-output-val" id="val-shading">1</span>
+                            </label>
+                            <input asp-for="Quote.ShadingComplexity" type="range" min="1" max="10" class="magma-range"
+                                id="rng-shading" />
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="d-flex justify-content-between mb-2">
+                                <span class="text-white text-uppercase">Chromatic Complexity</span>
+                                <span class="range-output-val" id="val-color">1</span>
+                            </label>
+                            <input asp-for="Quote.ColorComplexity" type="range" min="1" max="10" class="magma-range"
+                                id="rng-color" />
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="d-flex justify-content-between mb-2">
+                                <span class="text-white text-uppercase">Overall Difficulty modifier</span>
+                                <span class="range-output-val" id="val-diff">1</span>
+                            </label>
+                            <input asp-for="Quote.Difficulty" type="range" min="1" max="10" class="magma-range"
+                                id="rng-diff" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Readout -->
+                <div class="col-md-5">
+                    <div class="live-estimate-box">
+                        <div class="live-price-label">Estimated Value</div>
+                        <div class="live-price-display" id="display-price">$0 - $0</div>
+
+                        <div class="metric-grid">
+                            <div class="metric-item">
+                                <strong><span id="display-hours">0-0</span> hrs</strong>
+                                <span>Time</span>
+                            </div>
+                            <div class="metric-item">
+                                <strong><span id="display-deposit">$0</span></strong>
+                                <span>Deposit</span>
+                            </div>
+                            <div class="metric-item mt-3">
+                                <strong>$150/hr</strong>
+                                <span>Base Rate</span>
+                            </div>
+                            <div class="metric-item mt-3">
+                                <strong><span id="display-shopmin">$100</span></strong>
+                                <span>Shop Min</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" asp-page-handler="Save"
+                            class="btn btn-primary w-100 mt-4 py-3 text-uppercase fw-bold" style="letter-spacing: 2px;">
+                            <i class="bi bi-save2"></i> Save Quote Record
+                        </button>
+                    </div>
+
+                    <div class="mt-4 p-3 border border-secondary rounded text-center text-muted"
+                        style="border-style: dashed !important;">
+                        <i class="bi bi-images fs-2 mb-2 d-block"></i>
+                        Reference Drop Zone (Simulation)
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ranges = ['coverage', 'lines', 'shading', 'color', 'diff'];
+
+            // Elements
+            const inputs = {
+                width: document.getElementById('input-width'),
+                height: document.getElementById('input-height'),
+                coverup: document.getElementById('input-coverup')
+            };
+
+            const displays = {
+                price: document.getElementById('display-price'),
+                hours: document.getElementById('display-hours'),
+                deposit: document.getElementById('display-deposit')
+            };
+
+            // Init Sliders
+            ranges.forEach(r => {
+                const el = document.getElementById('rng-' + r);
+                const out = document.getElementById('val-' + r);
+
+                // Update text
+                el.addEventListener('input', () => {
+                    out.textContent = el.value;
+                    updateHeat(el);
+                    calculate();
+                });
+
+                // Initial state
+                updateHeat(el);
+            });
+
+            // Input listeners
+            inputs.width.addEventListener('input', calculate);
+            inputs.height.addEventListener('input', calculate);
+            inputs.coverup.addEventListener('change', calculate);
+
+            function updateHeat(range) {
+                // Change track color based on value
+                const val = range.value; // 1-10
+                const percent = (val - 1) / 9 * 100;
+                // Only webkit for now via JS is tricky, relying on thumb glow mainly
+                // But we can set a CSS var if we want more control
+            }
+
+            // Simplistic Client-Side Estimate Logic (Mirrors Backend for responsiveness)
+            function calculate() {
+                const w = parseFloat(inputs.width.value) || 0;
+                const h = parseFloat(inputs.height.value) || 0;
+                const area = w * h;
+
+                if (area === 0) {
+                    displays.price.textContent = "$0 - $0";
+                    return;
+                }
+
+                let complexityScore = 0;
+                ranges.forEach(r => complexityScore += parseInt(document.getElementById('rng-' + r).value));
+                complexityScore = complexityScore / 5; // Average 1-10
+
+                // Base logic
+                const baseRate = 150;
+                let hours = (area / 15) * (complexityScore / 2); // very rough heuristic
+                if (hours < 1) hours = 1;
+
+                // Cover up penalty
+                if (inputs.coverup.checked) hours *= 1.5;
+
+                const minHours = Math.round(hours * 0.8 * 10) / 10;
+                const maxHours = Math.round(hours * 1.2 * 10) / 10;
+
+                const minPrice = Math.round(minHours * baseRate);
+                const maxPrice = Math.round(maxHours * baseRate);
+
+                const deposit = Math.min(minPrice * 0.3, 200); // 30% or cap
+
+                // Update UI
+                displays.price.textContent = `$${minPrice} - $${maxPrice}`;
+                displays.hours.textContent = `${minHours}-${maxHours}`;
+                displays.deposit.textContent = `$${Math.round(deposit)}`;
+
+                // Flash effect
+                document.querySelector('.live-estimate-box').animate([
+                    { boxShadow: '0 0 30px rgba(138, 0, 0, 0.2)' },
+                    { boxShadow: '0 0 50px rgba(255, 51, 51, 0.6)' },
+                    { boxShadow: '0 0 30px rgba(138, 0, 0, 0.2)' }
+                ], { duration: 300 });
+            }
+
+            // Initial call
+            calculate();
+        });
+    </script>
+}

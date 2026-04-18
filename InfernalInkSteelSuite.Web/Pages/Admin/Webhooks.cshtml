@@ -1,0 +1,78 @@
+@page
+@model InfernalInkSteelSuite.Web.Pages.Admin.WebhooksModel
+@{
+    ViewData["Title"] = "Webhooks";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <h3 class="text-uppercase mb-4" style="color: var(--primary-color);">Connect The Void</h3>
+        <div class="card bg-dark border-secondary p-4">
+            <div class="mb-3">
+                <label class="form-label text-muted">Payload URL</label>
+                <input type="text" class="form-control bg-black text-white border-secondary"
+                    placeholder="https://discord.com/api/webhooks/...">
+            </div>
+            <div class="mb-3">
+                <label class="form-label text-muted">Event Trigger</label>
+                <select class="form-select bg-black text-white border-secondary">
+                    <option>New Appointment</option>
+                    <option>Inventory Critical</option>
+                    <option>Daily Summary</option>
+                </select>
+            </div>
+            <button class="btn btn-primary w-100" onclick="showOmen('Webhook Forged.', 'success')">Forging Link</button>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <h3 class="text-white mb-4">Active Links</h3>
+        <div class="list-group">
+            <div
+                class="list-group-item bg-dark border-secondary text-white d-flex justify-content-between align-items-center p-3 mb-2 rounded">
+                <div>
+                    <h5 class="mb-1"><i class="bi bi-discord text-primary me-2"></i>Discord - Shop General</h5>
+                    <small class="text-muted">Trigger: New Appointment • Last fired: 2m ago</small>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-outline-light me-2" onclick="testFire(this)">Test Fire</button>
+                    <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                </div>
+            </div>
+            <div
+                class="list-group-item bg-dark border-secondary text-white d-flex justify-content-between align-items-center p-3 mb-2 rounded">
+                <div>
+                    <h5 class="mb-1"><i class="bi bi-slack text-warning me-2"></i>Slack - Inventory</h5>
+                    <small class="text-muted">Trigger: Inventory Critical • Last fired: 1d ago</small>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-outline-light me-2" onclick="testFire(this)">Test Fire</button>
+                    <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function testFire(btn) {
+        const originalText = btn.innerText;
+        btn.innerText = "Firing...";
+        btn.disabled = true;
+
+        setTimeout(() => {
+            btn.innerText = "Success";
+            btn.classList.remove('btn-outline-light');
+            btn.classList.add('btn-success');
+            showOmen("Signal sent to the other side.", "success");
+
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.classList.add('btn-outline-light');
+                btn.classList.remove('btn-success');
+                btn.disabled = false;
+            }, 2000);
+        }, 1000);
+    }
+</script>

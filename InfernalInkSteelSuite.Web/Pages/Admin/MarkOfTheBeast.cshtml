@@ -1,0 +1,87 @@
+@page
+@model InfernalInkSteelSuite.Web.Pages.Admin.MarkOfTheBeastModel
+@{
+    ViewData["Title"] = "Mark of the Beast";
+    Layout = "_Layout";
+}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="text-uppercase text-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i> Mark of the Beast
+        </h1>
+        <p class="text-muted">The Book of the Damned. Those listed here shall find no sanctuary within these walls.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card bg-dark border-secondary">
+            <div class="card-header bg-danger text-white border-secondary">DAMN A SOUL</div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label text-muted">Client Name</label>
+                    <input type="text" class="form-control bg-black text-white border-secondary">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-muted">Reason for Damnation</label>
+                    <select class="form-select bg-black text-white border-secondary">
+                        <option>No Call / No Show</option>
+                        <option>Disrespectful Conduct</option>
+                        <option>Refusal to Pay</option>
+                        <option>Unclean Flesh</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <button class="btn btn-outline-danger w-100" onclick="damnSoul()">
+                    <i class="bi bi-fire me-2"></i> BURN BRIDGE
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="table-responsive">
+            <table class="table table-dark table-hover border-secondary">
+                <thead>
+                    <tr class="text-danger">
+                        <th>NAME</th>
+                        <th>SIN</th>
+                        <th>DATE OF JUDGMENT</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Karen Smith</td>
+                        <td>Disrespectful Conduct</td>
+                        <td>Oct 31, 2024</td>
+                        <td class="text-end"><button class="btn btn-sm btn-outline-secondary">Forgive?</button></td>
+                    </tr>
+                    <tr>
+                        <td>Chad Bradson</td>
+                        <td>Refusal to Pay</td>
+                        <td>Nov 13, 2024</td>
+                        <td class="text-end"><button class="btn btn-sm btn-outline-secondary">Forgive?</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function damnSoul() {
+        const body = document.body;
+        // Flash screen red
+        body.style.transition = 'background-color 0.1s';
+        body.style.backgroundColor = '#500';
+
+        setTimeout(() => {
+            body.style.backgroundColor = '';
+            showOmen("The Mark has been placed.", "error");
+        }, 100);
+
+        // Play harsh sound if enabled
+        if (typeof playSound === 'function') playSound('click');
+    }
+</script>
