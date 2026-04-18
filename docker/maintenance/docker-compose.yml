@@ -27,7 +27,7 @@ services:
     container_name: dozzle
     restart: unless-stopped
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dozzle.rule=Host(`logs.${DOMAIN:?DOMAIN not set}`)"

@@ -503,12 +503,18 @@ def docker_agent(repair_mode: bool = False):
                     # 1. Register stack and start launch
                     active_stacks.append((name, sd, is_critical, total_svc, expected_services))
                     
-                    # Add --build for stacks with custom Dockerfiles (e.g. control-plane)
+                    # Add --build for stacks with custom Dockerfiles (Audit fix H10)
                     up_cmd = ["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "up", "-d"]
+                    if repair_mode:
+                        up_cmd.append("--force-recreate")
+
                     try:
                         with open(cf, "r") as compose_f:
-                            if "build:" in compose_f.read():
-                                up_cmd.append("--build")
+                            content = compose_f.read()
+                            if "build:" in content:
+                                # Only force build in repair mode to keep healer cycles light
+                                if repair_mode:
+                                    up_cmd.append("--build")
                     except Exception: pass
                     
                     proc = subprocess.Popen(up_cmd, 

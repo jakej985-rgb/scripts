@@ -9,6 +9,7 @@ sys.path.append(str(REPO_ROOT / "control-plane"))
 try:
     from agents.telegram.discovery import discover_and_map
     from scripts.config.configure_env import GREEN, YELLOW, RED, BOLD, END, ENV_FILE
+    from config.telegram import BOT_TOKEN
 except ImportError as e:
     # Double fallback if running from root vs scripts dir
     try:

@@ -106,12 +106,11 @@ def acquire_lock(agent_name: str, ttl_seconds: int = 300) -> bool:
                 elif alive:
                     logger.warning(f"Lock conflict for {agent_name}: PID {old_pid} on {old_host} is still alive.")
                     return False
-                
-                if not expired:
+                elif not expired:
                     logger.warning(f"Lock for {agent_name} is stale but TTL not met ({now - old_ts}s < {ttl_seconds}s).")
                     return False
-                
-                logger.info(f"Reclaiming stale lock for {agent_name} (Dead PID {old_pid}, Expired TTL).")
+                else:
+                    logger.info(f"Reclaiming stale lock for {agent_name} (Dead PID {old_pid}, Expired TTL).")
             
             os.remove(lock_file)
         except Exception as e:
@@ -200,12 +199,12 @@ def wrap_agent(agent_name: str, func: Callable[[], Any], interval: int = 10):
         agent_logger.info(f"--- Agent {agent_name} Persistent Loop Started ---")
         
         while not _SHUTDOWN_SIGNALED:
-            # 3. Tier Health Check (Tier 2 requires Tier 1 state)
+            # 3. Tier Health Check (Tier 2 requires its contract state)
             if tier == 2:
-                # We check for a critical Tier 1 file as a proxy for health
-                from utils.paths import REGISTRY_JSON
-                if not REGISTRY_JSON.exists():
-                    agent_logger.warning(f"Waiting for Tier 1 state (missing {REGISTRY_JSON.name})...")
+                # Audit Fix: Wait for specific contract files, not just a single shared sentinel (H9)
+                success, err = validate_contract(agent_name)
+                if not success:
+                    agent_logger.warning(f"Waiting for dependencies: {err}")
                     time.sleep(interval)
                     continue
 

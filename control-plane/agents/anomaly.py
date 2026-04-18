@@ -11,11 +11,7 @@ from utils.logger import get_logger
 
 logger = get_logger("anomaly")
 
-def safe_get(obj, key, default=None):
-    """Batch 7 T2: Safe dictionary access guard."""
-    if isinstance(obj, dict):
-        return obj.get(key, default)
-    return default
+
 
 def classify_issue(health_data, metrics_data, report_data=None):
     """Core logic extracted for testability (Batch 7 T2)."""
@@ -56,9 +52,9 @@ def classify_issue(health_data, metrics_data, report_data=None):
         logger.error(f"Invalid metrics_data type: {type(metrics_data)}")
         return issues
 
-    system_metrics = safe_get(metrics_data, "system", {})
-    cpu = safe_get(system_metrics, "cpu", 0)
-    mem = safe_get(system_metrics, "mem", 0)
+    system_metrics = metrics_data.get("system", {})
+    cpu = system_metrics.get("cpu", 0)
+    mem = system_metrics.get("mem", 0)
     
     if cpu > 90:
         issues.append({
@@ -74,15 +70,15 @@ def classify_issue(health_data, metrics_data, report_data=None):
         })
 
     # 3. Aggregated per-container resource alerts
-    container_metrics = safe_get(metrics_data, "containers", [])
+    container_metrics = metrics_data.get("containers", [])
     if isinstance(container_metrics, list):
         for c in container_metrics:
              if not isinstance(c, dict): continue
-             if safe_get(c, "cpu", 0) > 90:
+             if c.get("cpu", 0) > 90:
                  issues.append({
                     "type": "resource_spike",
-                    "target": safe_get(c, "name", "unknown"),
-                    "reason": f"High Container CPU: {safe_get(c, 'cpu', 0)}%"
+                    "target": c.get("name", "unknown"),
+                    "reason": f"High Container CPU: {c.get('cpu', 0)}%"
                 })
 
 

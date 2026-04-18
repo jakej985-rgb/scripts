@@ -162,7 +162,6 @@ services:
     container_name: homepage
     volumes:
       - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/homepage:/app/config
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.homepage.rule=Host(`home.${DOMAIN:?DOMAIN not set}`)"

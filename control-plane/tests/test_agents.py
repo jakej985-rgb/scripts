@@ -154,7 +154,7 @@ class TestAgentLogic:
     def test_anomaly_classification(self):
         from agents.anomaly import classify_issue
 
-        health = {"jellyfin": {"status": "offline"}}
+        health = {"containers": {"jellyfin": {"status": "offline"}}}
         metrics = {"system": {"cpu": 10, "mem": 20}, "containers": []}
 
         issues = classify_issue(health, metrics)

@@ -10,15 +10,28 @@ from config.telegram import (
 # M3TAL Telegram Router (v3.2 Hardened)
 # Responsibility: Business logic, channel routing, and deduplication.
 
-# Deduplication State (Last 50 unique messages)
-_sent_hashes = deque(maxlen=50)
+import time
+
+# Deduplication State (Last 5 minutes of unique messages - Audit Fix H7.12)
+_sent_hashes = {} # {hash: timestamp}
+DEDUP_TTL = 300   # 5 minutes
 
 def _is_duplicate(text: str) -> bool:
-    """Checks if the message has been sent recently to avoid spam."""
+    """Checks if the message has been sent recently to avoid spam (TTL based)."""
+    now = time.time()
     m_hash = hashlib.sha256(text.encode()).hexdigest()
+    
+    # 1. Prune expired hashes
+    # (Simplified: we prune on every check or periodically)
+    to_delete = [h for h, ts in _sent_hashes.items() if (now - ts) > DEDUP_TTL]
+    for h in to_delete:
+        del _sent_hashes[h]
+
+    # 2. Duplicate check
     if m_hash in _sent_hashes:
         return True
-    _sent_hashes.append(m_hash)
+    
+    _sent_hashes[m_hash] = now
     return False
 
 def route_message(channel: str, text: str):

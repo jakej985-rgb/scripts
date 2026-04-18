@@ -11,6 +11,7 @@ Works on: Ubuntu/Debian, Fedora/RHEL, Arch, macOS, Windows/WSL2
 
 import os
 import platform
+import shlex
 import shutil
 import subprocess
 import sys
@@ -128,9 +129,16 @@ def check_and_install_deps(os_type: str, auto_install: bool) -> None:
                 try:
                     cmd = info[os_type]
                     if "|" in cmd:
-                        subprocess.run(cmd, shell=True, check=True)
+                        # Audit Fix (H): Manual piping for curl | sh to avoid shell=True
+                        parts = [p.strip() for p in cmd.split("|")]
+                        p1 = subprocess.Popen(shlex.split(parts[0]), stdout=subprocess.PIPE)
+                        p2 = subprocess.Popen(shlex.split(parts[1]), stdin=p1.stdout, stdout=subprocess.PIPE)
+                        p1.stdout.close()
+                        p2.communicate()
+                        if p2.returncode != 0:
+                            raise subprocess.CalledProcessError(p2.returncode, cmd)
                     else:
-                        subprocess.run(cmd.split(), check=True)
+                        subprocess.run(shlex.split(cmd), check=True)
                 except subprocess.CalledProcessError:
                     warn(f"Failed to install {name}")
 

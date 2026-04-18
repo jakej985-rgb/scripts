@@ -16,7 +16,7 @@ sys.path.append(str(CONTROL_PLANE))
 
 from utils.paths import CONTROL_PLANE, AGENTS_DIR, LOG_DIR, STATE_DIR, RESTARTS_JSON, ensure_dirs, TIERS
 from utils.healing import atomic_write_json
-from utils.guards import acquire_lock, release_lock
+from utils.guards import acquire_lock, release_lock, is_pid_running
 
 # Telegram System Integration (v3 Layered)
 from config.telegram import validate as validate_telegram
@@ -190,7 +190,18 @@ def main() -> None:
             try:
                 # We don't delete the runner lock if it's currently held (check logic)
                 if lock.name != f"{RUNNER_LOCK}.pid":
-                    lock.unlink()
+                    # Audit Fix 4.8: Only unlink if the PID is actually dead
+                    try:
+                        with open(lock, 'r') as f:
+                            content = f.read().split(',')
+                            if content:
+                                old_pid = int(content[0])
+                                if not is_pid_running(old_pid):
+                                    lock.unlink()
+                            else:
+                                lock.unlink() # Empty/Broken
+                    except (ValueError, IndexError, OSError):
+                        lock.unlink() 
             except Exception: pass
 
     threads: list[threading.Thread] = []

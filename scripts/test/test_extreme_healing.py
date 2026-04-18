@@ -71,7 +71,7 @@ def test_concurrency_locking():
     
     res = run_init()
     # Should exit immediately as lock is active and not stale
-    assert "Another instance/healer is active" in res.stdout
+    assert "Another instance is active" in res.stdout
     print("✅ Passed: Locking system prevented concurrent execution.")
     
     # 2. Test stale lock
@@ -82,7 +82,7 @@ def test_concurrency_locking():
     
     res = run_init()
     assert res.returncode == 0
-    assert "Removing stale lock" in res.stdout
+    assert "Removing stale local lock" in res.stdout or "Removing stale remote lock" in res.stdout
     print("✅ Passed: Stale lock was correctly detected and removed.")
 
 if __name__ == "__main__":
