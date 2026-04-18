@@ -24,7 +24,7 @@ jobs:
     - name: Run full test suite
       run: pytest control-plane/tests/ -v
     - name: Verify backup.py dry-run
-      run: python3 scripts/backup.py --dry-run
+      run: python3 scripts/maintenance/backup.py --dry-run
 
   test-windows:
     runs-on: windows-latest

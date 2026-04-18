@@ -11,7 +11,7 @@ def enqueue(chat_id: int, message: str):
     try:
         # Fallback to non-blocking put to detect full state
         _q.put_nowait((chat_id, message))
-    except queue.Full:
+    except queue.Full as e:
         # Rex Policy: If full, discard the OLDEST message to make room
         try:
             _q.get_nowait()

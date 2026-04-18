@@ -21,6 +21,11 @@ OWNERS = {
     "cooldowns.json": "decision",
     "health_report.json": "health_score",
     "notify_state.json": "notify",
+    "scaling_actions.json": "scaling",
+    "scaling_cooldowns.json": "scaling",
+    "chaos_events.json": "anomaly",
+    "network_guard_state.json": "network_guard",
+    "observer_seen.json": "observer",
     "restarts.json": "run", # Managed by orchestrator
 }
 

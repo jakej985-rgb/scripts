@@ -66,14 +66,10 @@ def run_healing_cycle():
         if duration > MAX_CYCLE_TIME:
             log_event("healer", f"WARNING: Healing cycle took {duration:.2f}s (Limit {MAX_CYCLE_TIME}s)")
 
-        # Adaptive Timing: wrap_agent uses interval=15. 
-        # If healthy, we sleep an extra 105s here to reach 120s total interval.
-        if is_ready:
-            time.sleep(105)
-
     finally:
         release_healer_lock()
 
 if __name__ == "__main__":
     log_event("healer", "M3TAL Healer Agent Started.")
-    wrap_agent("healer", run_healing_cycle, interval=15)
+    # Standard 120s interval for high-level system healing (Audit Fix 6.1)
+    wrap_agent("healer", run_healing_cycle, interval=120)

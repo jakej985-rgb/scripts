@@ -136,8 +136,7 @@ def collect_all_metrics():
     data = {
         "system": system,
         "containers": containers,
-        "timestamp": system["timestamp"],
-        "cpu": system["cpu"] 
+        "timestamp": system["timestamp"]
     }
     
     if save_json(METRICS_JSON, data, caller="metrics"):

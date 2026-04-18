@@ -271,7 +271,7 @@ def main() -> None:
         # Local copy to avoid modification during join
         # Join threads outside the lock to avoid deadlocks with _unregister_child
         for t in threads:
-            t.join(timeout=2)
+            t.join(timeout=15)
 
         release_lock(RUNNER_LOCK)
         print(f"[{time.strftime('%H:%M:%S')}] Agent Runner shutdown complete.")

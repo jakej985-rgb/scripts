@@ -56,7 +56,7 @@ def m3tal_print(*args, **kwargs):
     else:
         builtins.print(*args, **kwargs)
 
-builtins.print = m3tal_print
+# builtins.print = m3tal_print # Audit Fix (L) - Removed global patch to avoid side effects
 
 try:
     from preflight import run_preflight
@@ -250,6 +250,14 @@ def log_agent(repair_mode: bool = False):
                     t_log(f"[LOG] FAILED to touch {name}", symbol="⚠")
             else:
                 success_count += 1
+        
+        # Audit Fix (L): Purge legacy PID-specific log files on startup
+        if LOG_DIR.exists():
+            stale_logs = [l for l in LOG_DIR.glob("*_[0-9]*.log") if l.is_file()]
+            if stale_logs:
+                for sl in stale_logs:
+                    try: sl.unlink()
+                    except Exception: pass
         
         update_status("logs", "ok" if success_count == len(REQUIRED_LOGS) else "degraded")
         return True

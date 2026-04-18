@@ -79,8 +79,10 @@ def index():
 def login():
     if request.method == 'POST':
         # CSRF Protection (Audit Fix H)
-        if request.form.get('csrf_token') != session.get('csrf_token'):
-            return render_template('login.html', error="Security violation: Invalid CSRF token"), 403
+        form_token = request.form.get('csrf_token')
+        session_token = session.get('csrf_token')
+        if not form_token or not session_token or form_token != session_token:
+            return render_template('login.html', error="Security violation: Invalid or expired CSRF token"), 403
 
         username = request.form.get('username')
         password = request.form.get('password')
