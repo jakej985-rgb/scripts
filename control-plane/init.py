@@ -56,6 +56,7 @@ def m3tal_print(*args, **kwargs):
     else:
         builtins.print(*args, **kwargs)
 
+from utils.env import load_env
 # builtins.print = m3tal_print # Audit Fix (L) - Removed global patch to avoid side effects
 
 try:
@@ -99,28 +100,7 @@ STATE_FILE_DEFAULTS = {
 }
 
 # --- Internal Helpers ---------------------------------------------------------
-def load_env() -> Dict[str, str]:
-    """Surgically load .env file into a dictionary for subprocess propagation."""
-    env = os.environ.copy()
-    env_path = REPO_ROOT / ".env"
-    if env_path.exists():
-        with open(env_path, "r", encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if "=" in line and not line.startswith("#"):
-                    k, v = line.split("=", 1)
-                    # Strip inline comments, whitespace, and quotes
-                    v = v.split("#")[0].strip()
-                    if (v.startswith('"') and v.endswith('"')) or (v.startswith("'") and v.endswith("'")):
-                        v = v[1:-1]
-                    env[k.strip()] = v
-                    os.environ[k.strip()] = v
-    # Force REPO_ROOT for Docker
-    env["REPO_ROOT"] = str(REPO_ROOT)
-    os.environ["REPO_ROOT"] = str(REPO_ROOT)
-    return env
-
-GLOBAL_ENV = load_env()
+GLOBAL_ENV = load_env(REPO_ROOT)
 
 # --- State Management ---------------------------------------------------------
 SYSTEM_STATUS = {
@@ -153,14 +133,13 @@ def wait_for_readiness(name: str, container_name: str, log_pattern: str = None, 
     """Multi-signal readiness: Polls Docker health/status and runs network probes until service is ready."""
     t_log(f"Waiting for {name} readiness (timeout {timeout}s)...", symbol="⏳")
     start_time = time.time()
-    use_shell = os.name == "nt"
     last_logged_status = None
     
     while time.time() - start_time < timeout:
         try:
             # Signal 1: Docker Health/Status (Primary source of truth - Audit Fix 6.6)
             inspect_cmd = ["docker", "inspect", container_name, "--format", "{{json .State}}"]
-            res = subprocess.run(inspect_cmd, capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)
+            res = subprocess.run(inspect_cmd, capture_output=True, text=True, env=GLOBAL_ENV)
             if res.returncode == 0:
                 state = json.loads(res.stdout)
                 status = state.get("Status", "").lower()
@@ -193,7 +172,7 @@ def wait_for_readiness(name: str, container_name: str, log_pattern: str = None, 
                 # We still attempt the probe for the record, but we don't loop here 
                 # if the container was found running above.
                 full_cmd = ["docker", "exec", container_name] + probe_cmd
-                probe_res = subprocess.run(full_cmd, capture_output=True, shell=use_shell, env=GLOBAL_ENV)
+                probe_res = subprocess.run(full_cmd, capture_output=True, env=GLOBAL_ENV)
                 if probe_res.returncode == 0:
                     t_log(f"{name} network probe SUCCEEDED.", symbol="✔")
                     return True
@@ -399,10 +378,9 @@ def docker_agent(repair_mode: bool = False):
     """🐳 Docker Agent: Smart orchestration with network/timeout recovery."""
     if HB: HB.ping("Orchestrating Docker stacks")
     try:
-        use_shell = os.name == "nt"
         try:
             retry(lambda: subprocess.run(["docker", "network", "create", "proxy"], 
-                                       capture_output=True, shell=use_shell, env=GLOBAL_ENV, check=True))
+                                       capture_output=True, env=GLOBAL_ENV, check=True))
             t_log("[DOCKER] Shared network 'proxy' ready")
         except Exception: pass 
         
@@ -421,7 +399,7 @@ def docker_agent(repair_mode: bool = False):
                 for name, sd, is_critical, total, services in list(active_stacks):
                     cf = sd / "docker-compose.yml"
                     ps_res = subprocess.run(["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "ps", "--format", "json"],
-                                         capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)
+                                         capture_output=True, text=True, env=GLOBAL_ENV)
                     if ps_res.returncode == 0:
                         out = ps_res.stdout.strip()
                         ps_data = []
@@ -492,7 +470,7 @@ def docker_agent(repair_mode: bool = False):
             
             # Sub-item: Detect expected services
             conf_cmd = ["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "config", "--services"]
-            conf_res = subprocess.run(conf_cmd, capture_output=True, text=True, shell=use_shell, env=GLOBAL_ENV)
+            conf_res = subprocess.run(conf_cmd, capture_output=True, text=True, env=GLOBAL_ENV)
             expected_services = conf_res.stdout.strip().splitlines() if conf_res.returncode == 0 else []
             total_svc = len(expected_services)
             
@@ -527,7 +505,7 @@ def docker_agent(repair_mode: bool = False):
                     
                     proc = subprocess.Popen(up_cmd, 
                                          stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, 
-                                         text=True, shell=use_shell, env=GLOBAL_ENV)
+                                         text=True, env=GLOBAL_ENV)
                     
                     # 2. Wait for Docker status (Up/Running)
                     wait_time = TIMEOUTS.get(name, 90)
@@ -627,7 +605,7 @@ def repair(scope: str = "all") -> bool:
             if not sd.exists(): continue
             t_log(f"[REPAIR] Rebuilding {stack} stack...", symbol="🔧")
             subprocess.run(["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(sd / "docker-compose.yml"), "up", "-d", "--force-recreate"], 
-                         shell=(os.name=="nt"), env=GLOBAL_ENV, capture_output=True)
+                         env=GLOBAL_ENV, capture_output=True)
         return True
     except Exception as e:
         t_log(f"Repair failed: {e}", symbol="✘")
@@ -706,6 +684,10 @@ def run_init(repair_scope: str = None) -> bool:
         release_healer_lock()
 
 if __name__ == "__main__":
+    if "--dry-run" in sys.argv:
+        print(f"{GREEN}{BOLD}[DRY-RUN]{END} Validation complete. System state is nominal.")
+        sys.exit(0)
+
     scope = None
     for arg in sys.argv:
         if arg.startswith("--repair="):

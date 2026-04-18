@@ -79,7 +79,7 @@ def calculate_health():
     
     # 1. File Health
     for f_name in MONITORED_FILES:
-        path = os.path.join(STATE_DIR, f_name)
+        path = STATE_DIR / f_name
         status = get_file_status(path)
         if status in ["missing", "corrupt"]:
             if f_name not in file_timer:

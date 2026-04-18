@@ -2,11 +2,15 @@ import os
 import random
 import time
 import sys
+from pathlib import Path
 
-# Standardize path resolution
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# Standardize path resolution (Audit Fix 1.6: Relative to repo root)
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+AGENTS_DIR = REPO_ROOT / "control-plane" / "agents"
+if str(AGENTS_DIR) not in sys.path:
+    sys.path.append(str(AGENTS_DIR))
 
-from utils.paths import METRICS_JSON, NORMALIZED_METRICS_JSON, ANOMALIES_JSON, DECISIONS_JSON
+from utils.paths import METRICS_JSON, ANOMALIES_JSON, DECISIONS_JSON
 from utils.state import load_json, save_json
 from utils.logger import get_logger
 
@@ -18,7 +22,6 @@ CHAOS_EVENTS_JSON = os.path.join(STATE_DIR, "chaos_events.json")
 
 TARGET_FILES = [
     METRICS_JSON,
-    NORMALIZED_METRICS_JSON,
     ANOMALIES_JSON,
     DECISIONS_JSON
 ]

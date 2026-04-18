@@ -6,7 +6,7 @@ import time
 # Add current dir to path for utils
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from utils.paths import DECISIONS_JSON, REGISTRY_JSON, DOCKER_DIR, CONFIG_DIR, HEALTH_JSON, STATE_DIR, REPO_ROOT
+from utils.paths import DECISIONS_JSON, REGISTRY_JSON, DOCKER_DIR, CONFIG_DIR, HEALTH_JSON, STATE_DIR, REPO_ROOT, CONTAINER_HEALTH_JSON
 from utils.state import load_json, save_json
 from utils.guards import wrap_agent
 from utils.logger import get_logger
@@ -117,15 +117,19 @@ def perform_redeploy(action):
 def enforce_dependencies():
     """Batch 5 T1: Ensure dependencies are running."""
     deps = load_dependencies()
-    health = load_json(HEALTH_JSON, default={})
+    # Audit Fix 1.4: Use container-specific health rather than system report
+    health_data = load_json(CONTAINER_HEALTH_JSON, default={})
+    containers = health_data.get("containers", {})
     
     for app, dep in deps:
         # Check if app is supposed to be running but dep is not
-        if app in health and health[app].get("status") == "online":
+        app_status = containers.get(app, {}).get("status")
+        if app_status == "online":
             # If dep is a container (not a path)
             if not dep.startswith("/"):
-                if dep in health and health[dep].get("status") == "offline":
-                    logger.warning(f"Dependency Violation: {app} is running but {dep} is stopped. Starting {dep}...")
+                dep_status = containers.get(dep, {}).get("status")
+                if dep_status == "offline" or dep_status == "missing":
+                    logger.warning(f"Dependency Violation: {app} is running but {dep} is {dep_status}. Starting {dep}...")
                     try:
                         subprocess.run(["docker", "start", dep], timeout=15)
                     except subprocess.TimeoutExpired:

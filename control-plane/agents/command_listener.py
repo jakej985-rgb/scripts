@@ -12,9 +12,6 @@ from config.telegram import is_allowed_user
 from agents import telegram
 from utils.paths import REGISTRY_JSON
 
-# Initialize telegram background worker
-telegram.start()
-
 # M3TAL Command Listener Agent (Tier 2)
 # Hardened remote control via Telegram with sandboxed Docker access
 
@@ -194,6 +191,10 @@ def handle_command(update):
         telegram.send_direct(msg["chat"]["id"], status_msg)
 
 def listen_commands():
+    # Audit Fix 1.5: Start worker only when explicitly running loop
+    if not telegram.is_available():
+        telegram.start()
+        
     from utils.paths import TELEGRAM_OFFSET_TXT
     offset = 0
     if TELEGRAM_OFFSET_TXT.exists():

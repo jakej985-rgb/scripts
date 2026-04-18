@@ -30,8 +30,10 @@ RUN pip install --no-cache-dir \
 
 # 4. Non-Root Execution Enforcement
 # Create appuser and add to groups (GID 0 is often needed for Docker Desktop socket access)
+# GID 999 is added as standard fallback for the 'docker' group on Linux
 RUN groupadd -g 1000 appuser && \
-    useradd -m -u 1000 -g 1000 -G 0 appuser
+    groupadd -g 999 docker && \
+    useradd -m -u 1000 -g 1000 -G 0,docker appuser
 
 # Set workspace
 WORKDIR /docker

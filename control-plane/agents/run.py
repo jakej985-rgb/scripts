@@ -9,10 +9,10 @@ import json
 from pathlib import Path
 
 # --- Path System Bootstrap ----------------------------------------------------
-AGENTS_DIR = Path(__file__).resolve().parent  # control-plane/agents/
-CONTROL_PLANE = AGENTS_DIR.parent             # control-plane/
-sys.path.append(str(AGENTS_DIR))
-sys.path.append(str(CONTROL_PLANE))
+_AGENTS_DIR = Path(__file__).resolve().parent  # control-plane/agents/
+_CONTROL_PLANE = _AGENTS_DIR.parent             # control-plane/
+sys.path.append(str(_AGENTS_DIR))
+sys.path.append(str(_CONTROL_PLANE))
 
 from utils.paths import CONTROL_PLANE, AGENTS_DIR, LOG_DIR, STATE_DIR, RESTARTS_JSON, ensure_dirs, TIERS
 from utils.healing import atomic_write_json

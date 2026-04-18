@@ -1,6 +1,8 @@
 import os
 import json
 import secrets
+import threading
+import hmac
 from pathlib import Path
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for
 from flask_socketio import SocketIO, emit, join_room
@@ -40,7 +42,14 @@ HEALTH_REPORT_JSON = os.path.join(STATE_DIR, "health_report.json")
 METRICS_HISTORY_CSV = os.path.join(STATE_DIR, "metrics-history.csv")
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv("DASHBOARD_SECRET") or secrets.token_hex(32)
+# Audit Fix 2.4: Fail fast if SECRET_KEY is missing to ensure session persistence
+DASHBOARD_SECRET = os.getenv("DASHBOARD_SECRET")
+if not DASHBOARD_SECRET:
+    print("❌ [SECURITY] CRITICAL: DASHBOARD_SECRET environment variable is not set.")
+    print("Session persistence and CSRF security are compromised. Generating ephemeral key...")
+    DASHBOARD_SECRET = secrets.token_hex(32)
+
+app.config['SECRET_KEY'] = DASHBOARD_SECRET
 socketio = SocketIO(app, async_mode=ASYNC_MODE)
 
 # Simple Role-Based Access Control (Batch 3 T1)
@@ -78,10 +87,11 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        # CSRF Protection (Audit Fix H)
+        # CSRF Protection (Audit Fix 2.1 - Timing Attack Guard)
         form_token = request.form.get('csrf_token')
         session_token = session.get('csrf_token')
-        if not form_token or not session_token or form_token != session_token:
+        
+        if not form_token or not session_token or not hmac.compare_digest(form_token, session_token):
             return render_template('login.html', error="Security violation: Invalid or expired CSRF token"), 403
 
         username = request.form.get('username')
@@ -202,11 +212,10 @@ def background_metrics_stream():
         emit_metrics_update()
 
 
-def start_background_tasks():
-    socketio.start_background_task(background_metrics_stream)
-
-start_background_tasks() # Audit fix 2.3 — Start outside main for Docker/WSGI visibility
-
+# Audit fix 2.3 — Start outside main for Docker/WSGI visibility
+# Guarded for test environment to prevent background task proliferation
 if __name__ == '__main__':
+    start_background_tasks()
+    
     port = int(os.getenv("DASHBOARD_PORT", 8080))
     socketio.run(app, host='0.0.0.0', port=port)
