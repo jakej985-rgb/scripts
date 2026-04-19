@@ -216,20 +216,23 @@ def main():
     else:
         new_env["TRAEFIK_AUTH_PASS"] = get_input("Enter Traefik password")
     
-    # Generate Bcrypt hash for Traefik (using $$ to escape $ for docker-compose)
+    # Generate Bcrypt hash for Traefik (using usersfile to avoid double-dollar interpolation bugs)
     try:
         import bcrypt
         passwd = new_env["TRAEFIK_AUTH_PASS"].encode('utf-8')
         salt = bcrypt.gensalt(rounds=10)
-        # Traefik requires $$ in compose files to avoid interpolation, but we store single $ in .env 
-        # as compose will handle the mapping if we use the right syntax in the label.
-        # Actually, it's safer to store the raw hash here.
         hash_val = bcrypt.hashpw(passwd, salt).decode('utf-8')
-        new_env["TRAEFIK_AUTH_HASH"] = hash_val.replace('$', '$$')
-        print(f"Generated Bcrypt hash for Traefik middleware.")
+        new_env["TRAEFIK_AUTH_HASH"] = hash_val # Store raw for reference
+        
+        # Write dedicated users file for Traefik middleware
+        traefik_users_path = os.path.join(REPO_ROOT, "control-plane", "state", "traefik-dynamic-dir", "users")
+        os.makedirs(os.path.dirname(traefik_users_path), exist_ok=True)
+        with open(traefik_users_path, "w", encoding="utf-8") as f:
+            f.write(f"{auth_user}:{hash_val}\n")
+            
+        print(f"Generated Traefik auth file: {traefik_users_path}")
     except Exception as e:
-        print(f"{RED}Warning: Could not generate bcrypt hash (bcrypt module missing?): {e}{END}")
-        new_env["TRAEFIK_AUTH_HASH"] = "replace_me_with_bcrypt_hash"
+        print(f"{RED}Warning: Could not generate Traefik auth: {e}{END}")
     print("")
 
     # 7. Security & Final Review

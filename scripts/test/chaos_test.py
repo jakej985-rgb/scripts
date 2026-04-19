@@ -38,7 +38,7 @@ def log_chaos_event(action, target):
     events = load_json(CHAOS_EVENTS_JSON, default=[])
     events.append(event)
     # Keep last 20 events
-    save_json(CHAOS_EVENTS_JSON, events[-20:])
+    save_json(CHAOS_EVENTS_JSON, events[-20:], caller="chaos_test")
 
 def corrupt_file(path):
     try:

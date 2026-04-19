@@ -86,7 +86,7 @@ REQUIRED_DIRS = [
 REQUIRED_LOGS = [
     "monitor.log", "metrics.log", "anomaly.log", "decision.log",
     "reconcile.log", "registry.log", "observer.log", "scorer.log",
-    "chaos.log", "supervisor.log", "healer.log"
+    "chaos.log", "healer.log"
 ]
 
 STATE_FILE_DEFAULTS = {

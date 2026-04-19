@@ -79,11 +79,13 @@ def scan_infrastructure():
         labels = inspect_data.get(name, {})
         stack = labels.get("m3tal.stack", "unknown")
         service = labels.get("com.docker.compose.service", name)
+        role = labels.get("m3tal.role", "unknown")
         
         registry_containers.append(name)
         stack_map[name] = {
             "stack": stack,
             "service": service,
+            "role": role,
             "status": container.get("Status", "unknown"),
             "state": container.get("State", "unknown")
         }

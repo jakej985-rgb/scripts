@@ -204,7 +204,7 @@ def handle_command(update):
         handle_confirm(msg, args)
     elif cmd == "/status":
         from utils.paths import HEALTH_JSON
-        status_msg = " status_msg = \"🏥 <b>M3TAL System Health:</b>\n\""
+        status_msg = "🏥 <b>M3TAL System Health:</b>\n"
         if HEALTH_JSON.exists():
             try:
                 data = json.loads(HEALTH_JSON.read_text())

@@ -6,7 +6,7 @@ import time
 # Add current dir to path for utils
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from utils.paths import DECISIONS_JSON, REGISTRY_JSON, DOCKER_DIR, CONFIG_DIR, HEALTH_JSON, STATE_DIR, REPO_ROOT, CONTAINER_HEALTH_JSON
+from utils.paths import DECISIONS_JSON, REGISTRY_JSON, DOCKER_DIR, CONFIG_DIR, STATE_DIR, REPO_ROOT, CONTAINER_HEALTH_JSON
 from utils.state import load_json, save_json
 from utils.guards import wrap_agent
 from utils.logger import get_logger
@@ -135,15 +135,15 @@ def enforce_dependencies():
                     except subprocess.TimeoutExpired:
                         logger.error(f"Dependency start timed out for {dep}")
 
-MEDIA_CONTAINERS = {"radarr", "sonarr", "qbittorrent", "bazarr", "tdarr", 
-                    "komga", "recyclarr", "autobrr", "prowlarr"}
-
 def check_storage_enforcement():
-    registry = load_json(REGISTRY_JSON, default={"containers": []})
-    containers = registry.get("containers", [])
-    for c in containers:
-        if c not in MEDIA_CONTAINERS:
-            continue  # Skip non-media containers (Audit Fix)
+    registry = load_json(REGISTRY_JSON, default={"stacks": {}})
+    stacks = registry.get("stacks", {})
+    
+    for c, meta in stacks.items():
+        # Audit Fix 15: Use label-based stack check instead of hardcoded names
+        if meta.get("stack") != "media":
+            continue
+            
         try:
             cmd = ["docker", "inspect", c, "--format", "{{range .Mounts}}{{.Source}}:{{.Destination}} {{end}}"]
             res = subprocess.run(cmd, capture_output=True, text=True, timeout=10)

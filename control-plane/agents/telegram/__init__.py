@@ -16,56 +16,26 @@ import sys
 # If the config is missing or broken we degrade gracefully so every other
 # agent still boots even when Telegram is misconfigured.
 
+_AVAILABLE = False
+_error_msg = "Unknown error"
+
 try:
     from .service import (
-        start,
-        stop,
-        send_main,
-        send_direct,
-        log,
-        error,
-        alert,
-        action,
-        docker,
+        start, stop, send_main, send_direct,
+        log, error, alert, action, docker,
     )
     _AVAILABLE = True
-except ImportError as _e:
-    _AVAILABLE = False
-    _IMPORT_ERROR = str(_e)
+except ImportError as e:
+    _error_msg = f"Import error: {e}"
+except Exception as e:
+    _error_msg = f"Unexpected error: {e}"
 
-    def _noop(*args, **kwargs):
-        pass
+if not _AVAILABLE:
+    def _fail_log(*args, **kwargs):
+        print(f"[TELEGRAM] Subsystem unavailable ({_error_msg}). Message dropped.", file=sys.stderr)
 
-    def _warn(*args, **kwargs):
-        print(
-            f"[TELEGRAM] Subsystem unavailable (import error: {_IMPORT_ERROR}). "
-            "Message dropped.",
-            file=sys.stderr,
-        )
-
-    start     = _noop
-    stop      = _noop
-    send_main = _warn
-    send_direct = _warn
-    log       = _warn
-    error     = _warn
-    alert     = _warn
-    action    = _warn
-    docker    = _warn
-
-except Exception as _e:
-    _AVAILABLE = False
-    _import_err_msg = str(_e)
-
-    def _critical(*args, **kwargs):
-        print(
-            f"[TELEGRAM] CRITICAL: Unexpected error loading subsystem: {_import_err_msg}. "
-            "Message dropped.",
-            file=sys.stderr,
-        )
-
-    start = stop = send_main = send_direct = _critical
-    log = error = alert = action = docker = _critical
+    start = stop = _fail_log
+    send_main = send_direct = log = error = alert = action = docker = _fail_log
 
 
 def is_available() -> bool:

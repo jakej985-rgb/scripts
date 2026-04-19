@@ -98,7 +98,7 @@ CONTRACTS = {
     "anomaly": [CONTAINER_HEALTH_JSON, METRICS_JSON],
     "decision": [ANOMALIES_JSON], # COOLDOWNS is internal, will be created
     "reconcile": [DECISIONS_JSON, REGISTRY_JSON],
-    "health_score": [METRICS_JSON, CONTAINER_HEALTH_JSON],
+    "health_score": [METRICS_JSON, CONTAINER_HEALTH_JSON, ANOMALIES_JSON],
     "notify": [HEALTH_REPORT_JSON],
     "scaling": [METRICS_JSON],
     "network_guard": [DOCKER_DIR],

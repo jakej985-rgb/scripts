@@ -1,7 +1,6 @@
 from . import client
 from . import tg_queue
 import hashlib
-from collections import deque
 from config.telegram import (
     CHAT_COUNT, MAIN_CHAT_ID, LOG_CHAT_ID, ERROR_CHAT_ID, 
     ALERT_CHAT_ID, ACTION_CHAT_ID, DOCKER_CHAT_ID
@@ -16,10 +15,17 @@ import time
 _sent_hashes = {} # {hash: timestamp}
 DEDUP_TTL = 300   # 5 minutes
 
+def _strip_html(text: str) -> str:
+    """Removes HTML tags for cleaner hashing (Audit Fix 18)."""
+    import re
+    return re.sub(r'<[^>]+>', '', text)
+
 def _is_duplicate(text: str) -> bool:
     """Checks if the message has been sent recently to avoid spam (TTL based)."""
     now = time.time()
-    m_hash = hashlib.sha256(text.encode()).hexdigest()
+    # De-format before hashing (Audit Fix 18)
+    clean_text = _strip_html(text)
+    m_hash = hashlib.sha256(clean_text.encode()).hexdigest()
     
     # 1. Prune expired hashes
     # (Simplified: we prune on every check or periodically)

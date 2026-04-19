@@ -45,6 +45,23 @@ services:
     env_file:
       - ../.env
 
+  # Security Hardening: Docker Socket Proxy (Audit Fix 5)
+  # This prevents the m3tal-runtime from having raw RW access to the host socket.
+  docker-proxy:
+    image: tecnativa/docker-socket-proxy
+    container_name: m3tal-docker-proxy
+    privileged: true # Required to talk to the socket itself
+    environment:
+      - CONTAINERS=1
+      - IMAGES=1
+      - POST=1 # Allow restarts/reconciliation
+      - NETWORKS=1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - proxy
+    restart: unless-stopped
+
   m3tal-runtime:
     build:
       context: ..
@@ -53,23 +70,24 @@ services:
     depends_on:
       permission-fixer:
         condition: service_completed_successfully
+      docker-proxy:
+        condition: service_started
     volumes:
       - ${REPO_ROOT:?REPO_ROOT not set — run from repo root with .env}:/docker
-      - /var/run/docker.sock:/var/run/docker.sock
+    # 🛡️ SECURITY FIX: No direct socket mount. Talk to proxy instead.
+    environment:
+      - TZ=America/Denver
+      - DOCKER_API_VERSION=${DOCKER_API_VERSION}
+      - REPO_ROOT=/docker
+      - IN_CONTAINER=true
+      - DOCKER_HOST=tcp://docker-proxy:2375
     working_dir: /docker
     command: python3 control-plane/agents/run.py
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
     env_file:
-
       - ../.env
-    # Running as non-root appuser (configured in Dockerfile)
-    environment:
-      - TZ=America/Denver
-      - DOCKER_API_VERSION=${DOCKER_API_VERSION}
-      - REPO_ROOT=/docker
-      - IN_CONTAINER=true
     networks:
       - proxy
 

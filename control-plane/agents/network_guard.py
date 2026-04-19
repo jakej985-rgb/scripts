@@ -29,15 +29,27 @@ def get_container_info(name):
 
 def find_dependents():
     """Finds all containers configured with network_mode describing this gluetun container."""
+    dependents = []
     try:
-        # We look for 'container:gluetun' network mode
-        cmd = ["docker", "ps", "-a", "--filter", "network=container:gluetun", "--format", "{{.Names}}"]
+        # ps -a --format json provides NetworkMode directly in some Docker versions, 
+        # but inspect is the cross-platform source of truth.
+        cmd = ["docker", "ps", "-a", "--format", "{{.Names}}"]
         res = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
         if res.returncode == 0:
-            return [name.strip() for name in res.stdout.strip().splitlines() if name.strip()]
-    except Exception:
-        pass
-    return []
+            names = [n.strip() for n in res.stdout.strip().splitlines() if n.strip()]
+            for name in names:
+                if name == GLUETUN_CONTAINER: continue
+                
+                # Check NetworkMode
+                inspect_cmd = ["docker", "inspect", "-f", "{{.HostConfig.NetworkMode}}", name]
+                inspect_res = subprocess.run(inspect_cmd, capture_output=True, text=True, timeout=5)
+                if inspect_res.returncode == 0:
+                    mode = inspect_res.stdout.strip()
+                    if mode == f"container:{GLUETUN_CONTAINER}":
+                        dependents.append(name)
+    except Exception as e:
+        logger.error(f"Error finding dependents: {e}")
+    return dependents
 
 def monitor_network():
     """Main loop: Detects Gluetun restarts and bounces dependents."""

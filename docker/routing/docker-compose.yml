@@ -38,7 +38,7 @@ services:
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.routers.traefik.entrypoints=web"
       - "traefik.http.routers.traefik.middlewares=m3tal-auth"
-      - "traefik.http.middlewares.m3tal-auth.basicauth.users=${TRAEFIK_AUTH_USER}:${TRAEFIK_AUTH_HASH}"
+      - "traefik.http.middlewares.m3tal-auth.basicauth.usersfile=/etc/traefik/dynamic/users"
       - "m3tal.stack=routing"
       - "m3tal.role=gateway"
 
