@@ -28,7 +28,11 @@ def get_docker_containers():
         containers = []
         for line in result.stdout.splitlines():
             if line.strip():
-                containers.append(json.loads(line))
+                try:
+                    containers.append(json.loads(line))
+                except json.JSONDecodeError:
+                    logger.warning(f"Failed to parse container JSON line: {line}")
+                    continue
         return containers
     except Exception as e:
         logger.error(f"Failed to query Docker API: {e}")
@@ -59,7 +63,11 @@ def scan_infrastructure():
             raw_labels = inspect_res.stdout.strip().splitlines()
             for i, name in enumerate(container_names):
                 if i < len(raw_labels):
-                    inspect_data[name] = json.loads(raw_labels[i])
+                    try:
+                        inspect_data[name] = json.loads(raw_labels[i])
+                    except json.JSONDecodeError:
+                        logger.warning(f"Failed to parse inspect labels for {name}: {raw_labels[i]}")
+                        inspect_data[name] = {}
         except Exception as e:
             logger.error(f"Batched inspect failed: {e}")
 

@@ -67,10 +67,10 @@ def evaluate_scaling():
     existing_data = load_json(SCALING_ACTIONS, default={"actions": []})
     existing_actions = existing_data.get("actions", [])
     
-    # Simple merge: use a dict to deduplicate by {type}:{target}:{direction} (Audit Fix 6.6)
-    merged = {(a["type"], a["target"], a.get("direction")): a for a in existing_actions}
+    # Simple merge: use a dict to deduplicate by {type}:{target} (Audit Fix 5)
+    merged = {(a["type"], a["target"]): a for a in existing_actions}
     for a in new_actions:
-        merged[(a["type"], a["target"], a.get("direction"))] = a
+        merged[(a["type"], a["target"])] = a
         
     final_actions = list(merged.values())
 

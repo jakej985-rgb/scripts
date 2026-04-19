@@ -14,7 +14,11 @@ import time
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
-DEFAULT_DEST = Path(os.getenv("DATA_DIR", "/mnt")) / "backups" / "docker-configs"
+# Ensure we can find the agents package for centralized paths (Audit Fix 14)
+sys.path.append(str(REPO_ROOT / "control-plane"))
+from agents.utils.paths import BACKUP_DIR, REPO_ROOT as CENTRAL_ROOT
+
+DEFAULT_DEST = BACKUP_DIR
 KEEP_BACKUPS = 5
 
 # Items to back up (relative to REPO_ROOT)
@@ -43,14 +47,26 @@ def create_backup(dest: Path, repo_root: Path) -> Path | None:
         with tarfile.open(archive_path, "w:gz") as tar:
             for target in BACKUP_TARGETS:
                 full_path = repo_root / target
-                if full_path.exists():
-                    tar.add(
-                        str(full_path),
-                        arcname=target,
-                        filter=lambda ti: None if should_exclude(ti.name) else ti,
-                    )
-                else:
+                if not full_path.exists():
                     print(f"[SKIP] {target} not found")
+                    continue
+
+                if full_path.is_file():
+                    if not should_exclude(full_path.name):
+                        tar.add(str(full_path), arcname=target)
+                else:
+                    # Recursive walk for directories (Audit Fix 7)
+                    for root, dirs, files in os.walk(full_path):
+                        rel_root = Path(root).relative_to(repo_root)
+                        # Add the directory itself
+                        if not should_exclude(root):
+                            tar.add(root, arcname=str(rel_root), recursive=False)
+                        
+                        for file in files:
+                            if not should_exclude(file):
+                                file_path = Path(root) / file
+                                arc_name = rel_root / file
+                                tar.add(str(file_path), arcname=str(arc_name))
 
         print(f"[OK] Backup created: {archive_path.name}")
         return archive_path

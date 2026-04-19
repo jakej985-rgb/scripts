@@ -114,7 +114,7 @@ def save_json(path: str, data: Any, caller: str = "unknown") -> bool:
             except Exception: pass
         return False
 
-def validate_state(path: str, expected_type: type = list) -> bool:
+def validate_state(path: str, expected_type: type | tuple = (list, dict)) -> bool:
     """Check if file exists and contains valid, non-corrupted data of expected type."""
     if not os.path.exists(path):
         return False

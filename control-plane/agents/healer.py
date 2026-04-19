@@ -54,10 +54,7 @@ def run_healing_cycle():
         # 3. State Validation (Atomic)
         init.state_agent(repair_mode=False)
         
-        # 4. Docker Health Audit (No restarts in runtime mode)
-        init.docker_agent(repair_mode=False)
-        
-        # 5. Final Health Update
+        # 4. Final Health Update
         is_ready = init.health_agent()
         
         duration = time.time() - start_time

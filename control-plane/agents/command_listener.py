@@ -3,6 +3,7 @@ import sys
 import json
 import time
 import subprocess
+import secrets
 from datetime import datetime
 
 # Standardize path for agent execution
@@ -60,8 +61,42 @@ def handle_help(msg):
         "/docker status - List containers\n"
         "/docker logs &lt;name&gt; - Get last 20 lines\n"
         "/docker restart &lt;name&gt; - Restart container\n"
+        "/confirm &lt;id&gt; - Confirm a pending action\n"
     )
     telegram.send_direct(msg["chat"]["id"], help_text)
+
+_pending_confirmations: dict[int, dict] = {} # {chat_id: {type: str, target: str, id: str, expires: float}}
+
+def handle_confirm(msg, args):
+    if not args:
+        telegram.send_direct(msg["chat"]["id"], "Usage: /confirm [id]")
+        return
+    
+    conf_id = args[0]
+    chat_id = msg["chat"]["id"]
+    pending = _pending_confirmations.get(chat_id)
+    
+    if not pending or pending["id"] != conf_id:
+        telegram.send_direct(chat_id, "❌ Invalid or expired confirmation ID.")
+        return
+    
+    if time.time() > pending["expires"]:
+        telegram.send_direct(chat_id, "⏰ Confirmation ID has expired.")
+        del _pending_confirmations[chat_id]
+        return
+    
+    # Execute pending action
+    if pending["type"] == "restart":
+        name = pending["target"]
+        try:
+            telegram.send_direct(chat_id, f"⏳ <b>CONFIRMED:</b> Restarting <code>{name}</code>...")
+            subprocess.run(["docker", "restart", name], timeout=30)
+            telegram.send_direct(chat_id, f"✅ Container <code>{name}</code> restarted.")
+            telegram.action(f"User {msg['from']['id']} RESTARTED {name} via Telegram (Confirmed)")
+        except Exception as e:
+            telegram.send_direct(chat_id, f"❌ Error restarting {name}: {e}")
+        finally:
+            del _pending_confirmations[chat_id]
 
 def handle_docker(msg, args):
     if not args:
@@ -102,13 +137,20 @@ def handle_docker(msg, args):
         if name not in allowed:
             telegram.send_direct(msg["chat"]["id"], f"🚫 Container <code>{name}</code> is not in registry whitelist.")
             return
-        try:
-            telegram.send_direct(msg["chat"]["id"], f"⏳ Restarting <code>{name}</code>...")
-            subprocess.run(["docker", "restart", name], timeout=30)
-            telegram.send_direct(msg["chat"]["id"], f"✅ Container <code>{name}</code> restarted.")
-            telegram.action(f"User {msg['from']['id']} restarted {name} via Telegram")
-        except Exception as e:
-            telegram.send_direct(msg["chat"]["id"], f"❌ Error restarting {name}: {e}")
+        
+        # Issue confirmation ID (Audit Fix 10)
+        conf_id = secrets.token_hex(3).upper()
+        _pending_confirmations[msg["chat"]["id"]] = {
+            "type": "restart",
+            "target": name,
+            "id": conf_id,
+            "expires": time.time() + 60
+        }
+        telegram.send_direct(msg["chat"]["id"], 
+                            f"🛡️ <b>RESTART CONFIRMATION</b>\n"
+                            f"Container: <code>{name}</code>\n"
+                            f"Action expires in 60s.\n\n"
+                            f"Send: <code>/confirm {conf_id}</code>")
 
 _cmd_cooldowns: dict[int, float] = {}
 CMD_COOLDOWN = 5  # seconds
@@ -158,9 +200,11 @@ def handle_command(update):
         handle_help(msg)
     elif cmd == "/docker":
         handle_docker(msg, args)
+    elif cmd == "/confirm":
+        handle_confirm(msg, args)
     elif cmd == "/status":
         from utils.paths import HEALTH_JSON
-        status_msg = "🏥 <b>M3TAL System Health:</b>\n"
+        status_msg = " status_msg = \"🏥 <b>M3TAL System Health:</b>\n\""
         if HEALTH_JSON.exists():
             try:
                 data = json.loads(HEALTH_JSON.read_text())

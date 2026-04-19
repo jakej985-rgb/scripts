@@ -21,7 +21,7 @@ def get_repo_root():
     try:
         return subprocess.check_output(['git', 'rev-parse', '--show-toplevel'], 
                                      stderr=subprocess.DEVNULL).decode('utf-8').strip()
-    except:
+    except Exception:
         return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 REPO_ROOT = get_repo_root()
@@ -72,7 +72,7 @@ def load_json_safe(path, default=None):
     try:
         with open(path, 'r') as f:
             return json.load(f)
-    except:
+    except Exception:
         return default
 
 # -------------------------------

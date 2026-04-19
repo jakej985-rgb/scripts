@@ -34,6 +34,11 @@ DOCKER_DIR = REPO_ROOT / "docker"
 DASHBOARD_DIR = REPO_ROOT / "dashboard"
 SCRIPTS_DIR = REPO_ROOT / "scripts"
 
+# Maintenance Paths (Audit Fix 14)
+import os
+DATA_DIR = Path(os.getenv("DATA_DIR", "/mnt"))
+BACKUP_DIR = DATA_DIR / "backups" / "docker-configs"
+
 # Script Subfolders
 SCRIPTS_DEBUG = SCRIPTS_DIR / "debug"
 SCRIPTS_HELPERS = SCRIPTS_DIR / "helpers"

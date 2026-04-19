@@ -186,8 +186,8 @@ def setup_venv(install_dir: Path, venv_name: str) -> Path:
     log(f"  [INSTALL] requirements.txt into {venv_name}...")
     req_file = install_dir / "requirements.txt"
     if req_file.exists():
-        subprocess.run([str(pip_exe), "install", "-U", "pip"], check=False)
-        subprocess.run([str(pip_exe), "install", "-r", str(req_file)], check=False)
+        subprocess.run([str(pip_exe), "install", "-U", "pip"], check=True)
+        subprocess.run([str(pip_exe), "install", "-r", str(req_file)], check=True)
     else:
         warn("requirements.txt missing — skipping pip install")
         

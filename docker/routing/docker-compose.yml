@@ -28,7 +28,7 @@ services:
     security_opt:
       - no-new-privileges:true
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - ../../control-plane/state/traefik-dynamic-dir:/etc/traefik/dynamic:ro
     networks:
       - proxy
@@ -45,7 +45,7 @@ services:
     restart: unless-stopped
 
   cloudflared:
-    image: cloudflare/cloudflared:latest
+    image: cloudflare/cloudflared:2024.4.1
     container_name: cloudflared
     command: tunnel --no-autoupdate run --token ${CF_TUNNEL_TOKEN:?CF_TUNNEL_TOKEN not set — run from repo root with .env}
     networks:

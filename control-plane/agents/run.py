@@ -108,10 +108,11 @@ def _record_failure(name: str):
     else:
         agent_data["count"] += 1
 
+    prev_fail = agent_data["last_fail"]
     agent_data["last_fail"] = now
 
     # Stability Guard: 5 fails in 60s -> 5m pause
-    if agent_data["count"] >= 5 and (now - agent_data["last_fail"] < 60):
+    if agent_data["count"] >= 5 and (now - prev_fail < 60):
         ts = time.strftime("%H:%M:%S")
         print(f"[{ts}] STABILITY_CRITICAL: {name} unstable (5 fails in 60s). Pausing for 5m.")
         agent_data["pause_until"] = now + 300

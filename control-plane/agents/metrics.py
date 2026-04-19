@@ -9,11 +9,15 @@ try:
 except ImportError:
     psutil = None
 
+if psutil:
+    # Seed the CPU measurement (Audit fix 2.1)
+    psutil.cpu_percent(interval=None)
+
 # Add current dir to path for utils
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from utils.paths import METRICS_JSON, STATE_DIR
-from utils.state import save_json
+from utils.state import save_json, safe_replace
 from utils.guards import wrap_agent
 from utils.logger import get_logger
 
@@ -112,11 +116,14 @@ def append_history(system, containers):
                         # Use maxlen to automatically prune oldest line on read
                         all_lines = collections.deque(f, maxlen=MAX_HISTORY_ENTRIES)
                     
-                    # Write it back to prune (Batch 3 T4 - Atomic-like replacement)
-                    with open(HISTORY_CSV, "w") as f:
+                    # Write to temp file then replace (Audit Fix 8)
+                    tmp_csv = f"{HISTORY_CSV}.tmp"
+                    with open(tmp_csv, "w") as f:
                         if all_lines and not all_lines[0].startswith("timestamp"):
                             f.write(header)
                         f.writelines(all_lines)
+                    
+                    safe_replace(tmp_csv, HISTORY_CSV)
                 
                 # Update last prune timestamp
                 with open(last_prune_file, 'w') as pf:

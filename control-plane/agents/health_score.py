@@ -5,7 +5,7 @@ import time
 # Standardize path resolution
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from utils.paths import STATE_DIR, HEALTH_REPORT_JSON
+from utils.paths import STATE_DIR, HEALTH_REPORT_JSON, TIERS
 from utils.state import load_json, save_json
 from utils.guards import wrap_agent
 from utils.logger import get_logger
@@ -62,7 +62,9 @@ def aggregate_agent_health():
         for f in os.listdir(HEALTH_SUBDIR):
             if f.endswith(".json"):
                 agent_name = f.replace(".json", "")
-                aggregated[agent_name] = load_json(HEALTH_SUBDIR / f)
+                # Security: Only aggregate files that are known agents (Audit Fix 2)
+                if agent_name in TIERS:
+                    aggregated[agent_name] = load_json(HEALTH_SUBDIR / f)
 
     return aggregated
 
@@ -96,7 +98,7 @@ def calculate_health():
 
     # 2. Agent Health (Batch 5 T3 integration)
     agent_health = aggregate_agent_health()
-    tier1_agents = ["monitor", "registry", "leader", "decision"]
+    tier1_agents = [name for name, tier in TIERS.items() if tier == 1]
     tier1_fail = False
     
     for agent, stats in agent_health.items():

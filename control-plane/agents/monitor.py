@@ -21,7 +21,8 @@ STATUS_FILE = Path(STATE_DIR) / "health" / "monitor_containers.json"
 
 def collect_health():
     registry = load_json(str(REGISTRY_JSON), default={"containers": []})
-    targets = registry.get("containers", [])
+    raw_targets = registry.get("containers", [])
+    targets = raw_targets if isinstance(raw_targets, list) else list(raw_targets.keys()) if isinstance(raw_targets, dict) else []
     
     cmd = ["docker", "ps", "-a", "--format", "{{json .}}"]
     now = int(time.time())
@@ -51,6 +52,18 @@ def collect_health():
                 containers_list.append(json.loads(line))
             except json.JSONDecodeError:
                 continue
+
+    # Audit Fix 9: Guard against mass "missing" storm during daemon flap
+    prev_status = load_json(STATUS_FILE, default={})
+    had_containers = len(prev_status.get("containers", {})) > 0
+    if not containers_list and targets and had_containers:
+        logger.warning("Docker poll returned empty, but registry has targets. Suspecting transient flap.")
+        save_json(STATUS_FILE, {
+            "docker_available": False, 
+            "timestamp": now, 
+            "error": "Transient empty poll"
+        }, caller="monitor")
+        return
 
     health_status = {
         "docker_available": True,
