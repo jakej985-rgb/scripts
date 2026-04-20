@@ -75,6 +75,17 @@
             "env": {
                 "PYTHONPATH": "${workspaceFolder}:${workspaceFolder}/scripts/helpers"
             }
+        },
+        {
+            "name": ".NET CORE: Infernal Ink & Steel (Manager)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/Infernal-Ink-Steel-Suite/Infernal-Ink-Steel-Suite.manager/bin/Debug/net8.0-windows10.0.19041/Infernal-Ink-Steel-Suite.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Infernal-Ink-Steel-Suite/Infernal-Ink-Steel-Suite.manager",
+            "console": "internalConsole",
+            "stopAtEntry": false
         }
     ]
 }
