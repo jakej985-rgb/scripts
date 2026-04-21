@@ -208,8 +208,12 @@ def emit_metrics_update():
 def background_metrics_stream():
     """Push real-time metric updates to all connected clients."""
     while True:
-        socketio.sleep(2)
-        emit_metrics_update()
+        try:
+            socketio.sleep(2)
+            emit_metrics_update()
+        except Exception as e:
+            print(f"[DASHBOARD] Background metrics error: {e}")
+            socketio.sleep(5)
 def start_background_tasks():
     """Initialize background workers for SocketIO."""
     socketio.start_background_task(background_metrics_stream)

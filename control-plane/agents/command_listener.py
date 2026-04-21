@@ -258,7 +258,7 @@ def listen_commands():
             except Exception as e:
                 print(f"[TELEGRAM CMD ERR] {e}")
             finally:
-                offset = update["update_id"]
+                offset = update["update_id"] + 1
                 
         TELEGRAM_OFFSET_TXT.write_text(str(offset))
     except Exception as e:

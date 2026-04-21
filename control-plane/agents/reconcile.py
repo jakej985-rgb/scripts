@@ -41,12 +41,14 @@ def perform_action(action):
         
     if a_type == "redeploy":
         return perform_redeploy(action)
-        
-    cmd = ["docker", a_type, target]
-    if a_type not in ["restart", "start", "stop"]:
+
+    # Allowlist-first: only permit known safe Docker commands
+    ALLOWED_ACTIONS = {"restart", "start", "stop"}
+    if a_type not in ALLOWED_ACTIONS:
         logger.warning(f"Unsupported action type: {a_type}")
         return False
         
+    cmd = ["docker", a_type, target]
     try:
         # Tweak 4: Subprocess timeout and explicit error handling
         subprocess.run(cmd, check=True, capture_output=True, text=True, timeout=15)
@@ -61,57 +63,58 @@ def perform_action(action):
 def perform_scale(action):
     target = action.get("target")
     direction = action.get("direction")
-    for root, dirs, files in os.walk(DOCKER_DIR):
-        for file in files:
-            if file.endswith('.yml') or file.endswith('.yaml'):
-                full_path = os.path.join(root, file)
-                env_file = os.path.join(REPO_ROOT, ".env")
-                env_arg = ["--env-file", env_file] if os.path.exists(env_file) else []
-                try:
-                    res = subprocess.run(["docker", "compose", "-f", full_path, "ps", target], capture_output=True, text=True, timeout=10)
-                    if res.returncode == 0 and target in res.stdout:
-                        num = 2 if direction == "up" else 1
-                        logger.info(f"Scaling {target} {direction} to {num} replicas")
-                        cmd = ["docker", "compose", "-f", full_path] + env_arg + ["up", "-d", "--scale", f"{target}={num}"]
-                        subprocess.run(cmd, check=True, timeout=30)
-                        return True
-                except subprocess.TimeoutExpired:
-                    logger.error(f"Scale check timed out for {target} in {full_path}")
-                    continue
-                except Exception:
-                    continue
+    
+    registry = load_json(REGISTRY_JSON, default={})
+    compose_index = registry.get("compose_index", {})
+    
+    full_path = compose_index.get(target)
+    if not full_path:
+        logger.error(f"Cannot scale {target}: compose file not found in registry index.")
+        return False
+        
+    env_file = os.path.join(REPO_ROOT, ".env")
+    env_arg = ["--env-file", env_file] if os.path.exists(env_file) else []
+    try:
+        res = subprocess.run(["docker", "compose", "-f", full_path, "ps", target], capture_output=True, text=True, timeout=10)
+        if res.returncode == 0 and target in res.stdout:
+            num = 2 if direction == "up" else 1
+            logger.info(f"Scaling {target} {direction} to {num} replicas")
+            cmd = ["docker", "compose", "-f", full_path] + env_arg + ["up", "-d", "--scale", f"{target}={num}"]
+            subprocess.run(cmd, check=True, timeout=30)
+            return True
+    except subprocess.TimeoutExpired:
+        logger.error(f"Scale check timed out for {target} in {full_path}")
+    except Exception as e:
+        logger.error(f"Error scaling {target}: {e}")
+        
     return False
 
 def perform_redeploy(action):
     target = action.get("target")
     logger.info(f"Attempting to redeploy missing service: {target}")
     
-    # Scan for the compose file that owns this service
+    registry = load_json(REGISTRY_JSON, default={})
+    compose_index = registry.get("compose_index", {})
+    
+    full_path = compose_index.get(target)
+    if not full_path:
+        logger.error(f"Could not find compose context for service: {target}")
+        return False
+        
     # Batch 16 Hardening: Ensure we use --env-file if .env exists
     env_file = os.path.join(REPO_ROOT, ".env")
     env_arg = ["--env-file", env_file] if os.path.exists(env_file) else []
     
-    for root, dirs, files in os.walk(DOCKER_DIR):
-        for file in files:
-            if file.endswith('.yml') or file.endswith('.yaml'):
-                full_path = os.path.join(root, file)
-                try:
-                    # Check if service exists in this file
-                    res = subprocess.run(["docker", "compose", "-f", full_path, "config", "--services"], 
-                                         capture_output=True, text=True, timeout=10)
-                    if res.returncode == 0 and target in res.stdout.splitlines():
-                        logger.info(f"Found {target} in {full_path}. Redeploying...")
-                        cmd = ["docker", "compose", "-f", full_path] + env_arg + ["up", "-d", target]
-                        subprocess.run(cmd, check=True, timeout=60)
-                        return True
-                except subprocess.TimeoutExpired:
-                    logger.error(f"Redeploy check timed out for {target} in {full_path}")
-                    continue
-                except Exception as e:
-                    logger.error(f"Error checking compose file {full_path}: {e}")
-                    continue
+    logger.info(f"Found {target} in {full_path}. Redeploying...")
+    cmd = ["docker", "compose", "-f", full_path] + env_arg + ["up", "-d", target]
+    try:
+        subprocess.run(cmd, check=True, timeout=60)
+        return True
+    except subprocess.TimeoutExpired:
+        logger.error(f"Redeploy check timed out for {target} in {full_path}")
+    except Exception as e:
+        logger.error(f"Error checking compose file {full_path}: {e}")
     
-    logger.error(f"Could not find compose context for service: {target}")
     return False
 
 def enforce_dependencies():

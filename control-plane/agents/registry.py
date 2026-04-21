@@ -55,21 +55,19 @@ def scan_infrastructure():
     inspect_data = {}
     
     if container_names:
-        try:
-            # We fetch both labels and config in one go
-            inspect_cmd = ["docker", "inspect"] + container_names + ["--format", "{{json .Config.Labels}}"]
-            inspect_res = subprocess.run(inspect_cmd, capture_output=True, text=True, check=True, timeout=15)
-            # Docker inspect returns one JSON object per line with this format
-            raw_labels = inspect_res.stdout.strip().splitlines()
-            for i, name in enumerate(container_names):
-                if i < len(raw_labels):
-                    try:
-                        inspect_data[name] = json.loads(raw_labels[i])
-                    except json.JSONDecodeError:
-                        logger.warning(f"Failed to parse inspect labels for {name}: {raw_labels[i]}")
-                        inspect_data[name] = {}
-        except Exception as e:
-            logger.error(f"Batched inspect failed: {e}")
+        for name in container_names:
+            try:
+                inspect_cmd = ["docker", "inspect", name, "--format", "{{json .Config.Labels}}"]
+                inspect_res = subprocess.run(inspect_cmd, capture_output=True, text=True, check=True, timeout=10)
+                raw = inspect_res.stdout.strip()
+                if raw:
+                    inspect_data[name] = json.loads(raw)
+            except json.JSONDecodeError:
+                logger.warning(f"Failed to parse inspect labels for {name}")
+                inspect_data[name] = {}
+            except Exception as e:
+                logger.warning(f"Inspect failed for {name}: {e}")
+                inspect_data[name] = {}
 
     # 2. Map and Register
     for container in docker_containers:
@@ -90,10 +88,28 @@ def scan_infrastructure():
             "state": container.get("State", "unknown")
         }
 
+    # 3. Build Compose Index (Audit Fix H5)
+    # Build an index of service -> compose file to avoid os.walk in reconcile.py
+    from utils.paths import DOCKER_DIR
+    compose_index = {}
+    for root, dirs, files in os.walk(DOCKER_DIR):
+        for file in files:
+            if file.endswith('.yml') or file.endswith('.yaml'):
+                full_path = os.path.join(root, file)
+                try:
+                    res = subprocess.run(["docker", "compose", "-f", full_path, "config", "--services"], 
+                                         capture_output=True, text=True, timeout=5)
+                    if res.returncode == 0:
+                        for svc in res.stdout.splitlines():
+                            compose_index[svc.strip()] = full_path
+                except Exception:
+                    continue
+
 
     registry_data = {
         "containers": sorted(registry_containers),
         "stacks": stack_map,
+        "compose_index": compose_index,
         "paths": {
             "root": "/mnt",
             "downloads": "/mnt/downloads",

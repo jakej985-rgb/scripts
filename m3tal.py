@@ -221,7 +221,9 @@ def main():
             line = line.strip()
             if "=" in line and not line.startswith("#"):
                 k, v = line.split("=", 1)
-                v = v.split("#")[0].strip()
+                # Only strip inline comments preceded by whitespace (preserve # in values)
+                import re
+                v = re.sub(r'\s+#.*$', '', v).strip()
                 if (v.startswith('"') and v.endswith('"')) or (v.startswith("'") and v.endswith("'")):
                     v = v[1:-1]
                 os.environ.setdefault(k.strip(), v)

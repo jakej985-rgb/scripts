@@ -3,7 +3,6 @@ import os
 import time
 import signal
 import random
-import errno
 from typing import Callable, Any
 
 # Root addition for utils
@@ -12,6 +11,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from utils.paths import STATE_DIR, LEADER_TXT, TIERS, validate_contract
 from utils.identity import is_local_host, get_local_identity
 from utils.state import save_json, load_json
+from utils.healing import is_pid_running
 from utils.logger import get_logger
 
 logger = get_logger("guards")
@@ -41,25 +41,6 @@ def set_system_mode(mode: str):
 def get_system_mode() -> str:
     data = load_json(SYSTEM_MODE_FILE, default={"mode": "HEALTHY"})
     return data.get("mode", "HEALTHY")
-
-# --- Process Infrastructure ---------------------------------------------------
-
-def is_pid_running(pid: int) -> bool:
-    """Production-grade PID check (cross-platform)."""
-    if pid <= 0: return False
-    try:
-        import psutil
-        return psutil.pid_exists(pid)
-    except ImportError:
-        try:
-            os.kill(pid, 0)
-            return True
-        except OSError as e:
-            # ESRCH (No such process) means dead.
-            # EPERM/EACCES (Permission denied) means alive but restricted.
-            return e.errno in (errno.EPERM, errno.EACCES)
-        except Exception:
-            return False
 
 
 def is_leader():

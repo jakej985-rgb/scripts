@@ -50,7 +50,6 @@ services:
   docker-proxy:
     image: tecnativa/docker-socket-proxy
     container_name: m3tal-docker-proxy
-    privileged: true # Required to talk to the socket itself
     environment:
       - CONTAINERS=1
       - IMAGES=1
@@ -61,6 +60,13 @@ services:
     networks:
       - proxy
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q http://localhost:2375/version || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
   m3tal-runtime:
     build:

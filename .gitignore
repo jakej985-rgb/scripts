@@ -28,3 +28,12 @@ media/
 tattoo/
 scratch/
 M3tal-Media-Server/
+
+# Analysis / lint output (L1)
+out.txt
+flake8_*.txt
+bandit_results.txt
+vulture_results.txt
+
+# Binary archives (L6)
+*.rar

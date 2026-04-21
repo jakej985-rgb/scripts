@@ -43,7 +43,7 @@ STACKS = [
 # --- Internal Helpers ---------------------------------------------------------
 GLOBAL_ENV = load_env(REPO_ROOT)
 
-HB = Heartbeat()
+HB = None
 
 def terminate_agents():
     """Finds and terminates M3TAL autonomous agents."""
@@ -123,62 +123,57 @@ def shutdown_stack(stack_name: str, bar: ProgressBar, current_step: int):
     expected_services = conf_res.stdout.strip().splitlines() if conf_res.returncode == 0 else []
     total_svc = len(expected_services)
     
-    sub_bar = SubProgressBar(total_svc)
-    live_list = LiveList(expected_services)
-    sub_bar.update(0, f"Dismantling {total_svc} services ({stack_name})")
+    with SubProgressBar(total_svc) as sub_bar, LiveList(expected_services) as live_list:
+        sub_bar.update(0, f"Dismantling {total_svc} services ({stack_name})")
 
-    try:
-        # 1. Start deconstruction asynchronously
-        # FIXED: Using stderr=DEVNULL to avoid "Pipe Deadlock" during teardown
-        proc = subprocess.Popen(["docker", "compose", "down", "--remove-orphans"], 
-                                cwd=str(stack_path), 
-                                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, env=GLOBAL_ENV)
+        try:
+            # 1. Start deconstruction asynchronously
+            # FIXED: Using stderr=DEVNULL to avoid "Pipe Deadlock" during teardown
+            env_file = str(REPO_ROOT / ".env")
+            proc = subprocess.Popen(["docker", "compose", "--env-file", env_file, "down", "--remove-orphans"], 
+                                    cwd=str(stack_path), 
+                                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, env=GLOBAL_ENV)
 
-        
-        # Settle time
-        time.sleep(1)
-        
-        # 2. Poll for removal immediately
-        start_time = time.time()
-        while time.time() - start_time < 120:
-            ps_res = subprocess.run(["docker", "compose", "-f", str(compose_file), "ps", "--format", "json"],
-                                 capture_output=True, text=True, env=GLOBAL_ENV)
-
-            if ps_res.returncode == 0:
-                out = ps_res.stdout.strip()
-                ps_data = []
-                try:
-                    if out.startswith("["): ps_data = json.loads(out)
-                    elif out: ps_data = [json.loads(l) for l in out.splitlines()]
-                except Exception: pass
-                
-                remaining_items = [item for item in expected_services if any(c.get("Service") == item for c in ps_data)]
-                remaining_count = len(remaining_items)
-                removed_count = total_svc - remaining_count
-                
-                # Update individual statuses
-                for item in expected_services:
-                    if item in remaining_items:
-                        live_list.update(item, "terminating...")
-                    else:
-                        live_list.update(item, "removed")
-
-                sub_bar.update(removed_count, f"Removed {removed_count}/{total_svc} ({stack_name})")
-                if remaining_count == 0: break
-            time.sleep(1.5)
-        live_list._unregister()
-        sub_bar._unregister()
             
-    except Exception as e:
-        HB.log(f"Dismantle Error in {stack_name}: {e}", symbol="✘")
-        if 'live_list' in locals():
-            live_list._unregister()
-        if 'sub_bar' in locals():
-            sub_bar._unregister()
+            # Settle time
+            time.sleep(1)
+            
+            # 2. Poll for removal immediately
+            start_time = time.time()
+            while time.time() - start_time < 120:
+                ps_res = subprocess.run(["docker", "compose", "-f", str(compose_file), "ps", "--format", "json"],
+                                     capture_output=True, text=True, env=GLOBAL_ENV)
+
+                if ps_res.returncode == 0:
+                    out = ps_res.stdout.strip()
+                    ps_data = []
+                    try:
+                        if out.startswith("["): ps_data = json.loads(out)
+                        elif out: ps_data = [json.loads(l) for l in out.splitlines()]
+                    except Exception: pass
+                    
+                    remaining_items = [item for item in expected_services if any(c.get("Service") == item for c in ps_data)]
+                    remaining_count = len(remaining_items)
+                    removed_count = total_svc - remaining_count
+                    
+                    # Update individual statuses
+                    for item in expected_services:
+                        if item in remaining_items:
+                            live_list.update(item, "terminating...")
+                        else:
+                            live_list.update(item, "removed")
+
+                    sub_bar.update(removed_count, f"Removed {removed_count}/{total_svc} ({stack_name})")
+                    if remaining_count == 0: break
+                time.sleep(1.5)
+                
+        except Exception as e:
+            HB.log(f"Dismantle Error in {stack_name}: {e}", symbol="\u2718")
 
     bar.update(current_step, f"Dismantled {stack_name}")
 
 def main():
+    global HB
     target_stacks = STACKS
     
     # Simple argument parsing for selective shutdown
@@ -196,6 +191,7 @@ def main():
     else:
         Header.show("M3TAL Global Blackout", "Autonomous Deconstruction Sequence")
     
+    HB = Heartbeat()
     HB.start()
     # Progress: Agents (step 0) + Target Stacks + Network Prune (final step)
     bar = ProgressBar(len(target_stacks) + 1, prefix="Blackout")

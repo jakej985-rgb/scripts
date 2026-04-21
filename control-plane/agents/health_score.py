@@ -32,7 +32,6 @@ recovery_metrics = {"total_events": 0, "avg_ttr": 0, "failures": 0}
 
 def get_file_status(path):
     if not path.exists():
-
         return "missing"
     data = load_json(path, default=None)
     if data is None:
@@ -53,7 +52,7 @@ def update_ttr(file_name, duration):
             changed = True
             break
     if changed:
-        save_json(CHAOS_EVENTS_JSON, events, caller="scorer")
+        save_json(CHAOS_EVENTS_JSON, events, caller="health_score")
 
 def aggregate_agent_health():
     """Batch 5 T3: Aggregate health from per-agent files."""
@@ -153,7 +152,7 @@ def calculate_health():
         "agent_health": agent_health,
         "docker_available": docker_available,
         "timestamp": int(now)
-    }, caller="scorer")
+    }, caller="health_score")
     
     logger.info(f"Health check completed. Mode: {mode}, Score: {score}")
 
@@ -170,4 +169,4 @@ if __name__ == "__main__":
     if not check_docker_connectivity():
         logger.warning("Docker daemon unreachable at startup. System will start in PARTIAL mode.")
     
-    wrap_agent("scorer", calculate_health)
+    wrap_agent("health_score", calculate_health)

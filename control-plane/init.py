@@ -8,6 +8,7 @@ import json
 import os
 import sys
 import time
+import shutil
 import subprocess
 import threading
 from pathlib import Path
@@ -201,7 +202,7 @@ def fs_agent(repair_mode: bool = False):
             if not is_writable(d):
                 t_log(f"[FS] WARNING: {d.name} is NOT writable. Attempting repair...", symbol="⚠")
                 if d.name in ["tmp", "health", "locks"]:
-                    retry(lambda: (subprocess.run(["rm", "-rf", str(d)], check=True), d.mkdir(parents=True, exist_ok=True)))
+                    retry(lambda: (shutil.rmtree(str(d), ignore_errors=True), d.mkdir(parents=True, exist_ok=True)))
                 else:
                     t_log(f"[FS] FATAL: Core dir {d.name} is un-writable.", symbol="✘")
                     return False
@@ -286,7 +287,7 @@ def dependency_agent():
             missing.append(dep)
             
     try:
-        pass
+        import bcrypt  # noqa: F401
     except ImportError:
         t_log("[DEP] WARNING: bcrypt missing (Tier 2). Auth repairs disabled.", symbol="⚠")
         update_status("auth", "degraded")
@@ -510,6 +511,7 @@ def docker_agent(repair_mode: bool = False):
                     # 2. Wait for Docker status (Up/Running)
                     wait_time = TIMEOUTS.get(name, 90)
                     start_time = time.time()
+                    ready_count = 0
                     while time.time() - start_time < wait_time:
                         if proc.poll() is not None and proc.returncode != 0:
                             raise RuntimeError(f"Docker Launch Error (Exit {proc.returncode}) for {name}")

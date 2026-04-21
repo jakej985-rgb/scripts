@@ -1,9 +1,14 @@
 import os
+import re
 from pathlib import Path
 from typing import Dict
 
 def load_env(repo_root: Path) -> Dict[str, str]:
-    """Surgically load .env file into a dictionary for subprocess propagation."""
+    """Load .env file into a dictionary for subprocess propagation.
+    
+    NOTE: This function also sets values into os.environ as a side effect
+    so that subprocesses and modules using os.getenv() see the loaded values.
+    """
     env = os.environ.copy()
     env_path = repo_root / ".env"
     if env_path.exists():
@@ -12,8 +17,8 @@ def load_env(repo_root: Path) -> Dict[str, str]:
                 line = line.strip()
                 if "=" in line and not line.startswith("#"):
                     k, v = line.split("=", 1)
-                    # Strip inline comments, whitespace, and quotes
-                    v = v.split("#")[0].strip()
+                    # Only strip inline comments preceded by whitespace (preserve # in values)
+                    v = re.sub(r'\s+#.*$', '', v).strip()
                     if (v.startswith('"') and v.endswith('"')) or (v.startswith("'") and v.endswith("'")):
                         v = v[1:-1]
                     env[k.strip()] = v

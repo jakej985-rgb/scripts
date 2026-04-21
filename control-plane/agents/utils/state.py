@@ -1,6 +1,7 @@
 import json
 import os
 import time
+import copy
 import errno
 import shutil
 from pathlib import Path
@@ -83,7 +84,7 @@ def save_json(path: str, data: Any, caller: str = "unknown") -> bool:
     tmp_path = f"{path}.tmp"
     
     if isinstance(data, dict):
-        data = data.copy()
+        data = copy.deepcopy(data)
         data["_m3tal_metadata"] = {
             "version": SCHEMA_VERSION,
             "updated_at": int(time.time()),
