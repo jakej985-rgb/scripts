@@ -4,14 +4,14 @@ services:
     container_name: tattoo-api
     working_dir: /app
     volumes:
-      - ${REPO_ROOT}/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/publish:/app
+      - ${REPO_ROOT}/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Api/publish:/app
       - ${DATA_DIR}/tattoo/db:/data
       - ${DATA_DIR}/tattoo/uploads:/app/wwwroot/uploads
     environment:
       - ASPNETCORE_URLS=http://+:3000
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=Data Source=/data/tattoo.db
-    command: ["dotnet", "InfernalInkSteelSuite.Web.dll"]
+    command: ["dotnet", "InfernalInkSteelSuite.Api.dll"]
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.tattoo.rule=Host(`tattoo.${DOMAIN:?DOMAIN not set}`)"
