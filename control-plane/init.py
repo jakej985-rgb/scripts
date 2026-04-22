@@ -341,7 +341,7 @@ def env_validation_agent():
     except Exception as e:
         t_log(f"[ENV] Agent failure: {e}", symbol="⚠")
         update_status("environment", "failed")
-        return True
+        return False
 
 def auth_agent():
     """🔐 Identity Agent: Non-blocking user baseline check."""
@@ -607,7 +607,11 @@ def repair(scope: str = "all") -> bool:
     try:
         stacks_to_fix = [scope] if scope != "all" else ["routing", "network", "maintenance", "media", "apps/tattoo-app"]
         for stack in stacks_to_fix:
-            sd = REPO_ROOT / "docker" / stack
+            if stack == "control-plane":
+                sd = REPO_ROOT / "control-plane"
+            else:
+                sd = REPO_ROOT / "docker" / stack
+
             if not sd.exists(): continue
             t_log(f"[REPAIR] Rebuilding {stack} stack...", symbol="🔧")
             subprocess.run(["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(sd / "docker-compose.yml"), "up", "-d", "--force-recreate"], 

@@ -195,11 +195,19 @@ def get_metrics_history():
 
 @socketio.on('connect')
 def handle_connect():
+    # 🛡️ SECURITY FIX: Re-enforcing authentication check (Audit C2)
     if 'username' not in session:
         return False
 
     join_room(AUTHENTICATED_ROOM)
     emit('status', {'msg': 'Connected to M3TAL Control Plane'})
+
+    # Start background tasks if not already running
+    global _bg_started
+    with _bg_lock:
+        if not _bg_started:
+            start_background_tasks()
+            _bg_started = True
 
 def emit_metrics_update():
     metrics = load_json_safe(METRICS_JSON)
@@ -214,20 +222,14 @@ def background_metrics_stream():
         except Exception as e:
             print(f"[DASHBOARD] Background metrics error: {e}")
             socketio.sleep(5)
+
+
 def start_background_tasks():
     """Initialize background workers for SocketIO."""
     socketio.start_background_task(background_metrics_stream)
 
 _bg_started = False
 _bg_lock = threading.Lock()
-
-@socketio.on('connect')
-def handle_connect():
-    global _bg_started
-    with _bg_lock:
-        if not _bg_started:
-            start_background_tasks()
-            _bg_started = True
 
 if __name__ == '__main__':
     port = int(os.getenv("DASHBOARD_PORT", 8080))

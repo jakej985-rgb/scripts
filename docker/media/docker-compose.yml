@@ -276,7 +276,7 @@ services:
     env_file:
       - ../../.env
     environment:
-      - HOMEPAGE_ALLOWED_HOST=*
+      - HOMEPAGE_ALLOWED_HOST=stats.${DOMAIN}
       - DOCKER_HOST=tcp://docker-proxy:2375
       - DOCKER_API_VERSION=${DOCKER_API_VERSION:-1.41}
     dns:
