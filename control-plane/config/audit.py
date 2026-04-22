@@ -169,7 +169,6 @@ class AuditScanner:
             host_config = data.get("HostConfig", {})
             network_mode = host_config.get("NetworkMode", "default")
             role = labels.get("m3tal.role", "").lower().strip()
-            is_container_ns = network_mode.startswith("container:")
 
             # 1. State Validation
             if not is_running:

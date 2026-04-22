@@ -134,7 +134,7 @@ def cmd_bootstrap(args):
 def cmd_traefik(args):
     """Handles Traefik-specific orchestration and auditing."""
     if args.subcommand == "audit":
-        path = CONTROL_PLANE / "config" / "traefik_audit.py"
+        path = CONTROL_PLANE / "config" / "audit.py"
         args_list = []
         if hasattr(args, 'strict') and args.strict:
             args_list.append("--strict")

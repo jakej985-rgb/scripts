@@ -7,7 +7,6 @@ Extracts a backup archive into the repo root and re-runs init.py
 to refresh state files. Prompts for confirmation before overwriting.
 """
 
-import os
 import subprocess
 import sys
 import tarfile

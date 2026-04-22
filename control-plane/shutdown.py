@@ -10,7 +10,7 @@ import sys
 import time
 import json
 from pathlib import Path
-from typing import Dict
+from pathlib import Path
 
 # Fix for imports
 BASE_DIR = Path(__file__).resolve().parent  # control-plane/
@@ -34,7 +34,6 @@ STATE_DIR = BASE_DIR / "state"
 STACKS = [
     "control-plane",
     "media", 
-    "apps/tattoo-app", 
     "network", 
     "maintenance", 
     "routing"
@@ -93,7 +92,6 @@ def shutdown_stack(stack_name: str, bar: ProgressBar, current_step: int):
     else:
         stack_path = DOCKER_DIR / stack_name
     compose_file = stack_path / "docker-compose.yml"
-    use_shell = os.name == "nt"
     
     if not compose_file.exists():
         bar.update(current_step, f"Skipping {stack_name} (missing)")
@@ -170,6 +168,8 @@ def shutdown_stack(stack_name: str, bar: ProgressBar, current_step: int):
                     sub_bar.update(removed_count, f"Removed {removed_count}/{total_svc} ({stack_name})")
                     if remaining_count == 0: break
                 time.sleep(1.5)
+            
+            proc.wait()
                 
         except Exception as e:
             HB.log(f"Dismantle Error in {stack_name}: {e}", symbol="\u2718")

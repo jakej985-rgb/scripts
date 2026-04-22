@@ -20,7 +20,7 @@ Docker Compose creates **default networks per stack**:
 
 - `media_default`
 - `control-plane_default`
-- `tattoo-app_app_internal`
+- `app_default`
 
 Even when `proxy` is added, services remain attached to these defaults, causing:
 

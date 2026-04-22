@@ -243,15 +243,6 @@ def main():
         print("Generated new Persistent Session Secret (DASHBOARD_SECRET)")
         new_env["DASHBOARD_SECRET"] = new_val
 
-    if current_env.get("SHOP_MASTER_KEY", "replace_me") == "replace_me":
-        new_val = secrets.token_urlsafe(32)
-        print("Generated new Shop Master Key (SHOP_MASTER_KEY) for credential encryption")
-        new_env["SHOP_MASTER_KEY"] = new_val
-
-    if current_env.get("JWT_KEY", "replace_me") == "replace_me":
-        new_val = secrets.token_urlsafe(64)
-        print("Generated new JWT Signing Key (JWT_KEY)")
-        new_env["JWT_KEY"] = new_val
     print("")
 
     # FINAL REVIEW
@@ -283,9 +274,7 @@ def main():
                 "AI": ["OLLAMA_URL", "AI_API_KEY"],
                 "NOTIFY": ["TELEGRAM_BOT_TOKEN", "TG_CHAT_COUNT", "TG_AUTO_DISCOVER", "ALLOWED_USERS", "TG_MAIN_CHAT_ID", "TG_LOG_CHAT_ID", "TG_ERROR_CHAT_ID", "TG_ALERT_CHAT_ID", "TG_ACTION_CHAT_ID", "TG_DOCKER_CHAT_ID", "TELEGRAM_TOKEN", "TELEGRAM_CHAT_ID"],
                 "EDGE": ["TRAEFIK_AUTH_USER", "TRAEFIK_AUTH_PASS", "TRAEFIK_AUTH_HASH"],
-                "DB": ["TATTOO_DB_PASSWORD"],
-
-                "AUTH": ["DASHBOARD_SECRET", "SHOP_MASTER_KEY", "JWT_KEY"]
+                "AUTH": ["DASHBOARD_SECRET"]
             }
 
             for cat, keys in categories.items():

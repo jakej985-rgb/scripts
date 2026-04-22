@@ -26,7 +26,7 @@ for path in [AGENTS_DIR, REPO_ROOT / "scripts" / "helpers", REPO_ROOT / "scripts
 
 ENV_FILE = REPO_ROOT / ".env"
 
-from typing import Dict, Optional
+from typing import Optional
 from utils.paths import STATE_DIR, LOG_DIR
 
 import builtins
@@ -444,8 +444,7 @@ def docker_agent(repair_mode: bool = False):
             ("network", REPO_ROOT / "docker" / "network", True),    # CRITICAL: VPN
             ("maintenance", REPO_ROOT / "docker" / "maintenance", False),
             ("control-plane", REPO_ROOT / "control-plane", True),         # CRITICAL: Agents/Dashboard
-            ("media", REPO_ROOT / "docker" / "media", False),
-            ("apps/tattoo-app", REPO_ROOT / "docker" / "apps" / "tattoo-app", False)
+            ("media", REPO_ROOT / "docker" / "media", False)
         ]
         
         # Tiered Timeouts
@@ -454,8 +453,7 @@ def docker_agent(repair_mode: bool = False):
             "network": 90,
             "control-plane": 60,
             "media": 120,
-            "maintenance": 60,
-            "apps/tattoo-app": 60
+            "maintenance": 60
         }
 
         # Readiness definitions (Log Pattern, Probe Command)
@@ -605,7 +603,7 @@ def repair(scope: str = "all") -> bool:
     """🛠️ Repair Agent: Force-recreates stacks to resolve drift or connectivity gaps."""
     t_log(f"Repairing scope: {scope}", symbol="🔧")
     try:
-        stacks_to_fix = [scope] if scope != "all" else ["routing", "network", "maintenance", "media", "apps/tattoo-app"]
+        stacks_to_fix = [scope] if scope != "all" else ["routing", "network", "maintenance", "media"]
         for stack in stacks_to_fix:
             if stack == "control-plane":
                 sd = REPO_ROOT / "control-plane"

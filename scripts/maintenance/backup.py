@@ -16,7 +16,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 # Ensure we can find the agents package for centralized paths (Audit Fix 14)
 sys.path.append(str(REPO_ROOT / "control-plane"))
-from agents.utils.paths import BACKUP_DIR, REPO_ROOT as CENTRAL_ROOT
+from agents.utils.paths import BACKUP_DIR
 
 DEFAULT_DEST = BACKUP_DIR
 KEEP_BACKUPS = 5
