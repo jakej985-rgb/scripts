@@ -8,10 +8,27 @@ services:
       - ${DATA_DIR}/tattoo/db:/data
       - ${DATA_DIR}/tattoo/uploads:/app/wwwroot/uploads
     environment:
-      - ASPNETCORE_URLS=http://+:3000
+      - ASPNETCORE_URLS=http://+:5000
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=Data Source=/data/tattoo.db
     command: ["dotnet", "InfernalInkSteelSuite.Api.dll"]
+    networks:
+      - proxy
+    env_file:
+      - ../../../.env
+    restart: unless-stopped
+
+  web:
+    image: mcr.microsoft.com/dotnet/aspnet:8.0
+    container_name: tattoo-web
+    working_dir: /app
+    volumes:
+      - ${REPO_ROOT}/Infernal-Ink-Steel-Suite/InfernalInkSteelSuite.Web/publish:/app
+    environment:
+      - ASPNETCORE_URLS=http://+:3000
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ApiBaseUrl=http://tattoo-api:5000
+    command: ["dotnet", "InfernalInkSteelSuite.Web.dll"]
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.tattoo.rule=Host(`tattoo.${DOMAIN:?DOMAIN not set}`)"
@@ -24,6 +41,8 @@ services:
     env_file:
       - ../../../.env
     restart: unless-stopped
+    depends_on:
+      - api
 
   db:
     image: postgres:latest

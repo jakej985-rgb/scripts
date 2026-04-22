@@ -13,29 +13,35 @@ Specifically, verify the following are set:
 - `TATTOO_DB_PASSWORD`: Even if you are utilizing the default SQLite database, this is kept for the legacy Postgres container.
 - `DASHBOARD_SECRET`: Used for cryptographic operations across the suite.
 
-## 2. Compile and Publish the .NET Application
+## 2. Compile and Publish the .NET Applications
 
-The Docker setup relies on a local published version of the .NET application. The container mounts this published directory so that any updates to the C# code can be applied by simply re-publishing the project without rebuilding the Docker image.
+The Docker setup relies on local published versions of the .NET applications. The containers mount these published directories so that any updates to the C# code can be applied by simply re-publishing the project without rebuilding the Docker images.
 
-Run the following command from the repository root to compile the API:
+You need to publish BOTH the API backend and the Web frontend.
+
+Run the following commands from the repository root:
 
 ```powershell
-# Navigate to the API project directory
+# 1. Publish the API (Backend)
 cd Infernal-Ink-Steel-Suite\InfernalInkSteelSuite.Api
+dotnet publish -c Release -o publish
 
-# Publish the project to the 'publish' folder in Release mode
+# 2. Publish the Web App (Frontend)
+cd ..\InfernalInkSteelSuite.Web
 dotnet publish -c Release -o publish
 ```
 
-This creates the `InfernalInkSteelSuite.Api.dll` inside `Infernal-Ink-Steel-Suite\InfernalInkSteelSuite.Api\publish\`.
+This creates the necessary DLLs in their respective `publish` folders.
 
 ## 3. Review the Docker Compose Configuration
 
-The stack is defined in `docker\apps\tattoo-app\docker-compose.yml`.
-- **API Container (`tattoo-api`)**: Runs the ASP.NET Core application using the published DLL. It mounts your `DATA_DIR` to save SQLite database files (`/data/tattoo.db`) and user uploads (`/app/wwwroot/uploads`).
+The stack is defined in `docker\apps\tattoo-app\docker-compose.yml` and utilizes a two-container architecture for the application, plus a database container.
+
+- **API Container (`tattoo-api`)**: Runs the ASP.NET Core API Backend (`InfernalInkSteelSuite.Api.dll`) on port 5000 internally. It mounts your `DATA_DIR` to save SQLite database files (`/data/tattoo.db`) and user uploads (`/app/wwwroot/uploads`).
+- **Web Container (`tattoo-web`)**: Runs the ASP.NET Core Frontend (`InfernalInkSteelSuite.Web.dll`). It communicates with the API via the `ApiBaseUrl` environment variable (`http://tattoo-api:5000`). Traefik routes public traffic to this container.
 - **Database Container (`tattoo-db`)**: A Postgres container provided for future migration or legacy compatibility. 
 
-*Note: The Infernal Ink API defaults to Entity Framework Core with SQLite. The SQLite `.db` file will automatically be created in your `DATA_DIR/tattoo/db` directory on the first run.*
+*Note: The Infernal Ink API currently defaults to Entity Framework Core with SQLite. The SQLite `.db` file will automatically be created in your `DATA_DIR/tattoo/db` directory on the first run.*
 
 ## 4. Start the Application
 
