@@ -397,7 +397,10 @@ def docker_agent(repair_mode: bool = False):
         def ui_status_poller():
             """Continuously updates the GlobalLiveList for all active stacks."""
             while not stop_poller.is_set():
-                for name, sd, is_critical, total, services in list(active_stacks):
+                with active_ui_lock:
+                    stacks_snapshot = list(active_stacks)
+                
+                for name, sd, is_critical, total, services in stacks_snapshot:
                     cf = sd / "docker-compose.yml"
                     ps_res = subprocess.run(["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "ps", "--format", "json"],
                                          capture_output=True, text=True, env=GLOBAL_ENV)
@@ -488,7 +491,8 @@ def docker_agent(repair_mode: bool = False):
 
                 try:
                     # 1. Register stack and start launch
-                    active_stacks.append((name, sd, is_critical, total_svc, expected_services))
+                    with active_ui_lock:
+                        active_stacks.append((name, sd, is_critical, total_svc, expected_services))
                     
                     # Add --build for stacks with custom Dockerfiles (Audit fix H10)
                     up_cmd = ["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "up", "-d"]

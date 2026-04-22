@@ -5,8 +5,9 @@ services:
     image: containrrr/watchtower
     container_name: watchtower
     restart: unless-stopped
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+    # Security: No raw socket. Talk to proxy.
+    # volumes:
+    #   - /var/run/docker.sock:/var/run/docker.sock
     command:
       - "--label-enable"
       - "--cleanup"
@@ -15,6 +16,7 @@ services:
     environment:
       - TZ=America/Denver
       - DOCKER_API_VERSION=${DOCKER_API_VERSION:-1.41}
+      - DOCKER_HOST=tcp://docker-proxy:2375
     networks:
       - proxy
     env_file:
@@ -26,8 +28,12 @@ services:
     image: amir20/dozzle
     container_name: dozzle
     restart: unless-stopped
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+    # Security: No raw socket. Talk to proxy.
+    # volumes:
+    #   - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - DOCKER_HOST=tcp://docker-proxy:2375
+      - DOCKER_API_VERSION=${DOCKER_API_VERSION:-1.41}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dozzle.rule=Host(`logs.${DOMAIN:?DOMAIN not set}`)"
@@ -46,8 +52,12 @@ services:
     image: portainer/portainer-ce
     container_name: portainer
     restart: unless-stopped
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+    # Security: No raw socket. Talk to proxy.
+    # volumes:
+    #   - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DOCKER_HOST=tcp://docker-proxy:2375
+      - DOCKER_API_VERSION=${DOCKER_API_VERSION:-1.41}
       - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/portainer:/data
     labels:
       - "traefik.enable=true"

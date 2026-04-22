@@ -134,7 +134,9 @@ def enforce_dependencies():
                 if dep_status == "offline" or dep_status == "missing":
                     logger.warning(f"Dependency Violation: {app} is running but {dep} is {dep_status}. Starting {dep}...")
                     try:
-                        subprocess.run(["docker", "start", dep], timeout=15)
+                        res = subprocess.run(["docker", "start", dep], timeout=15, capture_output=True, text=True)
+                        if res.returncode != 0:
+                            logger.error(f"Failed to start dependency {dep}: {res.stderr}")
                     except subprocess.TimeoutExpired:
                         logger.error(f"Dependency start timed out for {dep}")
 
@@ -143,8 +145,8 @@ def check_storage_enforcement():
     stacks = registry.get("stacks", {})
     
     for c, meta in stacks.items():
-        # Audit Fix 15: Use label-based stack check instead of hardcoded names
-        if meta.get("stack") != "media":
+        # Audit Fix M1: Check for explicit storage requirement label
+        if meta.get("labels", {}).get("m3tal.requires_storage") != "true":
             continue
             
         try:
@@ -154,6 +156,10 @@ def check_storage_enforcement():
                 mounts = res.stdout.strip()
                 if "/mnt:/mnt" not in mounts:
                     logger.warning(f"Storage Violation: {c} missing /mnt:/mnt mount!")
+                    # Try to start it just in case it was offline (Audit Fix H2 leak prevention)
+                    res = subprocess.run(["docker", "start", c], capture_output=True, text=True, timeout=10)
+                    if res.returncode != 0:
+                        logger.debug(f"Attempt to start {c} after storage violation failed: {res.stderr}")
         except subprocess.TimeoutExpired:
             logger.error(f"Storage inspect timed out for {c}")
         except Exception as e:

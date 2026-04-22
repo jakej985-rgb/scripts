@@ -221,6 +221,10 @@ def wrap_agent(agent_name: str, func: Callable[[], Any], interval: int = 10):
                 if _SHUTDOWN_SIGNALED:
                     break
                 time.sleep(1)
+            
+            # Sleep the fractional remainder (Audit Fix M2)
+            if not _SHUTDOWN_SIGNALED:
+                time.sleep(sleep_time - int(sleep_time))
 
         agent_logger.info(f"--- Agent {agent_name} Shutdown Cleanly ---")
     finally:

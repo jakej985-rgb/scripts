@@ -5,15 +5,24 @@ from pathlib import Path
 # Automatically detect repo root by walking up parents until .env + docker/ are found.
 def find_root():
     p = Path(__file__).resolve()
+    root = None
     # Walk up from the current file's location
     for parent in [p] + list(p.parents):
         if (parent / ".env").exists() and (parent / "docker").exists():
-            return parent
+            root = parent
+            break
+            
     # Fallback to current working directory if it looks like the root
-    cwd = Path.cwd()
-    if (cwd / ".env").exists() and (cwd / "docker").exists():
-        return cwd
-    return None
+    if not root:
+        cwd = Path.cwd()
+        if (cwd / ".env").exists() and (cwd / "docker").exists():
+            root = cwd
+            
+    if root:
+        # Audit Fix M5: Explicitly print resolved root for container/host visibility
+        print(f"--- M3TAL ROOT RESOLVED: {root} ---")
+        
+    return root
 
 REPO_ROOT = find_root()
 if not REPO_ROOT:

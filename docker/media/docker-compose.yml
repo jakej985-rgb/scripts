@@ -257,10 +257,10 @@ services:
   glances:
     image: nicolargo/glances:latest
     container_name: glances
-    pid: host
+    # pid: host (Audit Fix C2)
     command: glances -w
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    # volumes:
+    #   - "/var/run/docker.sock:/var/run/docker.sock:ro" (Audit Fix C2)
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.glances.rule=Host(`stats.${DOMAIN:?DOMAIN not set}`)"
@@ -276,6 +276,8 @@ services:
     environment:
       - HOMEPAGE_ALLOWED_HOST=*
       - NODE_TLS_REJECT_UNAUTHORIZED=0
+      - DOCKER_HOST=tcp://docker-proxy:2375
+      - DOCKER_API_VERSION=${DOCKER_API_VERSION:-1.41}
     dns:
       - 8.8.8.8
       - 1.1.1.1

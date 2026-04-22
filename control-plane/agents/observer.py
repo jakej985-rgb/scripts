@@ -12,7 +12,8 @@ from utils.state import load_json, save_json
 
 logger = get_logger("observer")
 SEEN_EVENTS_JSON = os.path.join(STATE_DIR, "observer_seen.json")
-_seen_events: set[str] = set(load_json(SEEN_EVENTS_JSON, default=[]))
+# Audit Fix H4: Use OrderedDict (keys only) for deterministic eviction
+_seen_events = collections.OrderedDict.fromkeys(load_json(SEEN_EVENTS_JSON, default=[]))
 
 def aggregate_events():
     """Phase 2: Observer Agent — Scans logs and generates events."""
@@ -34,9 +35,11 @@ def aggregate_events():
                         if "[ERROR]" in line or "[CRASH]" in line:
                             fingerprint = f"{agent_name}:{line.strip()[-80:]}"
                             if fingerprint in _seen_events:
+                                # Update position to mark as most recent
+                                _seen_events.move_to_end(fingerprint)
                                 continue
                             
-                            _seen_events.add(fingerprint)
+                            _seen_events[fingerprint] = None
                             any_new = True
                             logger.warning(f"Critical Event detected in {agent_name}: {line.strip()}")
 
@@ -44,10 +47,9 @@ def aggregate_events():
                 logger.error(f"Failed to scan log {file}: {e}")
 
     # Sliding window eviction — apply once per cycle, not per-line
-    if len(_seen_events) > 500:
-        ordered = list(_seen_events)
-        _seen_events.clear()
-        _seen_events.update(ordered[-400:])
+    # Audit Fix H4: OrderedDict popitem(last=False) evicts the oldest entries (FIFO)
+    while len(_seen_events) > 500:
+        _seen_events.popitem(last=False)
 
     # Batch-save: only write JSON if something changed
     if any_new:

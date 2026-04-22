@@ -36,6 +36,9 @@ RUN groupadd -g 1000 appuser && \
     useradd -m -u 1000 -g 1000 -G 0,docker appuser
 
 # Set workspace
+# 🛡️ SECURITY & ARCHITECTURE: 
+# The WORKDIR must be /docker to align with internal agent path resolution. 
+# REPO_ROOT should be mounted to /docker.
 WORKDIR /docker
 
 # Switch to non-privileged user

@@ -102,7 +102,8 @@ def scan_infrastructure():
                     if res.returncode == 0:
                         for svc in res.stdout.splitlines():
                             compose_index[svc.strip()] = full_path
-                except Exception:
+                except Exception as e:
+                    logger.debug(f"Skipping {file} in registry index: {e}")
                     continue
 
 

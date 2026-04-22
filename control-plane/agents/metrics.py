@@ -24,7 +24,7 @@ from utils.logger import get_logger
 logger = get_logger("metrics")
 HISTORY_CSV = os.path.join(STATE_DIR, "metrics-history.csv")
 MAX_HISTORY_ENTRIES = 5000 
-
+_last_docker_error_log = 0
 def get_system_metrics():
     metrics = {"cpu": 0.0, "mem": 0.0, "timestamp": int(time.time())}
     if psutil:
@@ -69,8 +69,11 @@ def get_container_metrics():
         logger.error("Docker stats timed out (30s)")
     except subprocess.CalledProcessError as e:
         # Don't flood logs if docker is just busy
-        if time.time() % 60 < 10: # Log only every minute
+        global _last_docker_error_log
+        now = time.time()
+        if now - _last_docker_error_log > 60:
             logger.error(f"Docker stats failed (exit {e.returncode})")
+            _last_docker_error_log = now
     except Exception as e:
         logger.error(f"Failed to get container stats: {e}")
     return container_stats

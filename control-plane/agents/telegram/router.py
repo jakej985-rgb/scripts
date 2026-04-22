@@ -12,8 +12,9 @@ from config.telegram import (
 import time
 
 # Deduplication State (Last 5 minutes of unique messages - Audit Fix H7.12)
-_sent_hashes = {} # {hash: timestamp}
+_sent_hashes = {} # {hash: {"ts": timestamp, "count": int}}
 DEDUP_TTL = 300   # 5 minutes
+ESCALATION_THRESHOLD = 5 # Re-alert after 5 suppressed duplicates
 
 def _strip_html(text: str) -> str:
     """Removes HTML tags for cleaner hashing (Audit Fix 18)."""
@@ -21,23 +22,29 @@ def _strip_html(text: str) -> str:
     return re.sub(r'<[^>]+>', '', text)
 
 def _is_duplicate(text: str) -> bool:
-    """Checks if the message has been sent recently to avoid spam (TTL based)."""
+    """Checks if the message has been sent recently to avoid spam (TTL based).
+    Escalation (Audit Fix M4): Allow re-alert after N suppressions.
+    """
     now = time.time()
-    # De-format before hashing (Audit Fix 18)
     clean_text = _strip_html(text)
     m_hash = hashlib.sha256(clean_text.encode()).hexdigest()
     
     # 1. Prune expired hashes
-    # (Simplified: we prune on every check or periodically)
-    to_delete = [h for h, ts in _sent_hashes.items() if (now - ts) > DEDUP_TTL]
+    to_delete = [h for h, data in _sent_hashes.items() if (now - data["ts"]) > DEDUP_TTL]
     for h in to_delete:
         del _sent_hashes[h]
 
-    # 2. Duplicate check
+    # 2. Duplicate check & Escalation
     if m_hash in _sent_hashes:
+        _sent_hashes[m_hash]["count"] += 1
+        if _sent_hashes[m_hash]["count"] >= ESCALATION_THRESHOLD:
+            # Escalate: Reset counter and timestamp to allow this one through
+            _sent_hashes[m_hash]["count"] = 0
+            _sent_hashes[m_hash]["ts"] = now
+            return False
         return True
     
-    _sent_hashes[m_hash] = now
+    _sent_hashes[m_hash] = {"ts": now, "count": 0}
     return False
 
 def route_message(channel: str, text: str):

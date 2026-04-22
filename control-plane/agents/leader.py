@@ -1,6 +1,7 @@
 import sys
 import os
 import socket
+import yaml  # Audit Fix H1: Move to top-level
 
 # Add current dir to path for utils
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -27,7 +28,6 @@ def elect_leader():
     # from the cluster.yml node list.
     
     try:
-        import yaml
         with open(CLUSTER_YML, 'r') as f:
             cluster_config = yaml.safe_load(f)
     except Exception as e:
