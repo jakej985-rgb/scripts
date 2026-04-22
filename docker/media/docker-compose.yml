@@ -211,6 +211,8 @@ services:
       - "m3tal.role=internal"
     networks:
       - proxy
+    env_file:
+      - ../../.env
     restart: unless-stopped
 
 #  maintainerr:
@@ -235,8 +237,8 @@ services:
     image: ghcr.io/haveagitgat/tdarr:latest
     container_name: tdarr
     volumes:
-      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/tdarr:/app/config
-      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/tdarr:/app/logs
+      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/tdarr/config:/app/config
+      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/tdarr/logs:/app/logs
       - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}:/mnt
       - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/downloads:/downloads
       - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
@@ -275,7 +277,6 @@ services:
       - ../../.env
     environment:
       - HOMEPAGE_ALLOWED_HOST=*
-      - NODE_TLS_REJECT_UNAUTHORIZED=0
       - DOCKER_HOST=tcp://docker-proxy:2375
       - DOCKER_API_VERSION=${DOCKER_API_VERSION:-1.41}
     dns:

@@ -5,14 +5,15 @@ services:
     container_name: m3tal-permission-fixer
     user: "0:0"
     volumes:
-      - ${REPO_ROOT:?REPO_ROOT not set — run from repo root with .env}:/docker
+      - ${REPO_ROOT}/control-plane/state:/docker/state
+      - ${REPO_ROOT}/dashboard:/docker/dashboard
     command: >
-      sh -c "chown -R 1000:1000 /docker/control-plane/state && 
-             chmod -R 766 /docker/control-plane/state &&
-             touch /docker/control-plane/state/acme.json &&
-             chmod 600 /docker/control-plane/state/acme.json &&
+      sh -c "chown -R 1000:1000 /docker/state && 
+             chmod -R 770 /docker/state &&
+             touch /docker/state/acme.json &&
+             chmod 600 /docker/state/acme.json &&
              chown -R 1000:1000 /docker/dashboard/users.json &&
-             chmod 766 /docker/dashboard/users.json || true"
+             chmod 600 /docker/dashboard/users.json || true"
     networks:
       - proxy
 
@@ -57,6 +58,7 @@ services:
       - IMAGES=1
       - POST=1 # Allow restarts/reconciliation
       - NETWORKS=1
+      - SERVICES=1
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:

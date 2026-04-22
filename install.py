@@ -427,7 +427,7 @@ def main() -> None:
 
 
 
-    # 7. Docker network
+    # 6. Docker network
     log(f"\n{BOLD}=== Docker Network ==={END}")
     try:
         should_prune = ask("Prune existing 'proxy' network before creation? (y/n)", "n").lower() == "y"
@@ -443,7 +443,7 @@ def main() -> None:
     except FileNotFoundError:
         warn("Docker not available — network not created")
 
-    # 8. Final checks
+    # 7. Final checks
     log(f"\n{BOLD}=== Final Checks ==={END}")
     for cmd_label, cmd_args in [("Docker", ["docker", "--version"]), ("Python (Venv)", [str(venv_python), "--version"])]:
         try:
@@ -454,13 +454,13 @@ def main() -> None:
 
 
 
-    # 9. Auto-start
+    # 8. Auto-start
     if auto_start:
         log(f"\n{BOLD}[START] Launching control plane...{END}")
         m3tal_cli = install_dir / "m3tal.py"
         subprocess.Popen([str(venv_python), str(m3tal_cli), "init"])
 
-    # 10. Warnings summary
+    # 9. Warnings summary
     if WARNINGS:
         log(f"\n{YELLOW}{BOLD}=== WARNINGS ==={END}")
         for w in WARNINGS:

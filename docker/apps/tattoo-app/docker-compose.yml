@@ -11,7 +11,13 @@ services:
       - ASPNETCORE_URLS=http://+:5000
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=Data Source=/data/tattoo.db
+      - JWT_KEY=${JWT_KEY:?JWT_KEY not set}
     command: ["dotnet", "InfernalInkSteelSuite.Api.dll"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     networks:
       - proxy
     env_file:
@@ -29,6 +35,11 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ApiBaseUrl=http://tattoo-api:5000
     command: ["dotnet", "InfernalInkSteelSuite.Web.dll"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.tattoo.rule=Host(`tattoo.${DOMAIN:?DOMAIN not set}`)"
@@ -42,22 +53,8 @@ services:
       - ../../../.env
     restart: unless-stopped
     depends_on:
-      - api
-
-  db:
-    image: postgres:latest
-    container_name: tattoo-db
-    environment:
-      POSTGRES_USER: tattoo
-      POSTGRES_PASSWORD: ${TATTOO_DB_PASSWORD:?TATTOO_DB_PASSWORD not set}
-      POSTGRES_DB: tattooapp
-    volumes:
-      - ${DATA_DIR}/tattoo/postgres:/var/lib/postgresql
-    networks:
-      - proxy
-    env_file:
-      - ../../../.env
-    restart: unless-stopped
+      api:
+        condition: service_healthy
 
 networks:
   proxy:

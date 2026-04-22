@@ -218,10 +218,17 @@ def start_background_tasks():
     """Initialize background workers for SocketIO."""
     socketio.start_background_task(background_metrics_stream)
 
-# Audit fix 2.3 — Start outside main for Docker/WSGI visibility
-# Guarded for test environment to prevent background task proliferation
+_bg_started = False
+_bg_lock = threading.Lock()
+
+@socketio.on('connect')
+def handle_connect():
+    global _bg_started
+    with _bg_lock:
+        if not _bg_started:
+            start_background_tasks()
+            _bg_started = True
+
 if __name__ == '__main__':
-    start_background_tasks()
-    
     port = int(os.getenv("DASHBOARD_PORT", 8080))
     socketio.run(app, host='0.0.0.0', port=port)

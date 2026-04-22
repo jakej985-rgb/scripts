@@ -6,7 +6,7 @@ services:
     command:
       - "--api.dashboard=true"
       - "--providers.docker=true"
-      - "--providers.docker.endpoint=unix:///var/run/docker.sock"
+      - "--providers.docker.endpoint=tcp://docker-proxy:2375"
       - "--providers.docker.exposedbydefault=false"
       - "--providers.docker.network=proxy"
       - "--providers.file.directory=/etc/traefik/dynamic"
@@ -30,8 +30,9 @@ services:
       - NET_BIND_SERVICE
     security_opt:
       - no-new-privileges:true
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+    # 🛡️ SECURITY FIX: No direct socket mount. Talk to proxy instead (Audit Fix C4)
+    # volumes:
+    #   - /var/run/docker.sock:/var/run/docker.sock:ro
       - ../../control-plane/state/traefik-dynamic-dir:/etc/traefik/dynamic:ro
       - ../../control-plane/state/acme.json:/etc/traefik/acme.json
     networks:

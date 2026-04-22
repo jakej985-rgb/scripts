@@ -2,6 +2,7 @@ import sys
 import os
 import subprocess
 import argparse
+import re
 from pathlib import Path
 
 # Batch 16 Hardening: Force UTF-8 for Windows console resilience
@@ -219,14 +220,26 @@ def main():
     with open(ROOT / ".env", "r", encoding="utf-8") as f:
         for line in f:
             line = line.strip()
-            if "=" in line and not line.startswith("#"):
+            if not line or line.startswith("#"):
+                continue
+            
+            # Handle optional 'export ' prefix
+            if line.startswith("export "):
+                line = line[len("export "):].strip()
+                
+            if "=" in line:
                 k, v = line.split("=", 1)
+                k = k.strip()
+                v = v.strip()
+                
                 # Only strip inline comments preceded by whitespace (preserve # in values)
-                import re
                 v = re.sub(r'\s+#.*$', '', v).strip()
+                
+                # Strip quotes
                 if (v.startswith('"') and v.endswith('"')) or (v.startswith("'") and v.endswith("'")):
                     v = v[1:-1]
-                os.environ.setdefault(k.strip(), v)
+                    
+                os.environ[k] = v
 
     if args.command == "logs":
         sys.exit(cmd_logs(args))

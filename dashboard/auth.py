@@ -148,12 +148,4 @@ def reset_admin_user(
     return save_users(retained_users, users_path=path)
 
 
-def get_role(token: str | None) -> str | None:
-    if not token:
-        return None
 
-    for user in load_users():
-        if verify_password(token, user["token_hash"]):
-            return user.get("role", "viewer")
-
-    return None

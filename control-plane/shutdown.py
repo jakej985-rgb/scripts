@@ -152,7 +152,11 @@ def shutdown_stack(stack_name: str, bar: ProgressBar, current_step: int):
                         elif out: ps_data = [json.loads(l) for l in out.splitlines()]
                     except Exception: pass
                     
-                    remaining_items = [item for item in expected_services if any(c.get("Service") == item for c in ps_data)]
+                    # (Audit Fix M1) Robust matching for Service or Name keys (Docker version variability)
+                    remaining_items = [
+                        item for item in expected_services 
+                        if any((c.get("Service") == item or c.get("Name", "").endswith(f"-{item}-1")) for c in ps_data)
+                    ]
                     remaining_count = len(remaining_items)
                     removed_count = total_svc - remaining_count
                     

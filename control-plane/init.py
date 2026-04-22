@@ -572,7 +572,7 @@ def docker_agent(repair_mode: bool = False):
     except Exception as e:
         t_log(f"[DOCKER] Agent failed: {e}", symbol="✘")
         update_status("docker", "failed")
-        return True
+        return False
 
 def health_agent():
     """🩺 Health Agent: Final readiness contract."""
@@ -682,7 +682,7 @@ def run_init(repair_scope: str = None) -> bool:
         BAR.update(7, "Health")
         ready = health_agent()
         BAR.update(8, "Cleanup")
-        
+        BAR.update(9, "Done")
         return ready
 
     finally:
