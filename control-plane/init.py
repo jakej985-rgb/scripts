@@ -186,73 +186,69 @@ MODE = "startup"  # Default mode
 HB: Optional[Heartbeat] = None
 BAR: Optional[ProgressBar] = None
 
-def t_log(msg: str, symbol: str = None):
-    """Terminal & File Logger bridge."""
-    log_event("init", msg, symbol=symbol)
+def log(msg: str, symbol: str = ""):
+    """Unified Safe Logger: Prevents NameErrors while bridging UI and log files."""
+    try:
+        from utils.state import log_event # type: ignore
+        log_event("init", msg, symbol=symbol)
+    except:
+        pass
+        
     if HB:
         HB.log(msg, symbol=symbol)
     else:
         print(f"  {CYAN}{symbol if symbol else '•'}{END} {msg}")
 
+def t_log(msg: str, symbol: str = None):
+    """Bridge for existing calls to t_log."""
+    log(msg, symbol=symbol)
+
 def update_status(component: str, status: str):
     SYSTEM_STATUS[component] = status
-    t_log(f"Component {component} status: {status}", symbol="✔" if status == "ok" else "⚠")
+    log(f"Component {component} status: {status}", symbol="✔" if status == "ok" else "⚠")
 
+def detect_created_containers():
+    """Phase 10: Smart Healing - Detect containers stuck in 'Created' state."""
+    try:
+        result = subprocess.run(
+            ["docker", "ps", "-a", "--format", "{{.Names}} {{.Status}}"],
+            capture_output=True, text=True
+        )
+        for line in result.stdout.splitlines():
+            if "Created" in line:
+                log(f"Container stuck in 'Created' state: {line}", symbol="⚠")
+    except Exception as e:
+        log(f"Failed to scan for 'Created' containers: {e}", symbol="⚠")
 def wait_for_readiness(name: str, container_name: str, log_pattern: str = None, probe_cmd: list = None, timeout: int = 60) -> bool:
     """Multi-signal readiness: Polls Docker health/status and runs network probes until service is ready."""
-    t_log(f"Waiting for {name} readiness (timeout {timeout}s)...", symbol="⏳")
+    log(f"Waiting for {name} readiness (timeout {timeout}s)...", symbol="⏳")
     start_time = time.time()
     last_logged_status = None
     
     while time.time() - start_time < timeout:
         try:
-            # Signal 1: Docker Health/Status (Primary source of truth - Audit Fix 6.6)
+            # Signal 1: Docker Health/Status
             inspect_cmd = ["docker", "inspect", container_name, "--format", "{{json .State}}"]
             res = subprocess.run(inspect_cmd, capture_output=True, text=True, env=GLOBAL_ENV)
             if res.returncode == 0:
                 state = json.loads(res.stdout)
-                status = state.get("Status", "").lower()
-                health = state.get("Health", {})
-                
-                # If healthcheck is defined, wait for 'healthy'
-                if health:
-                    h_status = health.get("Status")
-                    if h_status == "healthy":
-                        t_log(f"{name} is HEALTHY.", symbol="✔")
-                        return True
-                    elif h_status == "unhealthy":
-                        t_log(f"{name} reported UNHEALTHY state.", symbol="✘")
-                        return False
-                    elif h_status != last_logged_status:
-                        t_log(f"{name} health check: {h_status}...", symbol="⏳")
-                        last_logged_status = h_status
-                
-                # Fallback/Primary: If it's running, we move on (Audit Fix 6.6 — Optimistic Boot)
-                elif status == "running":
-                    t_log(f"{name} is RUNNING (Moving on).", symbol="✔")
+                status = state.get("Status", "unknown")
+                health = state.get("Health", {}).get("Status", "none")
+
+                if status == "running" and (health in ["healthy", "none"]):
+                    log(f"{name} is {status.upper()} (Moving on).", symbol="✔")
                     return True
                 
-                elif status != last_logged_status:
-                    t_log(f"{name} status: {status}...", symbol="⏳")
+                if status != last_logged_status:
                     last_logged_status = status
+            
+            time.sleep(2)
+        except Exception:
+            time.sleep(2)
 
-            # Signal 2: Network/Probe Command (Non-blocking if already running)
-            if probe_cmd:
-                # We still attempt the probe for the record, but we don't loop here 
-                # if the container was found running above.
-                full_cmd = ["docker", "exec", container_name] + probe_cmd
-                probe_res = subprocess.run(full_cmd, capture_output=True, env=GLOBAL_ENV)
-                if probe_res.returncode == 0:
-                    t_log(f"{name} network probe SUCCEEDED.", symbol="✔")
-                    return True
-
-        except Exception as e:
-            t_log(f"[READINESS] Probe check error: {e}", symbol="⚠")
-        
-        time.sleep(2)
-    
-    t_log(f"{name} readiness TIMEOUT of {timeout}s reached.", symbol="⚠")
+    log(f"Readiness check TIMEOUT for {name}.", symbol="⚠")
     return False
+
 
 
 
@@ -665,6 +661,7 @@ def docker_agent(repair_mode: bool = False):
                         time.sleep(1.5)
 
                     # 3. Enhanced Readiness Check (Multi-Signal)
+                    detect_created_containers()
                     if name in READINESS:
                         c_name, l_pat, p_cmd = READINESS[name]
                         if not wait_for_readiness(name, c_name, l_pat, p_cmd, timeout=wait_time):
