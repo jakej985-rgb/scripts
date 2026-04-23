@@ -145,6 +145,12 @@ def suggest_port_fix(port: int):
         log("  - sudo systemctl stop apache2", symbol="👉")
         log("  - Check for other Docker ingress controllers.", symbol="👉")
 
+def resolve_port_conflicts():
+    """Phase 4.1: Automated conflict resolver."""
+    log("Attempting to auto-resolve port conflicts...", symbol="🔧")
+    for svc in ["nginx", "apache2"]:
+        subprocess.run(["systemctl", "stop", svc], capture_output=True)
+
 def ensure_state_dirs():
     """Phase 6: Ensure required service-specific state directories exist."""
     services = [
@@ -229,7 +235,7 @@ def t_log(msg: str, symbol: str = None):
     log(msg, symbol=symbol)
 
 def detect_created():
-    """Phase 4: Explicit 'Created' detection. Raises error if any are found."""
+    """Phase 6.1 & 6.2: Explicit 'Created' and 'Restarting' detection."""
     try:
         result = subprocess.run(
             ["docker", "ps", "-a", "--format", "{{.Names}} {{.Status}}"],
@@ -239,10 +245,13 @@ def detect_created():
         for line in result.stdout.splitlines():
             if "Created" in line:
                 broken.append(line)
+            if "Restarting" in line:
+                log(f"Container restarting (Crash Loop): {line}", symbol="⚠")
+                broken.append(line)
         
         if broken:
-            log(f"Containers stuck in 'Created' state: {broken}", symbol="✘")
-            raise RuntimeError(f"Containers stuck in 'Created' state: {broken}")
+            log(f"Containers stuck or looping: {broken}", symbol="✘")
+            raise RuntimeError(f"Containers stuck or looping: {broken}")
     except RuntimeError: raise
     except Exception as e:
         log(f"Failed to scan for 'Created' containers: {e}", symbol="⚠")
@@ -253,6 +262,8 @@ def run_with_retries(name, func, *args, retries=2, **kwargs):
         try:
             return func(*args, **kwargs)
         except Exception as e:
+            import traceback
+            traceback.print_exc()
             log(f"[RETRY] {name} failed (attempt {attempt + 1}): {e}", symbol="⚠")
             if attempt < retries - 1:
                 log(f"Retrying {name}...", symbol="⏳")
@@ -264,8 +275,8 @@ def update_status(component: str, status: str):
     SYSTEM_STATUS[component] = status
     log(f"Component {component} status: {status}", symbol="✔" if status == "ok" else "⚠")
 
-def verify_running(expected_services: list):
-    """Phase 6: Health Gate - Ensure all services are actually running."""
+def verify_running(name: str, expected_services: list):
+    """Phase 1.1: Health Gate - Ensure all expected services are running."""
     result = subprocess.run(
         ["docker", "ps", "--format", "{{.Names}}"],
         capture_output=True, text=True
@@ -275,38 +286,26 @@ def verify_running(expected_services: list):
 
     for svc in expected_services:
         if svc not in running_str:
-            raise RuntimeError(f"Service verification failed: {svc} is NOT running.")
-    """Multi-signal readiness: Polls Docker health/status and runs network probes until service is ready."""
-    log(f"Waiting for {name} readiness (timeout {timeout}s)...", symbol="⏳")
-    start_time = time.time()
-    last_logged_status = None
+            raise RuntimeError(f"{name}: Service {svc} is NOT running.")
+
+def wait_for_stack_ready(name: str, services: list, timeout: int):
+    """Phase 2.1: Wait for stack to reach steady state without mixing responsibilities."""
+    start = time.time()
     
-    while time.time() - start_time < timeout:
-        try:
-            # Signal 1: Docker Health/Status
-            inspect_cmd = ["docker", "inspect", container_name, "--format", "{{json .State}}"]
-            res = subprocess.run(inspect_cmd, capture_output=True, text=True, env=GLOBAL_ENV)
-            if res.returncode == 0:
-                state = json.loads(res.stdout)
-                status = state.get("Status", "unknown")
-                health = state.get("Health", {}).get("Status", "none")
-
-                if status == "running" and (health in ["healthy", "none"]):
-                    log(f"{name} is {status.upper()} (Moving on).", symbol="✔")
-                    return True
-                
-                if status != last_logged_status:
-                    last_logged_status = status
+    while time.time() - start < timeout:
+        result = subprocess.run(
+            ["docker", "ps", "--format", "{{.Names}}"],
+            capture_output=True, text=True
+        )
+        running = result.stdout
+        
+        if all(svc in running for svc in services):
+            log(f"{name} is RUNNING", symbol="✔")
+            return True
             
-            time.sleep(2)
-        except Exception:
-            time.sleep(2)
-
-    log(f"Readiness check TIMEOUT for {name}.", symbol="⚠")
-    return False
-
-
-
+        time.sleep(2)
+        
+    raise RuntimeError(f"{name}: readiness timeout")
 
 # --- Healing Agents -----------------------------------------------------------
 
@@ -624,6 +623,9 @@ def docker_agent(repair_mode: bool = False):
             if not cf.exists(): continue
             
             log(f"[DOCKER] Orchestrating stack: {name}")
+
+            if name == "routing" and os.name != "nt":
+                resolve_port_conflicts()
             
             # Mount Validation
             _check_compose_mounts(cf, name)
@@ -641,14 +643,15 @@ def docker_agent(repair_mode: bool = False):
                 proc = subprocess.run(cmd, env=GLOBAL_ENV, capture_output=True, text=True)
                 if proc.returncode != 0:
                     log(f"Stack {name} failed to deploy.", symbol="✘")
-                    subprocess.run(["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "logs"], env=GLOBAL_ENV)
+                    subprocess.run(["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "logs", "--tail", "50"], env=GLOBAL_ENV)
                     raise RuntimeError(f"Docker Compose Error (Exit {proc.returncode})")
 
                 # Detect 'Created' ghosts
                 detect_created()
                 
                 # Verify running
-                verify_running(expected_services)
+                verify_running(name, expected_services)
+                wait_for_stack_ready(name, expected_services, TIMEOUTS[name])
 
             # Execute with retries
             try:
