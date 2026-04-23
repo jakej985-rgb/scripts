@@ -118,7 +118,8 @@ def append_history(system, containers):
             if os.path.exists(last_prune_file):
                 with open(last_prune_file, 'r') as pf:
                     last_prune_ts = json.loads(pf.read().strip() or '{}').get("ts", 0)
-        except Exception: pass
+        except Exception as pe:
+            logger.debug(f"Non-critical last_prune read failure: {pe}")
 
         if ts - last_prune_ts > 600:
             try:

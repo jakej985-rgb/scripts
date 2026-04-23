@@ -24,6 +24,7 @@ try:
         start, stop, send_main, send_direct,
         log, error, alert, action, docker,
     )
+    from . import router # Audit Fix: Explicit export for command_listener
     _AVAILABLE = True
 except ImportError as e:
     _error_msg = f"Import error: {e}"

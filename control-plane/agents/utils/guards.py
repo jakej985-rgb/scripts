@@ -97,7 +97,8 @@ def acquire_lock(agent_name: str, ttl_seconds: int = 300) -> bool:
         except Exception as e:
             logger.error(f"Error checking lock for {agent_name}: {e}")
             try: os.remove(lock_file)
-            except Exception: pass
+            except Exception as re:
+                logger.debug(f"Non-critical lock cleanup error for {agent_name}: {re}")
 
     try:
         with open(lock_file, 'w') as f:

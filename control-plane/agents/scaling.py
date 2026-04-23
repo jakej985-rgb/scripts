@@ -24,6 +24,10 @@ def evaluate_scaling():
     scaling_rules = load_json(SCALING_CONFIG, default={})
     cooldowns = load_json(COOLDOWN_FILE, default={})
     
+    # Audit Fix: Hoist registry load out of service loop
+    from utils.paths import REGISTRY_JSON
+    registry = load_json(REGISTRY_JSON, default={})
+    
     if not metrics or not scaling_rules:
         return
 
@@ -43,7 +47,6 @@ def evaluate_scaling():
 
         # Audit Fix M5: Warmup guard - don't scale down if just started
         from utils.paths import REGISTRY_JSON
-        registry = load_json(REGISTRY_JSON, default={})
         started_at_str = registry.get("stacks", {}).get(service, {}).get("started_at", "0")
         try:
             # Docker StartedAt is ISO format: 2026-04-23T06:06:00Z
@@ -54,8 +57,8 @@ def evaluate_scaling():
             uptime = now - started_ts
             if uptime < 600: # 10 minute warmup
                 continue
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Warmup guard skip for {service}: {e}")
 
         current_cpu = stats[service].get("cpu", 0)
         up_threshold = rules.get("cpu_up", 80)

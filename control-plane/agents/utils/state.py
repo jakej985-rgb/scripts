@@ -63,7 +63,10 @@ def safe_replace(src: str, dst: str):
         if e.errno == errno.EXDEV or os.name == 'nt':
             shutil.copy2(src, dst)
             try: os.remove(src)
-            except Exception: pass
+            except Exception as re:
+                # Debug only: file might already be gone
+                from .logger import get_logger
+                get_logger("state").debug(f"Non-critical cleanup failure (remove {src}): {re}")
         else:
             raise
 
@@ -117,7 +120,8 @@ def save_json(path: str, data: Any, caller: str = "unknown") -> bool:
         
         if os.path.exists(tmp_path):
             try: os.remove(tmp_path)
-            except Exception: pass
+            except Exception as re:
+                get_logger("state").debug(f"Non-critical cleanup failure (remove {tmp_path}): {re}")
         return False
 
 def validate_state(path: str, expected_type: type | tuple = (list, dict)) -> bool:

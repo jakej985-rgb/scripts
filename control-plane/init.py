@@ -331,6 +331,10 @@ def env_validation_agent():
         missing = []
         for var in strictly_required:
             if not os.getenv(var):
+                # Audit Fix: Make Telegram optional to avoid blocking non-notify deployments
+                if var in ["TELEGRAM_BOT_TOKEN", "TG_CHAT_COUNT"]:
+                    t_log(f"[ENV] WARNING: {var} missing. Notifications disabled.", symbol="⚠")
+                    continue
                 missing.append(var)
         
         # Soft-check: Need at least one chat ID to be useful

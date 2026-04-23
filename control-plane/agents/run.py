@@ -198,14 +198,20 @@ def main() -> None:
                         with open(lock, 'r') as f:
                             content = f.read().split(',')
                             if content:
-                                old_pid = int(content[0])
-                                if not is_pid_running(old_pid):
-                                    lock.unlink()
+                                try:
+                                    old_pid = int(content[0])
+                                    if not is_pid_running(old_pid):
+                                        # Use missing_ok to avoid race conditions
+                                        lock.unlink(missing_ok=True)
+                                except (ValueError, IndexError):
+                                    lock.unlink(missing_ok=True) # Corrupted
                             else:
-                                lock.unlink() # Empty/Broken
-                    except (ValueError, IndexError, OSError):
-                        lock.unlink() 
-            except Exception: pass
+                                lock.unlink(missing_ok=True) # Empty
+                    except OSError:
+                        lock.unlink(missing_ok=True)
+            except Exception as e:
+                # Log but don't crash the runner
+                print(f"[{time.strftime('%H:%M:%S')}] Non-critical lock cleanup error: {e}")
 
     threads: list[threading.Thread] = []
     try:
