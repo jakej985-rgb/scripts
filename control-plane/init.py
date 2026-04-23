@@ -234,17 +234,18 @@ def detect_created():
     except Exception as e:
         log(f"Failed to scan for 'Created' containers: {e}", symbol="⚠")
 
-def run_with_retries(func, *args, retries=2, **kwargs):
-    """Actual Agent Behavior: Retry logic for critical operations."""
+def run_with_retries(name, func, *args, retries=2, **kwargs):
+    """Actual Agent Behavior: Retry logic for critical operations with stack context."""
     for attempt in range(retries):
         try:
             return func(*args, **kwargs)
         except Exception as e:
-            log(f"Attempt {attempt + 1} failed: {e}", symbol="⚠")
+            log(f"[RETRY] {name} failed (attempt {attempt + 1}): {e}", symbol="⚠")
             if attempt < retries - 1:
-                log("Retrying...", symbol="⏳")
+                log(f"Retrying {name}...", symbol="⏳")
                 time.sleep(5)
             else:
+                log(f"{name} failed permanently.", symbol="✘")
                 raise
 def update_status(component: str, status: str):
     SYSTEM_STATUS[component] = status
@@ -562,7 +563,7 @@ def docker_agent(repair_mode: bool = False):
         ]
         
         # --- Mount Validator ---
-        def _check_compose_mounts(compose_path):
+        def _check_compose_mounts(compose_path, stack_name):
             try:
                 import yaml
                 with open(compose_path, 'r', encoding='utf-8') as f:
@@ -591,11 +592,11 @@ def docker_agent(repair_mode: bool = False):
                                     expanded_src = str(Path(compose_path).parent / expanded_src)
                                 
                                 if not os.path.exists(expanded_src):
-                                    t_log(f"FATAL: Mount source missing for {svc_name}: {src}", symbol="✘")
+                                    log(f"FATAL: Mount source missing for {svc_name}: {src}", symbol="✘")
                                     raise RuntimeError(f"Missing required bind-mount path: {expanded_src}")
             except RuntimeError: raise
             except Exception as e:
-                t_log(f"Mount check skipped for {name}: {e}", symbol="⚠")
+                log(f"Mount check skipped for {stack_name}: {e}", symbol="⚠")
 
         TIMEOUTS = {
             "routing": 90,
@@ -609,10 +610,10 @@ def docker_agent(repair_mode: bool = False):
             cf = sd / "docker-compose.yml"
             if not cf.exists(): continue
             
-            t_log(f"[DOCKER] Orchestrating stack: {name}")
+            log(f"[DOCKER] Orchestrating stack: {name}")
             
             # Mount Validation
-            _check_compose_mounts(cf)
+            _check_compose_mounts(cf, name)
 
             # Get services to verify
             conf_cmd = ["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "config", "--services"]
@@ -638,7 +639,7 @@ def docker_agent(repair_mode: bool = False):
 
             # Execute with retries
             try:
-                run_with_retries(_deploy_and_verify)
+                run_with_retries(name, _deploy_and_verify)
             except Exception as e:
                 if is_critical:
                     raise
