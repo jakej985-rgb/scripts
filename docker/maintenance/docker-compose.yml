@@ -16,7 +16,7 @@ services:
     environment:
       - TZ=America/Denver
       - DOCKER_API_VERSION=${DOCKER_API_VERSION:-1.41}
-      - DOCKER_HOST=tcp://docker-proxy:2375
+      - DOCKER_HOST=tcp://m3tal-docker-proxy:2375
     networks:
       - proxy
     env_file:
@@ -32,7 +32,7 @@ services:
     # volumes:
     #   - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
-      - DOCKER_HOST=tcp://docker-proxy:2375
+      - DOZZLE_REMOTE_HOST=tcp://m3tal-docker-proxy:2375
       - DOCKER_API_VERSION=${DOCKER_API_VERSION:-1.41}
     labels:
       - "traefik.enable=true"
@@ -54,10 +54,10 @@ services:
     # volumes:
     #   - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - DOCKER_HOST=tcp://docker-proxy:2375
+      - DOCKER_HOST=tcp://m3tal-docker-proxy:2375
       - DOCKER_API_VERSION=${DOCKER_API_VERSION:-1.41}
     volumes:
-      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/portainer:/data
+      - portainer_data:/data
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.portainer.rule=Host(`portainer.${DOMAIN:?DOMAIN not set}`)"
@@ -70,10 +70,11 @@ services:
     env_file:
       - ../../.env
 
-
-
 networks:
   proxy:
     external: true
   default:
     name: none
+
+volumes:
+  portainer_data:

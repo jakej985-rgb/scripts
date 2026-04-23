@@ -27,7 +27,7 @@ for path in [AGENTS_DIR, REPO_ROOT / "scripts" / "helpers", REPO_ROOT / "scripts
 ENV_FILE = REPO_ROOT / ".env"
 
 from typing import Optional
-from utils.paths import STATE_DIR, LOG_DIR
+from utils.paths import STATE_DIR, LOG_DIR, DATA_DIR
 
 import builtins
 import warnings
@@ -66,10 +66,32 @@ def m3tal_print(*args, **kwargs):
 from utils.env import load_env
 # builtins.print = m3tal_print # Audit Fix (L) - Removed global patch to avoid side effects
 
-try:
-    from preflight import run_preflight
-except ImportError:
-    run_preflight = None
+def run_preflight_checks():
+    """Phase 5: Preflight validation for ports, sockets, and networks."""
+    t_log("Starting Preflight Validation...", symbol="⚙")
+    
+    # 1. Check Ports
+    import socket
+    for port in [80, 443]:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            try:
+                s.bind(("0.0.0.0", port))
+            except socket.error:
+                t_log(f"WARNING: Port {port} is already in use. Traefik may fail to start.", symbol="⚠")
+
+    # 2. Check Docker Socket
+    if os.name != 'nt': # Linux/Mac
+        if not os.access("/var/run/docker.sock", os.R_OK | os.W_OK):
+            t_log("WARNING: Cannot access /var/run/docker.sock. Check permissions.", symbol="⚠")
+    
+    # 3. Check Base Directories
+    for d in [DATA_DIR]:
+        if not d.exists():
+            t_log(f"WARNING: DATA_DIR does not exist: {d}", symbol="⚠")
+
+    return True
+
+run_preflight = run_preflight_checks
 
 from utils.healing import (
     retry, is_writable, atomic_write_json, 
@@ -89,6 +111,15 @@ REQUIRED_DIRS = [
     STATE_DIR / "health", 
     STATE_DIR / "locks"
 ]
+
+# Audit Fix P1: Service Config Directory Bootstrap
+_SERVICES = [
+    "prowlarr", "bazarr", "sonarr", "radarr", "komga",
+    "tdarr", "jellyseerr", "qbittorrent", "autobrr",
+    "recyclarr", "homepage", "portainer", "dozzle", "glances"
+]
+for s in _SERVICES:
+    REQUIRED_DIRS.append(STATE_DIR / s)
 
 REQUIRED_LOGS = [
     "monitor.log", "metrics.log", "anomaly.log", "decision.log",
@@ -520,6 +551,53 @@ def docker_agent(repair_mode: bool = False):
                                     up_cmd.append("--build")
                     except Exception: pass
                     
+                    # Audit Fix P3: Validate Mounts before launch
+                    def _check_compose_mounts(compose_path):
+                        try:
+                            import yaml
+                            with open(compose_path, 'r', encoding='utf-8') as f:
+                                cfg = yaml.safe_load(f)
+                                defined_volumes = cfg.get('volumes', {}) or {}
+                                for svc_name, svc_cfg in cfg.get('services', {}).items():
+                                    for volume in svc_cfg.get('volumes', []):
+                                        if isinstance(volume, str) and ':' in volume:
+                                            src = volume.split(':')[0]
+                                            
+                                            # Skip named volumes
+                                            if src in defined_volumes:
+                                                continue
+                                            
+                                            # Skip obvious non-paths (e.g. named volumes without explicit definition)
+                                            if not src.startswith(('/', './', '../', '$', '~')) and not (len(src) > 1 and src[1] == ':'):
+                                                continue
+
+                                            # Expand env vars in src
+                                            # Ensure REPO_ROOT is available for expansion
+                                            env_context = os.environ.copy()
+                                            if 'REPO_ROOT' not in env_context:
+                                                env_context['REPO_ROOT'] = str(REPO_ROOT)
+                                            
+                                            expanded_src = src
+                                            for k, v in env_context.items():
+                                                expanded_src = expanded_src.replace(f"${{{k}}}", v).replace(f"${k}", v)
+                                            
+                                            expanded_src = os.path.expandvars(expanded_src)
+                                            
+                                            # Special case: Docker socket on Windows
+                                            if os.name == 'nt' and expanded_src == '/var/run/docker.sock':
+                                                continue
+
+                                            if not Path(expanded_src).is_absolute():
+                                                # Assume relative to compose file
+                                                expanded_src = str(Path(compose_path).parent / expanded_src)
+                                            
+                                            if not os.path.exists(expanded_src):
+                                                t_log(f"WARNING: Mount source missing for {svc_name}: {src}", symbol="⚠")
+                        except Exception as e:
+                            t_log(f"Mount check skipped for {name}: {e}", symbol="⚠")
+
+                    _check_compose_mounts(cf)
+
                     proc = subprocess.Popen(up_cmd, 
                                          stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, 
                                          text=True, env=GLOBAL_ENV)
@@ -530,6 +608,13 @@ def docker_agent(repair_mode: bool = False):
                     ready_count = 0
                     while time.time() - start_time < wait_time:
                         if proc.poll() is not None and proc.returncode != 0:
+                            # Audit Fix Phase 3: Add Debug Visibility
+                            t_log(f"[DEBUG] Stack {name} failed. Capturing logs...", symbol="🔍")
+                            log_cmd = ["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "logs"]
+                            lproc = subprocess.run(log_cmd, capture_output=True, text=True, env=GLOBAL_ENV)
+                            if lproc.stdout:
+                                print(f"\n--- {name} LOGS ---\n{lproc.stdout}\n")
+                            
                             raise RuntimeError(f"Docker Launch Error (Exit {proc.returncode}) for {name}")
                         
                         ready_count = sum(1 for item in expected_services 

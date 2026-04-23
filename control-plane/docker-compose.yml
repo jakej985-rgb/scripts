@@ -59,6 +59,10 @@ services:
       - IMAGES=1
       - NETWORKS=1
       - SERVICES=1
+      - TASKS=1
+      - EVENTS=1
+      - VERSION=1
+      - INFO=1
       - POST=1        # Allow restarts/reconciliation
       - EXEC=0        # Explicitly deny exec for proxy isolation
       - ALLOW_START=1
@@ -95,7 +99,7 @@ services:
       - DOCKER_API_VERSION=${DOCKER_API_VERSION}
       - REPO_ROOT=/docker
       - IN_CONTAINER=true
-      - DOCKER_HOST=tcp://docker-proxy:2375
+      - DOCKER_HOST=tcp://m3tal-docker-proxy:2375
     working_dir: /docker
     command: python3 control-plane/agents/run.py
     restart: unless-stopped

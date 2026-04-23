@@ -6,7 +6,7 @@ services:
     command:
       - "--api.dashboard=true"
       - "--providers.docker=true"
-      - "--providers.docker.endpoint=tcp://docker-proxy:2375"
+      - "--providers.docker.endpoint=tcp://m3tal-docker-proxy:2375"
       - "--providers.docker.exposedbydefault=false"
       - "--providers.docker.network=proxy"
       - "--providers.file.directory=/etc/traefik/dynamic"

@@ -9,14 +9,14 @@ services:
     container_name: qbittorrent
     network_mode: "container:gluetun"
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
       - WEBUI_PORT=8080
     volumes:
-      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/qbittorrent:/config
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}:/mnt
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/downloads:/downloads
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
+      - qbittorrent_config:/config
+      - ${DATA_DIR:?DATA_DIR not set}:/mnt
+      - ${DATA_DIR:?DATA_DIR not set}/downloads:/downloads
+      - ${DATA_DIR:?DATA_DIR not set}/media:/media
     env_file:
       - ../../.env
     labels:
@@ -27,6 +27,9 @@ services:
   radarr:
     image: lscr.io/linuxserver/radarr
     container_name: radarr
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.radarr.rule=Host(`radarr.${DOMAIN:?DOMAIN not set}`)"
@@ -45,15 +48,18 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/radarr:/config
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}:/mnt
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/downloads:/downloads
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
+      - radarr_config:/config
+      - ${DATA_DIR:?DATA_DIR not set}:/mnt
+      - ${DATA_DIR:?DATA_DIR not set}/downloads:/downloads
+      - ${DATA_DIR:?DATA_DIR not set}/media:/media
     restart: unless-stopped
 
   sonarr:
     image: lscr.io/linuxserver/sonarr
     container_name: sonarr
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.sonarr.rule=Host(`sonarr.${DOMAIN:?DOMAIN not set}`)"
@@ -72,26 +78,28 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/sonarr:/config
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}:/mnt
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/downloads:/downloads
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
-
+      - sonarr_config:/config
+      - ${DATA_DIR:?DATA_DIR not set}:/mnt
+      - ${DATA_DIR:?DATA_DIR not set}/downloads:/downloads
+      - ${DATA_DIR:?DATA_DIR not set}/media:/media
     restart: unless-stopped
 
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
     container_name: bazarr
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:6767"]
       interval: 60s
       timeout: 10s
       retries: 3
     volumes:
-      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/bazarr:/config
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}:/mnt
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/downloads:/downloads
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
+      - bazarr_config:/config
+      - ${DATA_DIR:?DATA_DIR not set}:/mnt
+      - ${DATA_DIR:?DATA_DIR not set}/downloads:/downloads
+      - ${DATA_DIR:?DATA_DIR not set}/media:/media
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bazarr.rule=Host(`bazarr.${DOMAIN:?DOMAIN not set}`)"
@@ -109,16 +117,17 @@ services:
   komga:
     image: gotson/komga
     container_name: komga
+    user: "${PUID:-1000}:${PGID:-1000}"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:25600/actuator/health"]
       interval: 60s
       timeout: 10s
       retries: 3
     volumes:
-      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/komga:/config
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}:/mnt
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/downloads:/downloads
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
+      - komga_config:/config
+      - ${DATA_DIR:?DATA_DIR not set}:/mnt
+      - ${DATA_DIR:?DATA_DIR not set}/downloads:/downloads
+      - ${DATA_DIR:?DATA_DIR not set}/media:/media
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.komga.rule=Host(`komga.${DOMAIN:?DOMAIN not set}`)"
@@ -136,13 +145,14 @@ services:
   jellyseerr:
     image: fallenbagel/jellyseerr
     container_name: jellyseerr
+    user: "${PUID:-1000}:${PGID:-1000}"
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:5055"]
       interval: 60s
       timeout: 10s
       retries: 3
     volumes:
-      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/jellyseerr:/app/config
+      - jellyseerr_config:/app/config
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.jellyseerr.rule=Host(`jellyseerr.${DOMAIN:?DOMAIN not set}`)"
@@ -160,8 +170,9 @@ services:
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
+    user: "${PUID:-1000}:${PGID:-1000}"
     volumes:
-      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/homepage:/app/config
+      - homepage_config:/app/config
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.homepage.rule=Host(`home.${DOMAIN:?DOMAIN not set}`)"
@@ -179,11 +190,12 @@ services:
   autobrr:
     image: ghcr.io/autobrr/autobrr:v1.39
     container_name: autobrr
+    user: "${PUID:-1000}:${PGID:-1000}"
     volumes:
-      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/autobrr:/config
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}:/mnt
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/downloads:/downloads
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
+      - autobrr_config:/config
+      - ${DATA_DIR:?DATA_DIR not set}:/mnt
+      - ${DATA_DIR:?DATA_DIR not set}/downloads:/downloads
+      - ${DATA_DIR:?DATA_DIR not set}/media:/media
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.autobrr.rule=Host(`autobrr.${DOMAIN:?DOMAIN not set}`)"
@@ -201,11 +213,12 @@ services:
   recyclarr:
     image: ghcr.io/recyclarr/recyclarr
     container_name: recyclarr
+    user: "${PUID:-1000}:${PGID:-1000}"
     volumes:
-      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/recyclarr:/config
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}:/mnt
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/downloads:/downloads
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
+      - recyclarr_config:/config
+      - ${DATA_DIR:?DATA_DIR not set}:/mnt
+      - ${DATA_DIR:?DATA_DIR not set}/downloads:/downloads
+      - ${DATA_DIR:?DATA_DIR not set}/media:/media
     labels:
       - "m3tal.stack=media"
       - "m3tal.role=internal"
@@ -215,33 +228,18 @@ services:
       - ../../.env
     restart: unless-stopped
 
-#  maintainerr:
-#    image: ghcr.io/maintainerr/maintainerr:latest
-#    container_name: maintainerr
-#    volumes:
-#      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/maintainerr:/opt/data
-#    labels:
-#      - "traefik.enable=true"
-#      - "traefik.http.routers.maintainerr.rule=Host(`maintainerr.${DOMAIN:?DOMAIN not set}`)"
-#      - "traefik.http.routers.maintainerr.entrypoints=web"
-#      - "traefik.http.services.maintainerr.loadbalancer.server.port=6246"
-#      - "traefik.docker.network=proxy"
-#      - "m3tal.stack=media"
-#    networks:
-#      - proxy
-#    env_file:
-#      - ../../.env
-#    restart: unless-stopped
-#
   tdarr:
     image: ghcr.io/haveagitgat/tdarr:latest
     container_name: tdarr
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
     volumes:
-      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/tdarr/config:/app/config
-      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/tdarr/logs:/app/logs
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}:/mnt
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/downloads:/downloads
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
+      - tdarr_config:/app/config
+      - tdarr_logs:/app/logs
+      - ${DATA_DIR:?DATA_DIR not set}:/mnt
+      - ${DATA_DIR:?DATA_DIR not set}/downloads:/downloads
+      - ${DATA_DIR:?DATA_DIR not set}/media:/media
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.tdarr.rule=Host(`tdarr.${DOMAIN:?DOMAIN not set}`)"
@@ -277,7 +275,7 @@ services:
       - ../../.env
     environment:
       - HOMEPAGE_ALLOWED_HOST=stats.${DOMAIN}
-      - DOCKER_HOST=tcp://docker-proxy:2375
+      - DOCKER_HOST=tcp://m3tal-docker-proxy:2375
       - DOCKER_API_VERSION=${DOCKER_API_VERSION:-1.41}
     dns:
       - 8.8.8.8
@@ -288,8 +286,8 @@ services:
     image: lscr.io/linuxserver/prowlarr
     container_name: prowlarr
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
       - TZ=America/Denver
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9696"]
@@ -297,10 +295,10 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - ${CONFIG_DIR:?CONFIG_DIR not set — run from repo root with .env}/prowlarr:/config
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}:/mnt
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/downloads:/downloads
-      - ${DATA_DIR:?DATA_DIR not set — run from repo root with .env}/media:/media
+      - prowlarr_config:/config
+      - ${DATA_DIR:?DATA_DIR not set}:/mnt
+      - ${DATA_DIR:?DATA_DIR not set}/downloads:/downloads
+      - ${DATA_DIR:?DATA_DIR not set}/media:/media
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.${DOMAIN:?DOMAIN not set}`)"
@@ -318,6 +316,7 @@ services:
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr
     container_name: flaresolverr
+    user: "${PUID:-1000}:${PGID:-1000}"
     environment:
       - LOG_LEVEL=info
     labels:
@@ -334,10 +333,22 @@ services:
       - ../../.env
     restart: unless-stopped
 
-
-
 networks:
   proxy:
     external: true
   default:
     name: none
+
+volumes:
+  qbittorrent_config:
+  radarr_config:
+  sonarr_config:
+  bazarr_config:
+  komga_config:
+  jellyseerr_config:
+  homepage_config:
+  autobrr_config:
+  recyclarr_config:
+  tdarr_config:
+  tdarr_logs:
+  prowlarr_config:

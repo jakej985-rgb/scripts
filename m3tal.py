@@ -15,17 +15,42 @@ if sys.stdout.encoding.lower() != 'utf-8':
 # M3TAL Unified CLI (v2.2 Production-Grade)
 # Responsibility: Centralized entrypoint for all M3TAL orchestration and observability.
 
-# Attempting catastrophic import of paths module
-try:
-    # Path bootstrap (V6.5.2)
-
+# --- Environment Variable Bootstrap (V2.3) ------------------------------------
+def _bootstrap_env():
+    # Attempt to find root to locate .env
     p = Path(__file__).resolve()
+    root = None
     for parent in [p] + list(p.parents):
         if (parent / ".env").exists() and (parent / "docker").exists():
+            root = parent
             if str(parent / "control-plane") not in sys.path:
                 sys.path.append(str(parent / "control-plane"))
             break
-            
+    if not root:
+        return
+    
+    with open(root / ".env", "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            if line.startswith("export "):
+                line = line[len("export "):].strip()
+            if "=" in line:
+                k, v = line.split("=", 1)
+                k, v = k.strip(), v.strip()
+                v = re.sub(r'\s+#.*$', '', v).strip()
+                if (v.startswith('"') and v.endswith('"')) or (v.startswith("'") and v.endswith("'")):
+                    v = v[1:-1]
+                os.environ[k] = v
+
+    # Audit Fix: Enforce Project Root
+    os.chdir(root)
+    
+_bootstrap_env()
+
+# --- Component Imports (Post-Env) ---------------------------------------------
+try:
     from agents.utils.paths import (
         REPO_ROOT, SCRIPTS_DIR, AGENTS_DIR, CONTROL_PLANE
     )
@@ -216,30 +241,7 @@ def main():
         print(f"   Searching in: {ROOT}")
         sys.exit(1)
 
-    # Load .env into os.environ so subprocesses (audit, health, etc.) inherit values
-    with open(ROOT / ".env", "r", encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if not line or line.startswith("#"):
-                continue
-            
-            # Handle optional 'export ' prefix
-            if line.startswith("export "):
-                line = line[len("export "):].strip()
-                
-            if "=" in line:
-                k, v = line.split("=", 1)
-                k = k.strip()
-                v = v.strip()
-                
-                # Only strip inline comments preceded by whitespace (preserve # in values)
-                v = re.sub(r'\s+#.*$', '', v).strip()
-                
-                # Strip quotes
-                if (v.startswith('"') and v.endswith('"')) or (v.startswith("'") and v.endswith("'")):
-                    v = v[1:-1]
-                    
-                os.environ[k] = v
+    # Environment is already loaded by _bootstrap_env() at the top of this file.
 
     if args.command == "logs":
         sys.exit(cmd_logs(args))
