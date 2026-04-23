@@ -84,10 +84,16 @@ def run_preflight_checks():
         if not os.access("/var/run/docker.sock", os.R_OK | os.W_OK):
             t_log("WARNING: Cannot access /var/run/docker.sock. Check permissions.", symbol="⚠")
     
-    # 3. Check Base Directories
-    for d in [DATA_DIR]:
-        if not d.exists():
-            t_log(f"WARNING: DATA_DIR does not exist: {d}", symbol="⚠")
+    # 3. Check Base Directories (Deep Validation)
+    required_paths = [
+        DATA_DIR,
+        DATA_DIR / "downloads",
+        DATA_DIR / "media"
+    ]
+    for p in required_paths:
+        if not p.exists():
+            t_log(f"FATAL: Required DATA_DIR path missing: {p}", symbol="✘")
+            return False
 
     return True
 
@@ -106,18 +112,17 @@ from progress_utils import (
 
 # --- Configuration ------------------------------------------------------------
 # Audit Fix P1: Filesystem Bootstrap (Linux Compatibility)
-def bootstrap_state_dirs():
-    """Phase 1: Ensures all managed service directories exist before bind-mounting."""
-    services = [
-        "prowlarr", "bazarr", "sonarr", "radarr", "komga",
-        "tdarr", "jellyseerr", "qbittorrent", "autobrr",
-        "recyclarr", "homepage", "portainer"
-    ]
-    for svc in services:
-        path = STATE_DIR / svc
+def bootstrap_data_dirs():
+    """Phase 1.1: Ensures required subdirectories exist in DATA_DIR to prevent mount failures."""
+    required = ["downloads", "media"]
+    for r in required:
+        path = DATA_DIR / r
         if not path.exists():
-            t_log(f"[INIT] Creating missing directory: {path}", symbol="🧱")
-            path.mkdir(parents=True, exist_ok=True)
+            t_log(f"[INIT] Creating DATA_DIR subdir: {path}", symbol="📁")
+            try:
+                path.mkdir(parents=True, exist_ok=True)
+            except Exception as e:
+                t_log(f"Failed to create data subdir {path}: {e}", symbol="✘")
 
 def fix_permissions():
     """Phase 5: Enforce consistent ownership on Linux systems."""
@@ -125,10 +130,11 @@ def fix_permissions():
         try:
             t_log("[INIT] Enforcing Linux permissions (1000:1000)...", symbol="🔐")
             os.system(f"chown -R 1000:1000 {STATE_DIR}")
+            os.system(f"chown -R 1000:1000 {DATA_DIR}")
         except Exception as e:
             t_log(f"Permission hardening failed: {e}", symbol="⚠")
 
-bootstrap_state_dirs()
+bootstrap_data_dirs()
 fix_permissions()
 
 REQUIRED_DIRS = [
@@ -609,7 +615,9 @@ def docker_agent(repair_mode: bool = False):
                                                 expanded_src = str(Path(compose_path).parent / expanded_src)
                                             
                                             if not os.path.exists(expanded_src):
-                                                t_log(f"WARNING: Mount source missing for {svc_name}: {src}", symbol="⚠")
+                                                t_log(f"FATAL: Mount source missing for {svc_name}: {src}", symbol="✘")
+                                                raise RuntimeError(f"Missing required bind-mount path: {expanded_src}")
+                        except RuntimeError: raise
                         except Exception as e:
                             t_log(f"Mount check skipped for {name}: {e}", symbol="⚠")
 
