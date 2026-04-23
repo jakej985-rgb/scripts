@@ -8,11 +8,12 @@ services:
       - ${REPO_ROOT}/control-plane/state:/docker/state
       - ${REPO_ROOT}/dashboard:/docker/dashboard
     command: >
-      sh -c "chown -R 1000:1000 /docker/state && 
+      sh -c "chown -R ${PUID:-1000}:${PGID:-1000} /docker/state && 
              chmod -R 770 /docker/state &&
              touch /docker/state/acme.json &&
+             chown ${PUID:-1000}:${PGID:-1000} /docker/state/acme.json &&
              chmod 600 /docker/state/acme.json &&
-             chown -R 1000:1000 /docker/dashboard/users.json &&
+             chown -R ${PUID:-1000}:${PGID:-1000} /docker/dashboard/users.json &&
              chmod 600 /docker/dashboard/users.json || true"
     networks:
       - proxy

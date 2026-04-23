@@ -39,9 +39,16 @@ def get_system_metrics():
             if sys.platform != "win32":
                 # Manual /proc reads are safer than shell=True + grep/awk
                 if os.path.exists("/proc/stat"):
-                    # Calculation logic removed for brevity/safety
-                    pass
-        except Exception: pass
+                    # Audit Fix M1: Basic /proc/stat CPU fallback
+                    with open("/proc/stat", "r") as f:
+                        line = f.readline()
+                    parts = line.split()
+                    if len(parts) >= 5:
+                        idle = int(parts[4])
+                        total = sum(int(p) for p in parts[1:])
+                        metrics["cpu"] = round(100.0 * (1.0 - idle / total), 1)
+        except Exception as e:
+            logger.debug(f"Fallback metrics failed: {e}")
     return metrics
 
 def get_container_metrics():
@@ -63,7 +70,8 @@ def get_container_metrics():
                         "mem": float(mem_str) if mem_str else 0.0,
                         "mem_usage": raw.get("MemUsage"),
                     })
-                except (json.JSONDecodeError, ValueError):
+                except (json.JSONDecodeError, ValueError) as e:
+                    logger.debug(f"Skipping malformed stats line: {e}")
                     continue
     except subprocess.TimeoutExpired:
         logger.error("Docker stats timed out (30s)")

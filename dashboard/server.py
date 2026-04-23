@@ -107,7 +107,7 @@ def login():
             session.pop('csrf_token', None)
             return redirect(url_for('index'))
             
-        return render_template('login.html', error="Invalid credentials", csrf_token=session.get('csrf_token'))
+        return render_template('login.html', error="Invalid credentials", csrf_token=secrets.token_hex(16))
     
     # Generate token for GET
     if 'csrf_token' not in session:
@@ -203,11 +203,14 @@ def handle_connect():
     emit('status', {'msg': 'Connected to M3TAL Control Plane'})
 
     # Start background tasks if not already running
-    global _bg_started
+    global background_thread
     with _bg_lock:
-        if not _bg_started:
+        if not _bg_started or background_thread is None:
             start_background_tasks()
             _bg_started = True
+        elif hasattr(background_thread, 'is_alive') and not background_thread.is_alive():
+            # If the thread died, restart it
+            start_background_tasks()
 
 def emit_metrics_update():
     metrics = load_json_safe(METRICS_JSON)
@@ -226,11 +229,16 @@ def background_metrics_stream():
 
 def start_background_tasks():
     """Initialize background workers for SocketIO."""
-    socketio.start_background_task(background_metrics_stream)
+    global background_thread
+    background_thread = socketio.start_background_task(background_metrics_stream)
 
 _bg_started = False
+background_thread = None
 _bg_lock = threading.Lock()
 
 if __name__ == '__main__':
+    # Audit Fix C1: Dashboard binds to 127.0.0.1 to avoid unencrypted external exposure.
+    # External access should be through Traefik or a secure tunnel.
+    host = os.getenv("DASHBOARD_HOST", "127.0.0.1")
     port = int(os.getenv("DASHBOARD_PORT", 8080))
-    socketio.run(app, host='0.0.0.0', port=port)
+    socketio.run(app, host=host, port=port)

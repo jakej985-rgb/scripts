@@ -57,11 +57,14 @@ def scan_infrastructure():
     if container_names:
         for name in container_names:
             try:
-                inspect_cmd = ["docker", "inspect", name, "--format", "{{json .Config.Labels}}"]
+                inspect_cmd = ["docker", "inspect", name, "--format", "{{json .Config.Labels}}|{{.State.StartedAt}}"]
                 inspect_res = subprocess.run(inspect_cmd, capture_output=True, text=True, check=True, timeout=10)
                 raw = inspect_res.stdout.strip()
-                if raw:
-                    inspect_data[name] = json.loads(raw)
+                if "|" in raw:
+                    labels_raw, started_at = raw.split("|", 1)
+                    inspect_data[name] = {"labels": json.loads(labels_raw), "started_at": started_at}
+                else:
+                    inspect_data[name] = {"labels": json.loads(raw) if raw else {}, "started_at": "unknown"}
             except json.JSONDecodeError:
                 logger.warning(f"Failed to parse inspect labels for {name}")
                 inspect_data[name] = {}
@@ -74,10 +77,12 @@ def scan_infrastructure():
         name = container.get("Names", "").lstrip("/")
         if not name: continue
         
-        labels = inspect_data.get(name, {})
+        labels_info = inspect_data.get(name, {})
+        labels = labels_info.get("labels", {})
         stack = labels.get("m3tal.stack", "unknown")
         service = labels.get("com.docker.compose.service", name)
         role = labels.get("m3tal.role", "unknown")
+        started_at = labels_info.get("started_at", "unknown")
         
         registry_containers.append(name)
         stack_map[name] = {
@@ -85,32 +90,40 @@ def scan_infrastructure():
             "service": service,
             "role": role,
             "status": container.get("Status", "unknown"),
-            "state": container.get("State", "unknown")
+            "state": container.get("State", "unknown"),
+            "started_at": started_at
         }
 
-    # 3. Build Compose Index (Audit Fix H5)
-    # Build an index of service -> compose file to avoid os.walk in reconcile.py
-    from utils.paths import DOCKER_DIR
-    compose_index = {}
-    for root, dirs, files in os.walk(DOCKER_DIR):
-        for file in files:
-            if file.endswith('.yml') or file.endswith('.yaml'):
-                full_path = os.path.join(root, file)
-                try:
-                    res = subprocess.run(["docker", "compose", "-f", full_path, "config", "--services"], 
-                                         capture_output=True, text=True, timeout=5)
-                    if res.returncode == 0:
-                        for svc in res.stdout.splitlines():
-                            compose_index[svc.strip()] = full_path
-                except Exception as e:
-                    logger.debug(f"Skipping {file} in registry index: {e}")
-                    continue
-
+    # Audit Fix M2: Cache compose index and only rebuild periodically (every 5 mins)
+    last_registry = load_json(REGISTRY_JSON, default={})
+    cached_index = last_registry.get("compose_index", {})
+    last_walk = last_registry.get("last_walk_ts", 0)
+    
+    if time.time() - last_walk < 300 and cached_index:
+        compose_index = cached_index
+    else:
+        from utils.paths import DOCKER_DIR
+        compose_index = {}
+        for root, dirs, files in os.walk(DOCKER_DIR):
+            for file in files:
+                if file.endswith('.yml') or file.endswith('.yaml'):
+                    full_path = os.path.join(root, file)
+                    try:
+                        res = subprocess.run(["docker", "compose", "-f", full_path, "config", "--services"], 
+                                             capture_output=True, text=True, timeout=5)
+                        if res.returncode == 0:
+                            for svc in res.stdout.splitlines():
+                                compose_index[svc.strip()] = full_path
+                    except Exception as e:
+                        logger.debug(f"Skipping {file} in registry index: {e}")
+                        continue
+        last_walk = int(time.time())
 
     registry_data = {
         "containers": sorted(registry_containers),
         "stacks": stack_map,
         "compose_index": compose_index,
+        "last_walk_ts": last_walk,
         "paths": {
             "root": "/mnt",
             "downloads": "/mnt/downloads",

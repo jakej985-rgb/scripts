@@ -23,8 +23,8 @@ def get_container_info(name):
         if res.returncode == 0:
             parts = res.stdout.strip().split('|')
             return {"id": parts[0], "status": parts[1], "started_at": parts[2]}
-    except Exception:
-        pass
+    except Exception as e:
+        logger.debug(f"Container info check failed: {e}")
     return None
 
 def find_dependents():
@@ -58,7 +58,8 @@ def monitor_network():
     if STATE_FILE.exists():
         try:
             last_state = json.loads(STATE_FILE.read_text())
-        except Exception:
+        except Exception as e:
+            logger.debug(f"State load failed: {e}")
             pass
 
     # 2. Get Current Gluetun Info
@@ -69,20 +70,28 @@ def monitor_network():
 
     # 3. Detect Restart/Change
     if last_state["id"] and (current["id"] != last_state["id"] or current["started_at"] != last_state["started_at"]):
-        logger.info(f"DETECTED Gluetun restart (StartedAt: {current['started_at']}). Bouncing dependents...")
-        
-        dependents = find_dependents()
-        if not dependents:
-            logger.info("No dependents found to restart.")
+        # Audit Fix A3: Cooldown protection to prevent restart storms
+        now = time.time()
+        last_action = last_state.get("last_action_ts", 0)
+        if now - last_action < 300: # 5 minute cooldown
+            logger.warning(f"Cooldown: Skipping dependent restart for Gluetun (Last action {int(now - last_action)}s ago)")
+            current["last_action_ts"] = last_action # Preserve timestamp
         else:
-            for dep in dependents:
-                try:
-                    logger.info(f"Restarting dependent: {dep}")
-                    subprocess.run(["docker", "restart", dep], check=True, timeout=30)
-                except Exception as e:
-                    logger.error(f"Failed to restart {dep}: {e}")
-        
-        logger.info("Dependents stabilized.")
+            logger.info(f"DETECTED Gluetun restart (StartedAt: {current['started_at']}). Bouncing dependents...")
+            current["last_action_ts"] = now
+            
+            dependents = find_dependents()
+            if not dependents:
+                logger.info("No dependents found to restart.")
+            else:
+                for dep in dependents:
+                    try:
+                        logger.info(f"Restarting dependent: {dep}")
+                        subprocess.run(["docker", "restart", dep], check=True, timeout=30)
+                    except Exception as e:
+                        logger.error(f"Failed to restart {dep}: {e}")
+            
+            logger.info("Dependents stabilized.")
 
     # 4. Save New State
     with open(STATE_FILE, "w") as f:

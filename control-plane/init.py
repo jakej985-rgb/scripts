@@ -178,8 +178,8 @@ def wait_for_readiness(name: str, container_name: str, log_pattern: str = None, 
                     t_log(f"{name} network probe SUCCEEDED.", symbol="✔")
                     return True
 
-        except Exception:
-            pass
+        except Exception as e:
+            t_log(f"[READINESS] Probe check error: {e}", symbol="⚠")
         
         time.sleep(2)
     
@@ -236,8 +236,10 @@ def log_agent(repair_mode: bool = False):
             stale_logs = [l for l in LOG_DIR.glob("*_[0-9]*.log") if l.is_file()]
             if stale_logs:
                 for sl in stale_logs:
-                    try: sl.unlink()
-                    except Exception: pass
+                    try:
+                        sl.unlink()
+                    except Exception as e:
+                        t_log(f"[LOG] Could not prune stale log {sl.name}: {e}", symbol="ℹ")
         
         update_status("logs", "ok" if success_count == len(REQUIRED_LOGS) else "degraded")
         return True
@@ -383,7 +385,8 @@ def docker_agent(repair_mode: bool = False):
             retry(lambda: subprocess.run(["docker", "network", "create", "proxy"], 
                                        capture_output=True, env=GLOBAL_ENV, check=True))
             t_log("[DOCKER] Shared network 'proxy' ready")
-        except Exception: pass 
+        except Exception as e: 
+            t_log(f"[DOCKER] Shared network 'proxy' exists or creation failed: {e}", symbol="ℹ") 
         
         # Shared State 
         global_statuses = {}
@@ -410,7 +413,8 @@ def docker_agent(repair_mode: bool = False):
                         try:
                             if out.startswith("["): ps_data = json.loads(out)
                             elif out: ps_data = [json.loads(l) for l in out.splitlines()]
-                        except Exception: pass
+                        except Exception as e:
+                            t_log(f"[DOCKER] Poller JSON parse error: {e}", symbol="ℹ")
                         
                         for item in services:
                             match = next((c for c in ps_data if c.get("Service") == item), None)

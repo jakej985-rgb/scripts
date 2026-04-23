@@ -77,9 +77,12 @@ def save_json(path: str, data: Any, caller: str = "unknown") -> bool:
     
     # 1. Ownership Validation
     expected_owner = OWNERS.get(filename)
-    if expected_owner and caller != "unknown" and caller != expected_owner:
+    if expected_owner and caller != expected_owner:
         from .logger import get_logger
-        get_logger("state").warning(f"OWNERSHIP_VIOLATION: Agent '{caller}' is writing to '{filename}' (Owned by '{expected_owner}')")
+        msg = f"OWNERSHIP_VIOLATION: Agent '{caller}' attempted to write to '{filename}' (Owned by '{expected_owner}')"
+        get_logger("state").critical(msg)
+        # Audit Fix C4: Block the write and raise exception for core state files
+        raise PermissionError(msg)
 
     tmp_path = f"{path}.tmp"
     

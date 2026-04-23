@@ -67,9 +67,10 @@ class HealthValidator:
         """Validates the Cloudflared -> Traefik path via internal EXEC."""
         try:
             # V6.5 Hardening: 3s subprocess timeout to prevent CLI lockup
-            cmd = ["docker", "exec", "cloudflared", "curl", "-s", "-o", "/dev/null", "-w", "%{http_code}", "http://traefik:80"]
+            # V6.5 Hardening: Use wget as per container env spec (cloudflared is Alpine-based)
+            cmd = ["docker", "exec", "cloudflared", "wget", "-qO-", "--spider", "http://traefik:80"]
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=3)
-            code = result.stdout.strip()
+            code = "200" if result.returncode == 0 else "000"
             
             # 000 typically means curl failed to connect at all
             if code == "000":
@@ -91,9 +92,8 @@ class HealthValidator:
             return sid + "-internal", "INFO", "Missing port for internal test"
         
         try:
-            # Plan: docker exec traefik wget -qO- http://<container>:<port>
-            # We use container name from 'id' or 'name'
-            cmd = ["docker", "exec", "traefik", "wget", "-qO-", "--spider", f"http://{sid}:{port}"]
+            # Audit Fix H4: Traefik v3 image has no wget. Use nc -z or sh socket check.
+            cmd = ["docker", "exec", "traefik", "sh", "-c", f"nc -z {sid} {port}"]
             result = subprocess.run(cmd, capture_output=True, timeout=3)
             
             if result.returncode == 0:

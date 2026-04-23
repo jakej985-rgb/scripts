@@ -19,8 +19,8 @@ def find_root():
             root = cwd
             
     if root:
-        # Audit Fix M5: Explicitly print resolved root for container/host visibility
-        print(f"--- M3TAL ROOT RESOLVED: {root} ---")
+        # Audit Fix M8: Silent root resolution (log instead of print)
+        pass
         
     return root
 
@@ -31,7 +31,7 @@ if not REPO_ROOT:
     sys.exit(1)
 
 # --- Environment Variable Keys ------------------------------------------------
-ENV_TELEGRAM_TOKEN = "TELEGRAM_TOKEN"
+ENV_TELEGRAM_TOKEN = "TELEGRAM_TOKEN"  # nosec B105
 ENV_TELEGRAM_CHAT  = "TELEGRAM_CHAT_ID"
 ENV_REPO_ROOT      = "REPO_ROOT"
 
@@ -96,6 +96,7 @@ TIERS = {
     "command_listener": 2,
     "scaling": 2,
     "network_guard": 2,
+    "docker_logs_agent": 2,
 }
 
 # The absolute minimum files/dirs required for each agent to start

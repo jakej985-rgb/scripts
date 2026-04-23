@@ -42,6 +42,7 @@ AGENTS = [
     ("healer",    "healer.py"),
     ("notify",    "notify.py"),
     ("command_listener", "command_listener.py"),
+    ("docker_logs_agent", "docker_logs_agent.py"),
 ]
 
 # --- Master Locking -----------------------------------------------------------
@@ -164,7 +165,7 @@ def run_agent(name: str, script: str) -> None:
         if exit_code != 0:
             _record_failure(name)
             # Restart Backoff (V4): 10s base + 0-5s jitter
-            jitter = random.uniform(0, 5)
+            jitter = random.uniform(0, 5)  # nosec B311
             wait_time = 10 + jitter
             ts_err = time.strftime("%H:%M:%S")
             print(f"[{ts_err}] {name} failed. Retrying in {int(wait_time)}s...")

@@ -73,7 +73,9 @@ def terminate_agents():
                              capture_output=True)
     else:
         for script in target_scripts:
-            subprocess.run(["pkill", "-f", script], capture_output=True)
+            # Audit Fix M9: Tighten pkill pattern to avoid matching unintended processes
+            subprocess.run(["pkill", "-f", f"control-plane/agents/{script}"], capture_output=True)
+            subprocess.run(["pkill", "-f", f"python.*{script}"], capture_output=True)
             
     HB.log("Clearing healer and agent locks")
     # Clean all lock files

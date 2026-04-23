@@ -27,7 +27,16 @@ def _is_duplicate(text: str) -> bool:
     """
     now = time.time()
     clean_text = _strip_html(text)
-    m_hash = hashlib.sha256(clean_text.encode()).hexdigest()
+    
+    # Audit Fix M4: Normalize dynamic fields (timestamps, counts) for better dedup
+    import re
+    # Remove timestamps like 06:06:00 or 2026-04-23 06:06:00
+    norm_text = re.sub(r'\d{2}:\d{2}:\d{2}', 'HH:MM:SS', clean_text)
+    norm_text = re.sub(r'\d{4}-\d{2}-\d{2}', 'YYYY-MM-DD', norm_text)
+    # Remove numbers that likely represent counts or IDs
+    norm_text = re.sub(r'\b\d+\b', 'N', norm_text)
+    
+    m_hash = hashlib.sha256(norm_text.encode()).hexdigest()
     
     # 1. Prune expired hashes
     to_delete = [h for h, data in _sent_hashes.items() if (now - data["ts"]) > DEDUP_TTL]

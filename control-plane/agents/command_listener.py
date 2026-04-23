@@ -89,6 +89,14 @@ def handle_confirm(msg, args):
     if pending["type"] == "restart":
         name = pending["target"]
         try:
+            # Audit Fix C2: Secondary validation against live docker ps
+            live_ps = subprocess.run(["docker", "ps", "--format", "{{.Names}}"], capture_output=True, text=True, timeout=10)
+            live_containers = [line.strip() for line in live_ps.stdout.split('\n') if line.strip()]
+            
+            if name not in live_containers:
+                telegram.send_direct(chat_id, f"❌ Security/Logic Violation: Container <code>{name}</code> is no longer reachable or valid.")
+                return
+
             telegram.send_direct(chat_id, f"⏳ <b>CONFIRMED:</b> Restarting <code>{name}</code>...")
             subprocess.run(["docker", "restart", name], timeout=30)
             telegram.send_direct(chat_id, f"✅ Container <code>{name}</code> restarted.")
@@ -96,7 +104,8 @@ def handle_confirm(msg, args):
         except Exception as e:
             telegram.send_direct(chat_id, f"❌ Error restarting {name}: {e}")
         finally:
-            del _pending_confirmations[chat_id]
+            if chat_id in _pending_confirmations:
+                del _pending_confirmations[chat_id]
 
 def handle_docker(msg, args):
     if not args:

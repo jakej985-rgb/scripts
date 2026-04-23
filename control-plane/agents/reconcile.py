@@ -108,7 +108,8 @@ def perform_redeploy(action):
     logger.info(f"Found {target} in {full_path}. Redeploying...")
     cmd = ["docker", "compose", "-f", full_path] + env_arg + ["up", "-d", target]
     try:
-        subprocess.run(cmd, check=True, timeout=60)
+        # Audit Fix H5: Increase timeout to 300s for large images
+        subprocess.run(cmd, check=True, timeout=300)
         return True
     except subprocess.TimeoutExpired:
         logger.error(f"Redeploy check timed out for {target} in {full_path}")
@@ -187,12 +188,25 @@ def reconcile():
         logger.info(f"Reconciling: {len(decision_actions)} decisions, {len(scaling_actions)} scaling requests")
         
         for action in decision_actions:
-            if not perform_action(action):
+            # Audit Fix A1: Retry limit (Max 5) to prevent infinite loops on permanent failures
+            retries = action.get("retry_count", 0)
+            if perform_action(action):
+                pass
+            elif retries < 5:
+                action["retry_count"] = retries + 1
                 remaining_decisions.append(action)
+            else:
+                logger.error(f"Permanent Failure: Action {action.get('type')} on {action.get('target')} exceeded retry limit.")
         
         for action in scaling_actions:
-            if not perform_action(action):
+            retries = action.get("retry_count", 0)
+            if perform_action(action):
+                pass
+            elif retries < 5:
+                action["retry_count"] = retries + 1
                 remaining_scaling.append(action)
+            else:
+                logger.error(f"Permanent Failure: Scaling {action.get('target')} exceeded retry limit.")
 
         # Update queues with ONLY the failed/remaining items
         save_json(DECISIONS_JSON, {"actions": remaining_decisions}, caller="reconcile")

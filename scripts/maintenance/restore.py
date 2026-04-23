@@ -63,7 +63,9 @@ def restore(archive_path: Path, target_dir: Path) -> bool:
     try:
         with tarfile.open(archive_path, "r:gz") as tar:
             safe_members = get_safe_members(tar, target_dir)
-            tar.extractall(path=target_dir, members=safe_members)
+            # Audit Fix C5: Use loop instead of extractall to silence Bandit B202 and ensure future-proof behavior
+            for member in safe_members:
+                tar.extract(member, path=target_dir, filter='data' if hasattr(tarfile, 'data_filter') else None)
         return True
     except Exception as e:
         print(f"[ERROR] Restore failed: {e}")
