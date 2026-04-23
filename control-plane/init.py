@@ -77,7 +77,8 @@ def run_preflight_checks():
             try:
                 s.bind(("0.0.0.0", port))
             except socket.error:
-                t_log(f"WARNING: Port {port} is already in use. Traefik may fail to start.", symbol="⚠")
+                log(f"WARNING: Port {port} is already in use. Traefik will likely fail to start.", symbol="⚠")
+                suggest_port_fix(port)
 
     # 2. Check Docker Socket
     if os.name != 'nt': # Linux/Mac
@@ -124,14 +125,25 @@ def bootstrap_data_dirs():
                 t_log(f"Failed to create data subdir {path}: {e}", symbol="✘")
 
 def fix_permissions():
-    """Phase 5: Enforce consistent ownership on Linux systems."""
+    """Phase 5: Enforce consistent ownership on internal project paths only."""
     if os.name != 'nt':
-        try:
-            t_log("[INIT] Enforcing Linux permissions (1000:1000)...", symbol="🔐")
-            os.system(f"chown -R 1000:1000 {STATE_DIR}")
-            os.system(f"chown -R 1000:1000 {DATA_DIR}")
-        except Exception as e:
-            t_log(f"Permission hardening failed: {e}", symbol="⚠")
+        # Strictly limited to project-managed state/logs to avoid 'Operation not permitted' on external mounts
+        ALLOWED_PATHS = [STATE_DIR, LOG_DIR]
+        for path in ALLOWED_PATHS:
+            if path.exists():
+                try:
+                    log(f"[INIT] Enforcing permissions on {path.name} (1000:1000)...", symbol="🔐")
+                    subprocess.run(["chown", "-R", "1000:1000", str(path)], check=False)
+                except Exception as e:
+                    log(f"Permission fix skipped for {path}: {e}", symbol="⚠")
+
+def suggest_port_fix(port: int):
+    """Provide actionable help for port conflicts."""
+    log(f"Port {port} conflict detected. Potential fixes:", symbol="👉")
+    if port in [80, 443]:
+        log("  - sudo systemctl stop nginx", symbol="👉")
+        log("  - sudo systemctl stop apache2", symbol="👉")
+        log("  - Check for other Docker ingress controllers.", symbol="👉")
 
 def validate_env():
     """Phase 8: Ensure critical environment variables are set."""
@@ -143,7 +155,7 @@ def validate_env():
 def preflight_linux():
     """Phase 0: Linux-specific preflight diagnostics."""
     if os.name != 'nt':
-        t_log("Linux environment detected. Enforcing POSIX standards.", symbol="🐧")
+        log("Linux environment detected. Enforcing POSIX standards.", symbol="🐧")
 
 REQUIRED_DIRS = [
     STATE_DIR, 
@@ -203,23 +215,53 @@ def t_log(msg: str, symbol: str = None):
     """Bridge for existing calls to t_log."""
     log(msg, symbol=symbol)
 
-def update_status(component: str, status: str):
-    SYSTEM_STATUS[component] = status
-    log(f"Component {component} status: {status}", symbol="✔" if status == "ok" else "⚠")
-
-def detect_created_containers():
-    """Phase 10: Smart Healing - Detect containers stuck in 'Created' state."""
+def detect_created():
+    """Phase 4: Explicit 'Created' detection. Raises error if any are found."""
     try:
         result = subprocess.run(
             ["docker", "ps", "-a", "--format", "{{.Names}} {{.Status}}"],
             capture_output=True, text=True
         )
+        broken = []
         for line in result.stdout.splitlines():
             if "Created" in line:
-                log(f"Container stuck in 'Created' state: {line}", symbol="⚠")
+                broken.append(line)
+        
+        if broken:
+            log(f"Containers stuck in 'Created' state: {broken}", symbol="✘")
+            raise RuntimeError(f"Containers stuck in 'Created' state: {broken}")
+    except RuntimeError: raise
     except Exception as e:
         log(f"Failed to scan for 'Created' containers: {e}", symbol="⚠")
-def wait_for_readiness(name: str, container_name: str, log_pattern: str = None, probe_cmd: list = None, timeout: int = 60) -> bool:
+
+def run_with_retries(func, *args, retries=2, **kwargs):
+    """Actual Agent Behavior: Retry logic for critical operations."""
+    for attempt in range(retries):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            log(f"Attempt {attempt + 1} failed: {e}", symbol="⚠")
+            if attempt < retries - 1:
+                log("Retrying...", symbol="⏳")
+                time.sleep(5)
+            else:
+                raise
+def update_status(component: str, status: str):
+    SYSTEM_STATUS[component] = status
+    log(f"Component {component} status: {status}", symbol="✔" if status == "ok" else "⚠")
+
+def verify_running(expected_services: list):
+    """Phase 6: Health Gate - Ensure all services are actually running."""
+    result = subprocess.run(
+        ["docker", "ps", "--format", "{{.Names}}"],
+        capture_output=True, text=True
+    )
+    running = result.stdout.splitlines()
+    running_str = " ".join(running)
+
+    for svc in expected_services:
+        if svc not in running_str:
+            raise RuntimeError(f"Service verification failed: {svc} is NOT running.")
     """Multi-signal readiness: Polls Docker health/status and runs network probes until service is ready."""
     log(f"Waiting for {name} readiness (timeout {timeout}s)...", symbol="⏳")
     start_time = time.time()
@@ -519,185 +561,96 @@ def docker_agent(repair_mode: bool = False):
             ("media", REPO_ROOT / "docker" / "media", False)
         ]
         
-        # Tiered Timeouts
+        # --- Mount Validator ---
+        def _check_compose_mounts(compose_path):
+            try:
+                import yaml
+                with open(compose_path, 'r', encoding='utf-8') as f:
+                    cfg = yaml.safe_load(f)
+                    defined_volumes = cfg.get('volumes', {}) or {}
+                    for svc_name, svc_cfg in cfg.get('services', {}).items():
+                        for volume in svc_cfg.get('volumes', []):
+                            if isinstance(volume, str) and ':' in volume:
+                                src = volume.split(':')[0]
+                                if src in defined_volumes: continue
+                                if not src.startswith(('/', './', '../', '$', '~')) and not (len(src) > 1 and src[1] == ':'):
+                                    continue
+
+                                # Expand env vars
+                                env_context = os.environ.copy()
+                                env_context['REPO_ROOT'] = str(REPO_ROOT)
+                                expanded_src = os.path.expandvars(src)
+                                
+                                # Manual expansion for ${VAR} patterns not caught by expandvars
+                                for k, v in env_context.items():
+                                    expanded_src = expanded_src.replace(f"${{{k}}}", v).replace(f"${k}", v)
+
+                                if os.name == 'nt' and expanded_src == '/var/run/docker.sock': continue
+
+                                if not Path(expanded_src).is_absolute():
+                                    expanded_src = str(Path(compose_path).parent / expanded_src)
+                                
+                                if not os.path.exists(expanded_src):
+                                    t_log(f"FATAL: Mount source missing for {svc_name}: {src}", symbol="✘")
+                                    raise RuntimeError(f"Missing required bind-mount path: {expanded_src}")
+            except RuntimeError: raise
+            except Exception as e:
+                t_log(f"Mount check skipped for {name}: {e}", symbol="⚠")
+
         TIMEOUTS = {
             "routing": 90,
             "network": 90,
-            "control-plane": 60,
             "media": 120,
-            "maintenance": 60
+            "maintenance": 60,
+            "control-plane": 60
         }
 
-        # Readiness definitions (Log Pattern, Probe Command)
-        # IMPORTANT: cloudflared and gluetun are Alpine-based — they have wget, NOT curl.
-        READINESS = {
-            "routing": ("cloudflared", "Registered tunnel connection", ["wget", "-q", "--spider", "http://traefik:80"]),
-            "network": ("gluetun", "VPN is up", ["wget", "-q", "--spider", "--timeout=3", "http://ipinfo.io"]),
-            "control-plane": ("m3tal-dashboard", None, ["wget", "-q", "--spider", "http://localhost:8080/api/health"])
-        }
-        
         for name, sd, is_critical in stacks:
             cf = sd / "docker-compose.yml"
             if not cf.exists(): continue
             
             t_log(f"[DOCKER] Orchestrating stack: {name}")
             
-            # Sub-item: Detect expected services
+            # Mount Validation
+            _check_compose_mounts(cf)
+
+            # Get services to verify
             conf_cmd = ["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "config", "--services"]
-            conf_res = subprocess.run(conf_cmd, capture_output=True, text=True, env=GLOBAL_ENV)
-            expected_services = conf_res.stdout.strip().splitlines() if conf_res.returncode == 0 else []
-            total_svc = len(expected_services)
-            
-            with SubProgressBar(total_svc) as sub_bar, LiveList(expected_services) as active_live_list:
-                with active_ui_lock:
-                    # Provide access to the live list for the poller
-                    shared_live_list_ref = active_live_list
+            res = subprocess.run(conf_cmd, capture_output=True, text=True, env=GLOBAL_ENV)
+            expected_services = res.stdout.strip().splitlines()
+
+            def _deploy_and_verify():
+                # Launch
+                cmd = ["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "up", "-d"]
+                if repair_mode: cmd.append("--force-recreate")
                 
-                sub_bar.update(0, f"Initializing {total_svc} services ({name})")
+                proc = subprocess.run(cmd, env=GLOBAL_ENV, capture_output=True, text=True)
+                if proc.returncode != 0:
+                    log(f"Stack {name} failed to deploy.", symbol="✘")
+                    subprocess.run(["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "logs"], env=GLOBAL_ENV)
+                    raise RuntimeError(f"Docker Compose Error (Exit {proc.returncode})")
+
+                # Detect 'Created' ghosts
+                detect_created()
                 
-                # Seed the status dictionary
-                for svc in expected_services:
-                    global_statuses[svc] = "queued"
+                # Verify running
+                verify_running(expected_services)
 
-                try:
-                    # 1. Register stack and start launch
-                    with active_ui_lock:
-                        active_stacks.append((name, sd, is_critical, total_svc, expected_services))
-                    
-                    # Add --build for stacks with custom Dockerfiles (Audit fix H10)
-                    up_cmd = ["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "up", "-d"]
-                    if repair_mode:
-                        up_cmd.append("--force-recreate")
-
-                    try:
-                        with open(cf, "r") as compose_f:
-                            content = compose_f.read()
-                            if "build:" in content:
-                                # Only force build in repair mode to keep healer cycles light
-                                if repair_mode:
-                                    up_cmd.append("--build")
-                    except Exception: pass
-                    
-                    # Audit Fix P3: Validate Mounts before launch
-                    def _check_compose_mounts(compose_path):
-                        try:
-                            import yaml
-                            with open(compose_path, 'r', encoding='utf-8') as f:
-                                cfg = yaml.safe_load(f)
-                                defined_volumes = cfg.get('volumes', {}) or {}
-                                for svc_name, svc_cfg in cfg.get('services', {}).items():
-                                    for volume in svc_cfg.get('volumes', []):
-                                        if isinstance(volume, str) and ':' in volume:
-                                            src = volume.split(':')[0]
-                                            
-                                            # Skip named volumes
-                                            if src in defined_volumes:
-                                                continue
-                                            
-                                            # Skip obvious non-paths (e.g. named volumes without explicit definition)
-                                            if not src.startswith(('/', './', '../', '$', '~')) and not (len(src) > 1 and src[1] == ':'):
-                                                continue
-
-                                            # Expand env vars in src
-                                            # Ensure REPO_ROOT is available for expansion
-                                            env_context = os.environ.copy()
-                                            if 'REPO_ROOT' not in env_context:
-                                                env_context['REPO_ROOT'] = str(REPO_ROOT)
-                                            
-                                            expanded_src = src
-                                            for k, v in env_context.items():
-                                                expanded_src = expanded_src.replace(f"${{{k}}}", v).replace(f"${k}", v)
-                                            
-                                            expanded_src = os.path.expandvars(expanded_src)
-                                            
-                                            # Special case: Docker socket on Windows
-                                            if os.name == 'nt' and expanded_src == '/var/run/docker.sock':
-                                                continue
-
-                                            if not Path(expanded_src).is_absolute():
-                                                # Assume relative to compose file
-                                                expanded_src = str(Path(compose_path).parent / expanded_src)
-                                            
-                                            if not os.path.exists(expanded_src):
-                                                t_log(f"FATAL: Mount source missing for {svc_name}: {src}", symbol="✘")
-                                                raise RuntimeError(f"Missing required bind-mount path: {expanded_src}")
-                        except RuntimeError: raise
-                        except Exception as e:
-                            t_log(f"Mount check skipped for {name}: {e}", symbol="⚠")
-
-                    _check_compose_mounts(cf)
-
-                    proc = subprocess.Popen(up_cmd, 
-                                         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, 
-                                         text=True, env=GLOBAL_ENV)
-                    
-                    # 2. Wait for Docker status (Up/Running)
-                    wait_time = TIMEOUTS.get(name, 90)
-                    start_time = time.time()
-                    ready_count = 0
-                    while time.time() - start_time < wait_time:
-                        if proc.poll() is not None and proc.returncode != 0:
-                            # Audit Fix Phase 3: Add Debug Visibility
-                            t_log(f"[DEBUG] Stack {name} failed. Capturing logs...", symbol="🔍")
-                            log_cmd = ["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "logs"]
-                            lproc = subprocess.run(log_cmd, capture_output=True, text=True, env=GLOBAL_ENV)
-                            if lproc.stdout:
-                                print(f"\n--- {name} LOGS ---\n{lproc.stdout}\n")
-                            
-                            raise RuntimeError(f"Docker Launch Error (Exit {proc.returncode}) for {name}")
-                        
-                        ready_count = sum(1 for item in expected_services 
-                                        if global_statuses.get(item) in ["running", "healthy", "done"])
-                        
-                        sub_bar.update(ready_count, f"Processed {ready_count}/{total_svc} ({name})")
-                        if ready_count >= total_svc: break
-                        
-                        if ready_count == 0 and proc.poll() is None:
-                            for item in expected_services:
-                                if global_statuses.get(item) == "queued":
-                                    global_statuses[item] = "pulling"
-                                    with active_ui_lock:
-                                        active_live_list.update(item, "pulling")
-                        time.sleep(1.5)
-
-                    # 3. Enhanced Readiness Check (Multi-Signal)
-                    detect_created_containers()
-                    if name in READINESS:
-                        c_name, l_pat, p_cmd = READINESS[name]
-                        if not wait_for_readiness(name, c_name, l_pat, p_cmd, timeout=wait_time):
-                            if is_critical:
-                                raise RuntimeError(f"Critical service {c_name} in {name} stack failed readiness probes.")
-
-                    if ready_count < total_svc:
-                        if is_critical and name in ["routing", "network"]:
-                            # Fail-Fast: Core infrastructure CANNOT be degraded (Audit Fix Branch)
-                            raise RuntimeError(f"FATAL: Critical stack '{name}' failed to reach ready state. Aborting.")
-                        elif is_critical:
-                            t_log(f"[DOCKER] Stack {name} timed out. Proceeding in DEGRADED mode.", symbol="⚠")
-                            update_status("docker", "partial")
-                        else:
-                            t_log(f"[DOCKER] Stack {name} launched in background. Moving on.", symbol="🚀")
-
-                    
-                    # Clear reference for poller before exiting context
-                    with active_ui_lock:
-                        shared_live_list_ref = None
-                
-                except Exception as e:
-                    t_log(f"[DOCKER] Stack {name} failed: {e}", symbol="⚠")
+            # Execute with retries
+            try:
+                run_with_retries(_deploy_and_verify)
+            except Exception as e:
+                if is_critical:
+                    raise
+                else:
+                    log(f"Stack {name} failed but is non-critical: {e}", symbol="⚠")
                     update_status("docker", "partial")
-                    with active_ui_lock:
-                        shared_live_list_ref = None
-        
+
         if SYSTEM_STATUS["docker"] == "unknown":
             update_status("docker", "ok")
-        
-        # Stop poller before exiting agent
-        stop_poller.set()
-        poller_thread.join(timeout=2)
         return True
     except Exception as e:
-        t_log(f"[DOCKER] Agent failed: {e}", symbol="✘")
+        log(f"Docker Agent failed: {e}", symbol="✘")
         update_status("docker", "failed")
         return False
 
