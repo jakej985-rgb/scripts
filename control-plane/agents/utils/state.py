@@ -18,11 +18,11 @@ OWNERS = {
     "metrics.json": "metrics",
     "normalized_metrics.json": "metrics",
     "anomalies.json": "anomaly",
-    "decisions.json": "decision",
+    "decisions.json": {"decision", "reconcile"},
     "cooldowns.json": "decision",
     "health_report.json": "health_score",
     "notify_state.json": "notify",
-    "scaling_actions.json": "scaling",
+    "scaling_actions.json": {"scaling", "reconcile"},
     "scaling_cooldowns.json": "scaling",
     "chaos_events.json": "anomaly",
     "network_guard_state.json": "network_guard",
@@ -77,12 +77,14 @@ def save_json(path: str, data: Any, caller: str = "unknown") -> bool:
     
     # 1. Ownership Validation
     expected_owner = OWNERS.get(filename)
-    if expected_owner and caller != expected_owner:
-        from .logger import get_logger
-        msg = f"OWNERSHIP_VIOLATION: Agent '{caller}' attempted to write to '{filename}' (Owned by '{expected_owner}')"
-        get_logger("state").critical(msg)
-        # Audit Fix C4: Block the write and raise exception for core state files
-        raise PermissionError(msg)
+    if expected_owner:
+        allowed = expected_owner if isinstance(expected_owner, (set, list, tuple)) else {expected_owner}
+        if caller not in allowed:
+            from .logger import get_logger
+            msg = f"OWNERSHIP_VIOLATION: Agent '{caller}' attempted to write to '{filename}' (Owned by '{expected_owner}')"
+            get_logger("state").critical(msg)
+            # Audit Fix C4: Block the write and raise exception for core state files
+            raise PermissionError(msg)
 
     tmp_path = f"{path}.tmp"
     

@@ -65,7 +65,9 @@ def restore(archive_path: Path, target_dir: Path) -> bool:
             safe_members = get_safe_members(tar, target_dir)
             # Audit Fix C5: Use loop instead of extractall to silence Bandit B202 and ensure future-proof behavior
             for member in safe_members:
-                tar.extract(member, path=target_dir, filter='data' if hasattr(tarfile, 'data_filter') else None)
+                # Audit Fix C5/6.6: Rely on get_safe_members for traversal protection.
+                # 'filter' arg removed to ensure compatibility with Python 3.10.
+                tar.extract(member, path=target_dir)
         return True
     except Exception as e:
         print(f"[ERROR] Restore failed: {e}")

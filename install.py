@@ -55,7 +55,7 @@ PRESERVED_MERGE_PATHS = (
 
 
 def log(msg: str) -> None:
-    print(f"{msg}")
+    print(msg)
 
 
 def warn(msg: str) -> None:

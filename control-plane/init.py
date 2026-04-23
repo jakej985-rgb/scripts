@@ -33,17 +33,23 @@ import builtins
 import warnings
 import logging
 
-logging.basicConfig(
-    filename=str(LOG_DIR / "m3tal.log"),
-    filemode="a",
-    format="%(asctime)s - %(levelname)s - %(message)s",
-    level=logging.INFO
-)
+def setup_init_logging():
+    """Initializes logging and warning captures for the orchestrator."""
+    logging.basicConfig(
+        filename=str(LOG_DIR / "m3tal.log"),
+        filemode="a",
+        format="%(asctime)s - %(levelname)s - %(message)s",
+        level=logging.INFO
+    )
 
-def warning_to_log(message, category, filename, lineno, file=None, line=None):
-    logging.warning(f"{filename}:{lineno}: {category.__name__}: {message}")
+    def warning_to_log(message, category, filename, lineno, file=None, line=None):
+        logging.warning(f"{filename}:{lineno}: {category.__name__}: {message}")
 
-warnings.showwarning = warning_to_log
+    warnings.showwarning = warning_to_log
+
+# Call setup immediately if running as main
+if __name__ == "__main__":
+    setup_init_logging()
 
 USE_SAFE_PRINT = True
 

@@ -86,6 +86,11 @@ def _parse_allowed_users(raw: str | None) -> list[int]:
 
 ALLOWED_USERS: list[int] = _parse_allowed_users(os.getenv("ALLOWED_USERS"))
 
+# --- Container Whitelist (Audit Fix 9) ---------------------------------------
+# Static list of containers allowed to be restarted via Telegram.
+# Fallback to core infrastructure if .env is not set.
+ALLOWED_DOCKER_RESTARTS: list[str] = (_clean(os.getenv("ALLOWED_DOCKER_RESTARTS")) or "gluetun,traefik,m3tal-dashboard").split(",")
+
 
 def is_allowed_user(user_id: int) -> bool:
     """Returns True if user_id is in the command whitelist."""

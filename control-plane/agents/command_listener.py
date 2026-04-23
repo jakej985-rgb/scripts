@@ -19,22 +19,28 @@ from utils.paths import REGISTRY_JSON
 START_TIME = datetime.now()
 
 def get_allowed_containers():
-    """Fetches the whitelist of containers from registry.json."""
+    """Fetches the whitelist of containers from config and registry."""
+    from config.telegram import ALLOWED_DOCKER_RESTARTS
+    static_allowed = [s.strip() for s in ALLOWED_DOCKER_RESTARTS if s.strip()]
+    
     if not REGISTRY_JSON.exists():
-        return []
+        return static_allowed
     try:
         with open(REGISTRY_JSON, "r") as f:
             registry = json.load(f)
         
         containers = registry.get("containers", [])
+        dynamic_allowed = []
         if isinstance(containers, list):
-            return containers
+            dynamic_allowed = containers
         elif isinstance(containers, dict):
-            return list(containers.keys())
-        return []
+            dynamic_allowed = list(containers.keys())
+            
+        # Audit Fix 9: Intersect dynamic registry with static allowlist for critical actions
+        return list(set(static_allowed + dynamic_allowed))
     except Exception as e:
         print(f"[CMD] Error reading registry: {e}")
-        return []
+        return static_allowed
 
 def handle_ping(msg):
     telegram.send_direct(msg["chat"]["id"], "✅ <b>M3TAL Online</b>\nStatus: Healthy\nQueue: Active")
@@ -143,8 +149,17 @@ def handle_docker(msg, args):
             telegram.send_direct(msg["chat"]["id"], "Usage: /docker restart [container_name]")
             return
         name = args[1]
-        if name not in allowed:
+        
+        from config.telegram import ALLOWED_DOCKER_RESTARTS
+        static_allowed = [s.strip() for s in ALLOWED_DOCKER_RESTARTS if s.strip()]
+        
+        if name not in allowed and name not in static_allowed:
             telegram.send_direct(msg["chat"]["id"], f"🚫 Container <code>{name}</code> is not in registry whitelist.")
+            return
+        
+        # Audit Fix 9: Enforce static allowlist for sensitive core containers
+        if name not in static_allowed:
+            telegram.send_direct(msg["chat"]["id"], f"🚫 Container <code>{name}</code> requires manual console restart (Security Policy).")
             return
         
         # Issue confirmation ID (Audit Fix 10)

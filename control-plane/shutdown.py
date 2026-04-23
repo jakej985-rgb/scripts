@@ -10,7 +10,6 @@ import sys
 import time
 import json
 from pathlib import Path
-from pathlib import Path
 
 # Fix for imports
 BASE_DIR = Path(__file__).resolve().parent  # control-plane/

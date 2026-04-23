@@ -8,7 +8,7 @@ import time
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from utils.paths import REGISTRY_JSON
-from utils.state import save_json
+from utils.state import save_json, load_json
 from utils.guards import wrap_agent
 from utils.logger import get_logger
 
