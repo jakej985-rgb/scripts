@@ -145,6 +145,19 @@ def suggest_port_fix(port: int):
         log("  - sudo systemctl stop apache2", symbol="👉")
         log("  - Check for other Docker ingress controllers.", symbol="👉")
 
+def ensure_state_dirs():
+    """Phase 6: Ensure required service-specific state directories exist."""
+    services = [
+        "prowlarr","bazarr","sonarr","radarr","komga",
+        "tdarr","jellyseerr","qbittorrent","autobrr",
+        "recyclarr","homepage","portainer"
+    ]
+    for svc in services:
+        path = STATE_DIR / svc
+        if not path.exists():
+            log(f"[INIT] Scaffolding service state: {svc}", symbol="📦")
+            path.mkdir(parents=True, exist_ok=True)
+
 def validate_env():
     """Phase 8: Ensure critical environment variables are set."""
     required = ["DOMAIN", "DATA_DIR"]
@@ -734,13 +747,14 @@ def run_init(repair_scope: str = None) -> bool:
     preflight_linux()
     validate_env()
     bootstrap_data_dirs()
+    ensure_state_dirs()
     fix_permissions()
 
     BAR = ProgressBar(9, prefix="Init")
     HB.tether(BAR)
 
     try:
-        # Step 0: Environment & Dependencies (New Audit Layer)
+        # Step 0: Environment & Dependencies
         BAR.update(0, "Environment")
         env_validation_agent()
         
@@ -773,6 +787,10 @@ def run_init(repair_scope: str = None) -> bool:
         # Step 6: Final Health
         BAR.update(7, "Health")
         ready = health_agent()
+        
+        # Phase 10: Final diagnostic sweep
+        detect_created()
+
         BAR.update(8, "Cleanup")
         BAR.update(9, "Done")
         return ready
