@@ -110,7 +110,6 @@ from progress_utils import (
     GREEN, RED, BOLD, END
 )
 
-# --- Configuration ------------------------------------------------------------
 # Audit Fix P1: Filesystem Bootstrap (Linux Compatibility)
 def bootstrap_data_dirs():
     """Phase 1.1: Ensures required subdirectories exist in DATA_DIR to prevent mount failures."""
@@ -134,8 +133,17 @@ def fix_permissions():
         except Exception as e:
             t_log(f"Permission hardening failed: {e}", symbol="⚠")
 
-bootstrap_data_dirs()
-fix_permissions()
+def validate_env():
+    """Phase 8: Ensure critical environment variables are set."""
+    required = ["DOMAIN", "DATA_DIR"]
+    for env in required:
+        if env not in os.environ:
+            raise RuntimeError(f"CRITICAL: Environment variable {env} is NOT set.")
+
+def preflight_linux():
+    """Phase 0: Linux-specific preflight diagnostics."""
+    if os.name != 'nt':
+        t_log("Linux environment detected. Enforcing POSIX standards.", symbol="🐧")
 
 REQUIRED_DIRS = [
     STATE_DIR, 
@@ -770,6 +778,13 @@ def run_init(repair_scope: str = None) -> bool:
     global HB, BAR
     HB = Heartbeat()
     HB.start()
+    
+    # Audit Fix: Critical System Scaffolding
+    preflight_linux()
+    validate_env()
+    bootstrap_data_dirs()
+    fix_permissions()
+
     BAR = ProgressBar(9, prefix="Init")
     HB.tether(BAR)
 
