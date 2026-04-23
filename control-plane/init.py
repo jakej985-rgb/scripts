@@ -105,21 +105,38 @@ from progress_utils import (
 )
 
 # --- Configuration ------------------------------------------------------------
+# Audit Fix P1: Filesystem Bootstrap (Linux Compatibility)
+def bootstrap_state_dirs():
+    """Phase 1: Ensures all managed service directories exist before bind-mounting."""
+    services = [
+        "prowlarr", "bazarr", "sonarr", "radarr", "komga",
+        "tdarr", "jellyseerr", "qbittorrent", "autobrr",
+        "recyclarr", "homepage", "portainer"
+    ]
+    for svc in services:
+        path = STATE_DIR / svc
+        if not path.exists():
+            t_log(f"[INIT] Creating missing directory: {path}", symbol="🧱")
+            path.mkdir(parents=True, exist_ok=True)
+
+def fix_permissions():
+    """Phase 5: Enforce consistent ownership on Linux systems."""
+    if os.name != 'nt':
+        try:
+            t_log("[INIT] Enforcing Linux permissions (1000:1000)...", symbol="🔐")
+            os.system(f"chown -R 1000:1000 {STATE_DIR}")
+        except Exception as e:
+            t_log(f"Permission hardening failed: {e}", symbol="⚠")
+
+bootstrap_state_dirs()
+fix_permissions()
+
 REQUIRED_DIRS = [
     STATE_DIR, 
     LOG_DIR, 
     STATE_DIR / "health", 
     STATE_DIR / "locks"
 ]
-
-# Audit Fix P1: Service Config Directory Bootstrap
-_SERVICES = [
-    "prowlarr", "bazarr", "sonarr", "radarr", "komga",
-    "tdarr", "jellyseerr", "qbittorrent", "autobrr",
-    "recyclarr", "homepage", "portainer", "dozzle", "glances"
-]
-for s in _SERVICES:
-    REQUIRED_DIRS.append(STATE_DIR / s)
 
 REQUIRED_LOGS = [
     "monitor.log", "metrics.log", "anomaly.log", "decision.log",

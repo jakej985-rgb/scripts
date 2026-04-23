@@ -172,9 +172,17 @@ class AuditScanner:
 
             # 1. State Validation
             if not is_running:
+                status = state.get("Status")
                 sev = WARNING if is_optional else CRITICAL
-                msg = f"Service '{service_id}' is not running (State: {state.get('Status')})"
-                hint = f"Run 'm3tal run {labels.get('m3tal.stack', 'all')}' to start."
+                
+                # Phase 4: Explicit 'Created' detection
+                if status == "created":
+                    msg = f"Service '{service_id}' is stuck in CREATED state."
+                    hint = "Likely cause: Missing bind mount directory or Permission issue. Check logs."
+                else:
+                    msg = f"Service '{service_id}' is not running (State: {status})"
+                    hint = f"Run 'm3tal run {labels.get('m3tal.stack', 'all')}' to start."
+                
                 self._add_issue(name, service_id, sev, msg, hint)
                 continue
 
