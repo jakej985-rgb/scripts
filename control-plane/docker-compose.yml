@@ -5,8 +5,8 @@ services:
     container_name: m3tal-permission-fixer
     user: "0:0"
     volumes:
-      - ${REPO_ROOT}/control-plane/state:/docker/state
-      - ${REPO_ROOT}/dashboard:/docker/dashboard
+      - ./state:/docker/state
+      - ../dashboard:/docker/dashboard
     command: >
       sh -c "chown -R ${PUID:-1000}:${PGID:-1000} /docker/state && 
              chmod -R 770 /docker/state &&
@@ -27,7 +27,7 @@ services:
       permission-fixer:
         condition: service_completed_successfully
     volumes:
-      - ${REPO_ROOT:?REPO_ROOT not set — run from repo root with .env}:/docker
+      - ..:/docker
     working_dir: /docker/dashboard
     command: python3 server.py
     restart: unless-stopped
@@ -92,7 +92,7 @@ services:
       docker-proxy:
         condition: service_started
     volumes:
-      - ${REPO_ROOT:?REPO_ROOT not set — run from repo root with .env}:/docker
+      - ..:/docker
     # 🛡️ SECURITY FIX: No direct socket mount. Talk to proxy instead.
     environment:
       - TZ=America/Denver

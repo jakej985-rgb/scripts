@@ -17,6 +17,8 @@ from pathlib import Path
 # Resolve paths absolutely to satisfy IDE linter and ensure cross-platform stability
 BASE_DIR = Path(__file__).resolve().parent  # control-plane/
 REPO_ROOT = BASE_DIR.parent
+os.environ["REPO_ROOT"] = str(REPO_ROOT)
+os.chdir(REPO_ROOT)
 AGENTS_DIR = BASE_DIR / "agents"
 
 # Standardize Search Paths
@@ -584,28 +586,44 @@ def docker_agent(repair_mode: bool = False):
                     for svc_name, svc_cfg in cfg.get('services', {}).items():
                         for volume in svc_cfg.get('volumes', []):
                             if isinstance(volume, str) and ':' in volume:
-                                src = volume.split(':')[0]
+                                # Phase 1: Robust splitting
+                                src = volume.split(':', 1)[0].strip()
+                                
                                 if src in defined_volumes: continue
                                 if not src.startswith(('/', './', '../', '$', '~')) and not (len(src) > 1 and src[1] == ':'):
                                     continue
 
-                                # Expand env vars
-                                env_context = os.environ.copy()
-                                env_context['REPO_ROOT'] = str(REPO_ROOT)
+                                # Phase 3: Malformed variable detection
+                                if "${" in src and "}" not in src:
+                                    raise RuntimeError(f"[FATAL] Malformed env var in mount: {src}")
+
+                                # Phase 2: Robust Expansion
                                 expanded_src = os.path.expandvars(src)
                                 
-                                # Manual expansion for ${VAR} patterns not caught by expandvars
-                                for k, v in env_context.items():
-                                    expanded_src = expanded_src.replace(f"${{{k}}}", v).replace(f"${k}", v)
+                                # Phase 4: Debug Logging
+                                # log(f"[DEBUG] Raw volume: {volume}", symbol="🐛")
+                                # log(f"[DEBUG] Parsed src: {src}", symbol="🐛")
+                                # log(f"[DEBUG] Expanded src: {expanded_src}", symbol="🐛")
 
                                 if os.name == 'nt' and expanded_src == '/var/run/docker.sock': continue
 
                                 if not Path(expanded_src).is_absolute():
                                     expanded_src = str(Path(compose_path).parent / expanded_src)
                                 
+                                # Phase 8: Agent Guardrails
+                                if "$" in expanded_src:
+                                    log(f"[WARN] Unresolved variable in path: {expanded_src}", symbol="⚠")
+                                if not expanded_src.startswith("/") and os.name != "nt":
+                                    log(f"[WARN] Non-absolute mount: {expanded_src}", symbol="⚠")
+                                
+                                # Phase 5 & 9: Safe validation & Structured Error
                                 if not os.path.exists(expanded_src):
-                                    log(f"FATAL: Mount source missing for {svc_name}: {src}", symbol="✘")
-                                    raise RuntimeError(f"Missing required bind-mount path: {expanded_src}")
+                                    raise RuntimeError(
+                                        f"[DOCKER] Mount validation failed for {svc_name}\n"
+                                        f"  Raw: {volume}\n"
+                                        f"  Parsed: {src}\n"
+                                        f"  Expanded: {expanded_src}"
+                                    )
             except RuntimeError: raise
             except Exception as e:
                 log(f"Mount check skipped for {stack_name}: {e}", symbol="⚠")
