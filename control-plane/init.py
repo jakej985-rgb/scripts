@@ -69,9 +69,16 @@ from utils.env import load_env
 # builtins.print = m3tal_print # Audit Fix (L) - Removed global patch to avoid side effects
 
 def validate_env_dollar_escaping():
-    for key, value in os.environ.items():
-        if "$" in value and "$$" not in value:
-            raise RuntimeError(f"Unsafe env var (requires $$ escaping for Docker Compose): {key}")
+    if not ENV_FILE.exists():
+        return
+    with open(ENV_FILE, 'r', encoding='utf-8') as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith('#'): continue
+            if '=' not in line: continue
+            key, value = line.split('=', 1)
+            if "$" in value and "$$" not in value:
+                raise RuntimeError(f"Unsafe env var in .env (requires $$ escaping for Docker Compose): {key}")
 
 def run_preflight_checks():
     """Phase 5: Preflight validation for ports, sockets, networks, and environment safety."""
