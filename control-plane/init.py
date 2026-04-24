@@ -683,10 +683,16 @@ def docker_agent(repair_mode: bool = False):
 
         if SYSTEM_STATUS["docker"] == "unknown":
             update_status("docker", "ok")
+            
+        stop_poller.set()
+        poller_thread.join(timeout=5)
         return True
     except Exception as e:
         log(f"Docker Agent failed: {e}", symbol="✘")
         update_status("docker", "failed")
+        stop_poller.set()
+        if 'poller_thread' in locals():
+            poller_thread.join(timeout=5)
         return False
 
 def health_agent():

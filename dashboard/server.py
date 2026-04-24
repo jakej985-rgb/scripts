@@ -17,12 +17,11 @@ except Exception:
 
 # AUTO-ROOT pattern for path safety
 def get_repo_root():
-    import subprocess
-    try:
-        return subprocess.check_output(['git', 'rev-parse', '--show-toplevel'], 
-                                     stderr=subprocess.DEVNULL).decode('utf-8').strip()
-    except Exception:
-        return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    p = Path(__file__).resolve()
+    for parent in [p] + list(p.parents):
+        if (parent / ".env").exists() and (parent / "docker").exists():
+            return str(parent)
+    return str(Path(__file__).resolve().parent.parent)
 
 REPO_ROOT = get_repo_root()
 STATE_DIR = os.getenv("STATE_DIR") or os.path.join(REPO_ROOT, "control-plane", "state")

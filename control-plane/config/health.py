@@ -92,12 +92,8 @@ class HealthValidator:
             return sid + "-internal", "INFO", "Missing port for internal test"
         
         try:
-            # Audit Fix H4: Traefik v3 image has no wget. Use nc -z or sh socket check.
-            cmd = ["docker", "exec", "traefik", "sh", "-c", f"nc -z {sid} {port}"]
-            result = subprocess.run(cmd, capture_output=True, timeout=3)
-            
-            if result.returncode == 0:
-                return sid + "-internal", "HEALTHY", f"Internal Link OK (Port {port})"
+            # Audit Fix H4: Traefik v3 distroless image has no shell tools (no sh, nc, or wget).
+            return sid + "-internal", "INFO", "Skipped (no shell tools in traefik image)"
             return sid + "-internal", "FAILED", f"Traefik cannot reach {sid} on port {port}"
         except Exception as e:
             return sid + "-internal", "FAILED", f"Internal Test Error: {str(e)}"

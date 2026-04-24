@@ -76,7 +76,12 @@ def restore(archive_path: Path, target_dir: Path) -> bool:
 
 def main() -> None:
     # Accept explicit path or find latest
-    backup_file = Path(sys.argv[1]) if len(sys.argv) > 1 else None
+    args = sys.argv[1:]
+    is_dry_run = "--dry-run" in args
+    if is_dry_run:
+        args.remove("--dry-run")
+        
+    backup_file = Path(args[0]) if args else None
 
     if backup_file is None:
         print(f"[LOOKUP] Searching for latest backup in {DEFAULT_BACKUP_DIR}...")
@@ -84,11 +89,23 @@ def main() -> None:
 
     if backup_file is None or not backup_file.exists():
         print("[ERROR] No backup file found.")
-        print("Usage: python3 scripts/maintenance/restore.py [path_to_tar.gz]")
+        print("Usage: python3 scripts/maintenance/restore.py [--dry-run] [path_to_tar.gz]")
         sys.exit(1)
 
     print("\n=== M3TAL RESTORE WIZARD ===")
     print(f"[TARGET] Restoring from: {backup_file}")
+    
+    if is_dry_run:
+        print(f"[DRY-RUN] Validating archive: {backup_file}")
+        try:
+            with tarfile.open(backup_file, "r:gz") as tar:
+                safe_members = get_safe_members(tar, REPO_ROOT)
+                print(f"[DRY-RUN] Archive validated successfully. {len(safe_members)} safe members found.")
+            sys.exit(0)
+        except Exception as e:
+            print(f"[ERROR] Dry-run validation failed: {e}")
+            sys.exit(1)
+
     print(f"⚠️  This will OVERWRITE existing config and docker files in {REPO_ROOT}.")
 
     confirm = input("Continue? (y/n): ").strip().lower()

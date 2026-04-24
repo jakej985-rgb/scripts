@@ -185,6 +185,11 @@ def is_rate_limited(uid: int) -> bool:
     if now - last < CMD_COOLDOWN:
         return True
     _cmd_cooldowns[uid] = now
+    
+    stale = [k for k, v in _cmd_cooldowns.items() if now - v > 3600]
+    for k in stale:
+        del _cmd_cooldowns[k]
+        
     return False
 
 def handle_command(update):

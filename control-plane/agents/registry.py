@@ -57,14 +57,14 @@ def scan_infrastructure():
     if container_names:
         for name in container_names:
             try:
-                inspect_cmd = ["docker", "inspect", name, "--format", "{{json .Config.Labels}}|{{.State.StartedAt}}"]
+                inspect_cmd = ["docker", "inspect", name, "--format", '{{json (dict "labels" .Config.Labels "started" .State.StartedAt)}}']
                 inspect_res = subprocess.run(inspect_cmd, capture_output=True, text=True, check=True, timeout=10)
                 raw = inspect_res.stdout.strip()
-                if "|" in raw:
-                    labels_raw, started_at = raw.split("|", 1)
-                    inspect_data[name] = {"labels": json.loads(labels_raw), "started_at": started_at}
+                if raw:
+                    parsed = json.loads(raw)
+                    inspect_data[name] = {"labels": parsed.get("labels") or {}, "started_at": parsed.get("started")}
                 else:
-                    inspect_data[name] = {"labels": json.loads(raw) if raw else {}, "started_at": "unknown"}
+                    inspect_data[name] = {"labels": {}, "started_at": "unknown"}
             except json.JSONDecodeError:
                 logger.warning(f"Failed to parse inspect labels for {name}")
                 inspect_data[name] = {}

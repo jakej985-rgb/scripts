@@ -46,13 +46,12 @@ def evaluate_scaling():
             continue
 
         # Audit Fix M5: Warmup guard - don't scale down if just started
-        from utils.paths import REGISTRY_JSON
         started_at_str = registry.get("stacks", {}).get(service, {}).get("started_at", "0")
         try:
             # Docker StartedAt is ISO format: 2026-04-23T06:06:00Z
             import datetime
             # Basic parse (handle Z or offset)
-            ts_str = started_at_str.split('.')[0].rstrip('Z')
+            ts_str = started_at_str.split('.')[0].replace('Z', '').replace('T', ' ')
             started_ts = datetime.datetime.fromisoformat(ts_str).timestamp()
             uptime = now - started_ts
             if uptime < 600: # 10 minute warmup

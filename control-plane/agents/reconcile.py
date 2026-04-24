@@ -80,7 +80,7 @@ def perform_scale(action):
             num = 2 if direction == "up" else 1
             logger.info(f"Scaling {target} {direction} to {num} replicas")
             cmd = ["docker", "compose", "-f", full_path] + env_arg + ["up", "-d", "--scale", f"{target}={num}"]
-            subprocess.run(cmd, check=True, timeout=30)
+            subprocess.run(cmd, check=True, capture_output=True, text=True, timeout=30)
             return True
     except subprocess.TimeoutExpired:
         logger.error(f"Scale check timed out for {target} in {full_path}")
@@ -109,7 +109,7 @@ def perform_redeploy(action):
     cmd = ["docker", "compose", "-f", full_path] + env_arg + ["up", "-d", target]
     try:
         # Audit Fix H5: Increase timeout to 300s for large images
-        subprocess.run(cmd, check=True, timeout=300)
+        subprocess.run(cmd, check=True, capture_output=True, text=True, timeout=300)
         return True
     except subprocess.TimeoutExpired:
         logger.error(f"Redeploy check timed out for {target} in {full_path}")
@@ -155,8 +155,8 @@ def check_storage_enforcement():
             res = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
             if res.returncode == 0:
                 mounts = res.stdout.strip()
-                if "/mnt:/mnt" not in mounts:
-                    logger.warning(f"Storage Violation: {c} missing /mnt:/mnt mount!")
+                if ":/mnt" not in mounts:
+                    logger.warning(f"Storage Violation: {c} missing :/mnt mount!")
                     # Try to start it just in case it was offline (Audit Fix H2 leak prevention)
                     res = subprocess.run(["docker", "start", c], capture_output=True, text=True, timeout=10)
                     if res.returncode != 0:
