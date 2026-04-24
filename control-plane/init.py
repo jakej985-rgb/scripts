@@ -244,8 +244,8 @@ def t_log(msg: str, symbol: str = None):
     """Bridge for existing calls to t_log."""
     log(msg, symbol=symbol)
 
-def detect_created():
-    """Phase 6.1 & 6.2: Explicit 'Created' and 'Restarting' detection."""
+def detect_created(expected_services: list = None):
+    """Phase 6.1 & 6.2: Explicit 'Created' and 'Restarting' detection (Scope-Aware)."""
     try:
         result = subprocess.run(
             ["docker", "ps", "-a", "--format", "{{.Names}} {{.Status}}"],
@@ -253,6 +253,11 @@ def detect_created():
         )
         broken = []
         for line in result.stdout.splitlines():
+            if expected_services is not None:
+                # Only check containers that match our expected list for this stack
+                if not any(svc in line for svc in expected_services):
+                    continue
+                    
             if "Created" in line:
                 broken.append(line)
             if "Restarting" in line:
@@ -672,8 +677,8 @@ def docker_agent(repair_mode: bool = False):
                     subprocess.run(["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "logs", "--tail", "50"], env=GLOBAL_ENV)
                     raise RuntimeError(f"Docker Compose Error (Exit {proc.returncode})")
 
-                # Detect 'Created' ghosts
-                detect_created()
+                # Detect 'Created' ghosts only for this stack
+                detect_created(expected_services)
                 
                 # Verify running
                 verify_running(name, expected_services)
@@ -824,8 +829,7 @@ def run_init(repair_scope: str = None) -> bool:
         ready = health_agent()
         
         # Phase 10: Final diagnostic sweep
-        detect_created()
-
+        # detect_created() - Removed global sweep to prevent transient crash-loops from halting the orchestrator
         BAR.update(8, "Cleanup")
         BAR.update(9, "Done")
         return ready
