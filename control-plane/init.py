@@ -68,9 +68,17 @@ def m3tal_print(*args, **kwargs):
 from utils.env import load_env
 # builtins.print = m3tal_print # Audit Fix (L) - Removed global patch to avoid side effects
 
+def validate_env_dollar_escaping():
+    for key, value in os.environ.items():
+        if "$" in value and "$$" not in value:
+            raise RuntimeError(f"Unsafe env var (requires $$ escaping for Docker Compose): {key}")
+
 def run_preflight_checks():
-    """Phase 5: Preflight validation for ports, sockets, and networks."""
+    """Phase 5: Preflight validation for ports, sockets, networks, and environment safety."""
     t_log("Starting Preflight Validation...", symbol="⚙")
+    
+    # 0. Validate Env Safety
+    validate_env_dollar_escaping()
     
     # 1. Check Ports
     import socket
