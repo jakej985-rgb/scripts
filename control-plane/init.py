@@ -579,8 +579,8 @@ def docker_agent(repair_mode: bool = False):
         stacks = [
             ("routing", REPO_ROOT / "docker" / "routing", True),    # CRITICAL: Gateway
             ("network", REPO_ROOT / "docker" / "network", True),    # CRITICAL: VPN
+            ("control-plane", REPO_ROOT / "control-plane", True),   # CRITICAL: Agents/Dashboard/Proxy
             ("maintenance", REPO_ROOT / "docker" / "maintenance", False),
-            ("control-plane", REPO_ROOT / "control-plane", True),         # CRITICAL: Agents/Dashboard
             ("media", REPO_ROOT / "docker" / "media", False)
         ]
         
