@@ -182,11 +182,35 @@ def ensure_state_dirs():
             path.mkdir(parents=True, exist_ok=True)
 
 def validate_env():
-    """Phase 8: Ensure critical environment variables are set."""
+    """Phase 8: Ensure critical environment variables are set and sanitize paths."""
     required = ["DOMAIN", "DATA_DIR"]
     for env in required:
         if env not in os.environ:
             raise RuntimeError(f"CRITICAL: Environment variable {env} is NOT set.")
+
+    # Audit Fix: Path Sanitization (Linux Compatibility)
+    if os.name != 'nt':
+        raw_root = os.environ.get("RAW_REPO_ROOT")
+        if raw_root:
+            raw_root = raw_root.replace("\\", "/")
+
+        for key in ["DATA_DIR", "CONFIG_DIR"]:
+            val = os.environ.get(key)
+            if val and (":\\" in val or "\\" in val):
+                log(f"Sanitizing Windows path for {key}...", symbol="🔧")
+                new_val = val.replace("\\", "/")
+
+                # If it was a subpath of the original RAW_REPO_ROOT from .env,
+                # translate it to be relative to the actual detected REPO_ROOT.
+                if raw_root and raw_root in new_val:
+                    rel = new_val.split(raw_root, 1)[1].lstrip("/")
+                    new_val = str(REPO_ROOT / rel)
+                elif ":/" in new_val:
+                    # Absolute Windows path outside repo - strip drive letter
+                    new_val = "/" + new_val.split(":/", 1)[1]
+
+                os.environ[key] = new_val
+                log(f"  {key} -> {new_val}", symbol="👉")
 
 def preflight_linux():
     """Phase 0: Linux-specific preflight diagnostics."""
@@ -685,6 +709,8 @@ def docker_agent(repair_mode: bool = False):
                 proc = subprocess.run(cmd, env=GLOBAL_ENV, capture_output=True, text=True)
                 if proc.returncode != 0:
                     log(f"Stack {name} failed to deploy.", symbol="✘")
+                    if proc.stderr:
+                        log(f"Docker Error: {proc.stderr.strip()}", symbol="🚫")
                     subprocess.run(["docker", "compose", "--env-file", str(ENV_FILE), "-f", str(cf), "logs", "--tail", "50"], env=GLOBAL_ENV)
                     raise RuntimeError(f"Docker Compose Error (Exit {proc.returncode})")
 

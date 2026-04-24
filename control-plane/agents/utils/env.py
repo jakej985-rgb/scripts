@@ -23,7 +23,9 @@ def load_env(repo_root: Path) -> Dict[str, str]:
                         v = v[1:-1]
                     env[k.strip()] = v
                     os.environ[k.strip()] = v
-    # Force REPO_ROOT for Docker
+    # Force REPO_ROOT for Docker (but preserve raw for path sanitization)
+    if "REPO_ROOT" in env:
+        os.environ["RAW_REPO_ROOT"] = env["REPO_ROOT"]
     env["REPO_ROOT"] = str(repo_root)
     os.environ["REPO_ROOT"] = str(repo_root)
     return env
