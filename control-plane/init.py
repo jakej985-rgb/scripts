@@ -298,16 +298,23 @@ def update_status(component: str, status: str):
     log(f"Component {component} status: {status}", symbol="✔" if status == "ok" else "⚠")
 
 def verify_running(name: str, expected_services: list):
-    """Phase 1.1: Health Gate - Ensure all expected services are running."""
+    """Phase 1.1: Health Gate - Ensure all expected services are running or completed successfully."""
     result = subprocess.run(
-        ["docker", "ps", "--format", "{{.Names}}"],
+        ["docker", "ps", "-a", "--format", "{{.Names}} {{.Status}}"],
         capture_output=True, text=True
     )
-    running = result.stdout.splitlines()
-    running_str = " ".join(running)
+    containers = result.stdout.splitlines()
 
     for svc in expected_services:
-        if svc not in running_str:
+        found = False
+        for line in containers:
+            if svc in line:
+                found = True
+                if "Up" not in line and "Exited (0)" not in line:
+                    raise RuntimeError(f"{name}: Service {svc} is NOT running correctly: {line.strip()}")
+                break
+        
+        if not found:
             raise RuntimeError(f"{name}: Service {svc} is NOT running.")
 
 def wait_for_stack_ready(name: str, services: list, timeout: int):
@@ -316,12 +323,23 @@ def wait_for_stack_ready(name: str, services: list, timeout: int):
     
     while time.time() - start < timeout:
         result = subprocess.run(
-            ["docker", "ps", "--format", "{{.Names}}"],
+            ["docker", "ps", "-a", "--format", "{{.Names}} {{.Status}}"],
             capture_output=True, text=True
         )
-        running = result.stdout
+        containers = result.stdout.splitlines()
         
-        if all(svc in running for svc in services):
+        all_ready = True
+        for svc in services:
+            ready = False
+            for line in containers:
+                if svc in line and ("Up" in line or "Exited (0)" in line):
+                    ready = True
+                    break
+            if not ready:
+                all_ready = False
+                break
+                
+        if all_ready:
             log(f"{name} is RUNNING", symbol="✔")
             return True
             
