@@ -210,6 +210,8 @@ def validate_env():
                     new_val = "/" + new_val.split(":/", 1)[1]
 
                 os.environ[key] = new_val
+                if 'GLOBAL_ENV' in globals():
+                    globals()['GLOBAL_ENV'][key] = new_val
                 log(f"  {key} -> {new_val}", symbol="👉")
 
 def preflight_linux():
