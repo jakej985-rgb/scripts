@@ -13,7 +13,7 @@ services:
       - PGID=${PGID:-1000}
       - WEBUI_PORT=8080
     volumes:
-      - qbittorrent_config:/config
+      - ${DATA_DIR:?DATA_DIR not set}/config/qbittorrent:/config
       - ${DATA_DIR:?DATA_DIR not set}:/mnt
       - ${DATA_DIR:?DATA_DIR not set}/downloads:/downloads
       - ${DATA_DIR:?DATA_DIR not set}/media:/media
@@ -48,7 +48,7 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - radarr_config:/config
+      - ${DATA_DIR:?DATA_DIR not set}/config/radarr:/config
       - ${DATA_DIR:?DATA_DIR not set}:/mnt
       - ${DATA_DIR:?DATA_DIR not set}/downloads:/downloads
       - ${DATA_DIR:?DATA_DIR not set}/media:/media
@@ -78,7 +78,7 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - sonarr_config:/config
+      - ${DATA_DIR:?DATA_DIR not set}/config/sonarr:/config
       - ${DATA_DIR:?DATA_DIR not set}:/mnt
       - ${DATA_DIR:?DATA_DIR not set}/downloads:/downloads
       - ${DATA_DIR:?DATA_DIR not set}/media:/media
@@ -96,7 +96,7 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - bazarr_config:/config
+      - ${DATA_DIR:?DATA_DIR not set}/config/bazarr:/config
       - ${DATA_DIR:?DATA_DIR not set}:/mnt
       - ${DATA_DIR:?DATA_DIR not set}/downloads:/downloads
       - ${DATA_DIR:?DATA_DIR not set}/media:/media
@@ -124,7 +124,7 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - komga_config:/config
+      - ${DATA_DIR:?DATA_DIR not set}/config/komga:/config
       - ${DATA_DIR:?DATA_DIR not set}:/mnt
       - ${DATA_DIR:?DATA_DIR not set}/downloads:/downloads
       - ${DATA_DIR:?DATA_DIR not set}/media:/media
@@ -152,7 +152,7 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - jellyseerr_config:/app/config
+      - ${DATA_DIR:?DATA_DIR not set}/config/jellyseerr:/app/config
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.jellyseerr.rule=Host(`jellyseerr.${DOMAIN:?DOMAIN not set}`)"
@@ -172,7 +172,7 @@ services:
     container_name: homepage
     user: "${PUID:-1000}:${PGID:-1000}"
     volumes:
-      - homepage_config:/app/config
+      - ${DATA_DIR:?DATA_DIR not set}/config/homepage:/app/config
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.homepage.rule=Host(`home.${DOMAIN:?DOMAIN not set}`)"
@@ -192,7 +192,7 @@ services:
     container_name: autobrr
     user: "${PUID:-1000}:${PGID:-1000}"
     volumes:
-      - autobrr_config:/config
+      - ${DATA_DIR:?DATA_DIR not set}/config/autobrr:/config
       - ${DATA_DIR:?DATA_DIR not set}:/mnt
       - ${DATA_DIR:?DATA_DIR not set}/downloads:/downloads
       - ${DATA_DIR:?DATA_DIR not set}/media:/media
@@ -215,7 +215,7 @@ services:
     container_name: recyclarr
     user: "${PUID:-1000}:${PGID:-1000}"
     volumes:
-      - recyclarr_config:/config
+      - ${DATA_DIR:?DATA_DIR not set}/config/recyclarr:/config
       - ${DATA_DIR:?DATA_DIR not set}:/mnt
       - ${DATA_DIR:?DATA_DIR not set}/downloads:/downloads
       - ${DATA_DIR:?DATA_DIR not set}/media:/media
@@ -235,8 +235,8 @@ services:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
     volumes:
-      - tdarr_config:/app/config
-      - tdarr_logs:/app/logs
+      - ${DATA_DIR:?DATA_DIR not set}/config/tdarr:/app/config
+      - ${DATA_DIR:?DATA_DIR not set}/logs/tdarr:/app/logs
       - ${DATA_DIR:?DATA_DIR not set}:/mnt
       - ${DATA_DIR:?DATA_DIR not set}/downloads:/downloads
       - ${DATA_DIR:?DATA_DIR not set}/media:/media
@@ -295,7 +295,7 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - prowlarr_config:/config
+      - ${DATA_DIR:?DATA_DIR not set}/config/prowlarr:/config
       - ${DATA_DIR:?DATA_DIR not set}:/mnt
       - ${DATA_DIR:?DATA_DIR not set}/downloads:/downloads
       - ${DATA_DIR:?DATA_DIR not set}/media:/media
@@ -340,15 +340,4 @@ networks:
     name: none
 
 volumes:
-  qbittorrent_config:
-  radarr_config:
-  sonarr_config:
-  bazarr_config:
-  komga_config:
-  jellyseerr_config:
-  homepage_config:
-  autobrr_config:
-  recyclarr_config:
-  tdarr_config:
-  tdarr_logs:
-  prowlarr_config:
+  # Transitioned to bind mounts for self-healing permission management

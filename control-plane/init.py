@@ -29,7 +29,7 @@ for path in [AGENTS_DIR, REPO_ROOT / "scripts" / "helpers", REPO_ROOT / "scripts
 ENV_FILE = REPO_ROOT / ".env"
 
 from typing import Optional
-from utils.paths import STATE_DIR, LOG_DIR, DATA_DIR
+from utils.paths import STATE_DIR, LOG_DIR, DATA_DIR, DOCKER_DIR
 
 import builtins
 import warnings
@@ -130,29 +130,50 @@ from progress_utils import (
 
 # Audit Fix P1: Filesystem Bootstrap (Linux Compatibility)
 def bootstrap_data_dirs():
-    """Phase 1.1: Ensures required subdirectories exist in DATA_DIR to prevent mount failures."""
-    required = ["downloads", "media"]
+    """Phase 1.1: Ensures all required host-side mount points exist to prevent 'mounts denied' errors."""
+    if not DATA_DIR:
+        return
+
+    # Core data paths
+    required = ["downloads", "media", "config"]
+    
+    # Auto-detect service config paths from the media stack
+    media_compose = DOCKER_DIR / "media" / "docker-compose.yml"
+    if media_compose.exists():
+        try:
+            import yaml
+            with open(media_compose, 'r') as f:
+                cfg = yaml.safe_load(f)
+                services = cfg.get('services', {}).keys()
+                for svc in services:
+                    required.append(f"config/{svc}")
+        except:
+            pass # Fallback to manual list if YAML fails
+
     for r in required:
         path = DATA_DIR / r
         if not path.exists():
-            t_log(f"[INIT] Creating DATA_DIR subdir: {path}", symbol="📁")
+            log(f"[INIT] Scaffolding DATA_DIR subdir: {path}", symbol="📁")
             try:
                 path.mkdir(parents=True, exist_ok=True)
             except Exception as e:
-                t_log(f"Failed to create data subdir {path}: {e}", symbol="✘")
+                log(f"Failed to create data subdir {path}: {e}", symbol="✘")
 
 def fix_permissions():
-    """Phase 5: Enforce consistent ownership on internal project paths only."""
+    """Phase 5: Enforce consistent ownership (1000:1000) on ALL project and data paths."""
     if os.name != 'nt':
-        # Strictly limited to project-managed state/logs to avoid 'Operation not permitted' on external mounts
-        ALLOWED_PATHS = [STATE_DIR, LOG_DIR]
+        # Enforce on internal state/logs AND the external DATA_DIR
+        ALLOWED_PATHS = [STATE_DIR, LOG_DIR, DATA_DIR]
         for path in ALLOWED_PATHS:
-            if path.exists():
+            if path and path.exists():
                 try:
-                    log(f"[INIT] Enforcing permissions on {path.name} (1000:1000)...", symbol="🔐")
+                    log(f"[INIT] Enforcing permissions on {path} (1000:1000)...", symbol="🔐")
+                    # Use -R to catch all subdirectories created by bootstrap_data_dirs
                     subprocess.run(["chown", "-R", "1000:1000", str(path)], check=False)
+                    # Also ensure they are writable
+                    subprocess.run(["chmod", "-R", "775", str(path)], check=False)
                 except Exception as e:
-                    log(f"Permission fix skipped for {path}: {e}", symbol="⚠")
+                    log(f"Permission fix failed for {path}: {e}", symbol="⚠")
 
 def suggest_port_fix(port: int):
     """Provide actionable help for port conflicts."""
@@ -212,6 +233,8 @@ def validate_env():
                 os.environ[key] = new_val
                 if 'GLOBAL_ENV' in globals():
                     globals()['GLOBAL_ENV'][key] = new_val
+                if key == "DATA_DIR":
+                    globals()["DATA_DIR"] = Path(new_val)
                 log(f"  {key} -> {new_val}", symbol="👉")
 
 def preflight_linux():
