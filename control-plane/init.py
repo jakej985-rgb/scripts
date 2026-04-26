@@ -276,12 +276,21 @@ def validate_env():
     # Audit Fix: Docker API Version Sanitization
     # Unset DOCKER_API_VERSION to allow auto-negotiation if it's causing 500 errors
     api_ver = os.environ.get("DOCKER_API_VERSION")
-    if api_ver:
-        if os.name != 'nt':
-            log(f"⚠ Unsetting DOCKER_API_VERSION ({api_ver}) to allow auto-negotiation on Linux.", symbol="🐋")
-            del os.environ["DOCKER_API_VERSION"]
-        elif api_ver == "1.52":
-            log("⚠ DOCKER_API_VERSION=1.52 detected. Recommend '1.41' for Windows.", symbol="⚠")
+    if api_ver and os.name != 'nt':
+        log(f"⚠ Unsetting DOCKER_API_VERSION ({api_ver}) in-memory and patching .env...", symbol="🐋")
+        del os.environ["DOCKER_API_VERSION"]
+        
+        # Patch .env on disk to prevent Docker Compose from forcing it
+        if ENV_FILE.exists():
+            try:
+                content = ENV_FILE.read_text()
+                if "DOCKER_API_VERSION=" in content and "# DOCKER_API_VERSION=" not in content:
+                    new_content = content.replace("DOCKER_API_VERSION=", "# DOCKER_API_VERSION=")
+                    ENV_FILE.write_text(new_content)
+                    log("✅ .env patched: DOCKER_API_VERSION commented out for auto-negotiation.", symbol="🔐")
+            except: pass
+    elif api_ver == "1.52":
+        log("⚠ DOCKER_API_VERSION=1.52 detected. Recommend '1.41' for Windows.", symbol="⚠")
 
     # Audit Fix: Path Sanitization (Linux Compatibility)
     if os.name != 'nt':
@@ -597,7 +606,7 @@ def env_validation_agent():
         # (Validated via getenv loops below)
         
         # 3. Required Vars (Expanded for 6-Channel Control Plane)
-        strictly_required = ["TELEGRAM_BOT_TOKEN", "TG_CHAT_COUNT", "DOCKER_API_VERSION", "REPO_ROOT"]
+        strictly_required = ["REPO_ROOT", "DOMAIN"] # DOCKER_API_VERSION is now optional/auto
         potential_chats = [
             "TG_MAIN_CHAT_ID", "TG_LOG_CHAT_ID", "TG_ERROR_CHAT_ID", 
             "TG_ALERT_CHAT_ID", "TG_ACTION_CHAT_ID", "TG_DOCKER_CHAT_ID",
