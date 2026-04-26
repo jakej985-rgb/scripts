@@ -109,9 +109,22 @@ def run_preflight_checks():
         DATA_DIR / "media"
     ]
     for p in required_paths:
-        if not p.exists():
-            t_log(f"FATAL: Required DATA_DIR path missing: {p}", symbol="✘")
-            return False
+        if p and not p.exists():
+            t_log(f"WARNING: Required path missing, attempting auto-fix: {p}", symbol="🔧")
+            try:
+                p.mkdir(parents=True, exist_ok=True)
+            except Exception as e:
+                t_log(f"FATAL: Could not create path {p}: {e}", symbol="✘")
+                return False
+    
+    # 4. Check for Docker Desktop (Linuxkit)
+    if os.name != 'nt':
+        try:
+            with open('/proc/version', 'r') as f:
+                if 'linuxkit' in f.read().lower():
+                    t_log("Docker Desktop for Linux detected. Ensure paths are in 'File Sharing' settings.", symbol="🐋")
+        except:
+            pass
 
     return True
 
@@ -828,15 +841,22 @@ def run_init(repair_scope: str = None) -> bool:
     Header.show("M3TAL Self-Healing Init", f"Production Bootstrap — Repair: {repair_scope or 'None'}")
     reset_session_timer()  # Zero the progress timer from this moment
     
+    # Audit Fix: Critical System Scaffolding (Run before preflight)
+    preflight_linux()
+    validate_env()
+    bootstrap_data_dirs()
+    ensure_state_dirs()
+    fix_permissions()
+    
     # 0. Preflight Gate
     if run_preflight:
         preflight_status = run_preflight()
-        if preflight_status == "CRITICAL":
+        if preflight_status is False:
             Header.show("CRITICAL FAILURE", "Preflight Validation Failed. Aborting startup.")
             return False
         if preflight_status == "DEGRADED":
             log_event("init", "Starting in DEGRADED mode (Tunnel missing/incomplete).", symbol="⚠")
-    
+
     if not acquire_healer_lock():
         print(f"  {RED}✘{END} Another instance is active. Exiting.")
         return False
@@ -844,13 +864,6 @@ def run_init(repair_scope: str = None) -> bool:
     global HB, BAR
     HB = Heartbeat()
     HB.start()
-    
-    # Audit Fix: Critical System Scaffolding
-    preflight_linux()
-    validate_env()
-    bootstrap_data_dirs()
-    ensure_state_dirs()
-    fix_permissions()
 
     BAR = ProgressBar(9, prefix="Init")
     HB.tether(BAR)
