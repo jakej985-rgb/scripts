@@ -156,6 +156,11 @@ def cmd_bootstrap(args):
     """Alias for full system initialization."""
     return cmd_init(args)
 
+def cmd_config():
+    """Launches the interactive environment configuration wizard."""
+    path = SCRIPTS_DIR / "config" / "configure_env.py"
+    return run_script(path)
+
 def cmd_traefik(args):
     """Handles Traefik-specific orchestration and auditing."""
     if args.subcommand == "audit":
@@ -228,6 +233,9 @@ def main():
     p_bootstrap = subparsers.add_parser("bootstrap", help="Full system initialization and first-run orchestration")
     p_bootstrap.add_argument("--repair", help="Repair scope (e.g. all, docker, fs, state, logs)")
 
+    # config
+    subparsers.add_parser("config", help="Launch interactive environment setup wizard")
+
     # If no args, show help
     if len(sys.argv) == 1:
         parser.print_help()
@@ -265,6 +273,8 @@ def main():
         sys.exit(cmd_build(args))
     elif args.command == "bootstrap":
         sys.exit(cmd_bootstrap(args))
+    elif args.command == "config":
+        sys.exit(cmd_config())
     else:
         parser.print_help()
 

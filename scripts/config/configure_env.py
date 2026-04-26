@@ -277,11 +277,27 @@ def main():
                 "AUTH": ["DASHBOARD_SECRET"]
             }
 
+            # Ensure no keys are lost (Audit Fix: Catch-all for uncategorized vars)
+            all_keys = set(new_env.keys()) | set(current_env.keys())
+            handled_keys = set()
+            for cat_keys in categories.values():
+                handled_keys.update(cat_keys)
+            
+            misc_keys = [k for k in all_keys if k not in handled_keys and k.strip()]
+            if misc_keys:
+                categories["MISC"] = sorted(misc_keys)
+
             for cat, keys in categories.items():
                 f.write(f"# --- {cat} ---\n")
                 for k in keys:
+                    if not k: continue
                     val = new_env.get(k, current_env.get(k, ""))
-                    f.write(f"{k}={val}\n")
+                    
+                    # Audit Fix: Escape $ for Docker Compose (Standard formatting)
+                    # We first normalize to single $ then escape to $$ to avoid $$$$
+                    safe_val = str(val).replace('$$', '$').replace('$', '$$')
+                    
+                    f.write(f"{k}={safe_val}\n")
                 f.write("\n")
                 
         print(f"\n{GREEN}{BOLD}✅ Configuration complete!{END}")

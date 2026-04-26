@@ -78,6 +78,15 @@ def validate_env_dollar_escaping():
             if '=' not in line: continue
             key, value = line.split('=', 1)
             if "$" in value and "$$" not in value:
+                # Audit Fix 1.2: Ignore system vars and downgrade specific hashes to warnings
+                if key in ["PS1", "LS_COLORS", "PROMPT_COMMAND"]:
+                    continue
+                
+                if "AUTH" in key or "HASH" in key:
+                    t_log(f"⚠ WARNING: Unsafe $ in {key}. Docker Compose requires $$ for hashes.", symbol="⚠")
+                    t_log(f"👉 Fix your .env: {key}={value.replace('$', '$$')}", symbol="👉")
+                    continue
+                    
                 raise RuntimeError(f"Unsafe env var in .env (requires $$ escaping for Docker Compose): {key}")
 
 def run_preflight_checks():
@@ -138,21 +147,14 @@ def run_preflight_checks():
         except Exception:
             pass # Docker might not be in PATH yet, allow other agents to handle.
 
-    # 5. Docker API Version Audit (Audit Fix 4.5.1)
+    # 5. Docker API Version Auto-Negotiation (Audit Fix 4.5.1)
     if os.name != 'nt':
         try:
-            req_ver = os.environ.get("DOCKER_API_VERSION")
-            if req_ver:
-                # Use --format to get the actual supported server version
-                server_ver = subprocess.run(
-                    ["docker", "version", "--format", "{{.Server.APIVersion}}"], 
-                    capture_output=True, text=True, timeout=5
-                ).stdout.strip()
-                
-                if server_ver and req_ver > server_ver:
-                    t_log(f"⚠ WARNING: DOCKER_API_VERSION ({req_ver}) is higher than Server ({server_ver}).", symbol="⚠")
-                    t_log("👉 This often causes '500 Internal Server Error' on Linux.", symbol="👉")
-                    t_log("💡 Solution: Remove DOCKER_API_VERSION from .env or set it to 1.41.", symbol="💡")
+            # Check for Docker Desktop context which is prone to version mismatches
+            context = subprocess.run(["docker", "context", "show"], capture_output=True, text=True).stdout.strip()
+            if "desktop-linux" in context or os.environ.get("DOCKER_API_VERSION"):
+                t_log(f"🐋 Docker Context: {context}. Enabling API auto-negotiation...", symbol="🐋")
+                # We'll allow the orchestrator to unset it in the main environment loop
         except:
             pass
 
@@ -272,10 +274,14 @@ def validate_env():
             raise RuntimeError(f"CRITICAL: Environment variable {env} is NOT set.")
 
     # Audit Fix: Docker API Version Sanitization
-    # v1.52 is known to cause 500 errors on some Docker Desktop for Linux builds.
+    # Unset DOCKER_API_VERSION to allow auto-negotiation if it's causing 500 errors
     api_ver = os.environ.get("DOCKER_API_VERSION")
-    if api_ver and api_ver == "1.52":
-        log("⚠ DOCKER_API_VERSION=1.52 detected. This may cause 500 errors. Recommend '1.41'.", symbol="⚠")
+    if api_ver:
+        if os.name != 'nt':
+            log(f"⚠ Unsetting DOCKER_API_VERSION ({api_ver}) to allow auto-negotiation on Linux.", symbol="🐋")
+            del os.environ["DOCKER_API_VERSION"]
+        elif api_ver == "1.52":
+            log("⚠ DOCKER_API_VERSION=1.52 detected. Recommend '1.41' for Windows.", symbol="⚠")
 
     # Audit Fix: Path Sanitization (Linux Compatibility)
     if os.name != 'nt':
