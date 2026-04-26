@@ -138,6 +138,24 @@ def run_preflight_checks():
         except Exception:
             pass # Docker might not be in PATH yet, allow other agents to handle.
 
+    # 5. Docker API Version Audit (Audit Fix 4.5.1)
+    if os.name != 'nt':
+        try:
+            req_ver = os.environ.get("DOCKER_API_VERSION")
+            if req_ver:
+                # Use --format to get the actual supported server version
+                server_ver = subprocess.run(
+                    ["docker", "version", "--format", "{{.Server.APIVersion}}"], 
+                    capture_output=True, text=True, timeout=5
+                ).stdout.strip()
+                
+                if server_ver and req_ver > server_ver:
+                    t_log(f"⚠ WARNING: DOCKER_API_VERSION ({req_ver}) is higher than Server ({server_ver}).", symbol="⚠")
+                    t_log("👉 This often causes '500 Internal Server Error' on Linux.", symbol="👉")
+                    t_log("💡 Solution: Remove DOCKER_API_VERSION from .env or set it to 1.41.", symbol="💡")
+        except:
+            pass
+
     return True
 
 run_preflight = run_preflight_checks
@@ -252,6 +270,12 @@ def validate_env():
     for env in required:
         if env not in os.environ:
             raise RuntimeError(f"CRITICAL: Environment variable {env} is NOT set.")
+
+    # Audit Fix: Docker API Version Sanitization
+    # v1.52 is known to cause 500 errors on some Docker Desktop for Linux builds.
+    api_ver = os.environ.get("DOCKER_API_VERSION")
+    if api_ver and api_ver == "1.52":
+        log("⚠ DOCKER_API_VERSION=1.52 detected. This may cause 500 errors. Recommend '1.41'.", symbol="⚠")
 
     # Audit Fix: Path Sanitization (Linux Compatibility)
     if os.name != 'nt':
