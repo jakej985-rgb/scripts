@@ -84,14 +84,21 @@ def acquire_lock(agent_name: str, ttl_seconds: int = 300) -> bool:
                 # SELF-RECLAIM: If same PID and same Host, it's safe to overwrite (Audit fix 4.10)
                 if old_pid == pid and old_host == host:
                     logger.info(f"Self-lock detected for {agent_name} (PID {pid}). Reclaiming.")
-                elif alive:
-                    logger.warning(f"Lock conflict for {agent_name}: PID {old_pid} on {old_host} is still alive.")
+                elif old_host == host and alive:
+                    # Same host, and PID is actually running -> Genuine conflict
+                    logger.warning(f"Lock conflict for {agent_name}: PID {old_pid} on THIS host is still alive.")
                     return False
-                elif not expired:
-                    logger.warning(f"Lock for {agent_name} is stale but TTL not met ({now - old_ts}s < {ttl_seconds}s).")
+                elif old_host != host and not expired:
+                    # Different host (e.g. Container vs Host), rely on TTL
+                    logger.warning(f"Lock for {agent_name} held by different host ({old_host}). Waiting for TTL ({now - old_ts}s < {ttl_seconds}s).")
+                    return False
+                elif not expired and alive:
+                    # Safety fallback
+                    logger.warning(f"Lock for {agent_name} is active (PID {old_pid} on {old_host}).")
                     return False
                 else:
-                    logger.info(f"Reclaiming stale lock for {agent_name} (Dead PID {old_pid}, Expired TTL).")
+                    reason = "Dead PID" if old_host == host else "Different Host"
+                    logger.info(f"Reclaiming stale lock for {agent_name} ({reason}, Expired TTL).")
             
             os.remove(lock_file)
         except Exception as e:
