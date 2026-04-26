@@ -173,20 +173,38 @@ def bootstrap_data_dirs():
                 log(f"Failed to create data subdir {path}: {e}", symbol="✘")
 
 def fix_permissions():
-    """Phase 5: Enforce consistent ownership (1000:1000) on ALL project and data paths."""
+    """Phase 5: Enforce consistent ownership (1000:1000) on M3TAL-managed paths only."""
     if os.name != 'nt':
-        # Enforce on internal state/logs AND the external DATA_DIR
-        ALLOWED_PATHS = [STATE_DIR, LOG_DIR, DATA_DIR]
-        for path in ALLOWED_PATHS:
+        # Protect system roots from dangerous recursive chowns
+        SENSITIVE_ROOTS = ["/", "/mnt", "/media", "/home", "/etc", "/var", "/usr"]
+        
+        # Enforce on internal state/logs
+        for path in [STATE_DIR, LOG_DIR]:
             if path and path.exists():
                 try:
                     log(f"[INIT] Enforcing permissions on {path} (1000:1000)...", symbol="🔐")
-                    # Use -R to catch all subdirectories created by bootstrap_data_dirs
-                    subprocess.run(["chown", "-R", "1000:1000", str(path)], check=False)
-                    # Also ensure they are writable
-                    subprocess.run(["chmod", "-R", "775", str(path)], check=False)
-                except Exception as e:
-                    log(f"Permission fix failed for {path}: {e}", symbol="⚠")
+                    subprocess.run(["chown", "-R", "1000:1000", str(path)], capture_output=True, check=False)
+                    subprocess.run(["chmod", "-R", "775", str(path)], capture_output=True, check=False)
+                except: pass
+
+        # Enforce on DATA_DIR sub-components ONLY (avoiding the root mount point)
+        if DATA_DIR and DATA_DIR.exists():
+            if str(DATA_DIR) in SENSITIVE_ROOTS:
+                log(f"[INIT] DATA_DIR is a sensitive root ({DATA_DIR}). Skipping root-level chown.", symbol="⚠")
+                # Only target subdirectories we actually scaffolded
+                targets = ["downloads", "media", "config", "logs", "backups"]
+            else:
+                targets = ["."] # Safe to chown the whole thing if it's a dedicated folder
+
+            for t in targets:
+                path = DATA_DIR / t
+                if path.exists():
+                    try:
+                        if t != ".":
+                            log(f"[INIT] Enforcing permissions on {path} (1000:1000)...", symbol="🔐")
+                        subprocess.run(["chown", "-R", "1000:1000", str(path)], capture_output=True, check=False)
+                        subprocess.run(["chmod", "-R", "775", str(path)], capture_output=True, check=False)
+                    except: pass
 
 def suggest_port_fix(port: int):
     """Provide actionable help for port conflicts."""
