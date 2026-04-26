@@ -148,9 +148,9 @@ def bootstrap_data_dirs():
         return
 
     # Core data paths
-    required = ["downloads", "media", "config"]
+    required = ["downloads", "media", "config", "logs"]
     
-    # Auto-detect service config paths from the media stack
+    # Auto-detect service config/log paths from the media stack
     media_compose = DOCKER_DIR / "media" / "docker-compose.yml"
     if media_compose.exists():
         try:
@@ -160,6 +160,7 @@ def bootstrap_data_dirs():
                 services = cfg.get('services', {}).keys()
                 for svc in services:
                     required.append(f"config/{svc}")
+                    required.append(f"logs/{svc}")
         except:
             pass # Fallback to manual list if YAML fails
 
