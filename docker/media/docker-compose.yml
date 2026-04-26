@@ -339,5 +339,4 @@ networks:
   default:
     name: none
 
-volumes:
-  # Transitioned to bind mounts for self-healing permission management
+# Transitioned to bind mounts for self-healing permission management
