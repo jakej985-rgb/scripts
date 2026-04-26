@@ -21,6 +21,7 @@ try:
             break
             
     from agents.utils.paths import DOCKER_DIR, CORE_LOGS_DIR, REPO_ROOT
+    from agents.utils.guards import wrap_agent, SHUTDOWN_EVENT
 except Exception as e:
     print(f"❌ FATAL: Critical path module missing or corrupted: {e}")
     sys.exit(1)
@@ -43,8 +44,8 @@ ALERT_COOLDOWN = 60
 MULTILINE_WINDOW = 2 
 LAST_ALERT_TIME = 0.0
 
-# V6.5.1: Clean Shutdown Event
-SHUTDOWN_EVENT = threading.Event()
+# Redefine SHUTDOWN_EVENT to use the one from guards
+# SHUTDOWN_EVENT = threading.Event()
 
 # --- Security: Redaction & Detection Engines ---------------------------------
 
@@ -164,40 +165,31 @@ def stream_logs(stack_name, compose_file, secrets, alerts_enabled=False):
             try: process.wait(timeout=2)
             except Exception: process.kill()
 
-def main():
-    parser = argparse.ArgumentParser(description="M3TAL Docker Logs Agent")
-    parser.add_argument("stack", nargs="?", default="all", help="Stack name or 'all'")
-    parser.add_argument("--alerts", action="store_true", help="Enable proactive Telegram alerting")
-    args = parser.parse_args()
-    
+def agent_tick():
+    """Wrapper for the agent tick, handles stack discovery and streaming."""
     stacks = discover_stacks()
-    target = args.stack.lower()
-    if not stacks: sys.exit(1)
-    
+    if not stacks:
+        print("⚠ [LOGGER] No stacks discovered.")
+        return
+        
     secrets = load_secrets()
     print(f"🔒 [SECURITY] Redaction active ({len(secrets)} secrets loaded)")
     
+    # We always run 'all' when orchestrated
     threads = []
-    if target == "all":
-        for name, compose in stacks.items():
-            t = threading.Thread(target=stream_logs, args=(name, compose, secrets, args.alerts), daemon=False)
-            t.start()
-            threads.append(t)
-    else:
-        if target not in stacks: sys.exit(1)
-        t = threading.Thread(target=stream_logs, args=(target, stacks[target], secrets, args.alerts), daemon=False)
+    for name, compose in stacks.items():
+        t = threading.Thread(target=stream_logs, args=(name, compose, secrets, True), daemon=False)
         t.start()
         threads.append(t)
 
-    try:
-        while any(t.is_alive() for t in threads):
-            time.sleep(0.5)
-    except KeyboardInterrupt:
-        print("\n🛑 [LOGGER] Initiating graceful shutdown...")
-        SHUTDOWN_EVENT.set()
-        for t in threads:
-            t.join(timeout=5)
-        print("✅ [LOGGER] All streams stopped.")
+    # Monitor threads until shutdown or all finish
+    while not SHUTDOWN_EVENT.is_set() and any(t.is_alive() for t in threads):
+        time.sleep(1)
+        
+    if not SHUTDOWN_EVENT.is_set() and not any(t.is_alive() for t in threads):
+        # If all threads died but we didn't signal shutdown, something is wrong
+        print("❌ [LOGGER] All log streams died unexpectedly.")
+        sys.exit(1)
 
 if __name__ == "__main__":
-    main()
+    wrap_agent("docker_logs_agent", agent_tick, interval=5)

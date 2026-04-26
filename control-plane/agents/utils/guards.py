@@ -19,12 +19,15 @@ HEALTH_SUBDIR = STATE_DIR / "health"
 LOCK_SUBDIR = STATE_DIR / "locks"
 
 # --- Lifecycle Globals --------------------------------------------------------
+import threading
 _SHUTDOWN_SIGNALED = False
+SHUTDOWN_EVENT = threading.Event()
 
 def handle_signal(signum, _frame):
     global _SHUTDOWN_SIGNALED
     logger.info(f"Received signal {signum}. Requesting graceful shutdown...")
     _SHUTDOWN_SIGNALED = True
+    SHUTDOWN_EVENT.set()
 
 signal.signal(signal.SIGTERM, handle_signal)
 signal.signal(signal.SIGINT, handle_signal)
