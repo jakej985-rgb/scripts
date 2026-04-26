@@ -117,14 +117,26 @@ def run_preflight_checks():
                 t_log(f"FATAL: Could not create path {p}: {e}", symbol="✘")
                 return False
     
-    # 4. Check for Docker Desktop (Linuxkit)
+    # 4. Environment-Specific Docker Validation (Audit Fix 4.5)
     if os.name != 'nt':
         try:
+            # Detect Docker Desktop (Linuxkit)
             with open('/proc/version', 'r') as f:
-                if 'linuxkit' in f.read().lower():
-                    t_log("Docker Desktop for Linux detected. Ensure paths are in 'File Sharing' settings.", symbol="🐋")
-        except:
-            pass
+                ver_info = f.read().lower()
+                if 'linuxkit' in ver_info:
+                    t_log("🐋 Docker Desktop (Linux) detected. Ensure /mnt is in 'Settings -> Resources -> File Sharing'.", symbol="⚠")
+            
+            # Detect Rootless Docker
+            docker_info = subprocess.run(["docker", "info"], capture_output=True, text=True).stdout.lower()
+            if "rootless: true" in docker_info:
+                if str(DATA_DIR).startswith("/mnt"):
+                    t_log("✘ FATAL: Rootless Docker detected. Rootless mode cannot bind-mount /mnt without root permission.", symbol="✘")
+                    t_log("💡 Solution: Switch to a native Docker installation or move DATA_DIR to your home directory.", symbol="💡")
+                    return False
+                else:
+                    t_log("📦 Rootless Docker detected. Performance and mount permissions may be limited.", symbol="⚠")
+        except Exception:
+            pass # Docker might not be in PATH yet, allow other agents to handle.
 
     return True
 
