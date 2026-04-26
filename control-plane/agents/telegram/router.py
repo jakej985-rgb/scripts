@@ -77,7 +77,5 @@ def route_message(channel: str, text: str):
     tg_queue.enqueue(target_chat, text)
 
 def get_new_updates(offset: int = 0):
-    """Wrapper for fetching updates via the client."""
-    params = {"offset": offset + 1, "timeout": 10}
-    result = client.call_api("getUpdates", params)
-    return result.get("result", []) if result.get("ok") else []
+    """Wrapper for fetching updates via the client with long-polling (v3.3)."""
+    return client.get_updates(offset, timeout=20)

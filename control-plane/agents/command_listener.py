@@ -264,9 +264,8 @@ def handle_command(update):
         telegram.send_direct(msg["chat"]["id"], status_msg)
 
 def listen_commands():
-    # Audit Fix 1.5: Start worker only when explicitly running loop
-    if not telegram.is_available():
-        telegram.start()
+    # Audit Fix: Re-using global start from run.py
+    pass
         
     from utils.paths import TELEGRAM_OFFSET_TXT
     offset = 0
@@ -313,4 +312,4 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"[TELEGRAM INIT ERR] {e}")
             
-    wrap_agent("command_listener", listen_commands, interval=2)
+    wrap_agent("command_listener", listen_commands, interval=0)

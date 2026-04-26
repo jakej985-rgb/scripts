@@ -200,10 +200,15 @@ def send_text(chat_id: int, text: str) -> bool:
     return bool(result.get("ok"))
 
 
-def get_updates(offset: int = 0, timeout: int = 10) -> list[dict]:
+def get_me() -> dict:
+    """Verifies connection and returns bot info."""
+    return call_api("getMe")
+
+
+def get_updates(offset: int = 0, timeout: int = 20) -> list[dict]:
     """
-    Fetches new updates from the Bot API.
-    Returns a list of update dicts, or empty list on any failure.
+    Fetches new updates from the Bot API using long-polling.
+    The +1 offset is handled here centrally.
     """
     result = call_api(
         "getUpdates",

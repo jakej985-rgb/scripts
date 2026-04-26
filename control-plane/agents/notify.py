@@ -22,9 +22,8 @@ logger = get_logger("notify")
 NOTIFY_STATE_JSON = os.path.join(STATE_DIR, "notify_state.json")
 
 def check_and_notify():
-    # Ensure telegram worker is running (guarded — no double-start)
-    if not telegram.is_available():
-        telegram.start()
+    # Integration: Telegram worker is managed centrally by run.py
+    pass
     now = int(time.time())
     state = load_json(NOTIFY_STATE_JSON, default={})
 

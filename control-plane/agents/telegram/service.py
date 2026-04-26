@@ -7,10 +7,19 @@ from config.telegram import BOT_TOKEN
 # Responsibility: Lifecycle management and public API exposure.
 
 def start():
-    """Wakes up the telegram subsystem with fail-fast validation."""
+    """Wakes up the telegram subsystem with connection validation."""
     if not BOT_TOKEN:
         print("🚨 [TELEGRAM] FATAL: BOT_TOKEN is missing. Subsystem will not start.")
         return
+
+    # Connection Test (Audit Fix: Silent failure check)
+    from . import client
+    me = client.get_me()
+    if me.get("ok"):
+        bot_name = me.get("result", {}).get("username", "UnknownBot")
+        print(f"✅ [TELEGRAM] Connected as @{bot_name}")
+    else:
+        print(f"⚠ [TELEGRAM] Connection test failed: {me.get('description', 'Unknown Error')}")
         
     worker.start()
     
