@@ -292,12 +292,11 @@ def main():
                 for k in keys:
                     if not k: continue
                     val = new_env.get(k, current_env.get(k, ""))
+                    # Audit Fix: Normalize paths to forward slashes for cross-platform Docker stability
+                    # and remove the aggressive $ escaping which breaks native loaders.
+                    val = str(val).replace('\\', '/')
                     
-                    # Audit Fix: Escape $ for Docker Compose (Standard formatting)
-                    # We first normalize to single $ then escape to $$ to avoid $$$$
-                    safe_val = str(val).replace('$$', '$').replace('$', '$$')
-                    
-                    f.write(f"{k}={safe_val}\n")
+                    f.write(f"{k}={val}\n")
                 f.write("\n")
                 
         print(f"\n{GREEN}{BOLD}✅ Configuration complete!{END}")

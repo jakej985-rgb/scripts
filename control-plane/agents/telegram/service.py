@@ -7,11 +7,15 @@ from config.telegram import BOT_TOKEN
 # Responsibility: Lifecycle management and public API exposure.
 
 _atexit_registered = False
+_started = False
 
 def start():
     """Wakes up the telegram subsystem with connection validation."""
-    global _atexit_registered
+    global _atexit_registered, _started
     
+    if _started:
+        return
+        
     if not BOT_TOKEN:
         print("🚨 [TELEGRAM] FATAL: BOT_TOKEN is missing or could not be loaded from .env")
         return
@@ -31,6 +35,8 @@ def start():
     if not _atexit_registered:
         atexit.register(stop)
         _atexit_registered = True
+    
+    _started = True
 
 def stop():
     """Graceful teardown with safety timeout."""

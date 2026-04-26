@@ -218,7 +218,8 @@ def handle_command(update):
 
     # Audit Fix H1: Reject old messages (prevent replay on restart)
     msg_date = msg.get("date", 0)
-    if time.time() - msg_date > 120:
+    # Relaxed TTL: 600s (10m) to allow for clock drift in Docker/WSL
+    if time.time() - msg_date > 600:
         print(f"[CMD] Ignoring expired message from {uid} (diff: {int(time.time() - msg_date)}s)")
         return
 
@@ -281,8 +282,8 @@ def handle_command(update):
         telegram.send_direct(msg["chat"]["id"], status_msg)
 
 def listen_commands():
-    # Audit Fix: Re-using global start from run.py
-    pass
+    # Audit Fix: Subprocesses must start their own Telegram worker thread
+    telegram.start()
         
     from utils.paths import TELEGRAM_OFFSET_TXT
     offset = 0
@@ -330,7 +331,8 @@ if __name__ == "__main__":
                 updates = telegram.router.get_new_updates(offset=offset)
                 if not updates:
                     break
-                offset = updates[-1]["update_id"]
+                # Audit Fix: Correctly increment offset to avoid infinite loop
+                offset = updates[-1]["update_id"] + 1
             TELEGRAM_OFFSET_TXT.write_text(str(offset))
             print(f"[TELEGRAM] Offset safely initialized to {offset}")
         except Exception as e:

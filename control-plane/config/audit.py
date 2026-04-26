@@ -111,6 +111,28 @@ class AuditScanner:
 
     def scan(self):
         """Runs the audit loop across all managed containers + Tier 1 Tier."""
+        # 0. Control Plane Agent Health (V6.6.1 Hardening)
+        try:
+            from agents.utils.paths import HEALTH_JSON
+            import time
+            if HEALTH_JSON.exists():
+                with open(HEALTH_JSON, 'r') as f:
+                    data = json.load(f)
+                    last_update = data.get("timestamp", 0)
+                    age = time.time() - last_update
+                    if age > 300: # 5 minutes
+                        self._add_issue("control-plane", "runtime", CRITICAL,
+                                        f"Control Plane Health is STALE ({int(age)}s old).",
+                                        "The agent runner may be hung or crashed. Restart with 'm3tal.py run'.")
+                    else:
+                        self.successes.append(f"Control Plane \u2192 HEALTHY ({int(age)}s old)")
+            else:
+                self._add_issue("control-plane", "runtime", WARNING,
+                                "Control Plane Health file is MISSING.",
+                                "Run 'm3tal.py run' to start the agent runner.")
+        except Exception as e:
+             self._add_issue("control-plane", "runtime", WARNING, f"Could not verify CP Health: {e}")
+
         try:
             cmd = ["docker", "ps", "-a", "--format", "{{.Names}}"]
             all_names = subprocess.run(cmd, capture_output=True, text=True, check=True).stdout.splitlines()

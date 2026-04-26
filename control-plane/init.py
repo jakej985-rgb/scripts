@@ -84,10 +84,10 @@ def validate_env_dollar_escaping():
                 
                 if "AUTH" in key or "HASH" in key:
                     t_log(f"⚠ WARNING: Unsafe $ in {key}. Docker Compose requires $$ for hashes.", symbol="⚠")
-                    t_log(f"👉 Fix your .env: {key}={value.replace('$', '$$')}", symbol="👉")
+                    t_log(f"👉 Fix your .env if using this in compose directly: {key}={value.replace('$', '$$')}", symbol="👉")
                     continue
                     
-                raise RuntimeError(f"Unsafe env var in .env (requires $$ escaping for Docker Compose): {key}")
+                t_log(f"⚠ WARNING: Unsafe $ in {key}. Use $$ if this var is interpolated in docker-compose.yml", symbol="⚠")
 
 def run_preflight_checks():
     """Phase 5: Preflight validation for ports, sockets, networks, and environment safety."""

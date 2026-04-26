@@ -22,7 +22,9 @@ logger = get_logger("notify")
 NOTIFY_STATE_JSON = os.path.join(STATE_DIR, "notify_state.json")
 
 def check_and_notify():
-    # Audit Fix L1: Guard with is_available
+    # Audit Fix L1: Subprocesses must start their own Telegram worker thread
+    telegram.start()
+    
     if not telegram.is_available():
         return
         
