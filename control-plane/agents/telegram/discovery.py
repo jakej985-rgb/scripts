@@ -29,9 +29,10 @@ def discover_and_map():
     
     print(f"\n🚀 {BOLD}Scanning...{END}")
     
+    from . import client
+    
     mapping = {}
     found_tags = set()
-    url = f"https://api.telegram.org/bot{BOT_TOKEN}/getUpdates"
     
     attempt = 0
     max_attempts = 15
@@ -39,23 +40,18 @@ def discover_and_map():
     while attempt < max_attempts:
         attempt += 1
         try:
-            resp_raw = requests.get(url, timeout=10)
+            # Audit Fix H3: Use the hardened client
+            resp = client.call_api("getUpdates", timeout=10)
             
-            # --- Diagnostic for 401 ---
-            if resp_raw.status_code == 401:
-                print(f"  ❌ {RED}ERROR: 401 Unauthorized (Invalid Token).{END}")
-                token_clean = (BOT_TOKEN or "").strip()
-                print(f"     Token starts with: {token_clean[:12]}...")
-                print(f"     Token length: {len(token_clean)}")
-                if "\r" in (BOT_TOKEN or "") or "\n" in (BOT_TOKEN or ""):
-                    print(f"     {YELLOW}WARNING: Hidden newlines detected in token string!{END}")
+            if not resp.get("ok"):
+                error_desc = resp.get("description", "Unknown API Error")
+                if resp.get("status_code") == 401:
+                    print(f"  ❌ {RED}ERROR: 401 Unauthorized (Invalid Token).{END}")
+                    print(f"     Token length: {len(BOT_TOKEN) if BOT_TOKEN else 0}")
+                else:
+                    print(f"  ❌ {RED}ERROR: {error_desc}{END}")
                 return mapping
 
-            if resp_raw.status_code != 200:
-                print(f"  ❌ {RED}ERROR: API returned {resp_raw.status_code}{END}")
-                return mapping
-
-            resp = resp_raw.json()
             updates = resp.get("result", [])
             update_count = len(updates)
             

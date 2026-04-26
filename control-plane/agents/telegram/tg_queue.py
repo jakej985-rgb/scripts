@@ -9,16 +9,13 @@ _q = queue.Queue(maxsize=MAX_SIZE)
 def enqueue(chat_id: int, message: str):
     """Ingestion point with backpressure protection (drop-oldest)."""
     try:
-        # Fallback to non-blocking put to detect full state
         _q.put_nowait((chat_id, message))
     except queue.Full:
-        # Rex Policy: If full, discard the OLDEST message to make room
-        try:
-            _q.get_nowait()
-            _q.task_done()
-            _q.put_nowait((chat_id, message))
-        except queue.Empty:
-            pass
+        # Audit Fix M2: Drop the NEWEST (skip current) instead of oldest 
+        # to ensure the first diagnostic alerts are preserved.
+        import sys
+        print(f"⚠️ [TELEGRAM QUEUE] Full ({MAX_SIZE}). Dropping newest alert for chat {chat_id}.", file=sys.stderr)
+        pass
 
 def dequeue(timeout: int = 1):
     """Retrieval point for the worker."""

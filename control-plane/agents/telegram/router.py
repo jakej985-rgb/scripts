@@ -29,7 +29,6 @@ def _is_duplicate(text: str) -> bool:
     clean_text = _strip_html(text)
     
     # Audit Fix M4: Normalize dynamic fields (timestamps, counts) for better dedup
-    import re
     # Remove timestamps like 06:06:00 or 2026-04-23 06:06:00
     norm_text = re.sub(r'\d{2}:\d{2}:\d{2}', 'HH:MM:SS', clean_text)
     norm_text = re.sub(r'\d{4}-\d{2}-\d{2}', 'YYYY-MM-DD', norm_text)
@@ -56,6 +55,24 @@ def _is_duplicate(text: str) -> bool:
     _sent_hashes[m_hash] = {"ts": now, "count": 0}
     return False
 
+# Audit Fix M4: Outbound Rate Limiting (10 msgs / 60s per channel)
+_channel_rate_limits = {}
+MAX_PER_MINUTE = 10
+
+def _is_rate_limited(chat_id: int) -> bool:
+    now = time.time()
+    if chat_id not in _channel_rate_limits:
+        _channel_rate_limits[chat_id] = []
+    
+    # Prune timestamps older than 60s
+    _channel_rate_limits[chat_id] = [ts for ts in _channel_rate_limits[chat_id] if now - ts < 60]
+    
+    if len(_channel_rate_limits[chat_id]) >= MAX_PER_MINUTE:
+        return True
+        
+    _channel_rate_limits[chat_id].append(now)
+    return False
+
 def route_message(channel: str, text: str):
     """Routes a message to the appropriate chat ID with deduplication check."""
     if _is_duplicate(text):
@@ -74,6 +91,12 @@ def route_message(channel: str, text: str):
     elif channel == "docker" and CHAT_COUNT == 6 and DOCKER_CHAT_ID:
         target_chat = DOCKER_CHAT_ID
         
+    # Audit Fix M4: Final rate limit check before enqueue
+    if _is_rate_limited(target_chat):
+        # We don't log this to the channel (to avoid more noise), but we can log to console
+        # print(f"[ROUTER] Rate limiting channel {target_chat}")
+        return
+
     tg_queue.enqueue(target_chat, text)
 
 def get_new_updates(offset: int = 0):

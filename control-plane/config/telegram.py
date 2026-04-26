@@ -42,13 +42,15 @@ BOT_TOKEN: str | None = _raw_token.strip() or None
 
 # Emit an early warning if the raw token had hidden whitespace so the user
 # knows to fix their .env rather than spending hours debugging 401s.
-if _raw_token and BOT_TOKEN != _raw_token:
+_warned = False
+if _raw_token and BOT_TOKEN != _raw_token and not _warned:
     print(
         "[TELEGRAM CONFIG] WARNING: BOT_TOKEN contained leading/trailing whitespace "
         "or carriage returns — stripped automatically. "
         "Fix your .env file to silence this warning.",
         file=sys.stderr,
     )
+    _warned = True
 
 # --- Channel Count -----------------------------------------------------------
 CHAT_COUNT: int = _safe_int(

@@ -128,8 +128,7 @@ def call_api(
                 detail = (
                     "401 Unauthorized. If running on Linux, check for Windows CRLF "
                     "line endings in your .env file (token may contain \\r). "
-                    f"Token length received: {len(BOT_TOKEN)}, "
-                    f"ends with: {repr(BOT_TOKEN[-4:]) if BOT_TOKEN else 'N/A'}"
+                    f"Token length received: {len(BOT_TOKEN) if BOT_TOKEN else 0}"
                 )
             else:
                 detail = f"{resp.status_code}: {resp.text[:200]}"

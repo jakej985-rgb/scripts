@@ -133,8 +133,17 @@ def handle_docker(msg, args):
             telegram.send_direct(msg["chat"]["id"], "Usage: /docker logs [container_name]")
             return
         name = args[1]
-        if name not in allowed:
+        
+        from config.telegram import ALLOWED_DOCKER_RESTARTS
+        static_allowed = [s.strip() for s in ALLOWED_DOCKER_RESTARTS if s.strip()]
+
+        if name not in allowed and name not in static_allowed:
             telegram.send_direct(msg["chat"]["id"], f"🚫 Container <code>{name}</code> is not in registry whitelist.")
+            return
+
+        # Audit Fix C2: Enforce static allowlist for log access to prevent registry poisoning
+        if name not in static_allowed:
+            telegram.send_direct(msg["chat"]["id"], f"🚫 Container <code>{name}</code> logs are restricted (Security Policy).")
             return
         try:
             result = subprocess.run(["docker", "logs", "--tail", "20", name], capture_output=True, text=True, timeout=10)
@@ -186,9 +195,11 @@ def is_rate_limited(uid: int) -> bool:
         return True
     _cmd_cooldowns[uid] = now
     
-    stale = [k for k, v in _cmd_cooldowns.items() if now - v > 3600]
-    for k in stale:
-        del _cmd_cooldowns[k]
+    # Audit Fix L3: Prune cooldowns periodically
+    if now % 100 == 0:
+        stale = [k for k, v in _cmd_cooldowns.items() if now - v > 3600]
+        for k in stale:
+            del _cmd_cooldowns[k]
         
     return False
 
@@ -203,6 +214,12 @@ def handle_command(update):
 
     if not is_allowed_user(uid):
         # Silent fail for unauthorized
+        return
+
+    # Audit Fix H1: Reject old messages (prevent replay on restart)
+    msg_date = msg.get("date", 0)
+    if time.time() - msg_date > 120:
+        print(f"[CMD] Ignoring expired message from {uid} (diff: {int(time.time() - msg_date)}s)")
         return
 
     if is_rate_limited(uid):
@@ -272,13 +289,19 @@ def listen_commands():
     if TELEGRAM_OFFSET_TXT.exists():
         try:
             offset = int(TELEGRAM_OFFSET_TXT.read_text().strip())
-        except Exception:
+        except Exception as e:
+            print(f"[TELEGRAM] Offset corruption detected: {e}. Falling back to 0 (replaying history).")
             pass
 
     try:
+        # Audit Fix H2: Prune expired confirmations
+        now = time.time()
+        expired = [cid for cid, p in _pending_confirmations.items() if now > p["expires"]]
+        for cid in expired:
+            del _pending_confirmations[cid]
+
         updates = telegram.router.get_new_updates(offset=offset)
         if not updates:
-            time.sleep(2)  # Audit Fix: Prevent tight loop on empty/fail
             return
             
         for update in updates:
@@ -313,4 +336,4 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"[TELEGRAM INIT ERR] {e}")
             
-    wrap_agent("command_listener", listen_commands, interval=0)
+    wrap_agent("command_listener", listen_commands, interval=2)
