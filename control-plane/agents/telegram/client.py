@@ -208,11 +208,11 @@ def get_me() -> dict:
 def get_updates(offset: int = 0, timeout: int = 20) -> list[dict]:
     """
     Fetches new updates from the Bot API using long-polling.
-    The +1 offset is handled here centrally.
+    The caller is responsible for passing the next offset (last_id + 1).
     """
     result = call_api(
         "getUpdates",
-        {"offset": offset + 1, "timeout": timeout},
+        {"offset": offset, "timeout": timeout},
         timeout=timeout + 5,
     )
     if not result.get("ok"):

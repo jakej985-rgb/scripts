@@ -6,10 +6,14 @@ from config.telegram import BOT_TOKEN
 # M3TAL Telegram Service (v3.1 Hardened Orchestrator)
 # Responsibility: Lifecycle management and public API exposure.
 
+_atexit_registered = False
+
 def start():
     """Wakes up the telegram subsystem with connection validation."""
+    global _atexit_registered
+    
     if not BOT_TOKEN:
-        print("🚨 [TELEGRAM] FATAL: BOT_TOKEN is missing. Subsystem will not start.")
+        print("🚨 [TELEGRAM] FATAL: BOT_TOKEN is missing or could not be loaded from .env")
         return
 
     # Connection Test (Audit Fix: Silent failure check)
@@ -23,8 +27,10 @@ def start():
         
     worker.start()
     
-    # Register shutdown globally
-    atexit.register(stop)
+    # Register shutdown globally (Audit Fix: Single registration guard)
+    if not _atexit_registered:
+        atexit.register(stop)
+        _atexit_registered = True
 
 def stop():
     """Graceful teardown with safety timeout."""

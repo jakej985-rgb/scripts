@@ -278,6 +278,7 @@ def listen_commands():
     try:
         updates = telegram.router.get_new_updates(offset=offset)
         if not updates:
+            time.sleep(2)  # Audit Fix: Prevent tight loop on empty/fail
             return
             
         for update in updates:

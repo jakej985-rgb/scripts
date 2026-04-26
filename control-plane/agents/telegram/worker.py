@@ -75,13 +75,17 @@ def _run() -> None:
         # ── Dequeue (non-blocking timeout) ────────────────────────────────────
         item = tg_queue.dequeue(timeout=1)
         if item is None:
-            # Queue was empty — do NOT call task_done(), nothing was taken
             continue
+            
+        # Audit Fix: Guard before unpack to handle poison pill cleanly
+        if not isinstance(item, tuple):
+            continue
+            
+        chat_id, msg = item
 
         # ── Process item ──────────────────────────────────────────────────────
         # At this point, task_done() MUST be called in a finally block.
         try:
-            chat_id, msg = item
 
             if not isinstance(chat_id, int) or chat_id == 0:
                 print(

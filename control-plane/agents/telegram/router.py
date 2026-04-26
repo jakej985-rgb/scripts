@@ -10,6 +10,7 @@ from config.telegram import (
 # Responsibility: Business logic, channel routing, and deduplication.
 
 import time
+import re
 
 # Deduplication State (Last 5 minutes of unique messages - Audit Fix H7.12)
 _sent_hashes = {} # {hash: {"ts": timestamp, "count": int}}
@@ -18,7 +19,6 @@ ESCALATION_THRESHOLD = 5 # Re-alert after 5 suppressed duplicates
 
 def _strip_html(text: str) -> str:
     """Removes HTML tags for cleaner hashing (Audit Fix 18)."""
-    import re
     return re.sub(r'<[^>]+>', '', text)
 
 def _is_duplicate(text: str) -> bool:
