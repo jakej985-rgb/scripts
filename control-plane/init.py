@@ -147,16 +147,17 @@ def run_preflight_checks():
         except Exception:
             pass # Docker might not be in PATH yet, allow other agents to handle.
 
-    # 5. Docker API Version Auto-Negotiation (Audit Fix 4.5.1)
-    if os.name != 'nt':
-        try:
-            # Check for Docker Desktop context which is prone to version mismatches
-            context = subprocess.run(["docker", "context", "show"], capture_output=True, text=True).stdout.strip()
-            if "desktop-linux" in context or os.environ.get("DOCKER_API_VERSION"):
-                t_log(f"🐋 Docker Context: {context}. Enabling API auto-negotiation...", symbol="🐋")
-                # We'll allow the orchestrator to unset it in the main environment loop
-        except:
-            pass
+    # 6. System Clock Validation (Audit Phase 6)
+    # Telegram messages are epoch-based. If system clock is wrong, messages are dropped.
+    try:
+        now = time.time()
+        # Reference: Apr 2026 is approx 1774000000
+        if now < 1700000000:
+            log("FATAL: System clock is in the past! Telegram will fail.", symbol="✘")
+            log("👉 Fix with: sudo timedatectl set-ntp true", symbol="👉")
+            return False
+    except:
+        pass
 
     return True
 

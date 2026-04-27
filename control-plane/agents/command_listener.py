@@ -138,9 +138,18 @@ def process_update(update):
         # We don't respond to unauthorized users to avoid being a spam vector
         return
 
-    # TTL Check: Ignore messages older than 10 minutes
+    # TTL Check (v3.6): Ignore messages older than 10 minutes
+    # We only reject strictly OLD messages (now - msg_date > 600)
+    # We ALLOW future timestamps (msg_date > now) because of common Docker clock drift
+    now = time.time()
     msg_date = msg.get("date", 0)
-    if time.time() - msg_date > 600:
+    
+    if msg_date > now + 60:
+        # Detect drift but allow the message
+        print(f"⚠️ [CMD] Clock Drift Detected: Message timestamp {msg_date} is in the future relative to {int(now)}")
+    
+    if (now - msg_date) > 600:
+        print(f"[CMD] Dropping expired message from {uid} (age: {int(now - msg_date)}s)")
         return
 
     text = msg.get("text", "").strip()
