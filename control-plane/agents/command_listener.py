@@ -3,22 +3,27 @@ import sys
 import json
 import time
 import subprocess
-import secrets
 from datetime import datetime
+from pathlib import Path
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# M3TAL Telegram Command Listener (v3.5 Bulletproof)
+# Responsibility: Interactive control, log inspection, and system status.
 
-from config.telegram import is_allowed_user
+# Bootstrap path system
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+sys.path.append(str(REPO_ROOT / "control-plane"))
+
 from agents import telegram
-from utils.paths import REGISTRY_JSON
+from config.telegram import is_allowed_user
+from utils.paths import REGISTRY_JSON, STATE_DIR, HEALTH_JSON, TELEGRAM_OFFSET_TXT
+from utils.guards import wrap_agent, SHUTDOWN_EVENT
 
 START_TIME = datetime.now()
 
-# =========================
-# Helpers
-# =========================
+# --- Helpers ------------------------------------------------------------------
 
 def get_allowed_containers():
+    """Returns a list of containers allowed for interactive control."""
     from config.telegram import ALLOWED_DOCKER_RESTARTS
     static_allowed = [s.strip() for s in ALLOWED_DOCKER_RESTARTS if s.strip()]
 
@@ -28,7 +33,8 @@ def get_allowed_containers():
     try:
         with open(REGISTRY_JSON, "r") as f:
             registry = json.load(f)
-
+        
+        # Merge static list with dynamic registry
         containers = registry.get("containers", [])
         if isinstance(containers, dict):
             dynamic_allowed = list(containers.keys())
@@ -42,65 +48,103 @@ def get_allowed_containers():
         print(f"[CMD] Registry error: {e}")
         return static_allowed
 
+# --- Command Handlers ---------------------------------------------------------
 
-# =========================
-# Command Handlers
-# =========================
+def handle_status(msg, args):
+    """Provides high-level system or agent status."""
+    if args and args[0] == "agents":
+        # Detailed agent health from health.json
+        if HEALTH_JSON.exists():
+            try:
+                data = json.loads(HEALTH_JSON.read_text())
+                agents = data.get("agents", {})
+                status_lines = [f"<b>Agent Health</b> (Score: {data.get('score', 0)}%)"]
+                for name, stats in agents.items():
+                    emoji = "✅" if stats.get("status") == "healthy" else "❌"
+                    status_lines.append(f"{emoji} {name}")
+                telegram.send_direct(msg["chat"]["id"], "\n".join(status_lines))
+            except:
+                telegram.send_direct(msg["chat"]["id"], "❌ Error reading health state.")
+        else:
+            telegram.send_direct(msg["chat"]["id"], "⚠️ health.json not found.")
+    else:
+        # Generic system status
+        uptime = str(datetime.now() - START_TIME).split(".")[0]
+        telegram.send_direct(msg["chat"]["id"], f"🏥 <b>M3TAL System</b>\nUptime: <code>{uptime}</code>\nStatus: <b>HEALTHY</b>")
 
-def handle_ping(msg):
-    telegram.send_direct(msg["chat"]["id"], "✅ <b>M3TAL Online</b>")
-
-def handle_myid(msg):
-    telegram.send_direct(msg["chat"]["id"], f"<code>{msg['from']['id']}</code>")
-
-def handle_uptime(msg):
-    delta = datetime.now() - START_TIME
-    h, r = divmod(int(delta.total_seconds()), 3600)
-    m, s = divmod(r, 60)
-    telegram.send_direct(msg["chat"]["id"], f"{h}h {m}m {s}s")
-
-def handle_help(msg):
-    telegram.send_direct(msg["chat"]["id"],
-        "/ping\n/status\n/status agents\n/docker status\n/docker restart <name>\n")
-
-# =========================
-# Command Core
-# =========================
-
-_cmd_cooldowns = {}
-CMD_COOLDOWN = 3
-
-def is_rate_limited(uid):
-    now = time.time()
-    last = _cmd_cooldowns.get(uid, 0)
-    if now - last < CMD_COOLDOWN:
-        return True
-    _cmd_cooldowns[uid] = now
-    return False
-
-
-def handle_command(update):
-    msg = update.get("message")
-    if not msg or "text" not in msg:
+def handle_docker(msg, args):
+    """Container management: status, restart."""
+    if not args:
+        telegram.send_direct(msg["chat"]["id"], "Usage: <code>/docker [status|restart]</code>")
         return
+
+    cmd = args[0].lower()
+    if cmd == "status":
+        try:
+            res = subprocess.run(["docker", "ps", "--format", "{{.Names}} | {{.Status}}"], capture_output=True, text=True)
+            output = res.stdout if res.stdout else "No containers running."
+            telegram.send_direct(msg["chat"]["id"], f"🐳 <b>Docker Status</b>\n<pre>{output}</pre>")
+        except Exception as e:
+            telegram.send_direct(msg["chat"]["id"], f"❌ Docker error: {e}")
+
+    elif cmd == "restart":
+        if len(args) < 2:
+            telegram.send_direct(msg["chat"]["id"], "Usage: <code>/docker restart <name></code>")
+            return
+        
+        target = args[1]
+        allowed = get_allowed_containers()
+        
+        if target not in allowed:
+            telegram.send_direct(msg["chat"]["id"], f"🚫 <b>Access Denied</b>: '{target}' is not in the allowed list.")
+            return
+
+        telegram.send_direct(msg["chat"]["id"], f"⏳ Restarting <code>{target}</code>...")
+        try:
+            subprocess.run(["docker", "restart", target], check=True)
+            telegram.send_direct(msg["chat"]["id"], f"✅ Container <code>{target}</code> restarted successfully.")
+        except Exception as e:
+            telegram.send_direct(msg["chat"]["id"], f"❌ Failed to restart <code>{target}</code>: {e}")
+
+def handle_logs(msg, args):
+    """Fetches recent logs for a service."""
+    if not args:
+        telegram.send_direct(msg["chat"]["id"], "Usage: <code>/logs <service_name></code>")
+        return
+    
+    target = args[0]
+    allowed = get_allowed_containers()
+    if target not in allowed:
+         telegram.send_direct(msg["chat"]["id"], "🚫 Unauthorized or unknown service.")
+         return
+
+    try:
+        # Fetch last 30 lines
+        res = subprocess.run(["docker", "logs", "--tail", "30", target], capture_output=True, text=True)
+        logs = res.stdout if res.stdout else res.stderr
+        if not logs: logs = "(no output)"
+        telegram.send_direct(msg["chat"]["id"], f"📄 <b>Logs: {target}</b>\n<pre>{logs[-3500:]}</pre>")
+    except Exception as e:
+        telegram.send_direct(msg["chat"]["id"], f"❌ Error: {e}")
+
+# --- Core Loop ----------------------------------------------------------------
+
+def process_update(update):
+    msg = update.get("message")
+    if not msg or "text" not in msg: return
 
     uid = msg.get("from", {}).get("id")
     if not uid or not is_allowed_user(uid):
+        # We don't respond to unauthorized users to avoid being a spam vector
         return
 
-    # FIX: safer TTL check (no false drops)
-    msg_date = msg.get("date")
-    if msg_date and abs(time.time() - msg_date) > 600:
-        print(f"[CMD] Dropped old msg ({uid})")
+    # TTL Check: Ignore messages older than 10 minutes
+    msg_date = msg.get("date", 0)
+    if time.time() - msg_date > 600:
         return
 
-    if is_rate_limited(uid):
-        telegram.send_direct(msg["chat"]["id"], "⏳ Slow down")
-        return
-
-    text = msg["text"].strip()
-    if not text.startswith("/"):
-        return
+    text = msg.get("text", "").strip()
+    if not text.startswith("/"): return
 
     parts = text.split()
     cmd = parts[0].split("@")[0].lower()
@@ -109,98 +153,85 @@ def handle_command(update):
     print(f"[CMD] {cmd} from {uid}")
 
     if cmd == "/ping":
-        handle_ping(msg)
-
-    elif cmd == "/help":
-        handle_help(msg)
-
-    elif cmd == "/myid":
-        handle_myid(msg)
-
-    elif cmd == "/uptime":
-        handle_uptime(msg)
-
+        telegram.send_direct(msg["chat"]["id"], "pong 🏓")
     elif cmd == "/status":
-        from utils.paths import HEALTH_JSON
-
-        status_msg = "🏥 <b>Status</b>\n"
-        if HEALTH_JSON.exists():
-            try:
-                data = json.loads(HEALTH_JSON.read_text())
-                status_msg += f"{data.get('status','unknown')}"
-            except:
-                status_msg += "corrupt"
-        else:
-            status_msg += "missing"
-
-        telegram.send_direct(msg["chat"]["id"], status_msg)
-
+        handle_status(msg, args)
     elif cmd == "/docker":
-        if not args:
-            telegram.send_direct(msg["chat"]["id"], "usage")
-            return
+        handle_docker(msg, args)
+    elif cmd == "/logs":
+        handle_logs(msg, args)
+    elif cmd == "/myid":
+        telegram.send_direct(msg["chat"]["id"], f"Your ID: <code>{uid}</code>")
+    elif cmd == "/help":
+        help_text = (
+            "🤖 <b>M3TAL Bot Commands</b>\n\n"
+            "/status - System health overview\n"
+            "/status agents - Detailed agent health\n"
+            "/docker status - List running containers\n"
+            "/docker restart &lt;name&gt; - Restart a service\n"
+            "/logs &lt;name&gt; - View recent logs\n"
+            "/uptime - System start time\n"
+            "/ping - Basic connectivity test"
+        )
+        telegram.send_direct(msg["chat"]["id"], help_text)
+    elif cmd == "/uptime":
+        uptime = str(datetime.now() - START_TIME).split(".")[0]
+        telegram.send_direct(msg["chat"]["id"], f"Uptime: <code>{uptime}</code>")
 
-        if args[0] == "status":
-            result = subprocess.run(
-                ["docker", "ps", "--format", "{{.Names}} {{.Status}}"],
-                capture_output=True, text=True
-            )
-            telegram.send_direct(msg["chat"]["id"], f"<pre>{result.stdout}</pre>")
+def listen_loop(initial_offset):
+    offset = initial_offset
+    
+    while not SHUTDOWN_EVENT.is_set():
+        try:
+            # Bulletproof: Check for offset corruption or future jump
+            if offset > (int(time.time()) + 86400) * 1000:
+                print(f"⚠️ [CMD] Offset {offset} invalid. Resetting.")
+                offset = 0
 
+            updates = telegram.router.get_new_updates(offset=offset, timeout=20)
+            
+            if updates:
+                print(f"[CMD] Received {len(updates)} updates")
+                for update in updates:
+                    process_update(update)
+                    offset = update["update_id"] + 1
+                
+                # Persistence
+                TELEGRAM_OFFSET_TXT.write_text(str(offset))
+            
+        except Exception as e:
+            print(f"❌ [CMD] Loop Error: {e}")
+            time.sleep(5)
+            
+        time.sleep(1)
 
-# =========================
-# 🔥 FIXED LISTENER LOOP
-# =========================
-
-def listen_commands():
+def main():
+    # Subprocesses must start their own Telegram worker
     telegram.start()
-
-    from utils.paths import TELEGRAM_OFFSET_TXT
-
+    
+    # 1. Load Offset
     offset = 0
     if TELEGRAM_OFFSET_TXT.exists():
         try:
             offset = int(TELEGRAM_OFFSET_TXT.read_text().strip())
         except:
             offset = 0
-
-    print(f"[CMD] Listener running (offset={offset})")
-
-    while True:
+            
+    # 2. Initial Sync (Optional Drain)
+    # If offset is 0, we do a quick poll to skip everything in the past
+    if offset == 0:
         try:
-            updates = telegram.router.get_new_updates(
-                offset=offset,
-                timeout=30   # 🔥 CRITICAL FIX (long polling)
-            )
+            print("[CMD] Syncing offset...")
+            sync = telegram.router.get_new_updates(offset=0, timeout=1)
+            if sync:
+                offset = sync[-1]["update_id"] + 1
+                TELEGRAM_OFFSET_TXT.write_text(str(offset))
+                print(f"✅ [CMD] Synced to {offset}")
+        except:
+            pass
 
-            if not updates:
-                continue
-
-            for update in updates:
-                print(f"[CMD] Update received")
-
-                try:
-                    handle_command(update)
-                except Exception as e:
-                    print(f"[CMD ERROR] {e}")
-
-                offset = update["update_id"] + 1
-
-            TELEGRAM_OFFSET_TXT.write_text(str(offset))
-
-        except Exception as e:
-            print(f"[CMD LOOP ERROR] {e}")
-            time.sleep(2)
-
-
-# =========================
-# Entry
-# =========================
+    print(f"[CMD] Starting Listener (offset={offset})")
+    listen_loop(offset)
 
 if __name__ == "__main__":
-    from utils.guards import wrap_agent
-
-    print("[TELEGRAM] Listener starting...")
-
-    # IMPORTANT: no interval loop here anymore
-    wrap_agent("command_listener", listen_commands)
+    wrap_agent("command_listener", main)
