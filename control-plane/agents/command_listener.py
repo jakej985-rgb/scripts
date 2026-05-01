@@ -32,6 +32,10 @@ def _agent_dbg(hypothesis_id: str, location: str, message: str, data: dict) -> N
             "timestamp": int(time.time() * 1000),
         }
         _line = json.dumps(payload) + "\n"
+        try:
+            print(f"[DBG_6f288f] {_line.strip()}", flush=True)
+        except Exception:
+            pass
         for _p in (REPO_ROOT / "debug-6f288f.log", STATE_DIR / "debug-6f288f.log"):
             try:
                 _p.parent.mkdir(parents=True, exist_ok=True)
@@ -173,7 +177,13 @@ def process_update(update):
         )
         return
 
-    uid = msg.get("from", {}).get("id")
+    uid_raw = msg.get("from", {}).get("id")
+    uid = None
+    if uid_raw is not None:
+        try:
+            uid = int(uid_raw)
+        except (TypeError, ValueError):
+            uid = None
     _allowed = bool(uid and is_allowed_user(uid))
     _agent_dbg(
         "H1",
@@ -289,7 +299,29 @@ def listen_loop(initial_offset):
 def main():
     # Subprocesses must start their own Telegram worker
     telegram.start()
-    
+
+    # Long polling cannot receive updates while a webhook is registered on the same bot.
+    from agents.telegram import client as tg_client
+
+    wh = tg_client.call_api("getWebhookInfo", timeout=15)
+    if wh.get("ok"):
+        wh_url = (wh.get("result") or {}).get("url") or ""
+        if wh_url:
+            print(
+                f"[CMD] Webhook active ({wh_url!r}) — deleting so getUpdates polling works.",
+                flush=True,
+            )
+            dropped = tg_client.call_api(
+                "deleteWebhook",
+                {"drop_pending_updates": False},
+                timeout=15,
+            )
+            if not dropped.get("ok"):
+                print(
+                    f"[CMD] ⚠️ deleteWebhook failed: {dropped.get('description')}",
+                    flush=True,
+                )
+
     # 1. Load Offset
     offset = 0
     if TELEGRAM_OFFSET_TXT.exists():
@@ -298,22 +330,30 @@ def main():
         except:
             offset = 0
             
-    # 2. Initial Sync (Drain old messages)
-    # If offset is 0, we jump to the latest message to avoid backlog lag.
+    # 2. Initial Sync (Drain pending backlog)
+    # Telegram getUpdates requires monotonic offset; there is no "offset=-1" API.
+    # Short-poll with timeout=0 until empty, then persist next offset.
     if offset == 0:
         try:
-            print("[CMD] No offset found. Jumping to latest message...")
-            # Using offset=-1 retrieves the absolute latest update
-            sync = telegram.router.get_new_updates(offset=-1, timeout=1)
-            if sync:
-                # Set offset to latest_id + 1 so we only get NEW messages from now on
-                offset = sync[-1]["update_id"] + 1
-                TELEGRAM_OFFSET_TXT.write_text(str(offset))
-                print(f"✅ [CMD] Synced to latest offset: {offset}")
+            print("[CMD] No offset file — draining pending updates to skip backlog...", flush=True)
+            next_o = 0
+            drained = 0
+            for _ in range(500):
+                batch = telegram.router.get_new_updates(offset=next_o, timeout=0)
+                if not batch:
+                    offset = next_o
+                    break
+                drained += len(batch)
+                next_o = batch[-1]["update_id"] + 1
             else:
-                print("ℹ️ [CMD] No updates found during sync. Starting fresh.")
+                offset = next_o
+            TELEGRAM_OFFSET_TXT.write_text(str(offset))
+            print(
+                f"✅ [CMD] Synced offset={offset} (drained {drained} pending update(s)).",
+                flush=True,
+            )
         except Exception as e:
-            print(f"⚠️ [CMD] Sync failed: {e}")
+            print(f"⚠️ [CMD] Sync failed: {e}", flush=True)
 
     print(f"[CMD] Starting Listener (offset={offset})")
     listen_loop(offset)
