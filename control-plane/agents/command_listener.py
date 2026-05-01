@@ -10,15 +10,38 @@ from pathlib import Path
 # Responsibility: Interactive control, log inspection, and system status.
 
 # Bootstrap path system
-REPO_ROOT = Path(__file__).resolve().parent.parent.parent
-sys.path.append(str(REPO_ROOT / "control-plane"))
+_BOOT_ROOT = Path(__file__).resolve().parent.parent.parent
+sys.path.append(str(_BOOT_ROOT / "control-plane"))
 
 from agents import telegram
-from config.telegram import is_allowed_user
-from utils.paths import REGISTRY_JSON, STATE_DIR, HEALTH_JSON, TELEGRAM_OFFSET_TXT
+from config.telegram import is_allowed_user, ALLOWED_USERS
+from utils.paths import REPO_ROOT, REGISTRY_JSON, STATE_DIR, HEALTH_JSON, TELEGRAM_OFFSET_TXT
 from utils.guards import wrap_agent, SHUTDOWN_EVENT
 
 START_TIME = datetime.now()
+
+# #region agent log
+def _agent_dbg(hypothesis_id: str, location: str, message: str, data: dict) -> None:
+    try:
+        payload = {
+            "sessionId": "6f288f",
+            "hypothesisId": hypothesis_id,
+            "location": location,
+            "message": message,
+            "data": data,
+            "timestamp": int(time.time() * 1000),
+        }
+        _line = json.dumps(payload) + "\n"
+        for _p in (REPO_ROOT / "debug-6f288f.log", STATE_DIR / "debug-6f288f.log"):
+            try:
+                _p.parent.mkdir(parents=True, exist_ok=True)
+                with open(_p, "a", encoding="utf-8") as _f:
+                    _f.write(_line)
+            except Exception:
+                pass
+    except Exception:
+        pass
+# #endregion
 
 # --- Helpers ------------------------------------------------------------------
 
@@ -130,12 +153,41 @@ def handle_logs(msg, args):
 # --- Core Loop ----------------------------------------------------------------
 
 def process_update(update):
+    _agent_dbg(
+        "H2",
+        "command_listener.py:process_update",
+        "update_received",
+        {
+            "update_id": update.get("update_id"),
+            "has_message": "message" in update,
+            "has_channel_post": "channel_post" in update,
+        },
+    )
     msg = update.get("message")
-    if not msg or "text" not in msg: return
+    if not msg or "text" not in msg:
+        _agent_dbg(
+            "H5",
+            "command_listener.py:process_update",
+            "skip_no_text_message",
+            {"has_msg": bool(msg)},
+        )
+        return
 
     uid = msg.get("from", {}).get("id")
+    _allowed = bool(uid and is_allowed_user(uid))
+    _agent_dbg(
+        "H1",
+        "command_listener.py:process_update",
+        "auth_gate",
+        {
+            "has_uid": uid is not None,
+            "allowed_users_configured": len(ALLOWED_USERS),
+            "passed": _allowed,
+        },
+    )
     if not uid or not is_allowed_user(uid):
         # We don't respond to unauthorized users to avoid being a spam vector
+        _agent_dbg("H1", "command_listener.py:process_update", "dropped_not_allowed", {})
         return
 
     # TTL Check (v3.6): Ignore messages older than 10 minutes
@@ -150,10 +202,23 @@ def process_update(update):
     
     if (now - msg_date) > 600:
         print(f"[CMD] Dropping expired message from {uid} (age: {int(now - msg_date)}s)")
+        _agent_dbg(
+            "H4",
+            "command_listener.py:process_update",
+            "dropped_ttl",
+            {"age_s": int(now - msg_date)},
+        )
         return
 
     text = msg.get("text", "").strip()
-    if not text.startswith("/"): return
+    if not text.startswith("/"):
+        _agent_dbg(
+            "H5",
+            "command_listener.py:process_update",
+            "skip_not_command",
+            {"text_len": len(text)},
+        )
+        return
 
     parts = text.split()
     cmd = parts[0].split("@")[0].lower()
@@ -190,15 +255,17 @@ def process_update(update):
 def listen_loop(initial_offset):
     offset = initial_offset
     
+    pulse_count = 0
     while not SHUTDOWN_EVENT.is_set():
         try:
-            # Bulletproof: Check for offset corruption or future jump
-            if offset > (int(time.time()) + 86400) * 1000:
-                print(f"⚠️ [CMD] Offset {offset} invalid. Resetting.")
-                offset = 0
-
             updates = telegram.router.get_new_updates(offset=offset, timeout=20)
-            
+            _agent_dbg(
+                "H2",
+                "command_listener.py:listen_loop",
+                "getUpdates_batch",
+                {"count": len(updates), "offset": offset},
+            )
+
             if updates:
                 print(f"[CMD] Received {len(updates)} updates")
                 for update in updates:
@@ -207,6 +274,11 @@ def listen_loop(initial_offset):
                 
                 # Persistence
                 TELEGRAM_OFFSET_TXT.write_text(str(offset))
+            else:
+                pulse_count += 1
+                if pulse_count >= 50: # Log a pulse every ~15-20 minutes
+                    print(f"[CMD] Pulse: Listener is alive (offset={offset})")
+                    pulse_count = 0
             
         except Exception as e:
             print(f"❌ [CMD] Loop Error: {e}")
@@ -226,18 +298,22 @@ def main():
         except:
             offset = 0
             
-    # 2. Initial Sync (Optional Drain)
-    # If offset is 0, we do a quick poll to skip everything in the past
+    # 2. Initial Sync (Drain old messages)
+    # If offset is 0, we jump to the latest message to avoid backlog lag.
     if offset == 0:
         try:
-            print("[CMD] Syncing offset...")
-            sync = telegram.router.get_new_updates(offset=0, timeout=1)
+            print("[CMD] No offset found. Jumping to latest message...")
+            # Using offset=-1 retrieves the absolute latest update
+            sync = telegram.router.get_new_updates(offset=-1, timeout=1)
             if sync:
+                # Set offset to latest_id + 1 so we only get NEW messages from now on
                 offset = sync[-1]["update_id"] + 1
                 TELEGRAM_OFFSET_TXT.write_text(str(offset))
-                print(f"✅ [CMD] Synced to {offset}")
-        except:
-            pass
+                print(f"✅ [CMD] Synced to latest offset: {offset}")
+            else:
+                print("ℹ️ [CMD] No updates found during sync. Starting fresh.")
+        except Exception as e:
+            print(f"⚠️ [CMD] Sync failed: {e}")
 
     print(f"[CMD] Starting Listener (offset={offset})")
     listen_loop(offset)

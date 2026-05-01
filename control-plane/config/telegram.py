@@ -95,8 +95,18 @@ ALLOWED_DOCKER_RESTARTS: list[str] = (_clean(os.getenv("ALLOWED_DOCKER_RESTARTS"
 
 
 def is_allowed_user(user_id: int) -> bool:
-    """Returns True if user_id is in the command whitelist."""
-    return isinstance(user_id, int) and user_id in ALLOWED_USERS
+    """
+    Returns True if this Telegram user may invoke bot commands.
+
+    If ALLOWED_USERS is empty, any positive user id is accepted (common for
+    single-operator setups). Set ALLOWED_USERS in .env to restrict who can
+    run /docker, /logs, etc.
+    """
+    if not isinstance(user_id, int) or user_id <= 0:
+        return False
+    if not ALLOWED_USERS:
+        return True
+    return user_id in ALLOWED_USERS
 
 
 # --- Startup Validation ------------------------------------------------------
@@ -151,8 +161,9 @@ def validate() -> bool:
 
     if not ALLOWED_USERS:
         print(
-            "[TELEGRAM] WARNING: No ALLOWED_USERS configured. "
-            "/docker restart and other commands will be disabled.",
+            "[TELEGRAM] WARNING: No ALLOWED_USERS configured — "
+            "bot commands will be accepted from any Telegram user. "
+            "Set ALLOWED_USERS (comma-separated numeric user ids) to restrict access.",
             file=sys.stderr,
         )
 

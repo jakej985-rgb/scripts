@@ -3,10 +3,13 @@ M3TAL Telegram Client (v3.2 Hardened)
 Responsibility: Raw API calls with retry, backoff, and 429 handling.
 """
 
+import json
+import os
 import sys
 import time
 import random
 import requests
+from pathlib import Path
 
 # --- Token Loading with CRLF Defence ----------------------------------------
 # Trailing \r from Windows CRLF .env files causes 401 on Linux.
@@ -215,6 +218,39 @@ def get_updates(offset: int = 0, timeout: int = 20) -> list[dict]:
         timeout=timeout + 5,
     )
     if not result.get("ok"):
+        # #region agent log
+        try:
+            _line = (
+                json.dumps(
+                    {
+                        "sessionId": "6f288f",
+                        "hypothesisId": "H3",
+                        "location": "client.py:get_updates",
+                        "message": "getUpdates_not_ok",
+                        "data": {
+                            "offset": offset,
+                            "desc": str(result.get("description", ""))[:200],
+                            "status": result.get("status_code"),
+                        },
+                        "timestamp": int(time.time() * 1000),
+                    }
+                )
+                + "\n"
+            )
+            _paths = [Path(__file__).resolve().parents[3] / "debug-6f288f.log"]
+            _sd = os.getenv("STATE_DIR")
+            if _sd:
+                _paths.append(Path(_sd) / "debug-6f288f.log")
+            for _log in _paths:
+                try:
+                    _log.parent.mkdir(parents=True, exist_ok=True)
+                    with open(_log, "a", encoding="utf-8") as _f:
+                        _f.write(_line)
+                except Exception:
+                    pass
+        except Exception:
+            pass
+        # #endregion
         return []
     updates = result.get("result", [])
     if not isinstance(updates, list):
