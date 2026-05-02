@@ -111,14 +111,18 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    # Ensure session has a token
+    if 'csrf_token' not in session:
+        session['csrf_token'] = secrets.token_hex(16)
+
     if request.method == 'POST':
-        # CSRF Protection (Audit Fix 2.1 - Timing Attack Guard)
+        # CSRF Protection
         form_token = request.form.get('csrf_token')
         session_token = session.get('csrf_token')
         
         if not form_token or not session_token or not hmac.compare_digest(form_token, session_token):
-            print(f"❌ CSRF Failure! Form token: {form_token}, Session token: {session_token}", flush=True)
-            return render_template('login.html', error="Security violation: Invalid or expired CSRF token"), 403
+            print(f"❌ CSRF Failure! Form token: '{form_token}', Session token: '{session_token}'", flush=True)
+            return render_template('login.html', error="Security violation: Invalid or expired CSRF token", csrf_token=session['csrf_token']), 403
 
         username = request.form.get('username')
         password = request.form.get('password')
@@ -129,16 +133,11 @@ def login():
         if user and password and verify_password(password, user['token_hash']):
             session['username'] = username
             session['role'] = user.get('role', 'viewer')
-            # Clear token after successful login or rotate
             session.pop('csrf_token', None)
             return redirect(url_for('index'))
             
-        return render_template('login.html', error="Invalid credentials", csrf_token=secrets.token_hex(16))
+        return render_template('login.html', error="Invalid credentials", csrf_token=session['csrf_token'])
     
-    # Generate token for GET
-    if 'csrf_token' not in session:
-        session['csrf_token'] = secrets.token_hex(16)
-        
     return render_template('login.html', csrf_token=session['csrf_token'])
 
 @app.route('/logout')
