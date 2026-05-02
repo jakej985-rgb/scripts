@@ -104,22 +104,96 @@ async function refreshFleet() {
 }
 
 async function refreshAnomalies() {
-    const res = await fetch('/api/anomalies');
-    const data = await res.json();
+    const [anomRes, decRes] = await Promise.all([
+        fetch('/api/anomalies'),
+        fetch('/api/decisions')
+    ]);
+    const anomData = await anomRes.json();
+    const decData = await decRes.json();
     
     anomalyFeed.innerHTML = '';
-    (data.issues || []).forEach(issue => {
-        const item = document.createElement('div');
-        item.className = 'container-item';
-        item.innerHTML = `
-            <div class="info">
-                <div class="target">${issue.target}</div>
-                <div class="reason" style="font-size: 0.75rem; color: var(--text-secondary)">${issue.reason}</div>
-            </div>
-            <div class="type status-pill ${issue.type === 'critical' ? 'offline' : 'loading'}">${issue.type}</div>
-        `;
-        anomalyFeed.appendChild(item);
-    });
+    
+    const issues = anomData.issues || [];
+    const decisions = decData.decisions || [];
+    
+    // 1. Build Summary
+    const summaryItem = document.createElement('div');
+    summaryItem.style.display = 'flex';
+    summaryItem.style.justifyContent = 'space-around';
+    summaryItem.style.padding = '1rem';
+    summaryItem.style.background = 'rgba(0,0,0,0.2)';
+    summaryItem.style.borderRadius = '8px';
+    summaryItem.style.marginBottom = '1rem';
+    
+    summaryItem.innerHTML = `
+        <div style="text-align: center">
+            <div style="font-size: 1.25rem; font-weight: 800; color: ${issues.length > 0 ? 'var(--danger)' : 'var(--success)'}">${issues.length}</div>
+            <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase">Anomalies</div>
+        </div>
+        <div style="text-align: center">
+            <div style="font-size: 1.25rem; font-weight: 800; color: ${decisions.length > 0 ? 'var(--warning)' : 'var(--success)'}">${decisions.length}</div>
+            <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase">Decisions</div>
+        </div>
+    `;
+    anomalyFeed.appendChild(summaryItem);
+
+    // 2. Determine what to list
+    if (issues.length === 0 && decisions.length === 0) {
+        const msg = document.createElement('div');
+        msg.style.textAlign = 'center';
+        msg.style.padding = '1.5rem 0';
+        msg.style.fontSize = '0.9rem';
+        msg.style.color = 'var(--text-secondary)';
+        msg.innerHTML = '<span style="color:var(--success); margin-right: 0.25rem">✓</span> System operating normally';
+        anomalyFeed.appendChild(msg);
+    } else {
+        // List Anomalies
+        if (issues.length > 0) {
+            const h = document.createElement('div');
+            h.style.fontSize = '0.8rem';
+            h.style.color = 'var(--text-secondary)';
+            h.style.marginBottom = '0.5rem';
+            h.innerText = 'Active Anomalies:';
+            anomalyFeed.appendChild(h);
+            
+            issues.forEach(issue => {
+                const item = document.createElement('div');
+                item.className = 'container-item';
+                item.innerHTML = `
+                    <div class="info">
+                        <div class="target">${issue.target}</div>
+                        <div class="reason" style="font-size: 0.75rem; color: var(--text-secondary)">${issue.reason}</div>
+                    </div>
+                    <div class="type status-pill ${issue.type === 'critical' ? 'offline' : 'loading'}">${issue.type}</div>
+                `;
+                anomalyFeed.appendChild(item);
+            });
+        }
+        
+        // List Decisions
+        if (decisions.length > 0) {
+            const h = document.createElement('div');
+            h.style.fontSize = '0.8rem';
+            h.style.color = 'var(--text-secondary)';
+            h.style.marginBottom = '0.5rem';
+            h.style.marginTop = '1rem';
+            h.innerText = 'Recent Decisions:';
+            anomalyFeed.appendChild(h);
+            
+            decisions.slice(0, 3).forEach(dec => { // Only show top 3 to keep it clean
+                const item = document.createElement('div');
+                item.className = 'container-item';
+                item.innerHTML = `
+                    <div class="info">
+                        <div class="target">${dec.action}</div>
+                        <div class="reason" style="font-size: 0.75rem; color: var(--text-secondary)">Target: ${dec.target}</div>
+                    </div>
+                    <div class="type status-pill loading" style="font-size: 0.65rem; text-transform: uppercase">${dec.status || 'executed'}</div>
+                `;
+                anomalyFeed.appendChild(item);
+            });
+        }
+    }
 }
 
 // 2. WebSocket Updates
