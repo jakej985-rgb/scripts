@@ -157,12 +157,11 @@ def update_agent_health(agent_name: str, success: bool, error_msg: str = None):
 def _agent_requires_leader_gate(agent_name: str) -> bool:
     """
     Most Tier-2 agents should idle until this host matches elected leader (leader.txt).
-    command_listener is exempt: it uses getUpdates long-polling for one Telegram bot token,
-    and leader identity often mismatches Docker/hostnames (leader.txt vs socket.gethostname()),
-    which left the lock holder alive without ever calling listen_loop — starving Telegram commands.
-    File locking already prevents duplicate command_listener instances on this machine.
+    leader is exempt: it IS the agent that creates leader.txt!
+    command_listener is exempt: it uses getUpdates long-polling for one Telegram bot token.
     """
-    return agent_name != "command_listener"
+    return agent_name not in ["command_listener", "leader"]
+
 
 
 def wrap_agent(agent_name: str, func: Callable[[], Any], interval: int = 10):
