@@ -75,7 +75,7 @@ if not DASHBOARD_SECRET:
     DASHBOARD_SECRET = secrets.token_hex(32)
 
 app.config['SECRET_KEY'] = DASHBOARD_SECRET
-socketio = SocketIO(app, async_mode=ASYNC_MODE)
+socketio = SocketIO(app, async_mode=ASYNC_MODE, cors_allowed_origins="*")
 
 # Simple Role-Based Access Control (Batch 3 T1)
 def login_required(role=None):
