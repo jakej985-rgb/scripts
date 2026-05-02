@@ -1,0 +1,19 @@
+[TELEGRAM] Listener starting...
+2026-04-26 18:11:09 [INFO] command_listener: [DEBUG] AGENT=command_listener PID=45 HOST=8e27dcb3e1d4 BYPASS=False
+2026-04-26 18:11:09 [INFO] command_listener: --- Agent command_listener Persistent Loop Started ---
+2026-04-26 18:46:09 [INFO] command_listener: --- Agent command_listener Shutdown Cleanly ---
+2026-04-26 19:44:59 [INFO] command_listener: [DEBUG] AGENT=command_listener PID=45 HOST=dc616e5aee7f BYPASS=False
+2026-04-26 19:44:59 [INFO] command_listener: --- Agent command_listener Persistent Loop Started ---
+2026-04-26 20:02:25 [INFO] command_listener: [DEBUG] AGENT=command_listener PID=269002 HOST=m3tal-media-server BYPASS=False
+2026-04-26 20:02:25 [WARNING] command_listener: Agent command_listener already running (lock conflict). Exiting.
+2026-04-26 20:02:27 [INFO] command_listener: [DEBUG] AGENT=command_listener PID=269082 HOST=m3tal-media-server BYPASS=False
+2026-04-26 20:02:27 [WARNING] command_listener: Agent command_listener already running (lock conflict). Exiting.
+2026-04-26 20:02:29 [INFO] command_listener: [DEBUG] AGENT=command_listener PID=269117 HOST=m3tal-media-server BYPASS=False
+2026-04-26 20:02:29 [WARNING] command_listener: Agent command_listener already running (lock conflict). Exiting.
+2026-04-26 20:02:32 [INFO] command_listener: [DEBUG] AGENT=command_listener PID=269183 HOST=m3tal-media-server BYPASS=False
+2026-04-26 20:02:32 [WARNING] command_listener: Agent command_listener already running (lock conflict). Exiting.
+2026-04-26 20:02:34 [INFO] command_listener: [DEBUG] AGENT=command_listener PID=269220 HOST=m3tal-media-server BYPASS=False
+2026-04-26 20:02:34 [WARNING] command_listener: Agent command_listener already running (lock conflict). Exiting.
+2026-04-26 20:02:36 [INFO] command_listener: [DEBUG] AGENT=command_listener PID=269263 HOST=m3tal-media-server BYPASS=False
+2026-04-26 20:02:36 [WARNING] command_listener: Agent command_listener already running (lock conflict). Exiting.
+2026-04-26 20:02:38 [INFO] command_listener: [DEBUG] AGENT=command_listener PID=269388 HOST=m3tal-media-server BYPASS=False
