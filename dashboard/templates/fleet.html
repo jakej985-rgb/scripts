@@ -112,22 +112,23 @@
 
         .fleet-grid {
             display: grid;
-            --cols: 3;
-            grid-template-columns: repeat(var(--cols), 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 1rem;
         }
-        .fleet-grid.grid-1 { --cols: 1; }
-        .fleet-grid.grid-2 { --cols: 2; }
-        .fleet-grid.grid-4 { --cols: 4; }
+        .fleet-grid.grid-1 { grid-template-columns: 1fr; }
+        .fleet-grid.grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .fleet-grid.grid-4 { grid-template-columns: repeat(4, 1fr); }
 
-        @media (max-width: 800px) {
-            .fleet-grid:not(.grid-1) {
-                --cols: 2;
+        @media (max-width: 1024px) {
+            /* If they are in 3 or 4 wide mode, squish to 2 on tablets */
+            .fleet-grid:not(.grid-1):not(.grid-2) {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
-        @media (max-width: 500px) {
+        @media (max-width: 600px) {
+            /* Everything goes to 1 column on phones */
             .fleet-grid {
-                --cols: 1;
+                grid-template-columns: 1fr !important;
             }
         }
         .fleet-card {
