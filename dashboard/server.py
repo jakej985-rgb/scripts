@@ -8,8 +8,34 @@ from flask import Flask, render_template, jsonify, request, session, redirect, u
 from flask_socketio import SocketIO, emit, join_room
 from functools import wraps
 
-from auth import load_users, resolve_users_path, verify_password
+import sys
+import traceback
+import logging
 
+# Configure verbose logging for the whole app
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s [%(levelname)s] %(name)s: %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    stream=sys.stdout
+)
+logger = logging.getLogger("m3tal-dashboard")
+
+# Global catch-all for absolutely any crash
+def global_exception_handler(exc_type, exc_value, exc_traceback):
+    if issubclass(exc_type, KeyboardInterrupt):
+        sys.__excepthook__(exc_type, exc_value, exc_traceback)
+        return
+    logger.critical("❌ UNHANDLED FATAL EXCEPTION", exc_info=(exc_type, exc_value, exc_traceback))
+    print("="*60, flush=True)
+    print(" 🚨 GLOBAL CRASH DETECTED 🚨", flush=True)
+    print(f" ERROR: {exc_value}", flush=True)
+    traceback.print_exception(exc_type, exc_value, exc_traceback, file=sys.stdout)
+    print("="*60, flush=True)
+
+sys.excepthook = global_exception_handler
+
+from auth import load_users, resolve_users_path, verify_password
 try:
     import eventlet  # type: ignore
 except Exception:
@@ -240,4 +266,21 @@ if __name__ == '__main__':
     # External access should be through Traefik or a secure tunnel.
     host = os.getenv("DASHBOARD_HOST", "127.0.0.1")
     port = int(os.getenv("DASHBOARD_PORT", 8080))
-    socketio.run(app, host=host, port=port)
+    
+    print("="*50)
+    print(" 🚀 M3TAL DASHBOARD STARTING...")
+    print(f" 🌐 Binding to: http://{host}:{port}")
+    print(f" 🧵 Async Mode: {ASYNC_MODE}")
+    print("="*50)
+    
+    try:
+        socketio.run(app, host=host, port=port)
+    except Exception as e:
+        print("="*50)
+        print(" ❌ FATAL ERROR DURING STARTUP")
+        print(f" {e}")
+        import traceback
+        traceback.print_exc()
+        print("="*50)
+        import sys
+        sys.exit(1)
