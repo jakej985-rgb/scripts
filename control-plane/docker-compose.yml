@@ -92,17 +92,15 @@ services:
     depends_on:
       permission-fixer:
         condition: service_completed_successfully
-      docker-proxy:
-        condition: service_started
     volumes:
       - ..:/docker
-    # 🛡️ SECURITY FIX: No direct socket mount. Talk to proxy instead.
+      - /var/run/docker.sock:/var/run/docker.sock
+    # 🛡️ Bypass proxy to fix Docker DNS/bridge resolution bugs (same as Traefik fix)
     environment:
       - TZ=America/Denver
       - DOCKER_API_VERSION=${DOCKER_API_VERSION}
       - REPO_ROOT=/docker
       - IN_CONTAINER=true
-      - DOCKER_HOST=tcp://m3tal-docker-proxy:2375
     working_dir: /docker
     command: python3 control-plane/agents/run.py
     restart: unless-stopped
