@@ -37,6 +37,8 @@ services:
       - DASHBOARD_SECRET=${DASHBOARD_SECRET:?DASHBOARD_SECRET not set — run from repo root with .env}
       - STATE_DIR=/docker/control-plane/state
       - USERS_FILE=/docker/dashboard/users.json
+      - DASHBOARD_HOST=0.0.0.0
+      - PYTHONUNBUFFERED=1
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard.rule=Host(`m3tal.${DOMAIN:?DOMAIN not set}`)"
