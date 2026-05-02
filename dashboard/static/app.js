@@ -40,18 +40,66 @@ async function refreshFleet() {
     
     // Safely extract the container list from the new M3TAL v1.3 agent structure
     const containers = data?.agent_health?.monitor_containers?.containers || {};
+    const entries = Object.entries(containers);
+
+    const online = entries.filter(([,v]) => v.status === 'online').length;
+    const offline = entries.filter(([,v]) => v.status === 'offline').length;
+    const missing = entries.filter(([,v]) => v.status === 'missing').length;
+    const total = entries.length;
+
+    // 1. Build the summary header
+    const summaryItem = document.createElement('div');
+    summaryItem.style.display = 'flex';
+    summaryItem.style.justifyContent = 'space-between';
+    summaryItem.style.padding = '1rem';
+    summaryItem.style.background = 'rgba(0,0,0,0.2)';
+    summaryItem.style.borderRadius = '8px';
+    summaryItem.style.marginBottom = '1rem';
     
-    for (const [name, info] of Object.entries(containers)) {
-        const item = document.createElement('div');
-        item.className = 'container-item';
-        
-        // Handle "missing" or "offline" states cleanly
-        const status = info.status || "unknown";
-        item.innerHTML = `
-            <div class="name">${name}</div>
-            <div class="status-pill ${status.toLowerCase()}">${status}</div>
-        `;
-        containerList.appendChild(item);
+    summaryItem.innerHTML = `
+        <div style="text-align: center">
+            <div style="font-size: 1.25rem; font-weight: 800">${total}</div>
+            <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase">Total</div>
+        </div>
+        <div style="text-align: center">
+            <div style="font-size: 1.25rem; font-weight: 800; color: var(--success)">${online}</div>
+            <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase">Online</div>
+        </div>
+        <div style="text-align: center">
+            <div style="font-size: 1.25rem; font-weight: 800; color: var(--danger)">${offline}</div>
+            <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase">Offline</div>
+        </div>
+        <div style="text-align: center">
+            <div style="font-size: 1.25rem; font-weight: 800; color: var(--warning)">${missing}</div>
+            <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase">Missing</div>
+        </div>
+    `;
+    containerList.appendChild(summaryItem);
+    
+    // 2. Determine failing containers
+    const failing = entries.filter(([,v]) => v.status !== 'online');
+    
+    if (failing.length === 0 && total > 0) {
+        // All good
+        const msg = document.createElement('div');
+        msg.style.textAlign = 'center';
+        msg.style.padding = '1.5rem 0';
+        msg.style.fontSize = '0.9rem';
+        msg.style.color = 'var(--text-secondary)';
+        msg.innerHTML = '<span style="color:var(--success); margin-right: 0.25rem">✓</span> All containers healthy';
+        containerList.appendChild(msg);
+    } else {
+        // List failing containers
+        for (const [name, info] of failing) {
+            const item = document.createElement('div');
+            item.className = 'container-item';
+            const status = info.status || "unknown";
+            item.innerHTML = `
+                <div class="name">${name}</div>
+                <div class="status-pill ${status.toLowerCase()}">${status}</div>
+            `;
+            containerList.appendChild(item);
+        }
     }
 }
 
