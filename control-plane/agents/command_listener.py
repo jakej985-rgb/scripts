@@ -59,6 +59,26 @@ def get_allowed_containers():
         return static_allowed
 
 
+def get_all_containers(include_stopped=False):
+    """Query Docker directly for ALL containers on the host.
+    
+    Returns a sorted list of container names. Used for the button picker
+    so users can see everything that's running.
+    """
+    try:
+        cmd = ["docker", "ps", "--format", "{{.Names}}"]
+        if include_stopped:
+            cmd.insert(2, "-a")
+        res = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
+        if res.returncode != 0:
+            return []
+        names = [n.strip() for n in res.stdout.strip().splitlines() if n.strip()]
+        return sorted(names)
+    except Exception as e:
+        print(f"[CMD] Docker query error: {e}")
+        return []
+
+
 def _fmt_container_list(prefix=""):
     """Returns a formatted HTML string listing all allowed containers."""
     allowed = get_allowed_containers()
@@ -71,11 +91,13 @@ def _fmt_container_list(prefix=""):
 # --- Inline Keyboard Builders ------------------------------------------------
 
 def _build_container_keyboard(prefix: str):
-    """Build inline keyboard rows of container buttons (3 per row)."""
-    allowed = get_allowed_containers()
-    if not allowed:
+    """Build inline keyboard rows of container buttons (3 per row).
+    
+    Uses live Docker discovery — shows ALL running containers.
+    """
+    names = get_all_containers()
+    if not names:
         return []
-    names = sorted(allowed)
     rows = []
     for i in range(0, len(names), 3):
         row = [{"text": n, "callback_data": f"{prefix}:{n}"} for n in names[i:i+3]]
@@ -357,11 +379,6 @@ def handle_callback(cbq):
         target = value
         session.clear(uid)
 
-        allowed = get_allowed_containers()
-        if target not in allowed:
-            telegram.send_direct(chat, f"🚫 <b>Access Denied</b>: '<code>{target}</code>' is not in the allowed list.")
-            return
-
         if docker_action == "inspect":
             try:
                 fmt = "{{.Config.Image}}|{{.State.Status}}|{{.State.StartedAt}}|{{.Created}}|{{.HostConfig.RestartPolicy.Name}}"
@@ -406,10 +423,6 @@ def handle_callback(cbq):
     if action_type == "log":
         target = value
         session.clear(uid)
-        allowed = get_allowed_containers()
-        if target not in allowed:
-            telegram.send_direct(chat, f"🚫 Unauthorized or unknown service: '<code>{target}</code>'")
-            return
         try:
             res = subprocess.run(["docker", "logs", "--tail", "30", target], capture_output=True, text=True, timeout=15)
             logs = res.stdout if res.stdout else res.stderr
