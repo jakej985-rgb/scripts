@@ -199,6 +199,55 @@ def send_text(chat_id: int, text: str) -> bool:
     return bool(result.get("ok"))
 
 
+def send_keyboard(
+    chat_id: int,
+    text: str,
+    buttons: list[list[dict]],
+) -> bool:
+    """
+    Sends an HTML message with an InlineKeyboardMarkup attached.
+
+    ``buttons`` format (list of rows, each row is a list of button dicts)::
+
+        [
+            [{"text": "Restart", "callback_data": "docker:restart"}],
+            [{"text": "radarr", "callback_data": "ctr:radarr"},
+             {"text": "sonarr", "callback_data": "ctr:sonarr"}],
+        ]
+
+    Returns True on success.
+    """
+    if not chat_id or chat_id == 0:
+        return False
+
+    if len(text) > 4096:
+        text = text[:4080] + "\n... [truncated]"
+
+    result = call_api(
+        "sendMessage",
+        {
+            "chat_id": chat_id,
+            "text": text,
+            "parse_mode": "HTML",
+            "reply_markup": {"inline_keyboard": buttons},
+        },
+    )
+    return bool(result.get("ok"))
+
+
+def answer_callback(callback_query_id: str, text: str = "") -> bool:
+    """
+    Acknowledges a callback_query (removes the loading spinner on the button).
+
+    Optional ``text`` shows a brief toast notification to the user.
+    """
+    params = {"callback_query_id": callback_query_id}
+    if text:
+        params["text"] = text[:200]  # Telegram limit
+    result = call_api("answerCallbackQuery", params)
+    return bool(result.get("ok"))
+
+
 def get_me() -> dict:
     """Verifies connection and returns bot info."""
     return call_api("getMe")

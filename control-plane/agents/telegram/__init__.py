@@ -23,6 +23,7 @@ try:
     from .service import (
         start, stop, send_main, send_direct,
         log, error, alert, action, docker,
+        send_keyboard, answer_callback,
     )
     from . import router # Audit Fix: Explicit export for command_listener
     _AVAILABLE = True
@@ -37,6 +38,7 @@ if not _AVAILABLE:
 
     start = stop = _fail_log
     send_main = send_direct = log = error = alert = action = docker = _fail_log
+    send_keyboard = answer_callback = _fail_log
 
 
 def is_available() -> bool:

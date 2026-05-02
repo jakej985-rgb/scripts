@@ -53,6 +53,16 @@ def send_direct(chat_id: int, msg: str):
     from . import tg_queue
     tg_queue.enqueue(chat_id, msg)
 
+def send_keyboard(chat_id: int, text: str, buttons: list):
+    """Send an inline keyboard message directly (bypasses queue for immediacy)."""
+    from . import client as _client
+    return _client.send_keyboard(chat_id, text, buttons)
+
+def answer_callback(callback_query_id: str, text: str = ""):
+    """Acknowledge a callback_query button press."""
+    from . import client as _client
+    return _client.answer_callback(callback_query_id, text)
+
 # Expose standard logging API for convenience
 log = logger.log
 error = logger.error

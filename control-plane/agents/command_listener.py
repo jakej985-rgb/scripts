@@ -17,6 +17,7 @@ _BOOT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.append(str(_BOOT_ROOT / "control-plane"))
 
 from agents import telegram
+from agents.telegram import session
 from config.telegram import is_allowed_user, ALLOWED_USERS
 from utils.paths import (
     REGISTRY_JSON, HEALTH_JSON, TELEGRAM_OFFSET_TXT,
@@ -67,6 +68,189 @@ def _fmt_container_list(prefix=""):
     listing = "\n".join(f"  • <code>{n}</code>" for n in names)
     return f"{prefix}\n\n📦 <b>Available containers:</b>\n{listing}"
 
+# --- Inline Keyboard Builders ------------------------------------------------
+
+def _build_container_keyboard(prefix: str):
+    """Build inline keyboard rows of container buttons (3 per row).
+    
+    Each button's callback_data is '{prefix}:{container_name}'.
+    """
+    allowed = get_allowed_containers()
+    if not allowed:
+        return []
+    names = sorted(allowed)
+    rows = []
+    for i in range(0, len(names), 3):
+        row = [{"text": n, "callback_data": f"{prefix}:{n}"} for n in names[i:i+3]]
+        rows.append(row)
+    return rows
+
+
+DOCKER_ACTIONS = {
+    "status":  {"emoji": "📋", "label": "Status"},
+    "restart": {"emoji": "🔄", "label": "Restart"},
+    "stop":    {"emoji": "🛑", "label": "Stop"},
+    "start":   {"emoji": "▶️", "label": "Start"},
+    "inspect": {"emoji": "🔍", "label": "Inspect"},
+}
+
+
+def _build_docker_menu():
+    """Build the top-level Docker action keyboard."""
+    row = [
+        {"text": f"{info['emoji']} {info['label']}", "callback_data": f"dkr:{action}"}
+        for action, info in DOCKER_ACTIONS.items()
+    ]
+    # Split into rows of 3
+    rows = [row[i:i+3] for i in range(0, len(row), 3)]
+    return rows
+
+
+# --- Callback Query Handler --------------------------------------------------
+
+def handle_callback(cbq):
+    """Process an inline keyboard button press."""
+    cbq_id = cbq.get("id", "")
+    user = cbq.get("from", {})
+    uid = user.get("id")
+    chat = cbq.get("message", {}).get("chat", {}).get("id")
+    data = cbq.get("data", "")
+
+    if not uid or not chat or not data:
+        return
+
+    # Auth check
+    try:
+        uid = int(uid)
+    except (TypeError, ValueError):
+        return
+    if not is_allowed_user(uid):
+        telegram.answer_callback(cbq_id, "⛔ Not authorized.")
+        return
+
+    # Acknowledge button press immediately (removes spinner)
+    telegram.answer_callback(cbq_id)
+
+    parts = data.split(":", 1)
+    if len(parts) != 2:
+        return
+    action_type, value = parts
+
+    # --- Docker action menu button (e.g. "dkr:restart") ---
+    if action_type == "dkr":
+        if value == "status":
+            # Status doesn't need a container name — run directly
+            try:
+                res = subprocess.run(
+                    ["docker", "ps", "--format", "{{.Names}} | {{.Status}}"],
+                    capture_output=True, text=True, timeout=15,
+                )
+                output = res.stdout.strip() if res.stdout else "No containers running."
+                telegram.send_direct(chat, f"🐳 <b>Docker Status</b>\n<pre>{output}</pre>")
+            except Exception as e:
+                telegram.send_direct(chat, f"❌ Docker error: {e}")
+            return
+
+        # For restart/stop/start/inspect → show container picker
+        info = DOCKER_ACTIONS.get(value, {})
+        label = info.get("label", value)
+        session.set(uid, {"flow": "docker", "action": value})
+        buttons = _build_container_keyboard("ctr")
+        if not buttons:
+            telegram.send_direct(chat, "⚠️ No containers available.")
+            session.clear(uid)
+            return
+        # Add a cancel button at the bottom
+        buttons.append([{"text": "❌ Cancel", "callback_data": "cancel:0"}])
+        telegram.send_keyboard(
+            chat,
+            f"{info.get('emoji', '🐳')} Select container to <b>{label}</b>:",
+            buttons,
+        )
+        return
+
+    # --- Container selection button (e.g. "ctr:radarr") ---
+    if action_type == "ctr":
+        user_session = session.get(uid)
+        if not user_session or user_session.get("flow") != "docker":
+            telegram.send_direct(chat, "⚠️ Session expired. Send /docker to start over.")
+            return
+
+        docker_action = user_session.get("action")
+        target = value
+        session.clear(uid)
+
+        allowed = get_allowed_containers()
+        if target not in allowed:
+            telegram.send_direct(chat, f"🚫 <b>Access Denied</b>: '<code>{target}</code>' is not in the allowed list.")
+            return
+
+        if docker_action == "inspect":
+            # Reuse the inspect logic from handle_docker
+            try:
+                fmt = "{{.Config.Image}}|{{.State.Status}}|{{.State.StartedAt}}|{{.Created}}|{{.HostConfig.RestartPolicy.Name}}"
+                res = subprocess.run(["docker", "inspect", "-f", fmt, target], capture_output=True, text=True, timeout=10)
+                if res.returncode != 0:
+                    telegram.send_direct(chat, f"❌ Container <code>{target}</code> not found.")
+                    return
+                p = res.stdout.strip().split("|")
+                image, status, started, created, rpol = (p + [""]*5)[:5]
+                pres = subprocess.run(
+                    ["docker", "inspect", "-f",
+                     "{{range $p, $c := .NetworkSettings.Ports}}{{$p}}->{{range $c}}{{.HostPort}}{{end}} {{end}}",
+                     target],
+                    capture_output=True, text=True, timeout=10,
+                )
+                ports = pres.stdout.strip() or "none"
+                telegram.send_direct(chat, (
+                    f"🔍 <b>Inspect: {target}</b>\n\n"
+                    f"  <b>Image:</b> <code>{image}</code>\n"
+                    f"  <b>Status:</b> {status}\n"
+                    f"  <b>Started:</b> <code>{started[:19]}</code>\n"
+                    f"  <b>Created:</b> <code>{created[:19]}</code>\n"
+                    f"  <b>Restart:</b> {rpol}\n"
+                    f"  <b>Ports:</b> <code>{ports}</code>"
+                ))
+            except Exception as e:
+                telegram.send_direct(chat, f"❌ Inspect error: {e}")
+            return
+
+        # restart / stop / start
+        verb = {"restart": "Restarting", "stop": "Stopping", "start": "Starting"}.get(docker_action, docker_action)
+        emoji_ok = {"restart": "🔄", "stop": "🛑", "start": "▶️"}.get(docker_action, "✅")
+        telegram.send_direct(chat, f"⏳ {verb} <code>{target}</code>...")
+        try:
+            subprocess.run(["docker", docker_action, target], check=True, timeout=60)
+            telegram.send_direct(chat, f"{emoji_ok} Container <code>{target}</code> {docker_action}ed successfully.")
+        except Exception as e:
+            telegram.send_direct(chat, f"❌ Failed to {docker_action} <code>{target}</code>: {e}")
+        return
+
+    # --- Log container selection (e.g. "log:radarr") ---
+    if action_type == "log":
+        target = value
+        session.clear(uid)
+        allowed = get_allowed_containers()
+        if target not in allowed:
+            telegram.send_direct(chat, f"🚫 Unauthorized or unknown service: '<code>{target}</code>'")
+            return
+        try:
+            res = subprocess.run(["docker", "logs", "--tail", "30", target], capture_output=True, text=True, timeout=15)
+            logs = res.stdout if res.stdout else res.stderr
+            if not logs:
+                logs = "(no output)"
+            telegram.send_direct(chat, f"📄 <b>Logs: {target}</b>\n<pre>{logs[-3500:]}</pre>")
+        except Exception as e:
+            telegram.send_direct(chat, f"❌ Error: {e}")
+        return
+
+    # --- Cancel button ---
+    if action_type == "cancel":
+        session.clear(uid)
+        telegram.send_direct(chat, "👍 Cancelled.")
+        return
+
+
 # --- Command Handlers ---------------------------------------------------------
 
 def handle_status(msg, args):
@@ -95,16 +279,13 @@ def handle_docker(msg, args):
     """Container management: status, restart, stop, start, inspect."""
     chat = msg["chat"]["id"]
     if not args:
-        usage = (
-            "Usage: <code>/docker [sub-command]</code>\n\n"
-            "<b>Sub-commands:</b>\n"
-            "  • <code>status</code> — List running containers\n"
-            "  • <code>restart &lt;name&gt;</code> — Restart a service\n"
-            "  • <code>stop &lt;name&gt;</code> — Stop a service\n"
-            "  • <code>start &lt;name&gt;</code> — Start a service\n"
-            "  • <code>inspect &lt;name&gt;</code> — Container details"
+        # Send interactive action menu
+        buttons = _build_docker_menu()
+        telegram.send_keyboard(
+            chat,
+            "🐳 <b>Docker Management</b>\n\nSelect an action:",
+            buttons,
         )
-        telegram.send_direct(chat, _fmt_container_list(usage))
         return
 
     cmd = args[0].lower()
@@ -175,7 +356,17 @@ def handle_docker(msg, args):
 def handle_logs(msg, args):
     """Fetches recent logs for a service."""
     if not args:
-        telegram.send_direct(msg["chat"]["id"], _fmt_container_list("Usage: <code>/logs &lt;service_name&gt;</code>"))
+        # Send interactive container picker
+        buttons = _build_container_keyboard("log")
+        if buttons:
+            buttons.append([{"text": "❌ Cancel", "callback_data": "cancel:0"}])
+            telegram.send_keyboard(
+                msg["chat"]["id"],
+                "📄 <b>View Logs</b>\n\nSelect a service:",
+                buttons,
+            )
+        else:
+            telegram.send_direct(msg["chat"]["id"], "⚠️ No containers available for log viewing.")
         return
 
     target = args[0]
@@ -495,6 +686,11 @@ def handle_env(msg):
 # --- Core Loop ----------------------------------------------------------------
 
 def process_update(update):
+    # --- Callback Query (inline keyboard button press) ---
+    if "callback_query" in update:
+        handle_callback(update["callback_query"])
+        return
+
     msg = update.get("message")
     if not msg or "text" not in msg:
         return
