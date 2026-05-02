@@ -1,83 +1,317 @@
-(venv) m3tal@m3tal-media-server:~/M3tal-Media-Server$ python m3tal.py init
-============================================================
-  M3TAL SELF-HEALING INIT
-  Production Bootstrap — Repair: None
-============================================================
-  🐧 Linux environment detected. Enforcing POSIX standards.
-  🔐 [INIT] Enforcing permissions on /home/m3tal/M3tal-Media-Server/control-plane/state (1000:1000)...
-  🔐 [INIT] Enforcing permissions on /home/m3tal/M3tal-Media-Server/control-plane/state/logs (1000:1000)...
-  ⚠ [INIT] DATA_DIR is a sensitive root (/mnt). Skipping root-level chown.
-  🔐 [INIT] Enforcing permissions on /mnt/downloads (1000:1000)...
-  🔐 [INIT] Enforcing permissions on /mnt/media (1000:1000)...
-  🔐 [INIT] Enforcing permissions on /mnt/config (1000:1000)...
-  🔐 [INIT] Enforcing permissions on /mnt/logs (1000:1000)...
-  ⚙ Starting Preflight Validation...
-  ⚠ WARNING: Port 80 is already in use. Traefik will likely fail to start.
-  👉 Port 80 conflict detected. Potential fixes:
-  👉   - sudo systemctl stop nginx
-  👉   - sudo systemctl stop apache2
-  👉   - Check for other Docker ingress controllers.
-  ⚠ WARNING: Port 443 is already in use. Traefik will likely fail to start.
-  👉 Port 443 conflict detected. Potential fixes:
-  👉   - sudo systemctl stop nginx
-  👉   - sudo systemctl stop apache2
-  👉   - Check for other Docker ingress controllers.
-  [22:43:00] None [ENV] Context: Host System
-  [22:43:00] ✔ Component environment status: ok
-  [22:43:00] ✔ Component dependencies status: ok
-  [22:43:00] ✔ Component filesystem status: ok
-  [22:43:00] ✔ Component logs status: ok
-  [22:43:00] ✔ Component state status: ok
-  [22:43:00] ✔ Component auth status: ok
-  [22:43:00] None [DOCKER] Shared network 'proxy' ready
-  [22:43:00]  [DOCKER] Orchestrating stack: routing
-  [22:43:00] 🔧 Attempting to auto-resolve port conflicts...
-  [22:43:06] ✘ Stack routing failed to deploy.
-  [22:43:06] 🚫 Docker Error: Image traefik:v3.6 Pulling 
-error getting credentials - err: exec: "docker-credential-desktop": executable file not found in $PATH, out: ``
-  Init ██████████████████████████░░░░░░░░░░░░░░ 67% Docker                                                                  [idle 00:05 | total 00:06]
+(venv) m3tal@m3tal-media-server:~/M3tal-Media-Server$ docker logs m3tal-dashboard
+==================================================
+ 🚀 M3TAL DASHBOARD STARTING...
+ 🌐 Binding to: http://0.0.0.0:8082
+ 🧵 Async Mode: eventlet
+==================================================
+message handler error
 Traceback (most recent call last):
-  File "/home/m3tal/M3tal-Media-Server/control-plane/init.py", line 418, in run_with_retries
-    return func(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/home/m3tal/M3tal-Media-Server/control-plane/init.py", line 824, in _deploy_and_verify
-    raise RuntimeError(f"Docker Compose Error (Exit {proc.returncode})")
-  [22:43:06] ⚠ [RETRY] routing failed (attempt 1): Docker Compose Error (Exit 1)
-  [22:43:06] ⏳ Retrying routing...
-  [22:43:11] ✘ Stack routing failed to deploy.
-  [22:43:11] 🚫 Docker Error: Image traefik:v3.6 Pulling 
-error getting credentials - err: exec: "docker-credential-desktop": executable file not found in $PATH, out: ``
-  Init ██████████████████████████░░░░░░░░░░░░░░ 67% Docker                                                                  [idle 00:10 | total 00:11]
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 829, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
 Traceback (most recent call last):
-  File "/home/m3tal/M3tal-Media-Server/control-plane/init.py", line 418, in run_with_retries
-    return func(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/home/m3tal/M3tal-Media-Server/control-plane/init.py", line 824, in _deploy_and_verify
-    raise RuntimeError(f"Docker Compose Error (Exit {proc.returncode})")
-  [22:43:11] ⚠ [RETRY] routing failed (attempt 2): Docker Compose Error (Exit 1)
-  [22:43:11] ✘ routing failed permanently.
-  [22:43:11] ✘ Docker Agent failed: Docker Compose Error (Exit 1)
-  [22:43:11] ⚠ Component docker status: failed
-  [22:43:13] ★ System Readiness: DEGRADED
-  Init ████████████████████████████████████████ 100% Done                                                                   [idle 00:00 | total 00:12]
+  File "/usr/local/lib/python3.11/site-packages/engineio/server.py", line 451, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 656, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 539, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 621, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 288, in _handler
+    return self._handle_event(handler, message, real_ns, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 831, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "/docker/dashboard/server.py", line 233, in handle_connect
+    if not _bg_started or background_thread is None:
+           ^^^^^^^^^^^
+UnboundLocalError: cannot access local variable '_bg_started' where it is not associated with a value
+2026-05-02 01:57:49 [ERROR] engineio.server: message handler error
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 829, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
 
-Initialization COMPLETE.
+During handling of the above exception, another exception occurred:
 
-[INIT] Performing post-bootstrap infrastructure audit...
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/engineio/server.py", line 451, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 656, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 539, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 621, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 288, in _handler
+    return self._handle_event(handler, message, real_ns, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 831, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "/docker/dashboard/server.py", line 233, in handle_connect
+    if not _bg_started or background_thread is None:
+           ^^^^^^^^^^^
+UnboundLocalError: cannot access local variable '_bg_started' where it is not associated with a value
+2026-05-02 01:57:50 [ERROR] engineio.server: message handler error
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 829, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
 
-============================================================
- M3TAL INFRASTRUCTURE AUDIT | STATUS: FAILED (Strict: False)
-============================================================
-  [OK] Control Plane → HEALTHY (1s old)
+During handling of the above exception, another exception occurred:
 
-[CRITICAL] [X] Tier 1 component 'traefik' is MISSING.
-      Hint: Run 'm3tal run routing' to restore stack.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/engineio/server.py", line 451, in run_handler
+message handler error
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 829, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
 
-[CRITICAL] [X] Tier 1 component 'cloudflared' is MISSING.
-      Hint: Run 'm3tal run routing' to restore stack.
+During handling of the above exception, another exception occurred:
 
-============================================================
- Checked: 0 services
- Status:  FAILED
-============================================================
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/engineio/server.py", line 451, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 656, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 539, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 621, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 288, in _handler
+    return self._handle_event(handler, message, real_ns, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 831, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "/docker/dashboard/server.py", line 233, in handle_connect
+    if not _bg_started or background_thread is None:
+           ^^^^^^^^^^^
+UnboundLocalError: cannot access local variable '_bg_started' where it is not associated with a value
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 656, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 539, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 621, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 288, in _handler
+    return self._handle_event(handler, message, real_ns, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 831, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "/docker/dashboard/server.py", line 233, in handle_connect
+    if not _bg_started or background_thread is None:
+           ^^^^^^^^^^^
+UnboundLocalError: cannot access local variable '_bg_started' where it is not associated with a value
+2026-05-02 01:58:08 [ERROR] engineio.server: message handler error
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 829, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
 
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+message handler error
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 829, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/engineio/server.py", line 451, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 656, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 539, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 621, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 288, in _handler
+    return self._handle_event(handler, message, real_ns, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 831, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "/docker/dashboard/server.py", line 233, in handle_connect
+    if not _bg_started or background_thread is None:
+           ^^^^^^^^^^^
+UnboundLocalError: cannot access local variable '_bg_started' where it is not associated with a value
+  File "/usr/local/lib/python3.11/site-packages/engineio/server.py", line 451, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 656, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 539, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 621, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 288, in _handler
+    return self._handle_event(handler, message, real_ns, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 831, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "/docker/dashboard/server.py", line 233, in handle_connect
+    if not _bg_started or background_thread is None:
+           ^^^^^^^^^^^
+UnboundLocalError: cannot access local variable '_bg_started' where it is not associated with a value
+message handler error
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 829, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/engineio/server.py", line 451, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 656, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 539, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 621, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 288, in _handler
+    return self._handle_event(handler, message, real_ns, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 831, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "/docker/dashboard/server.py", line 233, in handle_connect
+    if not _bg_started or background_thread is None:
+           ^^^^^^^^^^^
+UnboundLocalError: cannot access local variable '_bg_started' where it is not associated with a value
+2026-05-02 01:58:14 [ERROR] engineio.server: message handler error
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 829, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/engineio/server.py", line 451, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 656, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 539, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 621, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 288, in _handler
+    return self._handle_event(handler, message, real_ns, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 831, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "/docker/dashboard/server.py", line 233, in handle_connect
+    if not _bg_started or background_thread is None:
+           ^^^^^^^^^^^
+UnboundLocalError: cannot access local variable '_bg_started' where it is not associated with a value
+message handler error
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 829, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/engineio/server.py", line 451, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 656, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 539, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 621, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 288, in _handler
+    return self._handle_event(handler, message, real_ns, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 831, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "/docker/dashboard/server.py", line 233, in handle_connect
+    if not _bg_started or background_thread is None:
+           ^^^^^^^^^^^
+UnboundLocalError: cannot access local variable '_bg_started' where it is not associated with a value
+2026-05-02 01:58:15 [ERROR] engineio.server: message handler error
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 829, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/engineio/server.py", line 451, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 656, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 539, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/socketio/server.py", line 621, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 288, in _handler
+    return self._handle_event(handler, message, real_ns, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/flask_socketio/__init__.py", line 831, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "/docker/dashboard/server.py", line 233, in handle_connect
+    if not _bg_started or background_thread is None:
+           ^^^^^^^^^^^
+UnboundLocalError: cannot access local variable '_bg_started' where it is not associated with a value
+(venv) m3tal@m3tal-media-server:~/M3tal-Media-Server$ 
