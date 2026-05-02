@@ -4,7 +4,6 @@ control-plane/state/
 
 # Secrets
 .env
-dashboard/users.json
 
 # Python / build artifacts
 *.log
