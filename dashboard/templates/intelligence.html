@@ -209,22 +209,16 @@
 
                 // Agent Grid
                 const agentGrid = document.getElementById('agent-grid');
-                if (failing === 0 && healthy > 0) {
-                    agentGrid.innerHTML = '<div class="empty-state"><span style="color:var(--success); margin-right: 0.25rem">✓</span> All agents are operating normally</div>';
-                    agentGrid.style.display = 'block';
-                } else {
-                    agentGrid.style.display = 'grid';
-                    const failingAgents = agentEntries.filter(([,v]) => v.status !== 'healthy');
-                    agentGrid.innerHTML = failingAgents.map(([name, info]) => {
-                        const mode = (info.mode || info.status || 'unknown').toLowerCase();
-                        return `
-                            <div class="agent-card">
-                                <span class="agent-name">${name}</span>
-                                <span class="agent-mode failing">${mode.toUpperCase()}</span>
-                            </div>
-                        `;
-                    }).join('');
-                }
+                agentGrid.innerHTML = agentEntries.map(([name, info]) => {
+                    const mode = (info.mode || info.status || 'unknown').toLowerCase();
+                    const isHealthy = mode === 'healthy';
+                    return `
+                        <div class="agent-card">
+                            <span class="agent-name">${name}</span>
+                            <span class="agent-mode ${isHealthy ? 'healthy' : 'failing'}">${mode.toUpperCase()}</span>
+                        </div>
+                    `;
+                }).join('');
             } catch (e) {
                 document.getElementById('agent-grid').innerHTML = `<div class="loading-text">Error: ${e.message}</div>`;
             }
