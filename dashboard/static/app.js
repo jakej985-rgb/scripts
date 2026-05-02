@@ -104,16 +104,32 @@ async function refreshFleet() {
 }
 
 async function refreshAnomalies() {
-    const [anomRes, decRes] = await Promise.all([
+    const [anomRes, decRes, healthRes] = await Promise.all([
         fetch('/api/anomalies'),
-        fetch('/api/decisions')
+        fetch('/api/decisions'),
+        fetch('/api/health/report')
     ]);
     const anomData = await anomRes.json();
     const decData = await decRes.json();
+    const healthData = await healthRes.json();
     
     anomalyFeed.innerHTML = '';
     
-    const issues = anomData.issues || [];
+    // anomalies.json issues (container/resource anomalies)
+    const containerIssues = (anomData.issues || []).map(i => ({
+        target: i.target || 'System',
+        type: i.type || 'warning',
+        reason: i.reason || i.message || ''
+    }));
+
+    // health_report.json issues (agent staleness, pipeline stalls, etc.)
+    const healthIssues = (healthData.issues || []).map(msg => ({
+        target: 'System',
+        type: 'degraded',
+        reason: msg
+    }));
+
+    const issues = [...containerIssues, ...healthIssues];
     const decisions = decData.decisions || [];
     
     // 1. Build Summary

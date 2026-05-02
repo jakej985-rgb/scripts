@@ -140,24 +140,44 @@
 
     <script>
         async function loadIntelligence() {
-            // Anomalies
+            // Anomalies — merge anomalies.json AND health_report.json issues
             try {
-                const anomRes = await fetch('/api/anomalies');
+                const [anomRes, healthRes] = await Promise.all([
+                    fetch('/api/anomalies'),
+                    fetch('/api/health/report')
+                ]);
                 const anomData = await anomRes.json();
-                const issues = anomData.issues || [];
-                document.getElementById('anomaly-count').textContent = issues.length;
+                const healthData = await healthRes.json();
+
+                // anomalies.json issues (container/resource anomalies)
+                const containerIssues = (anomData.issues || []).map(i => ({
+                    target: i.target || 'System',
+                    type: i.type || 'warning',
+                    reason: i.reason || i.message || ''
+                }));
+
+                // health_report.json issues (agent staleness, pipeline stalls, etc.)
+                const healthIssues = (healthData.issues || []).map(msg => ({
+                    target: 'System',
+                    type: 'degraded',
+                    reason: msg
+                }));
+
+                // Merge and deduplicate
+                const allIssues = [...containerIssues, ...healthIssues];
+                document.getElementById('anomaly-count').textContent = allIssues.length;
 
                 const anomList = document.getElementById('anomaly-list');
-                if (issues.length === 0) {
+                if (allIssues.length === 0) {
                     anomList.innerHTML = '<div class="empty-state">✅ No active anomalies detected</div>';
                 } else {
-                    anomList.innerHTML = issues.map(issue => `
+                    anomList.innerHTML = allIssues.map(issue => `
                         <div class="event-item">
                             <div class="event-header">
-                                <span class="event-target">${issue.target || 'System'}</span>
-                                <span class="status-pill ${issue.type === 'critical' ? 'offline' : 'loading'}">${issue.type || 'warning'}</span>
+                                <span class="event-target">${issue.target}</span>
+                                <span class="status-pill ${issue.type === 'critical' ? 'offline' : issue.type === 'degraded' ? 'loading' : 'loading'}">${issue.type}</span>
                             </div>
-                            <div class="event-detail">${issue.reason || issue.message || ''}</div>
+                            <div class="event-detail">${issue.reason}</div>
                         </div>
                     `).join('');
                 }
