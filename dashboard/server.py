@@ -219,7 +219,7 @@ def get_metrics_history():
 # -------------------------------
 
 @socketio.on('connect')
-def handle_connect():
+def handle_connect(auth=None):
     # 🛡️ SECURITY FIX: Re-enforcing authentication check (Audit C2)
     if 'username' not in session:
         return False
@@ -228,7 +228,7 @@ def handle_connect():
     emit('status', {'msg': 'Connected to M3TAL Control Plane'})
 
     # Start background tasks if not already running
-    global background_thread
+    global background_thread, _bg_started
     with _bg_lock:
         if not _bg_started or background_thread is None:
             start_background_tasks()
