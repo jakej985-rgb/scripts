@@ -154,6 +154,17 @@ def update_agent_health(agent_name: str, success: bool, error_msg: str = None):
     }
     save_json(path, stats, caller=agent_name)
 
+def _agent_requires_leader_gate(agent_name: str) -> bool:
+    """
+    Most Tier-2 agents should idle until this host matches elected leader (leader.txt).
+    command_listener is exempt: it uses getUpdates long-polling for one Telegram bot token,
+    and leader identity often mismatches Docker/hostnames (leader.txt vs socket.gethostname()),
+    which left the lock holder alive without ever calling listen_loop — starving Telegram commands.
+    File locking already prevents duplicate command_listener instances on this machine.
+    """
+    return agent_name != "command_listener"
+
+
 def wrap_agent(agent_name: str, func: Callable[[], Any], interval: int = 10):
     """Production Agent Wrapper.
     Safety: Contract check -> Lock acquisition -> Jittered Loop -> Tier Health.
@@ -200,7 +211,7 @@ def wrap_agent(agent_name: str, func: Callable[[], Any], interval: int = 10):
                     time.sleep(interval)
                     continue
 
-            if not is_leader():
+            if _agent_requires_leader_gate(agent_name) and not is_leader():
                 time.sleep(interval)
                 heartbeat_lock(agent_name)
                 continue
