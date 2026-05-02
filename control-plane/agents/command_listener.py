@@ -1,11 +1,15 @@
 import sys
+import os
 import json
 import time
+import shutil
+import platform
 import subprocess
+import urllib.request
 from datetime import datetime
 from pathlib import Path
 
-# M3TAL Telegram Command Listener (v3.5 Bulletproof)
+# M3TAL Telegram Command Listener (v4.0 — Full Command Suite)
 # Responsibility: Interactive control, log inspection, and system status.
 
 # Bootstrap path system
@@ -13,9 +17,15 @@ _BOOT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.append(str(_BOOT_ROOT / "control-plane"))
 
 from agents import telegram
-from config.telegram import is_allowed_user
-from utils.paths import REGISTRY_JSON, HEALTH_JSON, TELEGRAM_OFFSET_TXT
+from config.telegram import is_allowed_user, ALLOWED_USERS
+from utils.paths import (
+    REGISTRY_JSON, HEALTH_JSON, TELEGRAM_OFFSET_TXT,
+    HEALTH_REPORT_JSON, METRICS_JSON, STATE_DIR, REPO_ROOT, DOCKER_DIR,
+)
 from utils.guards import wrap_agent, SHUTDOWN_EVENT
+
+# --- Mute State Path ---------------------------------------------------------
+MUTE_STATE_JSON = STATE_DIR / "mute_state.json"
 
 START_TIME = datetime.now()
 
@@ -82,51 +92,92 @@ def handle_status(msg, args):
         telegram.send_direct(msg["chat"]["id"], f"🏥 <b>M3TAL System</b>\nUptime: <code>{uptime}</code>\nStatus: <b>HEALTHY</b>")
 
 def handle_docker(msg, args):
-    """Container management: status, restart."""
+    """Container management: status, restart, stop, start, inspect."""
+    chat = msg["chat"]["id"]
     if not args:
         usage = (
-            "Usage: <code>/docker [status|restart]</code>\n\n"
+            "Usage: <code>/docker [sub-command]</code>\n\n"
             "<b>Sub-commands:</b>\n"
             "  • <code>status</code> — List running containers\n"
-            "  • <code>restart &lt;name&gt;</code> — Restart a service"
+            "  • <code>restart &lt;name&gt;</code> — Restart a service\n"
+            "  • <code>stop &lt;name&gt;</code> — Stop a service\n"
+            "  • <code>start &lt;name&gt;</code> — Start a service\n"
+            "  • <code>inspect &lt;name&gt;</code> — Container details"
         )
-        telegram.send_direct(msg["chat"]["id"], _fmt_container_list(usage))
+        telegram.send_direct(chat, _fmt_container_list(usage))
         return
 
     cmd = args[0].lower()
+
     if cmd == "status":
         try:
-            res = subprocess.run(["docker", "ps", "--format", "{{.Names}} | {{.Status}}"], capture_output=True, text=True)
-            output = res.stdout if res.stdout else "No containers running."
-            telegram.send_direct(msg["chat"]["id"], f"🐳 <b>Docker Status</b>\n<pre>{output}</pre>")
+            res = subprocess.run(["docker", "ps", "--format", "{{.Names}} | {{.Status}}"], capture_output=True, text=True, timeout=15)
+            output = res.stdout.strip() if res.stdout else "No containers running."
+            telegram.send_direct(chat, f"🐳 <b>Docker Status</b>\n<pre>{output}</pre>")
         except Exception as e:
-            telegram.send_direct(msg["chat"]["id"], f"❌ Docker error: {e}")
+            telegram.send_direct(chat, f"❌ Docker error: {e}")
 
-    elif cmd == "restart":
+    elif cmd in ("restart", "stop", "start"):
         if len(args) < 2:
-            telegram.send_direct(msg["chat"]["id"], _fmt_container_list("Usage: <code>/docker restart &lt;name&gt;</code>"))
+            telegram.send_direct(chat, _fmt_container_list(f"Usage: <code>/docker {cmd} &lt;name&gt;</code>"))
             return
-        
         target = args[1]
         allowed = get_allowed_containers()
-        
         if target not in allowed:
-            telegram.send_direct(msg["chat"]["id"], _fmt_container_list(f"🚫 <b>Access Denied</b>: '<code>{target}</code>' is not in the allowed list."))
+            telegram.send_direct(chat, _fmt_container_list(f"🚫 <b>Access Denied</b>: '<code>{target}</code>' is not in the allowed list."))
             return
-
-        telegram.send_direct(msg["chat"]["id"], f"⏳ Restarting <code>{target}</code>...")
+        verb = {"restart": "Restarting", "stop": "Stopping", "start": "Starting"}[cmd]
+        emoji_ok = {"restart": "🔄", "stop": "🛑", "start": "▶️"}[cmd]
+        telegram.send_direct(chat, f"⏳ {verb} <code>{target}</code>...")
         try:
-            subprocess.run(["docker", "restart", target], check=True)
-            telegram.send_direct(msg["chat"]["id"], f"✅ Container <code>{target}</code> restarted successfully.")
+            subprocess.run(["docker", cmd, target], check=True, timeout=60)
+            telegram.send_direct(chat, f"{emoji_ok} Container <code>{target}</code> {cmd}ed successfully.")
         except Exception as e:
-            telegram.send_direct(msg["chat"]["id"], f"❌ Failed to restart <code>{target}</code>: {e}")
+            telegram.send_direct(chat, f"❌ Failed to {cmd} <code>{target}</code>: {e}")
+
+    elif cmd == "inspect":
+        if len(args) < 2:
+            telegram.send_direct(chat, _fmt_container_list(f"Usage: <code>/docker inspect &lt;name&gt;</code>"))
+            return
+        target = args[1]
+        allowed = get_allowed_containers()
+        if target not in allowed:
+            telegram.send_direct(chat, _fmt_container_list(f"🚫 <b>Access Denied</b>: '<code>{target}</code>' is not in the allowed list."))
+            return
+        try:
+            fmt = "{{.Config.Image}}|{{.State.Status}}|{{.State.StartedAt}}|{{.Created}}|{{.HostConfig.RestartPolicy.Name}}"
+            res = subprocess.run(["docker", "inspect", "-f", fmt, target], capture_output=True, text=True, timeout=10)
+            if res.returncode != 0:
+                telegram.send_direct(chat, f"❌ Container <code>{target}</code> not found on this host.")
+                return
+            parts = res.stdout.strip().split("|")
+            image, status, started, created, restart_pol = (parts + [""] * 5)[:5]
+            # Get ports
+            pres = subprocess.run(["docker", "inspect", "-f", "{{range $p, $c := .NetworkSettings.Ports}}{{$p}}->{{range $c}}{{.HostPort}}{{end}} {{end}}", target],
+                                  capture_output=True, text=True, timeout=10)
+            ports = pres.stdout.strip() or "none"
+            info = (
+                f"🔍 <b>Inspect: {target}</b>\n\n"
+                f"  <b>Image:</b> <code>{image}</code>\n"
+                f"  <b>Status:</b> {status}\n"
+                f"  <b>Started:</b> <code>{started[:19]}</code>\n"
+                f"  <b>Created:</b> <code>{created[:19]}</code>\n"
+                f"  <b>Restart:</b> {restart_pol}\n"
+                f"  <b>Ports:</b> <code>{ports}</code>"
+            )
+            telegram.send_direct(chat, info)
+        except Exception as e:
+            telegram.send_direct(chat, f"❌ Inspect error: {e}")
+    else:
+        telegram.send_direct(chat, f"❓ Unknown sub-command: <code>{cmd}</code>. Use /docker for help.")
+
 
 def handle_logs(msg, args):
     """Fetches recent logs for a service."""
     if not args:
         telegram.send_direct(msg["chat"]["id"], _fmt_container_list("Usage: <code>/logs &lt;service_name&gt;</code>"))
         return
-    
+
     target = args[0]
     allowed = get_allowed_containers()
     if target not in allowed:
@@ -134,13 +185,312 @@ def handle_logs(msg, args):
          return
 
     try:
-        # Fetch last 30 lines
-        res = subprocess.run(["docker", "logs", "--tail", "30", target], capture_output=True, text=True)
+        res = subprocess.run(["docker", "logs", "--tail", "30", target], capture_output=True, text=True, timeout=15)
         logs = res.stdout if res.stdout else res.stderr
-        if not logs: logs = "(no output)"
+        if not logs:
+            logs = "(no output)"
         telegram.send_direct(msg["chat"]["id"], f"📄 <b>Logs: {target}</b>\n<pre>{logs[-3500:]}</pre>")
     except Exception as e:
         telegram.send_direct(msg["chat"]["id"], f"❌ Error: {e}")
+
+
+# --- New Command Handlers (v4.0) ---------------------------------------------
+
+def _human_bytes(n):
+    """Format bytes into a human-readable string."""
+    for unit in ("B", "KB", "MB", "GB", "TB"):
+        if abs(n) < 1024:
+            return f"{n:.1f} {unit}"
+        n /= 1024
+    return f"{n:.1f} PB"
+
+
+def handle_disk(msg):
+    """Disk usage for key mount points."""
+    chat = msg["chat"]["id"]
+    lines = ["💾 <b>Disk Usage</b>\n"]
+    data_dir = os.getenv("DATA_DIR", "/mnt")
+    paths = {"/": "/", "DATA_DIR": data_dir}
+    for label, path in paths.items():
+        try:
+            usage = shutil.disk_usage(path)
+            pct = usage.used / usage.total * 100
+            bar = "█" * int(pct // 10) + "░" * (10 - int(pct // 10))
+            lines.append(
+                f"  <b>{label}</b> (<code>{path}</code>)\n"
+                f"  {bar} {pct:.1f}%\n"
+                f"  {_human_bytes(usage.used)} / {_human_bytes(usage.total)} "
+                f"({_human_bytes(usage.free)} free)\n"
+            )
+        except Exception as e:
+            lines.append(f"  <b>{label}</b>: ❌ {e}\n")
+    telegram.send_direct(chat, "\n".join(lines))
+
+
+def handle_ip(msg):
+    """Show public IP address."""
+    chat = msg["chat"]["id"]
+    try:
+        req = urllib.request.Request("https://api.ipify.org", method="GET")
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            ip = resp.read().decode().strip()
+        telegram.send_direct(chat, f"🌐 <b>Public IP:</b> <code>{ip}</code>")
+    except Exception as e:
+        telegram.send_direct(chat, f"❌ Could not determine public IP: {e}")
+
+
+def handle_ports(msg):
+    """List containers with their exposed ports."""
+    chat = msg["chat"]["id"]
+    try:
+        res = subprocess.run(
+            ["docker", "ps", "--format", "{{.Names}} | {{.Ports}}"],
+            capture_output=True, text=True, timeout=15,
+        )
+        if not res.stdout.strip():
+            telegram.send_direct(chat, "🔌 No containers with exposed ports.")
+            return
+        telegram.send_direct(chat, f"🔌 <b>Exposed Ports</b>\n<pre>{res.stdout.strip()}</pre>")
+    except Exception as e:
+        telegram.send_direct(chat, f"❌ Error: {e}")
+
+
+def handle_traefik(msg):
+    """Traefik reverse proxy status and active routes."""
+    chat = msg["chat"]["id"]
+    lines = ["🔀 <b>Traefik Status</b>\n"]
+    # 1. Container status
+    try:
+        res = subprocess.run(
+            ["docker", "inspect", "-f", "{{.State.Status}}|{{.State.StartedAt}}", "traefik"],
+            capture_output=True, text=True, timeout=10,
+        )
+        if res.returncode == 0:
+            parts = res.stdout.strip().split("|")
+            status, started = parts[0], parts[1][:19] if len(parts) > 1 else "?"
+            emoji = "✅" if status == "running" else "❌"
+            lines.append(f"  {emoji} Container: <b>{status}</b> (since <code>{started}</code>)\n")
+        else:
+            lines.append("  ❌ Traefik container not found\n")
+            telegram.send_direct(chat, "\n".join(lines))
+            return
+    except Exception as e:
+        lines.append(f"  ❌ Inspect error: {e}\n")
+        telegram.send_direct(chat, "\n".join(lines))
+        return
+
+    # 2. Active routes from container labels
+    try:
+        res = subprocess.run(
+            ["docker", "ps", "--format", "{{.Names}}|{{.Label \"traefik.http.routers\"}}|{{.Label \"traefik.enable\"}}"],
+            capture_output=True, text=True, timeout=10,
+        )
+        routes = []
+        for line in (res.stdout or "").strip().splitlines():
+            parts = line.split("|")
+            name = parts[0]
+            enabled = parts[2].strip().lower() if len(parts) > 2 else ""
+            if enabled == "true":
+                routes.append(f"  • <code>{name}</code>")
+        if routes:
+            lines.append(f"\n📡 <b>Traefik-enabled services:</b> ({len(routes)})\n" + "\n".join(routes))
+        else:
+            lines.append("\n  ⚠️ No Traefik-enabled services detected.")
+    except Exception:
+        pass
+
+    telegram.send_direct(chat, "\n".join(lines))
+
+
+def handle_resources(msg):
+    """CPU, RAM, and container resource usage from existing metrics agent data."""
+    chat = msg["chat"]["id"]
+    lines = ["📊 <b>System Resources</b>\n"]
+
+    # System metrics from metrics.json (already collected by metrics agent)
+    try:
+        data = json.loads(METRICS_JSON.read_text()) if METRICS_JSON.exists() else {}
+        sys_m = data.get("system", {})
+        cpu = sys_m.get("cpu", 0)
+        mem = sys_m.get("mem", 0)
+        cpu_bar = "█" * int(cpu // 10) + "░" * (10 - int(cpu // 10))
+        mem_bar = "█" * int(mem // 10) + "░" * (10 - int(mem // 10))
+        lines.append(f"  <b>CPU:</b> {cpu_bar} {cpu:.1f}%")
+        lines.append(f"  <b>RAM:</b> {mem_bar} {mem:.1f}%\n")
+
+        containers = data.get("containers", [])
+        if containers:
+            lines.append(f"  <b>Top Containers:</b>")
+            for c in sorted(containers, key=lambda x: x.get("cpu", 0), reverse=True)[:8]:
+                lines.append(f"    <code>{c['name']:25}</code> CPU: {c.get('cpu', 0):5.1f}%  MEM: {c.get('mem_usage', 'N/A')}")
+        else:
+            lines.append("  ⚠️ No container stats available.")
+    except Exception as e:
+        lines.append(f"  ❌ Metrics read error: {e}")
+
+    # Health score
+    try:
+        report = json.loads(HEALTH_REPORT_JSON.read_text()) if HEALTH_REPORT_JSON.exists() else {}
+        score = report.get("score", "?")
+        verdict = report.get("verdict", "UNKNOWN")
+        lines.append(f"\n  🏥 Health: <b>{verdict}</b> ({score}%)")
+    except Exception:
+        pass
+
+    telegram.send_direct(chat, "\n".join(lines))
+
+
+def handle_reboot(msg, args):
+    """Reboot the host (requires 'confirm' keyword)."""
+    chat = msg["chat"]["id"]
+    if sys.platform == "win32":
+        telegram.send_direct(chat, "⚠️ Reboot is only supported on Linux production hosts.")
+        return
+    if not args or args[0].lower() != "confirm":
+        telegram.send_direct(chat, "⚠️ <b>Reboot requires confirmation.</b>\n\nSend <code>/reboot confirm</code> to reboot the host.")
+        return
+    telegram.send_direct(chat, "🔄 <b>Rebooting host in 5 seconds...</b>")
+    time.sleep(5)
+    try:
+        subprocess.run(["reboot"], check=True, timeout=10)
+    except Exception as e:
+        telegram.send_direct(chat, f"❌ Reboot failed: {e}")
+
+
+def handle_update(msg, args):
+    """Pull latest images and recreate containers (requires 'confirm')."""
+    chat = msg["chat"]["id"]
+    if not args or args[0].lower() != "confirm":
+        telegram.send_direct(chat, "⚠️ <b>Update requires confirmation.</b>\n\nSend <code>/update confirm</code> to pull and restart all stacks.")
+        return
+
+    telegram.send_direct(chat, "⬇️ <b>Pulling latest images...</b> This may take a few minutes.")
+    # Find compose files under docker/
+    compose_dirs = []
+    if DOCKER_DIR.exists():
+        for child in DOCKER_DIR.iterdir():
+            if child.is_dir():
+                for cf in ("docker-compose.yml", "docker-compose.yaml", "compose.yml", "compose.yaml"):
+                    if (child / cf).exists():
+                        compose_dirs.append(child)
+                        break
+
+    if not compose_dirs:
+        telegram.send_direct(chat, "⚠️ No compose stacks found under <code>docker/</code>.")
+        return
+
+    results = []
+    for cdir in compose_dirs:
+        stack = cdir.name
+        try:
+            subprocess.run(["docker", "compose", "pull"], cwd=str(cdir), check=True, timeout=300, capture_output=True)
+            subprocess.run(["docker", "compose", "up", "-d"], cwd=str(cdir), check=True, timeout=120, capture_output=True)
+            results.append(f"  ✅ {stack}")
+        except Exception as e:
+            results.append(f"  ❌ {stack}: {e}")
+
+    telegram.send_direct(chat, "📦 <b>Update Results</b>\n\n" + "\n".join(results))
+
+
+def handle_backup(msg):
+    """Trigger a config backup using the existing backup script."""
+    chat = msg["chat"]["id"]
+    telegram.send_direct(chat, "💾 <b>Starting backup...</b>")
+    try:
+        # Import and call the existing backup function
+        backup_script = REPO_ROOT / "scripts" / "maintenance" / "backup.py"
+        if not backup_script.exists():
+            telegram.send_direct(chat, "❌ Backup script not found.")
+            return
+        # Run as subprocess to isolate
+        res = subprocess.run(
+            [sys.executable, str(backup_script)],
+            capture_output=True, text=True, timeout=120,
+        )
+        output = (res.stdout + res.stderr).strip()
+        if res.returncode == 0:
+            telegram.send_direct(chat, f"✅ <b>Backup complete</b>\n<pre>{output[-2000:]}</pre>")
+        else:
+            telegram.send_direct(chat, f"❌ <b>Backup failed</b>\n<pre>{output[-2000:]}</pre>")
+    except Exception as e:
+        telegram.send_direct(chat, f"❌ Backup error: {e}")
+
+
+def handle_mute(msg, unmute=False):
+    """Mute or unmute proactive alerts."""
+    chat = msg["chat"]["id"]
+    if unmute:
+        try:
+            if MUTE_STATE_JSON.exists():
+                MUTE_STATE_JSON.unlink()
+            telegram.send_direct(chat, "🔔 <b>Alerts resumed.</b> Proactive notifications are active.")
+        except Exception as e:
+            telegram.send_direct(chat, f"❌ Unmute error: {e}")
+        return
+
+    # Mute for 1 hour by default
+    uid = msg.get("from", {}).get("id", 0)
+    until = int(time.time()) + 3600
+    state = {"muted": True, "until": until, "by": uid}
+    try:
+        MUTE_STATE_JSON.write_text(json.dumps(state))
+        telegram.send_direct(chat, "🔇 <b>Alerts muted for 1 hour.</b>\nSend /unmute to resume early.")
+    except Exception as e:
+        telegram.send_direct(chat, f"❌ Mute error: {e}")
+
+
+def handle_who(msg):
+    """Show allowed Telegram user IDs."""
+    chat = msg["chat"]["id"]
+    if not ALLOWED_USERS:
+        telegram.send_direct(chat, "🔓 <b>Access: OPEN</b>\n\nNo ALLOWED_USERS configured — any user can send commands.")
+        return
+    user_lines = "\n".join(f"  • <code>{uid}</code>" for uid in ALLOWED_USERS)
+    telegram.send_direct(chat, f"🔐 <b>Allowed Users</b> ({len(ALLOWED_USERS)})\n\n{user_lines}")
+
+
+def handle_env(msg):
+    """Show environment config with sensitive values masked."""
+    chat = msg["chat"]["id"]
+    env_file = REPO_ROOT / ".env"
+    if not env_file.exists():
+        telegram.send_direct(chat, "❌ .env file not found.")
+        return
+
+    SENSITIVE = ("TOKEN", "SECRET", "KEY", "PASSWORD", "PASS", "HASH")
+
+    def _mask(val):
+        if not val or len(val) <= 4:
+            return "***"
+        return val[:2] + "***" + val[-2:]
+
+    try:
+        lines = ["⚙️ <b>Environment Config</b>\n<pre>"]
+        with open(env_file, "r") as f:
+            for raw in f:
+                raw = raw.strip()
+                if not raw or raw.startswith("#"):
+                    continue
+                if "=" not in raw:
+                    continue
+                if raw.startswith("export "):
+                    raw = raw[7:].strip()
+                k, v = raw.split("=", 1)
+                k = k.strip()
+                v = v.strip().strip('"').strip("'")
+                if any(s in k.upper() for s in SENSITIVE):
+                    v = _mask(v)
+                lines.append(f"  {k}={v}")
+        lines.append("</pre>")
+        text = "\n".join(lines)
+        # Telegram message limit ~4096 chars
+        if len(text) > 3900:
+            text = text[:3900] + "\n... (truncated)</pre>"
+        telegram.send_direct(chat, text)
+    except Exception as e:
+        telegram.send_direct(chat, f"❌ Error reading .env: {e}")
+
+
 
 # --- Core Loop ----------------------------------------------------------------
 
@@ -194,21 +544,76 @@ def process_update(update):
         handle_logs(msg, args)
     elif cmd == "/myid":
         telegram.send_direct(msg["chat"]["id"], f"Your ID: <code>{uid}</code>")
-    elif cmd == "/help":
-        help_text = (
-            "🤖 <b>M3TAL Bot Commands</b>\n\n"
-            "/status - System health overview\n"
-            "/status agents - Detailed agent health\n"
-            "/docker status - List running containers\n"
-            "/docker restart &lt;name&gt; - Restart a service\n"
-            "/logs &lt;name&gt; - View recent logs\n"
-            "/uptime - System start time\n"
-            "/ping - Basic connectivity test"
-        )
-        telegram.send_direct(msg["chat"]["id"], help_text)
     elif cmd == "/uptime":
         uptime = str(datetime.now() - START_TIME).split(".")[0]
         telegram.send_direct(msg["chat"]["id"], f"Uptime: <code>{uptime}</code>")
+
+    # --- Docker / Infrastructure ---
+    elif cmd == "/disk":
+        handle_disk(msg)
+
+    # --- Networking ---
+    elif cmd == "/ip":
+        handle_ip(msg)
+    elif cmd == "/ports":
+        handle_ports(msg)
+    elif cmd == "/traefik":
+        handle_traefik(msg)
+
+    # --- System ---
+    elif cmd == "/resources":
+        handle_resources(msg)
+    elif cmd == "/reboot":
+        handle_reboot(msg, args)
+    elif cmd == "/update":
+        handle_update(msg, args)
+    elif cmd == "/backup":
+        handle_backup(msg)
+
+    # --- Bot Management ---
+    elif cmd == "/mute":
+        handle_mute(msg)
+    elif cmd == "/unmute":
+        handle_mute(msg, unmute=True)
+    elif cmd == "/who":
+        handle_who(msg)
+    elif cmd == "/env":
+        handle_env(msg)
+
+    elif cmd == "/help":
+        help_text = (
+            "🤖 <b>M3TAL Bot Commands</b>\n\n"
+            "📊 <b>Status</b>\n"
+            "  /status — System health overview\n"
+            "  /status agents — Detailed agent health\n"
+            "  /resources — CPU, RAM, container stats\n"
+            "  /disk — Disk usage summary\n\n"
+            "🐳 <b>Docker</b>\n"
+            "  /docker status — Running containers\n"
+            "  /docker restart &lt;name&gt; — Restart service\n"
+            "  /docker stop &lt;name&gt; — Stop service\n"
+            "  /docker start &lt;name&gt; — Start service\n"
+            "  /docker inspect &lt;name&gt; — Container details\n"
+            "  /logs &lt;name&gt; — View recent logs\n\n"
+            "🌐 <b>Network</b>\n"
+            "  /ip — Show public IP\n"
+            "  /ports — List exposed ports\n"
+            "  /traefik — Traefik route status\n\n"
+            "⚙️ <b>System</b>\n"
+            "  /reboot confirm — Reboot host\n"
+            "  /update confirm — Pull &amp; update stacks\n"
+            "  /backup — Create config backup\n"
+            "  /env — Show config (secrets masked)\n\n"
+            "🤖 <b>Bot</b>\n"
+            "  /mute — Silence alerts (1 hour)\n"
+            "  /unmute — Resume alerts\n"
+            "  /who — List allowed users\n"
+            "  /uptime — Bot uptime\n"
+            "  /ping — Connectivity test\n"
+            "  /myid — Your Telegram ID"
+        )
+        telegram.send_direct(msg["chat"]["id"], help_text)
+
 
 def listen_loop(initial_offset):
     offset = initial_offset

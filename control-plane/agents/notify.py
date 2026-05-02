@@ -20,6 +20,7 @@ from agents import telegram
 logger = get_logger("notify")
 
 NOTIFY_STATE_JSON = os.path.join(STATE_DIR, "notify_state.json")
+MUTE_STATE_JSON = STATE_DIR / "mute_state.json"
 
 def check_and_notify():
     # Audit Fix L1: Subprocesses must start their own Telegram worker thread
@@ -27,7 +28,22 @@ def check_and_notify():
     
     if not telegram.is_available():
         return
-        
+
+    # --- Mute Gate (v4.0) ---
+    # If the user muted alerts via /mute, skip all notifications until expiry.
+    if MUTE_STATE_JSON.exists():
+        try:
+            mute = load_json(str(MUTE_STATE_JSON), default={})
+            if mute.get("muted") and mute.get("until", 0) > time.time():
+                logger.info("Alerts muted — skipping notification cycle.")
+                return
+            else:
+                # Auto-unmute: mute expired, clean up
+                MUTE_STATE_JSON.unlink(missing_ok=True)
+                logger.info("Mute expired — resuming alerts.")
+        except Exception as e:
+            logger.warning(f"Mute state read error: {e}")
+
     now = int(time.time())
     state = load_json(NOTIFY_STATE_JSON, default={})
 
