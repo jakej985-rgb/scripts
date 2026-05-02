@@ -30,9 +30,15 @@
         </div>
 
         <section class="glass-panel fleet-grid-panel">
-            <div class="panel-header">
-                <h2>All Containers</h2>
-                <span class="pulse-icon"></span>
+            <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <h2>All Containers</h2>
+                    <span class="pulse-icon"></span>
+                </div>
+                <div class="view-controls">
+                    <button class="view-btn active" onclick="setGrid(3)">3-Wide</button>
+                    <button class="view-btn" onclick="setGrid(4)">4-Wide</button>
+                </div>
             </div>
             <div id="fleet-grid" class="fleet-grid">
                 <div class="loading-text">Loading fleet data...</div>
@@ -73,10 +79,53 @@
         .fleet-stat.offline .count { color: var(--danger); }
         .fleet-stat.missing .count { color: var(--warning); }
 
+        .view-controls {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(0,0,0,0.2);
+            padding: 0.3rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .view-btn {
+            background: transparent;
+            color: var(--text-secondary);
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .view-btn.active {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-primary);
+        }
+        .view-btn:hover:not(.active) {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-primary);
+        }
+
         .fleet-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 1rem;
+        }
+        .fleet-grid.grid-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        @media (max-width: 1024px) {
+            .fleet-grid, .fleet-grid.grid-4 {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+        }
+        @media (max-width: 768px) {
+            .fleet-grid, .fleet-grid.grid-4 {
+                grid-template-columns: 1fr !important;
+            }
         }
         .fleet-card {
             background: rgba(255,255,255,0.02);
@@ -191,6 +240,30 @@
 
         loadFleet();
         setInterval(loadFleet, 10000);
+
+        function setGrid(cols) {
+            const grid = document.getElementById('fleet-grid');
+            const btns = document.querySelectorAll('.view-btn');
+            
+            if (cols === 4) {
+                grid.classList.add('grid-4');
+                btns[0].classList.remove('active');
+                btns[1].classList.add('active');
+                localStorage.setItem('fleet-grid-cols', '4');
+            } else {
+                grid.classList.remove('grid-4');
+                btns[0].classList.add('active');
+                btns[1].classList.remove('active');
+                localStorage.setItem('fleet-grid-cols', '3');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedCols = localStorage.getItem('fleet-grid-cols');
+            if (savedCols === '4') {
+                setGrid(4);
+            }
+        });
     </script>
 </body>
 </html>
