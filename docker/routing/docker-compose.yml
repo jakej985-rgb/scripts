@@ -3,15 +3,6 @@ services:
   traefik:
     image: traefik:latest
     container_name: traefik
-    # Fix: chmod acme.json to 600 before Traefik reads it (permission-fixer
-    # runs in the control-plane stack, which may not have executed yet).
-    entrypoint:
-      - sh
-      - -c
-      - |
-        chmod 600 /etc/traefik/acme.json 2>/dev/null || true
-        exec traefik "$$@"
-      - --
     command:
       - "--api.dashboard=true"
       - "--providers.docker=true"
@@ -22,16 +13,13 @@ services:
       - "--providers.file.watch=true"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
-      - "--certificatesresolvers.letsencrypt.acme.email=admin@${DOMAIN}"
-      - "--certificatesresolvers.letsencrypt.acme.storage=/etc/traefik/acme.json"
+      # No ACME/Let's Encrypt — Cloudflare Tunnel handles TLS termination.
+      # Internal traffic: cloudflared → Traefik is plain HTTP within the Docker network.
     ports:
       - "${HTTP_PORT:-80}:80"
       - "443:443"
       - "127.0.0.1:8080:8080"
     environment:
-      # Traefik v3.6+ negotiates automatically, but we pin the version
-      # as a safety net to prevent API version mismatch with newer Docker engines.
       - DOCKER_API_VERSION=1.45
       - DOMAIN=${DOMAIN}
     env_file:
@@ -43,15 +31,13 @@ services:
       - no-new-privileges:true
     volumes:
       - ../../control-plane/state/traefik-dynamic-dir:/etc/traefik/dynamic:ro
-      - ../../control-plane/state/acme.json:/etc/traefik/acme.json
     networks:
       - proxy
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN:?DOMAIN not set — run from repo root with .env}`)"
       - "traefik.http.routers.traefik.service=api@internal"
-      - "traefik.http.routers.traefik.entrypoints=websecure"
-      - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.traefik.entrypoints=web"
       - "traefik.http.routers.traefik.middlewares=m3tal-auth"
       - "traefik.http.middlewares.m3tal-auth.basicauth.usersfile=/etc/traefik/dynamic/users"
       - "m3tal.stack=routing"
