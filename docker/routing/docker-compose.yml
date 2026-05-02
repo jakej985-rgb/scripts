@@ -6,7 +6,7 @@ services:
     command:
       - "--api.dashboard=true"
       - "--providers.docker=true"
-      - "--providers.docker.endpoint=tcp://m3tal-docker-proxy:2375"
+      - "--providers.docker.endpoint=unix:///var/run/docker.sock"
       - "--providers.docker.exposedbydefault=false"
       - "--providers.docker.network=proxy"
       - "--providers.file.directory=/etc/traefik/dynamic"
@@ -30,6 +30,7 @@ services:
     security_opt:
       - no-new-privileges:true
     volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - ../../control-plane/state/traefik-dynamic-dir:/etc/traefik/dynamic:ro
     networks:
       - proxy
