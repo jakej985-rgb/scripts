@@ -1,8 +1,17 @@
 
 services:
   traefik:
-    image: traefik:v3.0
+    image: traefik:v3.6
     container_name: traefik
+    # Fix: chmod acme.json to 600 before Traefik reads it (permission-fixer
+    # runs in the control-plane stack, which may not have executed yet).
+    entrypoint:
+      - sh
+      - -c
+      - |
+        chmod 600 /etc/traefik/acme.json 2>/dev/null || true
+        exec traefik "$$@"
+      - --
     command:
       - "--api.dashboard=true"
       - "--providers.docker=true"
@@ -21,7 +30,9 @@ services:
       - "443:443"
       - "127.0.0.1:8080:8080"
     environment:
-      - DOCKER_API_VERSION=${DOCKER_API_VERSION:-1.41}
+      # Traefik v3.6+ negotiates automatically, but we pin the version
+      # as a safety net to prevent API version mismatch with newer Docker engines.
+      - DOCKER_API_VERSION=1.45
       - DOMAIN=${DOMAIN}
     env_file:
       - ../../.env
