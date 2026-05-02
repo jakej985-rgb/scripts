@@ -115,10 +115,25 @@
     <script>
         async function loadFleet() {
             try {
-                const res = await fetch('/api/health/report');
-                const data = await res.json();
+                const [healthRes, metricsRes] = await Promise.all([
+                    fetch('/api/health/report'),
+                    fetch('/api/metrics')
+                ]);
+                const data = await healthRes.json();
+                const metricsData = await metricsRes.json();
+                
                 const containers = data?.agent_health?.monitor_containers?.containers || {};
                 const entries = Object.entries(containers);
+
+                // Map metrics by container name (handle fuzzy matches like 'm3tal-autobrr' -> 'autobrr')
+                const containerMetrics = {};
+                if (metricsData.containers) {
+                    metricsData.containers.forEach(m => {
+                        let shortName = m.name.replace('m3tal-', '');
+                        containerMetrics[shortName] = m;
+                        containerMetrics[m.name] = m;
+                    });
+                }
 
                 // Stats
                 const online = entries.filter(([,v]) => v.status === 'online').length;
@@ -148,6 +163,11 @@
                     const status = info.status || 'unknown';
                     const rawStatus = info.raw_status || '';
                     const created = info.created ? info.created.split(' ').slice(0, 2).join(' ') : '';
+                    
+                    const metrics = containerMetrics[name] || { cpu: 0, mem_usage: '-' };
+                    const cpuStr = status === 'online' ? `${metrics.cpu.toFixed(1)}%` : '-';
+                    const memStr = status === 'online' ? metrics.mem_usage : '-';
+
                     return `
                         <div class="fleet-card">
                             <div class="card-top">
@@ -155,7 +175,12 @@
                                 <span class="status-pill ${status}">${status}</span>
                             </div>
                             <div class="card-detail">${rawStatus}</div>
-                            ${created ? `<div class="card-detail">Created: ${created}</div>` : ''}
+                            ${created ? `<div class="card-detail" style="margin-bottom: 0.5rem">Created: ${created}</div>` : ''}
+                            
+                            <div style="display: flex; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.5rem; margin-top: 0.5rem;">
+                                <div class="card-detail"><strong>CPU:</strong> <span style="color:var(--text-primary)">${cpuStr}</span></div>
+                                <div class="card-detail"><strong>RAM:</strong> <span style="color:var(--text-primary)">${memStr}</span></div>
+                            </div>
                         </div>
                     `;
                 }).join('');
