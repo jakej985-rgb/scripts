@@ -38,12 +38,13 @@ services:
       - STATE_DIR=/docker/control-plane/state
       - USERS_FILE=/docker/dashboard/users.json
       - DASHBOARD_HOST=0.0.0.0
+      - DASHBOARD_PORT=8082
       - PYTHONUNBUFFERED=1
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard.rule=Host(`m3tal.${DOMAIN:?DOMAIN not set}`)"
       - "traefik.http.routers.dashboard.entrypoints=web"
-      - "traefik.http.services.dashboard.loadbalancer.server.port=8080"
+      - "traefik.http.services.dashboard.loadbalancer.server.port=8082"
       - "traefik.docker.network=proxy"
       - "m3tal.stack=control-plane"
     networks:
