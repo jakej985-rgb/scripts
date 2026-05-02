@@ -62,7 +62,7 @@ def aggregate_agent_health():
             if f.endswith(".json"):
                 agent_name = f.replace(".json", "")
                 # Security: Only aggregate files that are known agents (Audit Fix 2)
-                if agent_name in TIERS:
+                if agent_name in TIERS or agent_name == "monitor_containers":
                     aggregated[agent_name] = load_json(HEALTH_SUBDIR / f)
                 else:
                     logger.warning(f"Security: Ignored health file from unknown agent: {agent_name}")

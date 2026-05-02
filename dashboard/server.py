@@ -161,6 +161,11 @@ def fleet():
 def intelligence():
     return render_template('intelligence.html')
 
+@app.route('/logs')
+@login_required()
+def logs():
+    return render_template('logs.html')
+
 # -------------------------------
 # API ENDPOINTS
 # -------------------------------
@@ -196,6 +201,28 @@ def get_registry():
 @login_required()
 def get_decisions():
     return jsonify(load_json_safe(DECISIONS_JSON))
+
+@app.route('/api/logs')
+@login_required()
+def get_logs():
+    logs_dir = os.path.join(STATE_DIR, "logs")
+    log_data = {}
+    if os.path.exists(logs_dir):
+        try:
+            for filename in os.listdir(logs_dir):
+                if filename.endswith(".log"):
+                    filepath = os.path.join(logs_dir, filename)
+                    try:
+                        from collections import deque
+                        with open(filepath, 'r', encoding='utf-8', errors='replace') as f:
+                            # Tail the last 100 lines of each log
+                            lines = list(deque(f, maxlen=100))
+                            log_data[filename] = "".join(lines)
+                    except Exception as e:
+                        log_data[filename] = f"[Error reading file: {e}]"
+        except Exception as e:
+            pass
+    return jsonify(log_data)
 
 @app.route('/healthz')
 def health_check():
