@@ -47,6 +47,16 @@ def get_allowed_containers():
         print(f"[CMD] Registry error: {e}")
         return static_allowed
 
+
+def _fmt_container_list(prefix=""):
+    """Returns a formatted HTML string listing all allowed containers."""
+    allowed = get_allowed_containers()
+    if not allowed:
+        return f"{prefix}\n⚠️ No containers are currently configured."
+    names = sorted(allowed)
+    listing = "\n".join(f"  • <code>{n}</code>" for n in names)
+    return f"{prefix}\n\n📦 <b>Available containers:</b>\n{listing}"
+
 # --- Command Handlers ---------------------------------------------------------
 
 def handle_status(msg, args):
@@ -74,7 +84,13 @@ def handle_status(msg, args):
 def handle_docker(msg, args):
     """Container management: status, restart."""
     if not args:
-        telegram.send_direct(msg["chat"]["id"], "Usage: <code>/docker [status|restart]</code>")
+        usage = (
+            "Usage: <code>/docker [status|restart]</code>\n\n"
+            "<b>Sub-commands:</b>\n"
+            "  • <code>status</code> — List running containers\n"
+            "  • <code>restart &lt;name&gt;</code> — Restart a service"
+        )
+        telegram.send_direct(msg["chat"]["id"], _fmt_container_list(usage))
         return
 
     cmd = args[0].lower()
@@ -88,14 +104,14 @@ def handle_docker(msg, args):
 
     elif cmd == "restart":
         if len(args) < 2:
-            telegram.send_direct(msg["chat"]["id"], "Usage: <code>/docker restart <name></code>")
+            telegram.send_direct(msg["chat"]["id"], _fmt_container_list("Usage: <code>/docker restart &lt;name&gt;</code>"))
             return
         
         target = args[1]
         allowed = get_allowed_containers()
         
         if target not in allowed:
-            telegram.send_direct(msg["chat"]["id"], f"🚫 <b>Access Denied</b>: '{target}' is not in the allowed list.")
+            telegram.send_direct(msg["chat"]["id"], _fmt_container_list(f"🚫 <b>Access Denied</b>: '<code>{target}</code>' is not in the allowed list."))
             return
 
         telegram.send_direct(msg["chat"]["id"], f"⏳ Restarting <code>{target}</code>...")
@@ -108,13 +124,13 @@ def handle_docker(msg, args):
 def handle_logs(msg, args):
     """Fetches recent logs for a service."""
     if not args:
-        telegram.send_direct(msg["chat"]["id"], "Usage: <code>/logs <service_name></code>")
+        telegram.send_direct(msg["chat"]["id"], _fmt_container_list("Usage: <code>/logs &lt;service_name&gt;</code>"))
         return
     
     target = args[0]
     allowed = get_allowed_containers()
     if target not in allowed:
-         telegram.send_direct(msg["chat"]["id"], "🚫 Unauthorized or unknown service.")
+         telegram.send_direct(msg["chat"]["id"], _fmt_container_list(f"🚫 Unauthorized or unknown service: '<code>{target}</code>'"))
          return
 
     try:
