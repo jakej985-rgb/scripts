@@ -105,6 +105,10 @@ def calculate_health():
     for agent, stats in agent_health.items():
         if agent == "monitor_containers":
             continue
+
+        # Skip stale/unhealthy penalties for agents in graceful shutdown
+        if stats.get("shutdown"):
+            continue
             
         if stats.get("status") != "healthy":
             score -= 10

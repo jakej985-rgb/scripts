@@ -183,8 +183,19 @@ def agent_tick():
         threads.append(t)
 
     # Monitor threads until shutdown or all finish
+    last_health_update = 0
     while not SHUTDOWN_EVENT.is_set() and any(t.is_alive() for t in threads):
         time.sleep(1)
+        # Heartbeat: keep health timestamp fresh so health_score doesn't
+        # flag this agent as stalled (agent_tick never returns to wrap_agent)
+        now = time.time()
+        if now - last_health_update > 60:
+            try:
+                from agents.utils.guards import update_agent_health
+                update_agent_health("docker_logs_agent", success=True)
+            except Exception:
+                pass
+            last_health_update = now
         
     if not SHUTDOWN_EVENT.is_set() and not any(t.is_alive() for t in threads):
         # If all threads died but we didn't signal shutdown, something is wrong

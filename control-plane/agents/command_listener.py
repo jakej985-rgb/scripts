@@ -973,6 +973,7 @@ def listen_loop(initial_offset):
     offset = initial_offset
     
     pulse_count = 0
+    last_health_update = 0
     while not SHUTDOWN_EVENT.is_set():
         try:
             updates = telegram.router.get_new_updates(offset=offset, timeout=20)
@@ -994,6 +995,17 @@ def listen_loop(initial_offset):
         except Exception as e:
             print(f"❌ [CMD] Loop Error: {e}")
             time.sleep(5)
+
+        # Heartbeat: keep health timestamp fresh so health_score doesn't
+        # flag this agent as stalled (listen_loop never returns to wrap_agent)
+        now = time.time()
+        if now - last_health_update > 60:
+            try:
+                from utils.guards import update_agent_health
+                update_agent_health("command_listener", success=True)
+            except Exception:
+                pass
+            last_health_update = now
             
         time.sleep(1)
 
