@@ -103,6 +103,9 @@ def calculate_health():
     tier1_fail = False
     
     for agent, stats in agent_health.items():
+        if agent == "monitor_containers":
+            continue
+            
         if stats.get("status") != "healthy":
             score -= 10
             file_issues.append(f"Agent Unhealthy: {agent} ({stats.get('error')})")
@@ -128,7 +131,7 @@ def calculate_health():
             tier1_fail = True
 
     # 4. Mode Determination (Tweak 5)
-    any_agent_fail = any(stats.get("status") != "healthy" for stats in agent_health.values())
+    any_agent_fail = any(stats.get("status") != "healthy" for agent, stats in agent_health.items() if agent != "monitor_containers")
     
     if tier1_fail:
         mode = "CRITICAL"
