@@ -1,7 +1,29 @@
-# 🤖 M3TAL Telegram Bot — Command Reference (v4.0)
+# 🤖 M3TAL Telegram Bot — Command Reference (v5.0)
 
 Complete reference for all **24 commands** available via the M3TAL Telegram bot.
-Allows remote management, monitoring, and troubleshooting of the media server from any Telegram client.
+Supports both **typed commands** and a fully **button-driven UI** — no typing required.
+
+---
+
+## 🎛️ Button Menu System
+
+Send `/start`, `/menu`, or `/help` to open the **M3TAL Control Panel** — a full inline keyboard menu.
+
+```
+/start  →  Main Menu
+             ├── 📊 Status       →  [System Status] [Agent Health] [Resources] [Disk] [Uptime] [Ping] [My ID]
+             ├── 🐳 Docker       →  [Status] [Restart] [Stop] [Start] [Inspect] [Logs]
+             │                        └── [container1] [container2] [container3] ...
+             ├── 🌐 Network      →  [Public IP] [Ports] [Traefik Status]
+             ├── ⚙️ System       →  [Backup] [Env Config] [Update Stacks ⚠️] [Reboot Host ⚠️]
+             └── 🤖 Bot          →  [Mute Alerts] [Unmute] [Allowed Users]
+```
+
+- **Every command** is accessible via buttons — zero typing needed
+- **Dangerous commands** (Reboot, Update) show a confirmation dialog before executing
+- **Container actions** (Restart, Stop, Start, Inspect, Logs) present a dynamic picker with all available containers
+- **Back buttons** (`⬅️ Main Menu`, `⬅️ Docker Menu`) let you navigate between menus
+- All typed commands (`/docker restart radarr`, `/logs sonarr`, etc.) still work exactly as before
 
 ---
 
@@ -10,72 +32,70 @@ Allows remote management, monitoring, and troubleshooting of the media server fr
 | Layer | Details |
 | :--- | :--- |
 | **User Authorization** | Only Telegram user IDs listed in `ALLOWED_USERS` (`.env`) may send commands. If empty, all users are accepted. |
-| **Container Allowlist** | Container-targeted commands (`restart`, `stop`, `start`, `inspect`, `logs`) are restricted to containers in `ALLOWED_DOCKER_RESTARTS` plus names found in `registry.json`. |
-| **Confirmation Gate** | `/reboot` and `/update` require the keyword `confirm` as a second word to execute. |
+| **Container Allowlist** | Container-targeted commands are restricted to containers in `ALLOWED_DOCKER_RESTARTS` plus names found in `registry.json`. |
+| **Confirmation Gate** | `/reboot` and `/update` require the keyword `confirm` (typed) or a ✅ confirmation button (tapped). |
 | **Secret Masking** | `/env` masks values for keys containing `TOKEN`, `SECRET`, `PASSWORD`, `KEY`, or `HASH`. |
-| **Helpful Denials** | When a command is incomplete or targets an invalid container, the bot replies with usage instructions **and** the list of available containers. |
 
 ---
 
 ## 📊 Status & Monitoring
 
-| Command | Description |
+| Command / Button | Description |
 | :--- | :--- |
 | `/status` | System health summary: uptime and overall status. |
 | `/status agents` | Per-agent health breakdown with score (from `health.json`). |
-| `/resources` | Latest CPU/RAM usage bars, top 8 containers by CPU, and health score (from `metrics.json`). |
-| `/disk` | Disk usage for `/` and `DATA_DIR` with visual percentage bars and free space. |
+| `/resources` | Latest CPU/RAM usage bars, top 8 containers by CPU, and health score. |
+| `/disk` | Disk usage for `/` and `DATA_DIR` with visual percentage bars. |
 | `/uptime` | Bot process uptime. |
 | `/ping` | Connectivity test — returns `pong 🏓`. |
-| `/myid` | Shows your Telegram user ID (useful for adding to `ALLOWED_USERS`). |
+| `/myid` | Shows your Telegram user ID. |
 
 ---
 
 ## 🐳 Docker Management
 
-All container-targeted sub-commands are gated by the container allowlist.
-Sending `/docker` with no arguments displays the sub-command menu and available containers.
-
-| Command | Description |
+| Command / Button | Description |
 | :--- | :--- |
-| `/docker status` | Lists all running containers and their Docker status string. |
+| `/docker` | Opens the Docker action menu (inline keyboard). |
+| `/docker status` | Lists all running containers and their status. |
 | `/docker restart <name>` | Restarts the named container. |
-| `/docker stop <name>` | Stops the named container. Note: blocked if the Docker Socket Proxy has `ALLOW_STOP=0`. |
+| `/docker stop <name>` | Stops the named container. |
 | `/docker start <name>` | Starts a stopped container. |
 | `/docker inspect <name>` | Shows image, status, start/creation time, restart policy, and port mappings. |
-| `/logs <name>` | Fetches the last 30 log lines for the named service (output capped at ~3500 chars). |
+| `/logs` | Opens the log viewer container picker (inline keyboard). |
+| `/logs <name>` | Fetches the last 30 log lines for the named service. |
 
 ---
 
 ## 🌐 Network & Routing
 
-| Command | Description |
+| Command / Button | Description |
 | :--- | :--- |
-| `/ip` | Fetches the host's current public IP address (via `api.ipify.org`). |
-| `/ports` | Lists all containers with their published host ports. |
-| `/traefik` | Traefik container status + list of all Traefik-enabled services discovered via Docker labels. |
+| `/ip` | Fetches the host's current public IP address. |
+| `/ports` | Lists all containers with published host ports. |
+| `/traefik` | Traefik container status + Traefik-enabled services via Docker labels. |
 
 ---
 
 ## ⚙️ System & Maintenance
 
-| Command | Description |
+| Command / Button | Description |
 | :--- | :--- |
-| `/reboot confirm` | Reboots the Linux host after a 5-second delay. Linux only — blocked on Windows. Requires `confirm`. |
-| `/update confirm` | Runs `docker compose pull` and `up -d` on every stack found in `docker/`. Requires `confirm`. |
-| `/backup` | Creates a compressed backup of `.env`, `docker/` configs, and `control-plane/state/` using the built-in backup script. |
-| `/env` | Displays the current `.env` file contents. Sensitive values (tokens, passwords, secrets) are masked. |
+| `/reboot confirm` | Reboots the Linux host. Requires `confirm` keyword or button confirmation. |
+| `/update confirm` | Pulls latest images and recreates all stacks. Requires `confirm` keyword or button confirmation. |
+| `/backup` | Creates a compressed backup of configs and state. |
+| `/env` | Displays `.env` file contents with sensitive values masked. |
 
 ---
 
 ## 🤖 Bot Management
 
-| Command | Description |
+| Command / Button | Description |
 | :--- | :--- |
-| `/mute` | Silences proactive alert notifications for 1 hour. Useful during planned maintenance. |
-| `/unmute` | Resumes alert notifications immediately (clears the mute timer). |
-| `/who` | Lists all authorized Telegram user IDs, or reports if access is open. |
-| `/help` | Displays the full categorized command menu in chat. |
+| `/mute` | Silences proactive alert notifications for 1 hour. |
+| `/unmute` | Resumes alert notifications immediately. |
+| `/who` | Lists all authorized Telegram user IDs. |
+| `/help` / `/start` / `/menu` | Opens the interactive button menu. |
 
 ---
 
@@ -83,5 +103,5 @@ Sending `/docker` with no arguments displays the sub-command menu and available 
 
 - **Case**: Commands are case-insensitive (`/Docker` = `/docker`).
 - **Bot mentions**: The `@botname` suffix is stripped automatically (`/status@M3talBot` works).
-- **Message TTL**: Messages older than 10 minutes are silently dropped to prevent stale command replay.
-- **Incomplete commands**: If you omit a required argument (e.g. `/docker restart` without a name), the bot replies with usage help **and** the list of valid container names.
+- **Message TTL**: Messages older than 10 minutes are silently dropped.
+- **Dual mode**: Every command works both via typed text AND via the button menu — use whichever you prefer.

@@ -71,10 +71,7 @@ def _fmt_container_list(prefix=""):
 # --- Inline Keyboard Builders ------------------------------------------------
 
 def _build_container_keyboard(prefix: str):
-    """Build inline keyboard rows of container buttons (3 per row).
-    
-    Each button's callback_data is '{prefix}:{container_name}'.
-    """
+    """Build inline keyboard rows of container buttons (3 per row)."""
     allowed = get_allowed_containers()
     if not allowed:
         return []
@@ -92,6 +89,7 @@ DOCKER_ACTIONS = {
     "stop":    {"emoji": "🛑", "label": "Stop"},
     "start":   {"emoji": "▶️", "label": "Start"},
     "inspect": {"emoji": "🔍", "label": "Inspect"},
+    "logs":    {"emoji": "📄", "label": "Logs"},
 }
 
 
@@ -101,12 +99,149 @@ def _build_docker_menu():
         {"text": f"{info['emoji']} {info['label']}", "callback_data": f"dkr:{action}"}
         for action, info in DOCKER_ACTIONS.items()
     ]
-    # Split into rows of 3
     rows = [row[i:i+3] for i in range(0, len(row), 3)]
+    rows.append([{"text": "⬅️ Main Menu", "callback_data": "menu:main"}])
     return rows
 
 
+# --- Full Button Menu System --------------------------------------------------
+
+MENU_CATEGORIES = [
+    {"text": "📊 Status",  "callback_data": "cat:status"},
+    {"text": "🐳 Docker",  "callback_data": "cat:docker"},
+    {"text": "🌐 Network", "callback_data": "cat:network"},
+    {"text": "⚙️ System",  "callback_data": "cat:system"},
+    {"text": "🤖 Bot",     "callback_data": "cat:bot"},
+]
+
+
+def _build_main_menu():
+    """Build the top-level category menu."""
+    rows = [[btn] for btn in MENU_CATEGORIES]
+    return rows
+
+
+def _build_category_menu(category: str):
+    """Build a sub-menu for a specific category."""
+    back = [{"text": "⬅️ Main Menu", "callback_data": "menu:main"}]
+
+    if category == "status":
+        return [
+            [{"text": "📊 System Status",    "callback_data": "cmd:status"},
+             {"text": "🩺 Agent Health",     "callback_data": "cmd:status_agents"}],
+            [{"text": "📈 Resources",        "callback_data": "cmd:resources"},
+             {"text": "💾 Disk Usage",       "callback_data": "cmd:disk"}],
+            [{"text": "⏱ Uptime",           "callback_data": "cmd:uptime"},
+             {"text": "🏓 Ping",             "callback_data": "cmd:ping"}],
+            [{"text": "🆔 My ID",            "callback_data": "cmd:myid"}],
+            back,
+        ]
+
+    if category == "docker":
+        return _build_docker_menu()
+
+    if category == "network":
+        return [
+            [{"text": "🌐 Public IP",        "callback_data": "cmd:ip"},
+             {"text": "🔌 Ports",            "callback_data": "cmd:ports"}],
+            [{"text": "🔀 Traefik Status",   "callback_data": "cmd:traefik"}],
+            back,
+        ]
+
+    if category == "system":
+        return [
+            [{"text": "💾 Backup",           "callback_data": "cmd:backup"},
+             {"text": "⚙️ Env Config",       "callback_data": "cmd:env"}],
+            [{"text": "⬇️ Update Stacks",    "callback_data": "cmd:update"},
+             {"text": "🔄 Reboot Host",      "callback_data": "cmd:reboot"}],
+            back,
+        ]
+
+    if category == "bot":
+        return [
+            [{"text": "🔇 Mute Alerts",      "callback_data": "cmd:mute"},
+             {"text": "🔔 Unmute",           "callback_data": "cmd:unmute"}],
+            [{"text": "🔐 Allowed Users",    "callback_data": "cmd:who"}],
+            back,
+        ]
+
+    return [back]
+
+
+def send_main_menu(chat_id):
+    """Send the main menu keyboard to a chat."""
+    telegram.send_keyboard(
+        chat_id,
+        "🤖 <b>M3TAL Control Panel</b>\n\nSelect a category:",
+        _build_main_menu(),
+    )
+
+
 # --- Callback Query Handler --------------------------------------------------
+
+def _execute_command(chat, cmd_name, uid=None):
+    """Execute a command by name from a button press.
+    
+    Uses a synthetic message dict to reuse existing handlers.
+    """
+    fake_msg = {"chat": {"id": chat}, "from": {"id": uid or 0}}
+
+    if cmd_name == "status":
+        handle_status(fake_msg, [])
+    elif cmd_name == "status_agents":
+        handle_status(fake_msg, ["agents"])
+    elif cmd_name == "resources":
+        handle_resources(fake_msg)
+    elif cmd_name == "disk":
+        handle_disk(fake_msg)
+    elif cmd_name == "uptime":
+        uptime = str(datetime.now() - START_TIME).split(".")[0]
+        telegram.send_direct(chat, f"⏱ Uptime: <code>{uptime}</code>")
+    elif cmd_name == "ping":
+        telegram.send_direct(chat, "pong 🏓")
+    elif cmd_name == "myid":
+        telegram.send_direct(chat, f"🆔 Your ID: <code>{uid}</code>")
+    elif cmd_name == "ip":
+        handle_ip(fake_msg)
+    elif cmd_name == "ports":
+        handle_ports(fake_msg)
+    elif cmd_name == "traefik":
+        handle_traefik(fake_msg)
+    elif cmd_name == "backup":
+        handle_backup(fake_msg)
+    elif cmd_name == "env":
+        handle_env(fake_msg)
+    elif cmd_name == "mute":
+        handle_mute(fake_msg)
+    elif cmd_name == "unmute":
+        handle_mute(fake_msg, unmute=True)
+    elif cmd_name == "who":
+        handle_who(fake_msg)
+    elif cmd_name == "reboot":
+        # Dangerous — send confirmation button instead of executing
+        telegram.send_keyboard(chat, (
+            "⚠️ <b>REBOOT HOST</b>\n\n"
+            "This will reboot the entire server.\n"
+            "All containers will go down temporarily.\n\n"
+            "Are you sure?"
+        ), [
+            [{"text": "✅ Yes, Reboot", "callback_data": "confirm:reboot"},
+             {"text": "❌ Cancel",      "callback_data": "cancel:0"}],
+        ])
+    elif cmd_name == "update":
+        # Dangerous — send confirmation button
+        telegram.send_keyboard(chat, (
+            "⚠️ <b>UPDATE ALL STACKS</b>\n\n"
+            "This will pull latest images and recreate\n"
+            "every compose stack.\n\n"
+            "Are you sure?"
+        ), [
+            [{"text": "✅ Yes, Update", "callback_data": "confirm:update"},
+             {"text": "❌ Cancel",      "callback_data": "cancel:0"}],
+        ])
+    else:
+        telegram.send_direct(chat, f"❓ Unknown command: {cmd_name}")
+
 
 def handle_callback(cbq):
     """Process an inline keyboard button press."""
@@ -136,10 +271,43 @@ def handle_callback(cbq):
         return
     action_type, value = parts
 
+    # --- Main Menu navigation ---
+    if action_type == "menu":
+        if value == "main":
+            send_main_menu(chat)
+        return
+
+    # --- Category sub-menu ---
+    if action_type == "cat":
+        title_map = {
+            "status":  "📊 <b>Status & Monitoring</b>",
+            "docker":  "🐳 <b>Docker Management</b>",
+            "network": "🌐 <b>Network & Routing</b>",
+            "system":  "⚙️ <b>System & Maintenance</b>",
+            "bot":     "🤖 <b>Bot Management</b>",
+        }
+        title = title_map.get(value, "📋 <b>Menu</b>")
+        buttons = _build_category_menu(value)
+        telegram.send_keyboard(chat, f"{title}\n\nSelect a command:", buttons)
+        return
+
+    # --- Direct command execution from button ---
+    if action_type == "cmd":
+        _execute_command(chat, value, uid)
+        return
+
+    # --- Confirmation for dangerous commands ---
+    if action_type == "confirm":
+        fake_msg = {"chat": {"id": chat}, "from": {"id": uid}}
+        if value == "reboot":
+            handle_reboot(fake_msg, ["confirm"])
+        elif value == "update":
+            handle_update(fake_msg, ["confirm"])
+        return
+
     # --- Docker action menu button (e.g. "dkr:restart") ---
     if action_type == "dkr":
         if value == "status":
-            # Status doesn't need a container name — run directly
             try:
                 res = subprocess.run(
                     ["docker", "ps", "--format", "{{.Names}} | {{.Status}}"],
@@ -151,6 +319,16 @@ def handle_callback(cbq):
                 telegram.send_direct(chat, f"❌ Docker error: {e}")
             return
 
+        if value == "logs":
+            # Show container picker for logs
+            buttons = _build_container_keyboard("log")
+            if not buttons:
+                telegram.send_direct(chat, "⚠️ No containers available.")
+                return
+            buttons.append([{"text": "⬅️ Docker Menu", "callback_data": "cat:docker"}])
+            telegram.send_keyboard(chat, "📄 <b>View Logs</b>\n\nSelect a service:", buttons)
+            return
+
         # For restart/stop/start/inspect → show container picker
         info = DOCKER_ACTIONS.get(value, {})
         label = info.get("label", value)
@@ -160,8 +338,7 @@ def handle_callback(cbq):
             telegram.send_direct(chat, "⚠️ No containers available.")
             session.clear(uid)
             return
-        # Add a cancel button at the bottom
-        buttons.append([{"text": "❌ Cancel", "callback_data": "cancel:0"}])
+        buttons.append([{"text": "⬅️ Docker Menu", "callback_data": "cat:docker"}])
         telegram.send_keyboard(
             chat,
             f"{info.get('emoji', '🐳')} Select container to <b>{label}</b>:",
@@ -186,7 +363,6 @@ def handle_callback(cbq):
             return
 
         if docker_action == "inspect":
-            # Reuse the inspect logic from handle_docker
             try:
                 fmt = "{{.Config.Image}}|{{.State.Status}}|{{.State.StartedAt}}|{{.Created}}|{{.HostConfig.RestartPolicy.Name}}"
                 res = subprocess.run(["docker", "inspect", "-f", fmt, target], capture_output=True, text=True, timeout=10)
@@ -776,39 +952,8 @@ def process_update(update):
     elif cmd == "/env":
         handle_env(msg)
 
-    elif cmd == "/help":
-        help_text = (
-            "🤖 <b>M3TAL Bot Commands</b>\n\n"
-            "📊 <b>Status</b>\n"
-            "  /status — System health overview\n"
-            "  /status agents — Detailed agent health\n"
-            "  /resources — CPU, RAM, container stats\n"
-            "  /disk — Disk usage summary\n\n"
-            "🐳 <b>Docker</b>\n"
-            "  /docker status — Running containers\n"
-            "  /docker restart &lt;name&gt; — Restart service\n"
-            "  /docker stop &lt;name&gt; — Stop service\n"
-            "  /docker start &lt;name&gt; — Start service\n"
-            "  /docker inspect &lt;name&gt; — Container details\n"
-            "  /logs &lt;name&gt; — View recent logs\n\n"
-            "🌐 <b>Network</b>\n"
-            "  /ip — Show public IP\n"
-            "  /ports — List exposed ports\n"
-            "  /traefik — Traefik route status\n\n"
-            "⚙️ <b>System</b>\n"
-            "  /reboot confirm — Reboot host\n"
-            "  /update confirm — Pull &amp; update stacks\n"
-            "  /backup — Create config backup\n"
-            "  /env — Show config (secrets masked)\n\n"
-            "🤖 <b>Bot</b>\n"
-            "  /mute — Silence alerts (1 hour)\n"
-            "  /unmute — Resume alerts\n"
-            "  /who — List allowed users\n"
-            "  /uptime — Bot uptime\n"
-            "  /ping — Connectivity test\n"
-            "  /myid — Your Telegram ID"
-        )
-        telegram.send_direct(msg["chat"]["id"], help_text)
+    elif cmd in ("/help", "/start", "/menu"):
+        send_main_menu(msg["chat"]["id"])
 
 
 def listen_loop(initial_offset):
