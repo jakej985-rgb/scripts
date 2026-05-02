@@ -1,4 +1,3 @@
-import os
 import sys
 import json
 import time
@@ -14,38 +13,11 @@ _BOOT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.append(str(_BOOT_ROOT / "control-plane"))
 
 from agents import telegram
-from config.telegram import is_allowed_user, ALLOWED_USERS
-from utils.paths import REPO_ROOT, REGISTRY_JSON, STATE_DIR, HEALTH_JSON, TELEGRAM_OFFSET_TXT
+from config.telegram import is_allowed_user
+from utils.paths import REGISTRY_JSON, HEALTH_JSON, TELEGRAM_OFFSET_TXT
 from utils.guards import wrap_agent, SHUTDOWN_EVENT
 
 START_TIME = datetime.now()
-
-# #region agent log
-def _agent_dbg(hypothesis_id: str, location: str, message: str, data: dict) -> None:
-    try:
-        payload = {
-            "sessionId": "6f288f",
-            "hypothesisId": hypothesis_id,
-            "location": location,
-            "message": message,
-            "data": data,
-            "timestamp": int(time.time() * 1000),
-        }
-        _line = json.dumps(payload) + "\n"
-        try:
-            print(f"[DBG_6f288f] {_line.strip()}", flush=True)
-        except Exception:
-            pass
-        for _p in (REPO_ROOT / "debug-6f288f.log", STATE_DIR / "debug-6f288f.log"):
-            try:
-                _p.parent.mkdir(parents=True, exist_ok=True)
-                with open(_p, "a", encoding="utf-8") as _f:
-                    _f.write(_line)
-            except Exception:
-                pass
-    except Exception:
-        pass
-# #endregion
 
 # --- Helpers ------------------------------------------------------------------
 
@@ -157,24 +129,8 @@ def handle_logs(msg, args):
 # --- Core Loop ----------------------------------------------------------------
 
 def process_update(update):
-    _agent_dbg(
-        "H2",
-        "command_listener.py:process_update",
-        "update_received",
-        {
-            "update_id": update.get("update_id"),
-            "has_message": "message" in update,
-            "has_channel_post": "channel_post" in update,
-        },
-    )
     msg = update.get("message")
     if not msg or "text" not in msg:
-        _agent_dbg(
-            "H5",
-            "command_listener.py:process_update",
-            "skip_no_text_message",
-            {"has_msg": bool(msg)},
-        )
         return
 
     uid_raw = msg.get("from", {}).get("id")
@@ -184,20 +140,8 @@ def process_update(update):
             uid = int(uid_raw)
         except (TypeError, ValueError):
             uid = None
-    _allowed = bool(uid and is_allowed_user(uid))
-    _agent_dbg(
-        "H1",
-        "command_listener.py:process_update",
-        "auth_gate",
-        {
-            "has_uid": uid is not None,
-            "allowed_users_configured": len(ALLOWED_USERS),
-            "passed": _allowed,
-        },
-    )
     if not uid or not is_allowed_user(uid):
         # We don't respond to unauthorized users to avoid being a spam vector
-        _agent_dbg("H1", "command_listener.py:process_update", "dropped_not_allowed", {})
         return
 
     # TTL Check (v3.6): Ignore messages older than 10 minutes
@@ -212,22 +156,10 @@ def process_update(update):
     
     if (now - msg_date) > 600:
         print(f"[CMD] Dropping expired message from {uid} (age: {int(now - msg_date)}s)")
-        _agent_dbg(
-            "H4",
-            "command_listener.py:process_update",
-            "dropped_ttl",
-            {"age_s": int(now - msg_date)},
-        )
         return
 
     text = msg.get("text", "").strip()
     if not text.startswith("/"):
-        _agent_dbg(
-            "H5",
-            "command_listener.py:process_update",
-            "skip_not_command",
-            {"text_len": len(text)},
-        )
         return
 
     parts = text.split()
@@ -269,12 +201,6 @@ def listen_loop(initial_offset):
     while not SHUTDOWN_EVENT.is_set():
         try:
             updates = telegram.router.get_new_updates(offset=offset, timeout=20)
-            _agent_dbg(
-                "H2",
-                "command_listener.py:listen_loop",
-                "getUpdates_batch",
-                {"count": len(updates), "offset": offset},
-            )
 
             if updates:
                 print(f"[CMD] Received {len(updates)} updates")
