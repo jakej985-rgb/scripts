@@ -33,20 +33,23 @@ async function refreshHealth() {
 }
 
 async function refreshFleet() {
-    const res = await fetch('/api/health'); // raw health.json
+    const res = await fetch('/api/health/report'); // Use report for containers
     const data = await res.json();
     
     containerList.innerHTML = '';
-    for (const [name, info] of Object.entries(data)) {
-        // Only process container objects, skip metadata like status, mode, timestamp
-        if (typeof info !== 'object' || name.startsWith('_')) continue;
-
-        
+    
+    // Safely extract the container list from the new M3TAL v1.3 agent structure
+    const containers = data?.agent_health?.monitor_containers?.containers || {};
+    
+    for (const [name, info] of Object.entries(containers)) {
         const item = document.createElement('div');
         item.className = 'container-item';
+        
+        // Handle "missing" or "offline" states cleanly
+        const status = info.status || "unknown";
         item.innerHTML = `
             <div class="name">${name}</div>
-            <div class="status-pill ${info.status.toLowerCase()}">${info.status}</div>
+            <div class="status-pill ${status.toLowerCase()}">${status}</div>
         `;
         containerList.appendChild(item);
     }
