@@ -117,6 +117,7 @@ def login():
         session_token = session.get('csrf_token')
         
         if not form_token or not session_token or not hmac.compare_digest(form_token, session_token):
+            logger.warning(f"CSRF Failure! Form token: {form_token}, Session token: {session_token}")
             return render_template('login.html', error="Security violation: Invalid or expired CSRF token"), 403
 
         username = request.form.get('username')
