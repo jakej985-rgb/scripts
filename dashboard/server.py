@@ -151,6 +151,16 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
+@app.route('/fleet')
+@login_required()
+def fleet():
+    return render_template('fleet.html')
+
+@app.route('/intelligence')
+@login_required()
+def intelligence():
+    return render_template('intelligence.html')
+
 # -------------------------------
 # API ENDPOINTS
 # -------------------------------
@@ -181,6 +191,11 @@ def get_anomalies():
 @login_required()
 def get_registry():
     return jsonify(load_json_safe(REGISTRY_JSON))
+
+@app.route('/api/decisions')
+@login_required()
+def get_decisions():
+    return jsonify(load_json_safe(DECISIONS_JSON))
 
 @app.route('/healthz')
 def health_check():
