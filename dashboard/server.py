@@ -1,4 +1,10 @@
 import os
+try:
+    import eventlet
+    eventlet.monkey_patch()
+except ImportError:
+    pass
+
 import json
 import secrets
 import threading
