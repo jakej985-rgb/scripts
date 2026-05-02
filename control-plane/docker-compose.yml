@@ -95,6 +95,7 @@ services:
     volumes:
       - ..:/docker
       - /var/run/docker.sock:/var/run/docker.sock
+    user: root  # Required for Docker socket access (same fix as Traefik)
     # 🛡️ Bypass proxy to fix Docker DNS/bridge resolution bugs (same as Traefik fix)
     environment:
       - TZ=America/Denver
