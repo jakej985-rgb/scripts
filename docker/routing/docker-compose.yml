@@ -1,7 +1,7 @@
 
 services:
   traefik:
-    image: traefik:v3.7
+    image: traefik:latest
     container_name: traefik
     # Fix: chmod acme.json to 600 before Traefik reads it (permission-fixer
     # runs in the control-plane stack, which may not have executed yet).
