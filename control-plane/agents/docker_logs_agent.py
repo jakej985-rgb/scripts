@@ -28,6 +28,42 @@ except Exception as e:
 
 ROOT = REPO_ROOT
 ENV_FILE = ROOT / ".env"
+
+# --- Compose Command Detection ------------------------------------------------
+
+def _detect_compose_cmd():
+    """Detect available Docker Compose command variant.
+    Returns a list like ['docker', 'compose'] or ['docker-compose'], or None.
+    """
+    # Try docker compose (plugin) first
+    try:
+        res = subprocess.run(
+            ["docker", "compose", "version"],
+            capture_output=True, text=True, timeout=10
+        )
+        if res.returncode == 0:
+            return ["docker", "compose"]
+    except Exception:
+        pass
+
+    # Try docker-compose (standalone v1)
+    try:
+        res = subprocess.run(
+            ["docker-compose", "version"],
+            capture_output=True, text=True, timeout=10
+        )
+        if res.returncode == 0:
+            return ["docker-compose"]
+    except Exception:
+        pass
+
+    return None
+
+COMPOSE_CMD = _detect_compose_cmd()
+if COMPOSE_CMD:
+    print(f"🐳 [LOGGER] Compose detected: {' '.join(COMPOSE_CMD)}")
+else:
+    print("⚠️ [LOGGER] No Docker Compose available. Log streaming will be limited.")
 SENSITIVE_KEYS = ["TOKEN", "SECRET", "KEY", "PASSWORD"]
 
 # --- Alert Configuration -----------------------------------------------------
@@ -118,14 +154,17 @@ def discover_stacks():
 
 def stream_logs(stack_name, compose_file, secrets, alerts_enabled=False):
     """Streams logs with graceful SHUTDOWN_EVENT awareness."""
+    if not COMPOSE_CMD:
+        print(f"⚠️ [LOGGER] Skipping {stack_name} — no compose command available.")
+        return
+
     timestamp = datetime.now().strftime("%Y-%m-%d_%H%M%S")
     log_file = CORE_LOGS_DIR / f"{stack_name}_logs_{timestamp}.txt"
     CORE_LOGS_DIR.mkdir(parents=True, exist_ok=True)
     
-    cmd = [
-        "docker", "compose", "--env-file", str(ENV_FILE),
-        "-f", str(compose_file), "logs", "-f", "--tail", "50"
-    ]
+    # Build command using detected compose variant
+    # --env-file is only needed for 'up'/'config', not 'logs'
+    cmd = [*COMPOSE_CMD, "-f", str(compose_file), "logs", "-f", "--tail", "50"]
     
     print(f"🚀 [LOGGER] Streaming {stack_name} -> {log_file.name}")
     
@@ -167,6 +206,10 @@ def stream_logs(stack_name, compose_file, secrets, alerts_enabled=False):
 
 def agent_tick():
     """Wrapper for the agent tick, handles stack discovery and streaming."""
+    if not COMPOSE_CMD:
+        print("⚠ [LOGGER] No compose command available. Skipping log streaming.")
+        return
+
     stacks = discover_stacks()
     if not stacks:
         print("⚠ [LOGGER] No stacks discovered.")
