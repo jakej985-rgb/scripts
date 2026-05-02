@@ -31,9 +31,13 @@ def get_system_metrics():
         try:
             metrics["cpu"] = psutil.cpu_percent(interval=None)
             metrics["mem"] = psutil.virtual_memory().percent
+            mem_gb = psutil.virtual_memory().used / (1024**3)
+            metrics["mem_gb"] = round(mem_gb, 1)
+            logger.info(f"[DIAG] System metrics: CPU={metrics['cpu']}% MEM={metrics['mem']}% MEM_GB={metrics.get('mem_gb', 0)}GB")
         except Exception as e:
             logger.error(f"Failed to get psutil metrics: {e}")
     else:
+        logger.warning("[DIAG] psutil not available — using fallback")
         # Fallback if psutil not available (Audit fix 2.1 - removing shell=True)
         try:
             if sys.platform != "win32":
@@ -53,10 +57,13 @@ def get_system_metrics():
 
 def get_container_metrics():
     container_stats = []
+    docker_host = os.environ.get("DOCKER_HOST", "(not set)")
+    logger.info(f"[DIAG] Running docker stats, DOCKER_HOST={docker_host}")
     try:
         # Increased timeout to 30s for slow Windows hosts (Audit fix 4.7)
         cmd = ["docker", "stats", "--no-stream", "--format", "{{json .}}"]
         result = subprocess.run(cmd, capture_output=True, text=True, check=True, timeout=30)
+        logger.info(f"[DIAG] docker stats SUCCESS — {len(result.stdout)} bytes")
         for line in result.stdout.strip().split('\n'):
             if line:
                 try:
@@ -73,17 +80,14 @@ def get_container_metrics():
                 except (json.JSONDecodeError, ValueError) as e:
                     logger.debug(f"Skipping malformed stats line: {e}")
                     continue
+        logger.info(f"[DIAG] Parsed {len(container_stats)} container stats")
     except subprocess.TimeoutExpired:
         logger.error("Docker stats timed out (30s)")
     except subprocess.CalledProcessError as e:
-        # Don't flood logs if docker is just busy
-        global _last_docker_error_log
-        now = time.time()
-        if now - _last_docker_error_log > 60:
-            logger.error(f"Docker stats failed (exit {e.returncode})")
-            _last_docker_error_log = now
+        logger.error(f"[DIAG] docker stats FAILED — exit={e.returncode}")
+        logger.error(f"[DIAG] STDERR: {(e.stderr or '(empty)')[:500]}")
     except Exception as e:
-        logger.error(f"Failed to get container stats: {e}")
+        logger.error(f"[DIAG] docker stats EXCEPTION: {type(e).__name__}: {e}")
     return container_stats
 
 def append_history(system, containers):
@@ -155,12 +159,15 @@ def collect_all_metrics():
     data = {
         "system": system,
         "containers": containers,
-        "timestamp": system["timestamp"]
+        "timestamp": system["timestamp"],
+        "cpu": system["cpu"]
     }
     
     if save_json(METRICS_JSON, data, caller="metrics"):
         append_history(system, containers)
-        logger.info("Captured metrics and history.")
+        logger.info(f"[DIAG] Saved metrics: CPU={system['cpu']}% MEM={system['mem']}% Containers={len(containers)}")
+    else:
+        logger.error(f"[DIAG] FAILED to save metrics to {METRICS_JSON}")
 
 if __name__ == "__main__":
     wrap_agent("metrics", collect_all_metrics)

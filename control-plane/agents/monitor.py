@@ -27,21 +27,30 @@ def collect_health():
     cmd = ["docker", "ps", "-a", "--format", "{{json .}}"]
     now = int(time.time())
     
+    # Diagnostic logging
+    docker_host = os.environ.get("DOCKER_HOST", "(not set — using local socket)")
+    docker_api = os.environ.get("DOCKER_API_VERSION", "(not set)")
+    logger.info(f"[DIAG] Running: {' '.join(cmd)}")
+    logger.info(f"[DIAG] DOCKER_HOST={docker_host} DOCKER_API_VERSION={docker_api}")
+    logger.info(f"[DIAG] Socket exists: {os.path.exists('/var/run/docker.sock')}")
+    logger.info(f"[DIAG] UID={os.getuid()} GID={os.getgid()}")
+    
     try:
         # Tweak 4: Subprocess timeout handling
         result = subprocess.run(cmd, capture_output=True, text=True, check=True, timeout=10)
+        logger.info(f"[DIAG] docker ps SUCCESS — stdout={len(result.stdout)} bytes, stderr={len(result.stderr)} bytes")
     except subprocess.TimeoutExpired:
         logger.error("Docker poll timed out (10s)")
         save_json(STATUS_FILE, {"docker_available": False, "timestamp": now}, caller="monitor")
         return
     except subprocess.CalledProcessError as e:
-        logger.error(f"Failed to poll docker (Status {e.returncode})")
-        if e.stderr:
-            logger.error(f"DOCKER_STDERR: {e.stderr.strip()}")
+        logger.error(f"[DIAG] docker ps FAILED — exit={e.returncode}")
+        logger.error(f"[DIAG] STDOUT: {(e.stdout or '(empty)')[:500]}")
+        logger.error(f"[DIAG] STDERR: {(e.stderr or '(empty)')[:500]}")
         save_json(STATUS_FILE, {"docker_available": False, "error": str(e), "timestamp": now}, caller="monitor")
         return
     except Exception as e:
-        logger.error(f"Failed to poll docker: {e}")
+        logger.error(f"[DIAG] docker ps EXCEPTION: {type(e).__name__}: {e}")
         save_json(STATUS_FILE, {"docker_available": False, "error": str(e), "timestamp": now}, caller="monitor")
         return
 
@@ -105,7 +114,11 @@ def collect_health():
             
     # Save to the per-agent file (Batch 5 T3)
     save_json(STATUS_FILE, health_status, caller="monitor")
-    logger.info(f"Health check completed for {len(targets)} containers (Available: True).")
+    online = sum(1 for c in health_status['containers'].values() if c.get('status') == 'online')
+    offline = sum(1 for c in health_status['containers'].values() if c.get('status') == 'offline')
+    missing = sum(1 for c in health_status['containers'].values() if c.get('status') == 'missing')
+    logger.info(f"[DIAG] Health check done: {len(targets)} targets — {online} online, {offline} offline, {missing} missing")
+    logger.info(f"[DIAG] Wrote to {STATUS_FILE}")
 
 if __name__ == "__main__":
     wrap_agent("monitor", collect_health)
