@@ -382,6 +382,12 @@ async function doGlobalAction(action) {
 
 // ── Boot ──────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+    // Telegram Web App Initialization
+    if (window.Telegram && window.Telegram.WebApp) {
+        window.Telegram.WebApp.ready();
+        window.Telegram.WebApp.expand();
+    }
+
     initChart();
     refreshHealth();
     refreshFleet();
