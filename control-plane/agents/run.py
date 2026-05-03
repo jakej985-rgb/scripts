@@ -43,6 +43,8 @@ AGENTS = [
     ("notify",    "notify.py"),
     ("command_listener", "command_listener.py"),
     ("docker_logs_agent", "docker_logs_agent.py"),
+    ("temp_agent", "temp_agent.py"),
+    ("storage_agent", "storage_agent.py"),
 ]
 
 # --- Master Locking -----------------------------------------------------------

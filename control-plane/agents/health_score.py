@@ -134,6 +134,29 @@ def calculate_health():
             score -= 20
             tier1_fail = True
 
+    # 4. Hardware Observability (Temperature & Storage)
+    from utils.paths import TEMP_JSON, STORAGE_JSON
+    
+    if TEMP_JSON.exists():
+        temp_data = load_json(TEMP_JSON, default={})
+        t_status = temp_data.get("status", "healthy")
+        if t_status == "critical":
+            score -= 25
+            file_issues.append("Hardware: CRITICAL Temperature Detected")
+        elif t_status == "warning":
+            score -= 10
+            file_issues.append("Hardware: Warning Temperature Detected")
+            
+    if STORAGE_JSON.exists():
+        storage_data = load_json(STORAGE_JSON, default={})
+        s_status = storage_data.get("status", "healthy")
+        if s_status == "critical":
+            score -= 25
+            file_issues.append("Hardware: CRITICAL Disk Usage Detected")
+        elif s_status == "warning":
+            score -= 10
+            file_issues.append("Hardware: Warning Disk Usage Detected")
+
     # 4. Mode Determination (Tweak 5)
     any_agent_fail = any(stats.get("status") != "healthy" for agent, stats in agent_health.items() if agent != "monitor_containers")
     

@@ -164,6 +164,59 @@ async function refreshHealth() {
     } catch (_) {}
 }
 
+// ── Hardware Metrics ──────────────────────────────────────────────
+async function refreshHardware() {
+    try {
+        const [tRes, sRes] = await Promise.all([
+            fetch('/api/metrics/temperature'),
+            fetch('/api/metrics/storage')
+        ]);
+        const tData = await tRes.json();
+        const sData = await sRes.json();
+
+        // Update Temperature Card
+        const tempValEl = document.getElementById('stat-temp');
+        if (tempValEl && tData.cpu_temp !== undefined) {
+            const temp = tData.cpu_temp || tData.gpu_temp;
+            if (temp != null) {
+                tempValEl.innerHTML = `${Math.round(temp)}<span>°C</span>`;
+                const tempIcon = tempValEl.parentElement.parentElement.querySelector('.stat-icon');
+                if (temp >= 85) {
+                    tempIcon.style.background = 'rgba(239, 68, 68, 0.15)'; tempIcon.style.color = '#ef4444';
+                } else if (temp >= 75) {
+                    tempIcon.style.background = 'rgba(245, 158, 11, 0.15)'; tempIcon.style.color = '#f59e0b';
+                } else {
+                    tempIcon.style.background = 'rgba(34, 197, 94, 0.15)'; tempIcon.style.color = '#22c55e';
+                }
+            } else {
+                tempValEl.innerHTML = `N/A`;
+            }
+        }
+
+        // Update Storage Card
+        const storageValEl = document.getElementById('stat-storage');
+        if (storageValEl && sData.disks) {
+            let maxUsage = 0;
+            for (const key in sData.disks) {
+                if (sData.disks[key].percent > maxUsage) maxUsage = sData.disks[key].percent;
+            }
+            if (maxUsage > 0) {
+                storageValEl.innerHTML = `${Math.round(maxUsage)}<span>%</span>`;
+                const storageIcon = storageValEl.parentElement.parentElement.querySelector('.stat-icon');
+                if (maxUsage >= 95) {
+                    storageIcon.style.background = 'rgba(239, 68, 68, 0.15)'; storageIcon.style.color = '#ef4444';
+                } else if (maxUsage >= 85) {
+                    storageIcon.style.background = 'rgba(245, 158, 11, 0.15)'; storageIcon.style.color = '#f59e0b';
+                } else {
+                    storageIcon.style.background = 'rgba(14, 165, 233, 0.15)'; storageIcon.style.color = '#0ea5e9';
+                }
+            } else {
+                storageValEl.innerHTML = `N/A`;
+            }
+        }
+    } catch (_) {}
+}
+
 // ── Container table ───────────────────────────────────────────────
 async function refreshFleet() {
     try {
@@ -390,10 +443,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initChart();
     refreshHealth();
+    refreshHardware();
     refreshFleet();
     refreshActivity();
 
     setInterval(refreshHealth,   5000);
+    setInterval(refreshHardware, 10000);
     setInterval(refreshFleet,    8000);
     setInterval(refreshActivity, 12000);
 });

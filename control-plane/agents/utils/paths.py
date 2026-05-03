@@ -76,6 +76,8 @@ NORMALIZED_METRICS_JSON = STATE_DIR / "normalized_metrics.json"
 COOLDOWNS_JSON = STATE_DIR / "cooldowns.json"
 TELEGRAM_OFFSET_TXT = STATE_DIR / "telegram_offset.txt"
 CLUSTER_YML = CONFIG_DIR / "cluster.yml"
+TEMP_JSON = STATE_DIR / "temp.json"
+STORAGE_JSON = STATE_DIR / "storage.json"
 
 # --- Agent Tier & Contract Registry -------------------------------------------
 # Tier 1: System-critical. Hard fail on contract breach.
@@ -97,6 +99,8 @@ TIERS = {
     "scaling": 2,
     "network_guard": 2,
     "docker_logs_agent": 2,
+    "temp_agent": 2,
+    "storage_agent": 2,
 }
 
 # The absolute minimum files/dirs required for each agent to start
