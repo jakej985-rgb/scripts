@@ -117,31 +117,33 @@
         <!-- LEFT: Container Table -->
         <div>
             <div class="panel">
-                <div class="panel-head">
+                <div class="panel-head collapsible" onclick="togglePanel(this)">
                     <div class="panel-title">
                         <span class="panel-title-dot"></span>
                         Container Status
                     </div>
-                    <button class="panel-badge" onclick="refreshFleet()">↻ Refresh</button>
+                    <button class="panel-badge" onclick="event.stopPropagation(); refreshFleet()">↻ Refresh</button>
                 </div>
-                <div class="table-responsive">
-                <table class="fleet-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Status</th>
-                            <th class="right">CPU</th>
-                            <th class="right">MEM</th>
-                            <th class="right">Uptime</th>
-                            <th class="right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="fleet-tbody">
-                        <tr>
-                            <td colspan="6" class="loading-text">Loading containers…</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                    <table class="fleet-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Status</th>
+                                <th class="right">CPU</th>
+                                <th class="right">MEM</th>
+                                <th class="right">Uptime</th>
+                                <th class="right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fleet-tbody">
+                            <tr>
+                                <td colspan="6" class="loading-text">Loading containers…</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
                 </div>
             </div>
 
@@ -159,61 +161,67 @@
 
             <!-- Health Score -->
             <div class="panel">
-                <div class="panel-head">
+                <div class="panel-head collapsible" onclick="togglePanel(this)">
                     <div class="panel-title">
                         <span class="panel-title-dot"></span>
                         Global Stability Index
                     </div>
                 </div>
-                <div class="health-ring-wrap">
-                    <svg class="ring-svg" width="80" height="80" viewBox="0 0 80 80">
-                        <circle class="ring-bg"    cx="40" cy="40" r="35"/>
-                        <circle class="ring-meter" id="health-ring" cx="40" cy="40" r="35"/>
-                    </svg>
-                    <div class="ring-label">
-                        <div class="ring-score"><span id="health-score">—</span><sup>%</sup></div>
-                        <div class="ring-verdict">Stability Score</div>
+                <div class="panel-body">
+                    <div class="health-ring-wrap">
+                        <svg class="ring-svg" width="80" height="80" viewBox="0 0 80 80">
+                            <circle class="ring-bg"    cx="40" cy="40" r="35"/>
+                            <circle class="ring-meter" id="health-ring" cx="40" cy="40" r="35"/>
+                        </svg>
+                        <div class="ring-label">
+                            <div class="ring-score"><span id="health-score">—</span><sup>%</sup></div>
+                            <div class="ring-verdict">Stability Score</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Resource Usage Chart -->
             <div class="panel">
-                <div class="panel-head">
+                <div class="panel-head collapsible" onclick="togglePanel(this)">
                     <div class="panel-title">
                         <span class="panel-title-dot"></span>
                         Resource Usage
                     </div>
                     <span class="panel-badge">1 HOUR</span>
                 </div>
-                <div class="chart-wrap">
-                    <div class="chart-legend">
-                        <div class="legend-item">
-                            <div class="legend-dot" style="background:#22c55e"></div>
-                            CPU
+                <div class="panel-body">
+                    <div class="chart-wrap">
+                        <div class="chart-legend">
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background:#22c55e"></div>
+                                CPU
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background:#a855f7"></div>
+                                MEM
+                            </div>
                         </div>
-                        <div class="legend-item">
-                            <div class="legend-dot" style="background:#a855f7"></div>
-                            MEM
+                        <div class="chart-container">
+                            <canvas id="resource-chart"></canvas>
                         </div>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="resource-chart"></canvas>
                     </div>
                 </div>
             </div>
 
             <!-- AI Alerts & Activity -->
             <div class="panel">
-                <div class="panel-head">
+                <div class="panel-head collapsible" onclick="togglePanel(this)">
                     <div class="panel-title">
                         <span class="panel-title-dot"></span>
                         AI Alerts &amp; Activity
                     </div>
-                    <a href="/intelligence" class="panel-badge">View Logs</a>
+                    <a href="/intelligence" class="panel-badge" onclick="event.stopPropagation()">View Logs</a>
                 </div>
-                <div id="activity-feed" class="activity-list">
-                    <div class="loading-text">Scanning…</div>
+                <div class="panel-body">
+                    <div id="activity-feed" class="activity-list">
+                        <div class="loading-text">Scanning…</div>
+                    </div>
                 </div>
             </div>
 

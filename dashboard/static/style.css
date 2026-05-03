@@ -281,6 +281,39 @@ body::before {
     background: var(--bg-panel);
 }
 
+.panel-head.collapsible {
+    cursor: pointer;
+    user-select: none;
+}
+
+.panel-head.collapsible:hover {
+    background: var(--bg-hover);
+}
+
+.panel-head.collapsible::after {
+    content: '▼';
+    font-size: 0.6rem;
+    color: var(--text-3);
+    transition: transform 0.3s;
+}
+
+.panel.collapsed .panel-head.collapsible::after {
+    transform: rotate(-90deg);
+}
+
+.panel-body {
+    transition: max-height 0.3s ease-out, opacity 0.2s;
+    max-height: 2000px;
+    opacity: 1;
+}
+
+.panel.collapsed .panel-body {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    border-bottom: none;
+}
+
 .panel-title {
     font-size: 0.8rem;
     font-weight: 700;
@@ -346,6 +379,53 @@ body::before {
     transition: background 0.15s;
 }
 .fleet-table tbody tr:hover { background: var(--bg-hover); }
+
+/* Expandable row styles */
+.container-row {
+    cursor: pointer;
+}
+
+.details-row {
+    background: rgba(0,0,0,0.2) !important;
+}
+
+.details-row td {
+    padding: 0 !important;
+    border-bottom: 1px solid var(--border) !important;
+}
+
+.details-box {
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-2);
+}
+
+.details-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.details-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-content: center;
+    justify-content: flex-end;
+}
+
+.details-actions .action-btn {
+    width: auto;
+    height: auto;
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
 
 .container-name {
     font-weight: 600;
@@ -878,7 +958,6 @@ body::before {
 @media (max-width: 768px) {
     .topbar-center { display: none; }
     
-    /* Make stat cards a horizontal swipeable row instead of stacked vertically */
     .stats-row { 
         display: flex !important; 
         overflow-x: auto; 
@@ -888,27 +967,33 @@ body::before {
         gap: 0.75rem;
     }
     .stat-card { 
-        flex: 0 0 200px; 
+        flex: 0 0 160px; 
         scroll-snap-align: start; 
+        padding: 0.75rem;
     }
+    .stat-icon { width: 32px; height: 32px; font-size: 1rem; }
+    .stat-val { font-size: 1.1rem; }
 
-    .right-col { grid-template-columns: 1fr; }
-    .action-bar { grid-template-columns: repeat(2, 1fr); }
-    .intel-grid { grid-template-columns: 1fr; }
-    .logs-layout { grid-template-columns: 1fr; gap: 1rem; }
-    .fleet-grid { grid-template-columns: 1fr !important; }
+    .main-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .right-col { order: -1; } /* Health first on mobile */
     
-    /* Responsive table wrapping */
-    .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    .fleet-table th, .fleet-table td { padding: 0.5rem; font-size: 0.8rem; white-space: nowrap; }
+    .action-bar { display: none; } /* Move to expanded row */
     
-    .server-sub { display: none; }
-    .topbar-right { gap: 0.5rem; }
-    .live-clock { display: none; }
+    .panel-head { padding: 0.6rem 1rem; }
+    .panel-title { font-size: 0.7rem; }
     
-    /* Account for Telegram Web App and bottom nav */
-    body, .login-wrap { min-height: 100vh; min-height: -webkit-fill-available; }
-    .page { padding: 1rem 0.75rem calc(80px + env(safe-area-inset-bottom)) 0.75rem; }
+    .fleet-table th:nth-child(3),
+    .fleet-table th:nth-child(4),
+    .fleet-table th:nth-child(5),
+    .fleet-table th:nth-child(6),
+    .fleet-table td:nth-child(3),
+    .fleet-table td:nth-child(4),
+    .fleet-table td:nth-child(5),
+    .fleet-table td:nth-child(6) { display: none; }
+
+    .chart-container { height: 120px !important; }
+    
+    .page { padding: 0.75rem 0.75rem calc(80px + env(safe-area-inset-bottom)) 0.75rem; }
     .mobile-nav { display: block; }
 }
 

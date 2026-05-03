@@ -141,6 +141,24 @@ function getCpuClass(cpu) {
     return '';
 }
 
+// ── UI Interactions ───────────────────────────────────────────────
+function togglePanel(header) {
+    const panel = header.parentElement;
+    panel.classList.toggle('collapsed');
+}
+
+function toggleRow(rowId) {
+    const detailsRow = document.getElementById(rowId);
+    if (!detailsRow) return;
+    
+    const isVisible = detailsRow.style.display !== 'none';
+    
+    // Hide all other details rows first (optional, for accordion effect)
+    // document.querySelectorAll('.details-row').forEach(r => r.style.display = 'none');
+    
+    detailsRow.style.display = isVisible ? 'none' : 'table-row';
+}
+
 // ── Health score ──────────────────────────────────────────────────
 async function refreshHealth() {
     try {
@@ -247,6 +265,14 @@ async function refreshFleet() {
         const uptimeEl = document.getElementById('stat-uptime');
         if (uptimeEl && hData.uptime) uptimeEl.textContent = hData.uptime;
 
+        // Hardware metrics for expanded view
+        const [tRes, sRes] = await Promise.all([
+            fetch('/api/metrics/temperature'),
+            fetch('/api/metrics/storage')
+        ]);
+        const tData = await tRes.json();
+        const sData = await sRes.json();
+
         // Table body
         const tbody = document.getElementById('fleet-tbody');
         if (!tbody) return;
@@ -260,7 +286,8 @@ async function refreshFleet() {
         const order = { running: 0, online: 0, restarting: 1, offline: 2, missing: 3, unknown: 4 };
         entries.sort((a, b) => (order[(a[1].status||'').toLowerCase()] ?? 4) - (order[(b[1].status||'').toLowerCase()] ?? 4));
 
-        tbody.innerHTML = entries.map(([name, info]) => {
+        let html = '';
+        entries.forEach(([name, info]) => {
             const status = info.status || 'unknown';
             const sc     = getStatusClass(status);
             const m      = metricsByName[name] || {};
@@ -268,9 +295,14 @@ async function refreshFleet() {
             const mem    = m.mem_usage || '—';
             const uptime = info.raw_status || '—';
             const cpuClass = m.cpu != null ? getCpuClass(m.cpu) : '';
+            
+            // Sub-metrics for details
+            const temp = tData.cpu_temp || '—';
+            const storage = sData.disks?.root?.percent != null ? sData.disks.root.percent + '%' : '—';
+            const rowId = `details-${name.replace(/[^a-z0-9]/gi, '-')}`;
 
-            return `
-                <tr>
+            html += `
+                <tr class="container-row" onclick="toggleRow('${rowId}')">
                     <td><span class="container-name">${name}</span></td>
                     <td><span class="badge ${sc}">${status.toUpperCase()}</span></td>
                     <td class="metric-cell ${cpuClass}">${cpu}</td>
@@ -278,14 +310,31 @@ async function refreshFleet() {
                     <td class="metric-cell">${uptime}</td>
                     <td>
                         <div class="actions-cell">
-                            <button class="action-btn restart" title="Restart" onclick="doAction('restart','${name}')">↺</button>
-                            <button class="action-btn logs"    title="Logs"    onclick="doAction('logs','${name}')">≡</button>
-                            <button class="action-btn stop"    title="Stop"    onclick="doAction('stop','${name}')">■</button>
+                            <button class="action-btn logs" title="Logs" onclick="event.stopPropagation(); doAction('logs','${name}')">≡</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr id="${rowId}" class="details-row" style="display: none;">
+                    <td colspan="6">
+                        <div class="details-box">
+                            <div class="details-metrics">
+                                <div><strong>CPU:</strong> ${cpu}</div>
+                                <div><strong>MEM:</strong> ${mem}</div>
+                                <div><strong>TEMP:</strong> ${temp}°C</div>
+                                <div><strong>STORAGE:</strong> ${storage}</div>
+                                <div><strong>UPTIME:</strong> ${uptime}</div>
+                            </div>
+                            <div class="details-actions">
+                                <button class="big-btn heal action-btn" onclick="event.stopPropagation(); doAction('restart','${name}')">↺ Restart</button>
+                                <button class="big-btn reboot action-btn" onclick="event.stopPropagation(); doAction('stop','${name}')">■ Stop</button>
+                                <button class="big-btn scan action-btn" onclick="event.stopPropagation(); doAction('logs','${name}')">≡ Logs</button>
+                            </div>
                         </div>
                     </td>
                 </tr>
             `;
-        }).join('');
+        });
+        tbody.innerHTML = html;
     } catch (_) {}
 }
 
