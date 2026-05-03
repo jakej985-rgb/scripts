@@ -3,71 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>M3TAL | Access Control</title>
+    <title>M3TAL | Authorize</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
-<body class="login-page">
-    <div class="login-card glass-panel">
-        <div class="logo">M3TAL<span>PRO</span></div>
-        <h1>Authorize <span class="gradient-text">Nexus</span></h1>
-        <p>Access the autonomous control plane.</p>
-        
-        <form action="/login" method="POST">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-            <div class="input-group">
-                <input type="text" name="username" placeholder="Identity" required>
-            </div>
-            <div class="input-group">
-                <input type="password" name="password" placeholder="Passphrase" required>
-            </div>
-            {% if error %}
-            <p class="error-msg">{{ error }}</p>
-            {% endif %}
-            <button type="submit" class="login-btn">Initialize Connection</button>
-        </form>
-    </div>
+<body>
+    <div class="login-wrap">
+        <div class="login-card">
+            <div class="login-logo">M3TAL</div>
+            <h1>Authorize <span style="color:var(--teal)">Access</span></h1>
+            <p>AI-Powered Docker Control Plane</p>
 
-    <style>
-        .login-page {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: radial-gradient(circle at center, #1a1e26 0%, #0c0e12 100%);
-        }
-        .login-card {
-            width: 400px;
-            text-align: center;
-        }
-        .login-card h1 { margin: 1.5rem 0 0.5rem; }
-        .login-card p { color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.9rem; }
-        .input-group { margin-bottom: 1rem; }
-        input {
-            width: 100%;
-            padding: 1rem;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 12px;
-            color: white;
-            outline: none;
-            transition: 0.3s;
-        }
-        input:focus { border-color: var(--accent-color); background: rgba(59, 130, 246, 0.05); }
-        .login-btn {
-            width: 100%;
-            padding: 1rem;
-            margin-top: 1rem;
-            background: var(--gradient);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .login-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2); }
-        .error-msg { color: var(--danger); font-size: 0.8rem; margin-top: 1rem; }
-    </style>
+            <form action="/login" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+                <div class="field-group">
+                    <input type="text" name="username" placeholder="Identity" autocomplete="username" required>
+                </div>
+                <div class="field-group">
+                    <input type="password" name="password" placeholder="Passphrase" autocomplete="current-password" required>
+                </div>
+
+                {% if error %}
+                <p class="error-msg">{{ error }}</p>
+                {% endif %}
+
+                <button type="submit" class="login-btn">Initialize Connection</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

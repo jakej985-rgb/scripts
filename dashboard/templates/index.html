@@ -3,89 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>M3TAL | Autonomous Control Plane</title>
+    <title>M3TAL | Control Plane</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
-<body class="dark-mode">
-    <nav class="glass-nav">
-        <div class="logo">M3TAL<span>PRO</span></div>
-        <div class="nav-links">
-            <a href="/" class="active">Dashboard</a>
-            <a href="/fleet">Fleet</a>
-            <a href="/intelligence">Intelligence</a>
-            <a href="/logs">Logs</a>
-            <a href="/logout" class="logout-btn">Logout</a>
+<body>
+
+<!-- ── TOP BAR ─────────────────────────────── -->
+<header class="topbar">
+    <div class="topbar-left">
+        <div class="server-icon">🖥</div>
+        <div>
+            <div class="server-name">M3TAL Media Server</div>
+            <div class="server-sub">AI-Powered Docker Control Plane</div>
         </div>
+    </div>
+
+    <nav class="topbar-center">
+        <a href="/"            class="nav-link active">Dashboard</a>
+        <a href="/fleet"       class="nav-link">Fleet</a>
+        <a href="/intelligence"class="nav-link">Intelligence</a>
+        <a href="/logs"        class="nav-link">Logs</a>
+        <a href="/logout"      class="nav-link danger">Logout</a>
     </nav>
 
-    <main class="dashboard-container">
-        <!-- Header Section -->
-        <header class="hero-section">
-            <div class="system-status">
-                <h1>Autonomous <span class="gradient-text">Orchestration</span></h1>
-                <p id="system-verdict">System Status: <span class="status-pill loading">Computing...</span></p>
+    <div class="topbar-right">
+        <div class="status-online">
+            <div class="status-dot"></div>
+            ONLINE
+        </div>
+        <div class="live-clock" id="live-clock">00:00:00</div>
+    </div>
+</header>
+
+<!-- ── PAGE ────────────────────────────────── -->
+<main class="page">
+
+    <!-- ── STAT CARDS ──────────────────────── -->
+    <div class="stats-row">
+
+        <div class="stat-card">
+            <div class="stat-icon teal">📦</div>
+            <div class="stat-info">
+                <div class="stat-label">Containers</div>
+                <div class="stat-val" id="stat-containers-val">— / —</div>
+                <div class="stat-sub" id="stat-containers-sub">Loading…</div>
             </div>
-            <div class="health-card">
-                <div class="health-score-ring">
-                    <svg viewBox="0 0 100 100">
-                        <circle cx="50" cy="50" r="45" class="bg"></circle>
-                        <circle cx="50" cy="50" r="45" class="meter" id="health-meter"></circle>
-                    </svg>
-                    <div class="score-text">
-                        <span id="health-score">0</span>%
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon green">⚙️</div>
+            <div class="stat-info">
+                <div class="stat-label">CPU</div>
+                <div class="stat-val" id="stat-cpu">—</div>
+                <div class="stat-sub" id="stat-cpu-sub">System</div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon amber">💾</div>
+            <div class="stat-info">
+                <div class="stat-label">Memory</div>
+                <div class="stat-val" id="stat-mem">—</div>
+                <div class="stat-sub">Used</div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon blue">🕐</div>
+            <div class="stat-info">
+                <div class="stat-label">Uptime</div>
+                <div class="stat-val" id="stat-uptime" style="font-size:1.1rem">—</div>
+                <div class="stat-sub">Since Last Reboot</div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon purple">🧠</div>
+            <div class="stat-info">
+                <div class="stat-label">AI Status</div>
+                <div class="stat-val" style="font-size:1rem; margin-top:0.15rem">
+                    <span id="system-verdict" class="badge running">ACTIVE</span>
+                </div>
+                <div class="stat-sub">Monitoring &amp; Learning</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ── MAIN GRID ────────────────────────── -->
+    <div class="main-grid">
+
+        <!-- LEFT: Container Table -->
+        <div>
+            <div class="panel">
+                <div class="panel-head">
+                    <div class="panel-title">
+                        <span class="panel-title-dot"></span>
+                        Container Status
+                    </div>
+                    <button class="panel-badge" onclick="refreshFleet()">↻ Refresh</button>
+                </div>
+                <table class="fleet-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th class="right">CPU</th>
+                            <th class="right">MEM</th>
+                            <th class="right">Uptime</th>
+                            <th class="right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fleet-tbody">
+                        <tr>
+                            <td colspan="6" class="loading-text">Loading containers…</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Action Bar -->
+            <div class="action-bar" style="margin-top: 1rem;">
+                <button class="big-btn heal"   onclick="doGlobalAction('heal')">  🔄 Heal All</button>
+                <button class="big-btn scan"   onclick="doGlobalAction('scan')">  🧠 AI Scan</button>
+                <button class="big-btn status" onclick="doGlobalAction('status')">📊 Status</button>
+                <button class="big-btn reboot" onclick="doGlobalAction('reboot')">⏻ Reboot</button>
+            </div>
+        </div>
+
+        <!-- RIGHT: Chart + Health + Activity -->
+        <div class="right-col">
+
+            <!-- Health Score -->
+            <div class="panel">
+                <div class="panel-head">
+                    <div class="panel-title">
+                        <span class="panel-title-dot"></span>
+                        Global Stability Index
                     </div>
                 </div>
-                <p>Global Stability Index</p>
+                <div class="health-ring-wrap">
+                    <svg class="ring-svg" width="80" height="80" viewBox="0 0 80 80">
+                        <circle class="ring-bg"    cx="40" cy="40" r="35"/>
+                        <circle class="ring-meter" id="health-ring" cx="40" cy="40" r="35"/>
+                    </svg>
+                    <div class="ring-label">
+                        <div class="ring-score"><span id="health-score">—</span><sup>%</sup></div>
+                        <div class="ring-verdict">Stability Score</div>
+                    </div>
+                </div>
             </div>
-        </header>
 
-        <!-- Stats Grid -->
-        <section class="stats-grid">
-            <div class="stat-card">
-                <label>CPU Usage</label>
-                <div class="val" id="cpu-val">0.0%</div>
-                <div class="progress-bar"><div class="fill" id="cpu-fill"></div></div>
+            <!-- Resource Usage Chart -->
+            <div class="panel">
+                <div class="panel-head">
+                    <div class="panel-title">
+                        <span class="panel-title-dot"></span>
+                        Resource Usage
+                    </div>
+                    <span class="panel-badge">1 HOUR</span>
+                </div>
+                <div class="chart-wrap">
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background:#22c55e"></div>
+                            CPU
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background:#a855f7"></div>
+                            MEM
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="resource-chart"></canvas>
+                    </div>
+                </div>
             </div>
-            <div class="stat-card">
-                <label>Memory Usage</label>
-                <div class="val" id="mem-val">0.0 GB</div>
-                <div class="progress-bar"><div class="fill" id="mem-fill"></div></div>
-            </div>
-            <div class="stat-card">
-                <label>Nodes Active</label>
-                <div class="val" id="nodes-val">1</div>
-                <div class="small-text">Masters Detected</div>
-            </div>
-        </section>
 
-        <!-- Main Workspace -->
-        <div class="workspace-grid">
-            <!-- Container Fleet -->
-            <section class="fleet-section glass-panel">
-                <div class="panel-header">
-                    <h2>Container Fleet</h2>
-                    <span class="pulse-icon"></span>
+            <!-- AI Alerts & Activity -->
+            <div class="panel">
+                <div class="panel-head">
+                    <div class="panel-title">
+                        <span class="panel-title-dot"></span>
+                        AI Alerts &amp; Activity
+                    </div>
+                    <a href="/intelligence" class="panel-badge">View Logs</a>
                 </div>
-                <div id="container-list" class="container-list">
-                    <!-- Dynamic Content -->
+                <div id="activity-feed" class="activity-list">
+                    <div class="loading-text">Scanning…</div>
                 </div>
-            </section>
+            </div>
 
-            <!-- Anomalies & Events -->
-            <section class="events-section glass-panel">
-                <div class="panel-header">
-                    <h2>Intelligence Feed</h2>
-                </div>
-                <div id="anomaly-feed" class="anomaly-feed">
-                    <!-- Intelligence events -->
-                </div>
-            </section>
         </div>
-    </main>
+    </div>
 
-    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</main>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>

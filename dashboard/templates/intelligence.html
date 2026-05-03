@@ -3,249 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>M3TAL | Intelligence Feed</title>
+    <title>M3TAL | Intelligence</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
-<body class="dark-mode">
-    <nav class="glass-nav">
-        <div class="logo">M3TAL<span>PRO</span></div>
-        <div class="nav-links">
-            <a href="/">Dashboard</a>
-            <a href="/fleet">Fleet</a>
-            <a href="/intelligence" class="active">Intelligence</a>
-            <a href="/logs">Logs</a>
-            <a href="/logout" class="logout-btn">Logout</a>
+<body>
+
+<header class="topbar">
+    <div class="topbar-left">
+        <div class="server-icon">🖥</div>
+        <div>
+            <div class="server-name">M3TAL Media Server</div>
+            <div class="server-sub">AI-Powered Docker Control Plane</div>
         </div>
+    </div>
+    <nav class="topbar-center">
+        <a href="/"            class="nav-link">Dashboard</a>
+        <a href="/fleet"       class="nav-link">Fleet</a>
+        <a href="/intelligence"class="nav-link active">Intelligence</a>
+        <a href="/logs"        class="nav-link">Logs</a>
+        <a href="/logout"      class="nav-link danger">Logout</a>
     </nav>
+    <div class="topbar-right">
+        <div class="status-online"><div class="status-dot"></div>ONLINE</div>
+        <div class="live-clock" id="live-clock">00:00:00</div>
+    </div>
+</header>
 
-    <main class="dashboard-container">
-        <header class="page-header">
-            <h1>Intelligence <span class="gradient-text">Feed</span></h1>
-            <p class="page-subtitle">Anomalies, events, and system decisions</p>
-        </header>
+<main class="page">
+    <div class="page-head">
+        <h1>Intelligence <span>Feed</span></h1>
+    </div>
 
-        <div class="intel-stats" id="intel-stats"></div>
-
-        <div class="intel-grid">
-            <section class="glass-panel">
-                <div class="panel-header">
-                    <h2>Active Anomalies</h2>
-                    <span id="anomaly-count" class="badge">0</span>
-                </div>
-                <div id="anomaly-list" class="event-list">
-                    <div class="loading-text">Scanning for anomalies...</div>
-                </div>
-            </section>
-
-            <section class="glass-panel">
-                <div class="panel-header">
-                    <h2>Recent Decisions</h2>
-                    <span id="decision-count" class="badge">0</span>
-                </div>
-                <div id="decision-list" class="event-list">
-                    <div class="loading-text">Loading decision history...</div>
-                </div>
-            </section>
+    <div class="stats-row" style="grid-template-columns:repeat(3,1fr)">
+        <div class="stat-card">
+            <div class="stat-icon teal">📊</div>
+            <div class="stat-info"><div class="stat-label">Health Score</div><div class="stat-val" id="ii-score">—%</div></div>
         </div>
+        <div class="stat-card">
+            <div class="stat-icon green">✓</div>
+            <div class="stat-info"><div class="stat-label">Healthy Agents</div><div class="stat-val" style="color:var(--green)" id="ii-healthy">—</div></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="background:var(--red-dim)">✕</div>
+            <div class="stat-info"><div class="stat-label">Failing Agents</div><div class="stat-val" style="color:var(--red)" id="ii-failing">—</div></div>
+        </div>
+    </div>
 
-        <section class="glass-panel" style="margin-top: 1.5rem;">
-            <div class="panel-header">
-                <h2>Agent Health Overview</h2>
+    <div class="intel-grid">
+        <div class="panel">
+            <div class="panel-head">
+                <div class="panel-title"><span class="panel-title-dot"></span>Active Anomalies</div>
+                <span class="panel-badge" id="anom-count">0</span>
             </div>
-            <div id="agent-grid" class="agent-grid">
-                <div class="loading-text">Loading agent statuses...</div>
+            <div class="event-list" id="anomaly-list"><div class="loading-text">Scanning…</div></div>
+        </div>
+        <div class="panel">
+            <div class="panel-head">
+                <div class="panel-title"><span class="panel-title-dot"></span>Recent Decisions</div>
+                <span class="panel-badge" id="dec-count">0</span>
             </div>
-        </section>
-    </main>
+            <div class="event-list" id="decision-list"><div class="loading-text">Loading…</div></div>
+        </div>
+    </div>
 
-    <style>
-        .page-header { margin-bottom: 2rem; }
-        .page-header h1 { font-size: 2rem; }
-        .page-subtitle { color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem; }
+    <div class="panel" style="margin-top:1.25rem">
+        <div class="panel-head">
+            <div class="panel-title"><span class="panel-title-dot"></span>Agent Health</div>
+        </div>
+        <div class="agent-grid" id="agent-grid">
+            <div class="loading-text">Loading agents…</div>
+        </div>
+    </div>
+</main>
 
-        .intel-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        .intel-stat {
-            background: var(--panel-bg);
-            padding: 1.2rem;
-            border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.05);
-            text-align: center;
-        }
-        .intel-stat .count { font-size: 2rem; font-weight: 800; }
-        .intel-stat .label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+<script>
+setInterval(() => {
+    const el = document.getElementById('live-clock');
+    if (!el) return;
+    const n = new Date();
+    el.textContent = [n.getHours(), n.getMinutes(), n.getSeconds()].map(v => String(v).padStart(2,'0')).join(':');
+}, 1000);
 
-        .intel-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-        @media (max-width: 900px) { .intel-grid { grid-template-columns: 1fr; } }
+async function load() {
+    try {
+        const [aRes, dRes, hRes] = await Promise.all([fetch('/api/anomalies'), fetch('/api/decisions'), fetch('/api/health/report')]);
+        const aData = await aRes.json(), dData = await dRes.json(), hData = await hRes.json();
 
-        .badge {
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--accent-color);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
+        const containerIssues = (aData.issues || []).map(i => ({ target: i.target || 'System', type: i.type || 'warning', reason: i.reason || i.message || '' }));
+        const healthIssues    = (hData.issues || []).map(msg => ({ target: 'System', type: 'degraded', reason: msg }));
+        const issues = [...containerIssues, ...healthIssues];
+        document.getElementById('anom-count').textContent = issues.length;
 
-        .event-list { max-height: 400px; overflow-y: auto; }
-        .event-item {
-            padding: 1rem;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
-            transition: 0.3s;
-        }
-        .event-item:hover { background: rgba(255,255,255,0.02); }
-        .event-item .event-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.4rem;
-        }
-        .event-item .event-target { font-weight: 600; font-size: 0.9rem; }
-        .event-item .event-detail { font-size: 0.8rem; color: var(--text-secondary); }
-        .event-item .event-time { font-size: 0.7rem; color: var(--text-secondary); }
+        const anomList = document.getElementById('anomaly-list');
+        anomList.innerHTML = issues.length === 0
+            ? '<div style="text-align:center;padding:2rem;color:var(--green);font-size:0.85rem">✓ No active anomalies</div>'
+            : issues.map(i => `<div class="event-item"><div class="event-header"><span class="event-target">${i.target}</span><span class="badge ${i.type==='critical'?'offline':'restarting'}">${i.type}</span></div><div class="event-detail">${i.reason}</div></div>`).join('');
 
-        .agent-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 0.75rem;
-        }
-        .agent-card {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: 0.3s;
-        }
-        .agent-card:hover { background: rgba(255,255,255,0.04); }
-        .agent-card .agent-name { font-weight: 600; font-size: 0.85rem; }
-        .agent-card .agent-mode { font-size: 0.7rem; }
-        .agent-mode.healthy { color: var(--success); }
-        .agent-mode.failing { color: var(--danger); }
+        const actions = dData.actions || dData.decisions || [];
+        document.getElementById('dec-count').textContent = actions.length;
+        const decList = document.getElementById('decision-list');
+        decList.innerHTML = actions.length === 0
+            ? '<div style="text-align:center;padding:2rem;color:var(--text-3);font-size:0.85rem">No recent decisions</div>'
+            : actions.slice(0,20).map(d => `<div class="event-item"><div class="event-header"><span class="event-target">${d.target||d.action||'System'}</span><span class="badge restarting">${d.action||d.type||'action'}</span></div><div class="event-detail">${d.reason||''}</div></div>`).join('');
 
-        .loading-text { color: var(--text-secondary); text-align: center; padding: 2rem; }
-        .empty-state { color: var(--text-secondary); text-align: center; padding: 2rem; font-size: 0.9rem; }
-    </style>
+        const agents = hData.agent_health || {};
+        const agentEntries = Object.entries(agents).filter(([k]) => k !== 'monitor_containers');
+        const healthy = agentEntries.filter(([,v]) => v.status === 'healthy').length;
+        const failing = agentEntries.length - healthy;
+        document.getElementById('ii-score').textContent   = `${hData.score||0}%`;
+        document.getElementById('ii-healthy').textContent = healthy;
+        document.getElementById('ii-failing').textContent = failing;
 
-    <script>
-        async function loadIntelligence() {
-            // Anomalies — merge anomalies.json AND health_report.json issues
-            try {
-                const [anomRes, healthRes] = await Promise.all([
-                    fetch('/api/anomalies'),
-                    fetch('/api/health/report')
-                ]);
-                const anomData = await anomRes.json();
-                const healthData = await healthRes.json();
+        document.getElementById('agent-grid').innerHTML = agentEntries.map(([name, info]) => {
+            const s = (info.mode || info.status || 'unknown').toLowerCase();
+            const cls = s === 'healthy' ? 'healthy' : s === 'stale' ? 'stale' : 'failing';
+            return `<div class="agent-card"><span class="agent-name">${name}</span><span class="agent-status ${cls}">${s.toUpperCase()}</span></div>`;
+        }).join('');
+    } catch(e) { console.error(e); }
+}
 
-                // anomalies.json issues (container/resource anomalies)
-                const containerIssues = (anomData.issues || []).map(i => ({
-                    target: i.target || 'System',
-                    type: i.type || 'warning',
-                    reason: i.reason || i.message || ''
-                }));
-
-                // health_report.json issues (agent staleness, pipeline stalls, etc.)
-                const healthIssues = (healthData.issues || []).map(msg => ({
-                    target: 'System',
-                    type: 'degraded',
-                    reason: msg
-                }));
-
-                // Merge and deduplicate
-                const allIssues = [...containerIssues, ...healthIssues];
-                document.getElementById('anomaly-count').textContent = allIssues.length;
-
-                const anomList = document.getElementById('anomaly-list');
-                if (allIssues.length === 0) {
-                    anomList.innerHTML = '<div class="empty-state">✅ No active anomalies detected</div>';
-                } else {
-                    anomList.innerHTML = allIssues.map(issue => `
-                        <div class="event-item">
-                            <div class="event-header">
-                                <span class="event-target">${issue.target}</span>
-                                <span class="status-pill ${issue.type === 'critical' ? 'offline' : issue.type === 'degraded' ? 'loading' : 'loading'}">${issue.type}</span>
-                            </div>
-                            <div class="event-detail">${issue.reason}</div>
-                        </div>
-                    `).join('');
-                }
-            } catch (e) {
-                document.getElementById('anomaly-list').innerHTML = `<div class="loading-text">Error: ${e.message}</div>`;
-            }
-
-            // Decisions
-            try {
-                const decRes = await fetch('/api/decisions');
-                const decData = await decRes.json();
-                const actions = decData.actions || decData.decisions || [];
-                document.getElementById('decision-count').textContent = Array.isArray(actions) ? actions.length : 0;
-
-                const decList = document.getElementById('decision-list');
-                if (!Array.isArray(actions) || actions.length === 0) {
-                    decList.innerHTML = '<div class="empty-state">No recent decisions</div>';
-                } else {
-                    decList.innerHTML = actions.slice(0, 20).map(d => `
-                        <div class="event-item">
-                            <div class="event-header">
-                                <span class="event-target">${d.target || d.action || 'System'}</span>
-                                <span class="status-pill loading">${d.action || d.type || 'action'}</span>
-                            </div>
-                            <div class="event-detail">${d.reason || ''}</div>
-                        </div>
-                    `).join('');
-                }
-            } catch (e) {
-                document.getElementById('decision-list').innerHTML = `<div class="loading-text">Error: ${e.message}</div>`;
-            }
-
-            // Agent Health
-            try {
-                const healthRes = await fetch('/api/health/report');
-                const healthData = await healthRes.json();
-                const agents = healthData.agent_health || {};
-
-                // Stats
-                const agentEntries = Object.entries(agents).filter(([k]) => k !== 'monitor_containers');
-                const healthy = agentEntries.filter(([,v]) => v.status === 'healthy').length;
-                const failing = agentEntries.filter(([,v]) => v.status !== 'healthy').length;
-
-                document.getElementById('intel-stats').innerHTML = `
-                    <div class="intel-stat"><div class="count">${healthData.score || 0}%</div><div class="label">Health Score</div></div>
-                    <div class="intel-stat"><div class="count" style="color: var(--success)">${healthy}</div><div class="label">Healthy Agents</div></div>
-                    <div class="intel-stat"><div class="count" style="color: ${failing > 0 ? 'var(--danger)' : 'var(--success)'}">${failing}</div><div class="label">Failing Agents</div></div>
-                `;
-
-                // Agent Grid
-                const agentGrid = document.getElementById('agent-grid');
-                agentGrid.innerHTML = agentEntries.map(([name, info]) => {
-                    const mode = (info.mode || info.status || 'unknown').toLowerCase();
-                    const isHealthy = mode === 'healthy';
-                    return `
-                        <div class="agent-card">
-                            <span class="agent-name">${name}</span>
-                            <span class="agent-mode ${isHealthy ? 'healthy' : 'failing'}">${mode.toUpperCase()}</span>
-                        </div>
-                    `;
-                }).join('');
-            } catch (e) {
-                document.getElementById('agent-grid').innerHTML = `<div class="loading-text">Error: ${e.message}</div>`;
-            }
-        }
-
-        loadIntelligence();
-        setInterval(loadIntelligence, 10000);
-    </script>
+load();
+setInterval(load, 10000);
+</script>
 </body>
 </html>

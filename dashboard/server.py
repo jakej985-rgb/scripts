@@ -262,6 +262,156 @@ def get_metrics_history():
     except Exception:
         return jsonify([])
 
+# --- Action API (Dashboard Buttons) -------------------------------------------
+
+import subprocess as _sp
+import re as _re
+
+# Whitelist of allowed container actions to prevent injection
+_CONTAINER_ACTIONS = {"restart", "stop", "start"}
+# Sanitize container names — only allow alphanumeric, dash, underscore, dot
+_SAFE_NAME = _re.compile(r'^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$')
+
+def _audit_log(action, target, user, result):
+    """Log all dashboard actions for traceability."""
+    logger.info(f"[ACTION] user={user} action={action} target={target} result={result}")
+
+@app.route('/api/action', methods=['POST'])
+@login_required()
+def api_action():
+    """Execute container or global actions from the dashboard UI."""
+    data = request.get_json(silent=True) or {}
+    action = (data.get('action') or '').strip().lower()
+    container = (data.get('container') or '').strip()
+    user = session.get('username', 'unknown')
+
+    if not action:
+        return jsonify({"ok": False, "error": "Missing 'action' field"}), 400
+
+    # ── Container-scoped actions ──────────────────────────────────
+    if container:
+        if action not in _CONTAINER_ACTIONS:
+            return jsonify({"ok": False, "error": f"Unknown container action: {action}"}), 400
+
+        if not _SAFE_NAME.match(container):
+            return jsonify({"ok": False, "error": "Invalid container name"}), 400
+
+        try:
+            proc = _sp.run(
+                ["docker", action, container],
+                capture_output=True, text=True, timeout=60
+            )
+            if proc.returncode != 0:
+                err = (proc.stderr or proc.stdout or "Unknown error").strip()
+                _audit_log(action, container, user, f"FAIL: {err}")
+                return jsonify({"ok": False, "error": err}), 500
+
+            _audit_log(action, container, user, "OK")
+            return jsonify({"ok": True, "message": f"{action} on {container} succeeded"})
+        except _sp.TimeoutExpired:
+            _audit_log(action, container, user, "TIMEOUT")
+            return jsonify({"ok": False, "error": f"Timed out after 60s"}), 504
+        except Exception as e:
+            _audit_log(action, container, user, f"ERROR: {e}")
+            return jsonify({"ok": False, "error": str(e)}), 500
+
+    # ── Container logs (returns log text, not an action) ──────────
+    if action == "logs":
+        target = (data.get('target') or '').strip()
+        if not target or not _SAFE_NAME.match(target):
+            return jsonify({"ok": False, "error": "Invalid container name for logs"}), 400
+        try:
+            proc = _sp.run(
+                ["docker", "logs", "--tail", "80", target],
+                capture_output=True, text=True, timeout=15
+            )
+            output = proc.stdout or proc.stderr or "(no output)"
+            return jsonify({"ok": True, "logs": output[-8000:]})
+        except Exception as e:
+            return jsonify({"ok": False, "error": str(e)}), 500
+
+    # ── Global actions ────────────────────────────────────────────
+    if action == "status":
+        report = load_json_safe(HEALTH_REPORT_JSON)
+        health = load_json_safe(HEALTH_JSON)
+        _audit_log("status", "global", user, "OK")
+        return jsonify({
+            "ok": True,
+            "score": report.get("score", 0),
+            "verdict": report.get("verdict", "Unknown"),
+            "mode": report.get("mode", "unknown"),
+            "issues": report.get("issues", []),
+            "system": health.get("status", "unknown"),
+        })
+
+    if action == "heal":
+        _audit_log("heal", "all", user, "STARTED")
+        try:
+            # Trigger the init.py repair function in a subprocess
+            repair_script = os.path.join(REPO_ROOT, "control-plane", "init.py")
+            if not os.path.exists(repair_script):
+                return jsonify({"ok": False, "error": "Repair script not found"}), 500
+
+            proc = _sp.run(
+                [sys.executable, repair_script, "--repair=all"],
+                capture_output=True, text=True, timeout=300,
+                cwd=os.path.join(REPO_ROOT, "control-plane")
+            )
+            result = "OK" if proc.returncode == 0 else f"EXIT {proc.returncode}"
+            _audit_log("heal", "all", user, result)
+            return jsonify({
+                "ok": proc.returncode == 0,
+                "message": "Heal cycle completed" if proc.returncode == 0 else "Heal encountered errors",
+                "output": (proc.stdout or "")[-2000:]
+            })
+        except _sp.TimeoutExpired:
+            _audit_log("heal", "all", user, "TIMEOUT")
+            return jsonify({"ok": False, "error": "Heal timed out after 5 minutes"}), 504
+        except Exception as e:
+            _audit_log("heal", "all", user, f"ERROR: {e}")
+            return jsonify({"ok": False, "error": str(e)}), 500
+
+    if action == "scan":
+        _audit_log("scan", "all", user, "STARTED")
+        # Trigger a health score recalculation
+        try:
+            scorer_script = os.path.join(REPO_ROOT, "control-plane", "agents", "health_score.py")
+            if os.path.exists(scorer_script):
+                _sp.run(
+                    [sys.executable, scorer_script, "--once"],
+                    capture_output=True, text=True, timeout=30,
+                    cwd=os.path.join(REPO_ROOT, "control-plane")
+                )
+            # Return fresh report
+            report = load_json_safe(HEALTH_REPORT_JSON)
+            _audit_log("scan", "all", user, "OK")
+            return jsonify({
+                "ok": True,
+                "score": report.get("score", 0),
+                "verdict": report.get("verdict", "Unknown"),
+                "issues": report.get("issues", []),
+            })
+        except Exception as e:
+            _audit_log("scan", "all", user, f"ERROR: {e}")
+            return jsonify({"ok": False, "error": str(e)}), 500
+
+    if action == "reboot":
+        # Admin-only, Linux-only
+        if session.get('role') != 'admin':
+            return jsonify({"ok": False, "error": "Reboot requires admin role"}), 403
+        if sys.platform == "win32":
+            return jsonify({"ok": False, "error": "Reboot is only supported on Linux hosts"}), 400
+        _audit_log("reboot", "host", user, "INITIATED")
+        try:
+            _sp.Popen(["bash", "-c", "sleep 5 && reboot"])
+            return jsonify({"ok": True, "message": "Host rebooting in 5 seconds..."})
+        except Exception as e:
+            _audit_log("reboot", "host", user, f"ERROR: {e}")
+            return jsonify({"ok": False, "error": str(e)}), 500
+
+    return jsonify({"ok": False, "error": f"Unknown action: {action}"}), 400
+
+
 # -------------------------------
 # WEBSOCKET STREAM (Real-time)
 # -------------------------------

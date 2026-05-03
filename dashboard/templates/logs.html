@@ -5,228 +5,111 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M3TAL | System Logs</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
-<body class="dark-mode">
-    <nav class="glass-nav">
-        <div class="logo">M3TAL<span>PRO</span></div>
-        <div class="nav-links">
-            <a href="/">Dashboard</a>
-            <a href="/fleet">Fleet</a>
-            <a href="/intelligence">Intelligence</a>
-            <a href="/logs" class="active">Logs</a>
-            <a href="/logout" class="logout-btn">Logout</a>
+<body>
+
+<header class="topbar">
+    <div class="topbar-left">
+        <div class="server-icon">🖥</div>
+        <div>
+            <div class="server-name">M3TAL Media Server</div>
+            <div class="server-sub">AI-Powered Docker Control Plane</div>
         </div>
+    </div>
+    <nav class="topbar-center">
+        <a href="/"            class="nav-link">Dashboard</a>
+        <a href="/fleet"       class="nav-link">Fleet</a>
+        <a href="/intelligence"class="nav-link">Intelligence</a>
+        <a href="/logs"        class="nav-link active">Logs</a>
+        <a href="/logout"      class="nav-link danger">Logout</a>
     </nav>
+    <div class="topbar-right">
+        <div class="status-online"><div class="status-dot"></div>ONLINE</div>
+        <div class="live-clock" id="live-clock">00:00:00</div>
+    </div>
+</header>
 
-    <main class="dashboard-container">
-        <header class="page-header">
-            <h1>System <span class="gradient-text">Logs</span></h1>
-            <p class="page-subtitle">Real-time log viewer for M3TAL control agents</p>
-        </header>
+<main class="page">
+    <div class="page-head">
+        <h1>System <span>Logs</span></h1>
+        <span class="panel-badge">Auto-refresh 10s</span>
+    </div>
 
-        <div class="logs-layout">
-            <aside class="logs-sidebar glass-panel">
-                <div class="panel-header">
-                    <h2>Agents</h2>
-                </div>
-                <div id="log-list" class="log-list">
-                    <div class="loading-text">Loading agents...</div>
-                </div>
-            </aside>
-            
-            <section class="logs-viewer glass-panel">
-                <div class="panel-header">
-                    <h2 id="current-log-title">Select an agent log</h2>
-                    <span class="badge" id="refresh-indicator">Auto-refreshing (10s)</span>
-                </div>
-                <div class="terminal-window">
-                    <pre id="log-content">Loading...</pre>
-                </div>
-            </section>
+    <div class="logs-layout">
+        <div class="panel" style="padding:1rem">
+            <div class="panel-head" style="margin:-1rem -1rem 0.75rem; border-radius:var(--radius) var(--radius) 0 0">
+                <div class="panel-title"><span class="panel-title-dot"></span>Agents</div>
+            </div>
+            <div id="log-list"><div class="loading-text">Loading…</div></div>
         </div>
-    </main>
 
-    <style>
-        .page-header { margin-bottom: 2rem; }
-        .page-header h1 { font-size: 2rem; }
-        .page-subtitle { color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem; }
+        <div class="panel" style="display:flex;flex-direction:column;">
+            <div class="panel-head">
+                <div class="panel-title" id="log-title"><span class="panel-title-dot"></span>Select a log</div>
+                <span class="panel-badge">LIVE</span>
+            </div>
+            <div class="terminal" id="terminal">Loading…</div>
+        </div>
+    </div>
+</main>
 
-        .logs-layout {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            gap: 1.5rem;
-            align-items: start;
+<script>
+setInterval(() => {
+    const el = document.getElementById('live-clock');
+    if (!el) return;
+    const n = new Date();
+    el.textContent = [n.getHours(), n.getMinutes(), n.getSeconds()].map(v => String(v).padStart(2,'0')).join(':');
+}, 1000);
+
+let allLogs = {}, currentFile = null;
+
+function colorize(text) {
+    return (text || '').split('\n').map(line => {
+        if (/\[ERROR\]|FATAL|Exception/i.test(line)) return `<span class="err">${line}</span>`;
+        if (/\[WARN/i.test(line))  return `<span class="warn">${line}</span>`;
+        if (/\[INFO\]|SUCCESS/i.test(line)) return `<span class="info">${line}</span>`;
+        return line;
+    }).join('\n');
+}
+
+function selectLog(fname) {
+    currentFile = fname;
+    document.getElementById('log-title').innerHTML = `<span class="panel-title-dot"></span>${fname}`;
+    document.querySelectorAll('.log-tab').forEach(t => t.classList.toggle('active', t.dataset.f === fname));
+    const term = document.getElementById('terminal');
+    const atBottom = term.scrollTop + term.clientHeight >= term.scrollHeight - 20;
+    term.innerHTML = colorize(allLogs[fname]);
+    if (atBottom) term.scrollTop = term.scrollHeight;
+}
+
+async function fetchLogs() {
+    try {
+        const res = await fetch('/api/logs');
+        allLogs = await res.json();
+        const files = Object.keys(allLogs).sort();
+        const list = document.getElementById('log-list');
+
+        if (files.length === 0) { list.innerHTML = '<div class="loading-text">No logs found.</div>'; return; }
+
+        if (!currentFile || list.querySelector('.loading-text')) {
+            list.innerHTML = files.map(f => `<div class="log-tab" data-f="${f}" onclick="selectLog('${f}')">${f.replace('.log','')}</div>`).join('');
         }
 
-        @media (max-width: 900px) {
-            .logs-layout {
-                grid-template-columns: 1fr;
-            }
+        if (!currentFile) {
+            const def = files.find(f => f === 'leader.log') || files.find(f => f === 'monitor.log') || files[0];
+            selectLog(def);
+        } else {
+            document.querySelectorAll('.log-tab').forEach(t => t.classList.toggle('active', t.dataset.f === currentFile));
+            const term = document.getElementById('terminal');
+            const atBottom = term.scrollTop + term.clientHeight >= term.scrollHeight - 20;
+            term.innerHTML = colorize(allLogs[currentFile]);
+            if (atBottom) term.scrollTop = term.scrollHeight;
         }
+    } catch(e) { console.error(e); }
+}
 
-        .logs-sidebar {
-            padding: 1.5rem;
-            max-height: 600px;
-            overflow-y: auto;
-        }
-
-        .log-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .log-tab {
-            padding: 0.75rem 1rem;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .log-tab:hover {
-            background: rgba(255,255,255,0.06);
-        }
-
-        .log-tab.active {
-            background: rgba(59, 130, 246, 0.15);
-            border-color: rgba(59, 130, 246, 0.4);
-            color: var(--accent-color);
-        }
-
-        .logs-viewer {
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            height: 600px;
-        }
-
-        .terminal-window {
-            background: #000;
-            border-radius: 8px;
-            padding: 1rem;
-            flex-grow: 1;
-            overflow-y: auto;
-            border: 1px solid rgba(255,255,255,0.05);
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.85rem;
-            line-height: 1.4;
-        }
-
-        #log-content {
-            white-space: pre-wrap;
-            color: #d4d4d4;
-            margin: 0;
-        }
-
-        .log-line-error { color: #ef4444; }
-        .log-line-warn { color: #f59e0b; }
-        .log-line-info { color: #3b82f6; }
-        
-        .badge {
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--accent-color);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .loading-text { color: var(--text-secondary); text-align: center; padding: 1rem; }
-    </style>
-
-    <script>
-        let allLogs = {};
-        let currentLogFile = null;
-
-        function formatLogContent(content) {
-            if (!content) return "No logs available.";
-            return content.split('\n').map(line => {
-                if (line.includes('[ERROR]') || line.includes('FATAL') || line.includes('Exception')) {
-                    return `<span class="log-line-error">${line}</span>`;
-                } else if (line.includes('[WARN') || line.includes('DEGRADED')) {
-                    return `<span class="log-line-warn">${line}</span>`;
-                } else if (line.includes('[INFO]') || line.includes('SUCCESS')) {
-                    return `<span class="log-line-info">${line}</span>`;
-                }
-                return line;
-            }).join('\n');
-        }
-
-        function renderLogContent() {
-            const contentEl = document.getElementById('log-content');
-            if (!currentLogFile || !allLogs[currentLogFile]) {
-                contentEl.innerHTML = "Select an agent log to view.";
-                return;
-            }
-            
-            const wasAtBottom = (contentEl.parentElement.scrollTop + contentEl.parentElement.clientHeight) >= (contentEl.parentElement.scrollHeight - 20);
-            
-            contentEl.innerHTML = formatLogContent(allLogs[currentLogFile]);
-            
-            if (wasAtBottom) {
-                contentEl.parentElement.scrollTop = contentEl.parentElement.scrollHeight;
-            }
-        }
-
-        function selectLog(filename) {
-            currentLogFile = filename;
-            document.getElementById('current-log-title').textContent = filename;
-            
-            // Update active tab class
-            document.querySelectorAll('.log-tab').forEach(tab => {
-                tab.classList.toggle('active', tab.dataset.filename === filename);
-            });
-            
-            renderLogContent();
-            
-            // Scroll to bottom when first selected
-            const terminal = document.querySelector('.terminal-window');
-            terminal.scrollTop = terminal.scrollHeight;
-        }
-
-        async function fetchLogs() {
-            try {
-                const res = await fetch('/api/logs');
-                allLogs = await res.json();
-                
-                const filenames = Object.keys(allLogs).sort();
-                const listEl = document.getElementById('log-list');
-                
-                if (filenames.length === 0) {
-                    listEl.innerHTML = '<div class="loading-text">No logs found.</div>';
-                    return;
-                }
-                
-                // Only render list if it changed (or first time)
-                if (listEl.children.length === 0 || listEl.querySelector('.loading-text') || filenames.length !== listEl.children.length) {
-                    listEl.innerHTML = filenames.map(f => 
-                        `<div class="log-tab ${f === currentLogFile ? 'active' : ''}" data-filename="${f}" onclick="selectLog('${f}')">${f.replace('.log', '')}</div>`
-                    ).join('');
-                }
-                
-                if (!currentLogFile && filenames.length > 0) {
-                    // Default select the leader or monitor log if present, else first
-                    let defaultLog = filenames.find(f => f === 'leader.log') || filenames.find(f => f === 'monitor.log') || filenames[0];
-                    selectLog(defaultLog);
-                } else {
-                    renderLogContent();
-                }
-                
-            } catch (e) {
-                console.error("Failed to fetch logs:", e);
-                if (Object.keys(allLogs).length === 0) {
-                    document.getElementById('log-list').innerHTML = `<div class="loading-text" style="color:var(--danger)">Error loading logs.</div>`;
-                }
-            }
-        }
-
-        fetchLogs();
-        setInterval(fetchLogs, 10000);
-    </script>
+fetchLogs();
+setInterval(fetchLogs, 10000);
+</script>
 </body>
 </html>

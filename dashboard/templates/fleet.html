@@ -5,270 +5,154 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M3TAL | Container Fleet</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
-<body class="dark-mode">
-    <nav class="glass-nav">
-        <div class="logo">M3TAL<span>PRO</span></div>
-        <div class="nav-links">
-            <a href="/">Dashboard</a>
-            <a href="/fleet" class="active">Fleet</a>
-            <a href="/intelligence">Intelligence</a>
-            <a href="/logs">Logs</a>
-            <a href="/logout" class="logout-btn">Logout</a>
+<body>
+
+<header class="topbar">
+    <div class="topbar-left">
+        <div class="server-icon">🖥</div>
+        <div>
+            <div class="server-name">M3TAL Media Server</div>
+            <div class="server-sub">AI-Powered Docker Control Plane</div>
         </div>
+    </div>
+    <nav class="topbar-center">
+        <a href="/"            class="nav-link">Dashboard</a>
+        <a href="/fleet"       class="nav-link active">Fleet</a>
+        <a href="/intelligence"class="nav-link">Intelligence</a>
+        <a href="/logs"        class="nav-link">Logs</a>
+        <a href="/logout"      class="nav-link danger">Logout</a>
     </nav>
+    <div class="topbar-right">
+        <div class="status-online"><div class="status-dot"></div>ONLINE</div>
+        <div class="live-clock" id="live-clock">00:00:00</div>
+    </div>
+</header>
 
-    <main class="dashboard-container">
-        <header class="page-header">
-            <h1>Container <span class="gradient-text">Fleet</span></h1>
-            <p class="page-subtitle">Real-time status of all managed containers</p>
-        </header>
+<main class="page">
+    <div class="page-head">
+        <h1>Container <span>Fleet</span></h1>
+        <span class="badge running" id="fleet-online-badge">— online</span>
+    </div>
 
-        <div class="fleet-stats" id="fleet-stats">
-            <!-- Populated by JS -->
+    <!-- Stats row -->
+    <div class="stats-row" style="grid-template-columns: repeat(4, 1fr);">
+        <div class="stat-card">
+            <div class="stat-icon teal">📦</div>
+            <div class="stat-info"><div class="stat-label">Total</div><div class="stat-val" id="fl-total">—</div></div>
         </div>
+        <div class="stat-card">
+            <div class="stat-icon green">✓</div>
+            <div class="stat-info"><div class="stat-label">Online</div><div class="stat-val" style="color:var(--green)" id="fl-online">—</div></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon amber">⚠</div>
+            <div class="stat-info"><div class="stat-label">Restarting</div><div class="stat-val" style="color:var(--amber)" id="fl-restart">—</div></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="background:var(--red-dim)">✕</div>
+            <div class="stat-info"><div class="stat-label">Offline</div><div class="stat-val" style="color:var(--red)" id="fl-offline">—</div></div>
+        </div>
+    </div>
 
-        <section class="glass-panel fleet-grid-panel">
-            <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center;">
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <h2>All Containers</h2>
-                    <span class="pulse-icon"></span>
-                </div>
-                <div class="view-controls">
-                    <button class="view-btn" onclick="setGrid(1)">List</button>
-                    <button class="view-btn" onclick="setGrid(2)">2-Wide</button>
-                    <button class="view-btn active" onclick="setGrid(3)">3-Wide</button>
-                    <button class="view-btn" onclick="setGrid(4)">4-Wide</button>
-                </div>
+    <!-- View controls + grid -->
+    <div class="panel">
+        <div class="panel-head">
+            <div class="panel-title"><span class="panel-title-dot"></span>All Containers</div>
+            <div style="display:flex;gap:0.5rem">
+                <button class="panel-badge" onclick="setGrid(1)">List</button>
+                <button class="panel-badge" onclick="setGrid(2)">2×</button>
+                <button class="panel-badge" onclick="setGrid(3)">3×</button>
+                <button class="panel-badge" onclick="setGrid(4)">4×</button>
             </div>
-            <div id="fleet-grid" class="fleet-grid">
-                <div class="loading-text">Loading fleet data...</div>
-            </div>
-        </section>
-    </main>
+        </div>
+        <div id="fleet-grid" class="fleet-grid" style="padding:1.25rem;">
+            <div class="loading-text">Loading fleet…</div>
+        </div>
+    </div>
+</main>
 
-    <style>
-        .page-header { margin-bottom: 2rem; }
-        .page-header h1 { font-size: 2rem; }
-        .page-subtitle { color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem; }
+<script>
+// Clock
+setInterval(() => {
+    const el = document.getElementById('live-clock');
+    if (!el) return;
+    const n = new Date();
+    el.textContent = [n.getHours(), n.getMinutes(), n.getSeconds()].map(v => String(v).padStart(2,'0')).join(':');
+}, 1000);
 
-        .fleet-stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        .fleet-stat {
-            background: var(--panel-bg);
-            padding: 1.2rem;
-            border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.05);
-            text-align: center;
-        }
-        .fleet-stat .count {
-            font-size: 2rem;
-            font-weight: 800;
-        }
-        .fleet-stat .label {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 0.25rem;
-        }
-        .fleet-stat.online .count { color: var(--success); }
-        .fleet-stat.offline .count { color: var(--danger); }
-        .fleet-stat.missing .count { color: var(--warning); }
+async function loadFleet() {
+    try {
+        const [hRes, mRes] = await Promise.all([fetch('/api/health/report'), fetch('/api/metrics')]);
+        const hData = await hRes.json();
+        const mData = await mRes.json();
 
-        .view-controls {
-            display: flex;
-            gap: 0.5rem;
-            background: rgba(0,0,0,0.2);
-            padding: 0.3rem;
-            border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .view-btn {
-            background: transparent;
-            color: var(--text-secondary);
-            border: none;
-            padding: 0.4rem 0.8rem;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-family: inherit;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .view-btn.active {
-            background: rgba(255,255,255,0.1);
-            color: var(--text-primary);
-        }
-        .view-btn:hover:not(.active) {
-            background: rgba(255,255,255,0.05);
-            color: var(--text-primary);
-        }
-
-        .fleet-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-        }
-        .fleet-grid.grid-1 { grid-template-columns: 1fr; }
-        .fleet-grid.grid-2 { grid-template-columns: repeat(2, 1fr); }
-        .fleet-grid.grid-4 { grid-template-columns: repeat(4, 1fr); }
-
-        @media (max-width: 1024px) {
-            /* If they are in 3 or 4 wide mode, squish to 2 on tablets */
-            .fleet-grid:not(.grid-1):not(.grid-2) {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        @media (max-width: 600px) {
-            /* Everything goes to 1 column on phones */
-            .fleet-grid {
-                grid-template-columns: 1fr !important;
-            }
-        }
-        .fleet-card {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 14px;
-            padding: 1.2rem;
-            transition: all 0.3s ease;
-        }
-        .fleet-card:hover {
-            background: rgba(255,255,255,0.04);
-            border-color: rgba(59, 130, 246, 0.2);
-            transform: translateY(-2px);
-        }
-        .fleet-card .card-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.75rem;
-        }
-        .fleet-card .card-name {
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-        .fleet-card .card-detail {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-top: 0.25rem;
-        }
-        .loading-text {
-            color: var(--text-secondary);
-            text-align: center;
-            padding: 2rem;
-        }
-    </style>
-
-    <script>
-        async function loadFleet() {
-            try {
-                const [healthRes, metricsRes] = await Promise.all([
-                    fetch('/api/health/report'),
-                    fetch('/api/metrics')
-                ]);
-                const data = await healthRes.json();
-                const metricsData = await metricsRes.json();
-                
-                const containers = data?.agent_health?.monitor_containers?.containers || {};
-                const entries = Object.entries(containers);
-
-                // Map metrics by container name (handle fuzzy matches like 'm3tal-autobrr' -> 'autobrr')
-                const containerMetrics = {};
-                if (metricsData.containers) {
-                    metricsData.containers.forEach(m => {
-                        let shortName = m.name.replace('m3tal-', '');
-                        containerMetrics[shortName] = m;
-                        containerMetrics[m.name] = m;
-                    });
-                }
-
-                // Stats
-                const online = entries.filter(([,v]) => v.status === 'online').length;
-                const offline = entries.filter(([,v]) => v.status === 'offline').length;
-                const missing = entries.filter(([,v]) => v.status === 'missing').length;
-                const total = entries.length;
-
-                document.getElementById('fleet-stats').innerHTML = `
-                    <div class="fleet-stat"><div class="count">${total}</div><div class="label">Total</div></div>
-                    <div class="fleet-stat online"><div class="count">${online}</div><div class="label">Online</div></div>
-                    <div class="fleet-stat offline"><div class="count">${offline}</div><div class="label">Offline</div></div>
-                    <div class="fleet-stat missing"><div class="count">${missing}</div><div class="label">Missing</div></div>
-                `;
-
-                // Grid
-                const grid = document.getElementById('fleet-grid');
-                if (entries.length === 0) {
-                    grid.innerHTML = '<div class="loading-text">No container data available yet. Agents are collecting...</div>';
-                    return;
-                }
-
-                // Sort: online first, then offline, then missing
-                const order = { online: 0, restarting: 1, offline: 2, missing: 3, unknown: 4 };
-                entries.sort((a, b) => (order[a[1].status] || 4) - (order[b[1].status] || 4));
-
-                grid.innerHTML = entries.map(([name, info]) => {
-                    const status = info.status || 'unknown';
-                    const rawStatus = info.raw_status || '';
-                    const created = info.created ? info.created.split(' ').slice(0, 2).join(' ') : '';
-                    
-                    const metrics = containerMetrics[name] || { cpu: 0, mem_usage: '-' };
-                    const cpuStr = status === 'online' ? `${metrics.cpu.toFixed(1)}%` : '-';
-                    const memStr = status === 'online' ? metrics.mem_usage : '-';
-
-                    return `
-                        <div class="fleet-card">
-                            <div class="card-top">
-                                <span class="card-name">${name}</span>
-                                <span class="status-pill ${status}">${status}</span>
-                            </div>
-                            <div class="card-detail">${rawStatus}</div>
-                            ${created ? `<div class="card-detail" style="margin-bottom: 0.5rem">Created: ${created}</div>` : ''}
-                            
-                            <div style="display: flex; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.5rem; margin-top: 0.5rem;">
-                                <div class="card-detail"><strong>CPU:</strong> <span style="color:var(--text-primary)">${cpuStr}</span></div>
-                                <div class="card-detail"><strong>RAM:</strong> <span style="color:var(--text-primary)">${memStr}</span></div>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-            } catch (e) {
-                document.getElementById('fleet-grid').innerHTML = `<div class="loading-text">Error loading fleet: ${e.message}</div>`;
-            }
-        }
-
-        loadFleet();
-        setInterval(loadFleet, 10000);
-
-        function setGrid(cols) {
-            const grid = document.getElementById('fleet-grid');
-            const btns = document.querySelectorAll('.view-btn');
-            
-            grid.className = 'fleet-grid';
-            if (cols !== 3) {
-                grid.classList.add(`grid-${cols}`);
-            }
-            
-            btns.forEach(b => b.classList.remove('active'));
-            if (cols === 1) btns[0].classList.add('active');
-            if (cols === 2) btns[1].classList.add('active');
-            if (cols === 3) btns[2].classList.add('active');
-            if (cols === 4) btns[3].classList.add('active');
-            
-            localStorage.setItem('fleet-grid-cols', cols.toString());
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedCols = parseInt(localStorage.getItem('fleet-grid-cols'));
-            if ([1, 2, 4].includes(savedCols)) {
-                setGrid(savedCols);
-            }
+        const metricsByName = {};
+        (mData.containers || []).forEach(c => {
+            metricsByName[c.name] = c;
+            metricsByName[c.name.replace('m3tal-', '')] = c;
         });
-    </script>
+
+        const containers = hData?.agent_health?.monitor_containers?.containers || {};
+        const entries = Object.entries(containers);
+
+        const isOnline = s => ['online','running'].includes((s||'').toLowerCase());
+        const isRestart = s => (s||'').toLowerCase() === 'restarting';
+
+        const online  = entries.filter(([,v]) => isOnline(v.status)).length;
+        const restart = entries.filter(([,v]) => isRestart(v.status)).length;
+        const offline = entries.filter(([,v]) => !isOnline(v.status) && !isRestart(v.status)).length;
+
+        document.getElementById('fl-total').textContent   = entries.length;
+        document.getElementById('fl-online').textContent  = online;
+        document.getElementById('fl-restart').textContent = restart;
+        document.getElementById('fl-offline').textContent = offline;
+        document.getElementById('fleet-online-badge').textContent = `${online} / ${entries.length} running`;
+
+        const order = { running:0, online:0, restarting:1, offline:2, missing:3, unknown:4 };
+        entries.sort((a,b) => (order[(a[1].status||'').toLowerCase()]??4) - (order[(b[1].status||'').toLowerCase()]??4));
+
+        const grid = document.getElementById('fleet-grid');
+        if (entries.length === 0) {
+            grid.innerHTML = '<div class="loading-text">No container data yet. Agents are collecting…</div>';
+            return;
+        }
+
+        grid.innerHTML = entries.map(([name, info]) => {
+            const status = info.status || 'unknown';
+            const sc = isOnline(status) ? 'running' : isRestart(status) ? 'restarting' : 'offline';
+            const m  = metricsByName[name] || {};
+            const cpu = m.cpu != null ? m.cpu.toFixed(1) + '%' : '—';
+            const mem = m.mem_usage || '—';
+            return `
+                <div class="fleet-card">
+                    <div class="fleet-card-top">
+                        <span class="fleet-card-name">${name}</span>
+                        <span class="badge ${sc}">${status.toUpperCase()}</span>
+                    </div>
+                    <div class="fleet-card-detail">${info.raw_status || ''}</div>
+                    <div class="fleet-meta">
+                        <div class="fleet-meta-item">CPU<span>${cpu}</span></div>
+                        <div class="fleet-meta-item">RAM<span>${mem}</span></div>
+                    </div>
+                </div>`;
+        }).join('');
+    } catch (e) {
+        document.getElementById('fleet-grid').innerHTML = `<div class="loading-text" style="color:var(--red)">Error: ${e.message}</div>`;
+    }
+}
+
+function setGrid(cols) {
+    const grid = document.getElementById('fleet-grid');
+    grid.style.gridTemplateColumns = cols === 1 ? '1fr' : `repeat(${cols}, 1fr)`;
+    localStorage.setItem('fleet-cols', cols);
+}
+
+const savedCols = parseInt(localStorage.getItem('fleet-cols') || '3');
+setGrid(savedCols);
+
+loadFleet();
+setInterval(loadFleet, 10000);
+</script>
 </body>
 </html>

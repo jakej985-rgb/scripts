@@ -1,230 +1,393 @@
+/* app.js — M3TAL Dashboard v2 */
+
 const socket = io();
 
-// UI Elements
-const healthScore = document.getElementById('health-score');
-const healthMeter = document.getElementById('health-meter');
-const cpuVal = document.getElementById('cpu-val');
-const cpuFill = document.getElementById('cpu-fill');
-const memVal = document.getElementById('mem-val');
-const memFill = document.getElementById('mem-fill');
-const containerList = document.getElementById('container-list');
-const anomalyFeed = document.getElementById('anomaly-feed');
-
-// 1. Initial Load
-async function init() {
-    refreshHealth();
-    refreshAnomalies();
-    refreshFleet();
+// ── Clock ────────────────────────────────────────────────────────
+function tick() {
+    const el = document.getElementById('live-clock');
+    if (!el) return;
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    const ss = String(now.getSeconds()).padStart(2, '0');
+    el.textContent = `${hh}:${mm}:${ss}`;
 }
+setInterval(tick, 1000);
+tick();
 
-async function refreshHealth() {
-    const res = await fetch('/api/health/report'); // Use report for score/verdict (Audit Fix 6.6)
-    const data = await res.json();
-    
-    if (data.score !== undefined) {
-        healthScore.innerText = data.score;
-        const offset = 283 - (283 * data.score / 100);
-        healthMeter.style.strokeDashoffset = offset;
-        
-        const verdictPill = document.querySelector('#system-verdict span');
-        verdictPill.innerText = data.verdict || "Healthy";
-        verdictPill.className = `status-pill ${(data.verdict || "Healthy").toLowerCase()}`;
-    }
-}
+// ── Resource Chart ───────────────────────────────────────────────
+let chart = null;
+const MAX_POINTS = 30;
+const cpuData  = Array(MAX_POINTS).fill(null);
+const memData  = Array(MAX_POINTS).fill(null);
+const timeLabels = Array(MAX_POINTS).fill('');
 
-async function refreshFleet() {
-    const res = await fetch('/api/health/report'); // Use report for containers
-    const data = await res.json();
-    
-    containerList.innerHTML = '';
-    
-    // Safely extract the container list from the new M3TAL v1.3 agent structure
-    const containers = data?.agent_health?.monitor_containers?.containers || {};
-    const entries = Object.entries(containers);
+function initChart() {
+    const canvas = document.getElementById('resource-chart');
+    if (!canvas) return;
 
-    const online = entries.filter(([,v]) => v.status === 'online').length;
-    const offline = entries.filter(([,v]) => v.status === 'offline').length;
-    const missing = entries.filter(([,v]) => v.status === 'missing').length;
-    const total = entries.length;
-
-    // 1. Build the summary header
-    const summaryItem = document.createElement('div');
-    summaryItem.style.display = 'flex';
-    summaryItem.style.justifyContent = 'space-between';
-    summaryItem.style.padding = '1rem';
-    summaryItem.style.background = 'rgba(0,0,0,0.2)';
-    summaryItem.style.borderRadius = '8px';
-    summaryItem.style.marginBottom = '1rem';
-    
-    summaryItem.innerHTML = `
-        <div style="text-align: center">
-            <div style="font-size: 1.25rem; font-weight: 800">${total}</div>
-            <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase">Total</div>
-        </div>
-        <div style="text-align: center">
-            <div style="font-size: 1.25rem; font-weight: 800; color: var(--success)">${online}</div>
-            <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase">Online</div>
-        </div>
-        <div style="text-align: center">
-            <div style="font-size: 1.25rem; font-weight: 800; color: var(--danger)">${offline}</div>
-            <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase">Offline</div>
-        </div>
-        <div style="text-align: center">
-            <div style="font-size: 1.25rem; font-weight: 800; color: var(--warning)">${missing}</div>
-            <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase">Missing</div>
-        </div>
-    `;
-    containerList.appendChild(summaryItem);
-    
-    // 2. Determine failing containers
-    const failing = entries.filter(([,v]) => v.status !== 'online');
-    
-    if (failing.length === 0 && total > 0) {
-        // All good
-        const msg = document.createElement('div');
-        msg.style.textAlign = 'center';
-        msg.style.padding = '1.5rem 0';
-        msg.style.fontSize = '0.9rem';
-        msg.style.color = 'var(--text-secondary)';
-        msg.innerHTML = '<span style="color:var(--success); margin-right: 0.25rem">✓</span> All containers healthy';
-        containerList.appendChild(msg);
-    } else {
-        // List failing containers
-        for (const [name, info] of failing) {
-            const item = document.createElement('div');
-            item.className = 'container-item';
-            const status = info.status || "unknown";
-            item.innerHTML = `
-                <div class="name">${name}</div>
-                <div class="status-pill ${status.toLowerCase()}">${status}</div>
-            `;
-            containerList.appendChild(item);
+    chart = new Chart(canvas, {
+        type: 'line',
+        data: {
+            labels: timeLabels,
+            datasets: [
+                {
+                    label: 'CPU',
+                    data: cpuData,
+                    borderColor: '#22c55e',
+                    backgroundColor: 'rgba(34,197,94,0.08)',
+                    borderWidth: 1.5,
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 0,
+                },
+                {
+                    label: 'MEM',
+                    data: memData,
+                    borderColor: '#a855f7',
+                    backgroundColor: 'rgba(168,85,247,0.08)',
+                    borderWidth: 1.5,
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 0,
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 400 },
+            interaction: { mode: 'index', intersect: false },
+            scales: {
+                x: {
+                    display: false,
+                    grid: { display: false }
+                },
+                y: {
+                    min: 0, max: 100,
+                    grid: { color: 'rgba(255,255,255,0.04)', drawBorder: false },
+                    ticks: {
+                        color: '#4b5e75',
+                        font: { family: "'JetBrains Mono', monospace", size: 10 },
+                        callback: v => `${v}%`,
+                        maxTicksLimit: 5,
+                    },
+                    border: { display: false }
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: 'rgba(13,17,23,0.9)',
+                    borderColor: 'rgba(0,212,170,0.2)',
+                    borderWidth: 1,
+                    titleColor: '#94a3b8',
+                    bodyColor: '#e2e8f0',
+                    bodyFont: { family: "'JetBrains Mono', monospace", size: 11 },
+                }
+            }
         }
-    }
+    });
 }
 
-async function refreshAnomalies() {
-    const [anomRes, decRes, healthRes] = await Promise.all([
-        fetch('/api/anomalies'),
-        fetch('/api/decisions'),
-        fetch('/api/health/report')
-    ]);
-    const anomData = await anomRes.json();
-    const decData = await decRes.json();
-    const healthData = await healthRes.json();
-    
-    anomalyFeed.innerHTML = '';
-    
-    // anomalies.json issues (container/resource anomalies)
-    const containerIssues = (anomData.issues || []).map(i => ({
-        target: i.target || 'System',
-        type: i.type || 'warning',
-        reason: i.reason || i.message || ''
-    }));
+function pushChartPoint(cpu, mem) {
+    if (!chart) return;
+    const now = new Date();
+    const label = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
 
-    // health_report.json issues (agent staleness, pipeline stalls, etc.)
-    const healthIssues = (healthData.issues || []).map(msg => ({
-        target: 'System',
-        type: 'degraded',
-        reason: msg
-    }));
+    cpuData.push(cpu);
+    memData.push(mem);
+    timeLabels.push(label);
 
-    const issues = [...containerIssues, ...healthIssues];
-    const decisions = decData.decisions || [];
-    
-    // 1. Build Summary
-    const summaryItem = document.createElement('div');
-    summaryItem.style.display = 'flex';
-    summaryItem.style.justifyContent = 'space-around';
-    summaryItem.style.padding = '1rem';
-    summaryItem.style.background = 'rgba(0,0,0,0.2)';
-    summaryItem.style.borderRadius = '8px';
-    summaryItem.style.marginBottom = '1rem';
-    
-    summaryItem.innerHTML = `
-        <div style="text-align: center">
-            <div style="font-size: 1.25rem; font-weight: 800; color: ${issues.length > 0 ? 'var(--danger)' : 'var(--success)'}">${issues.length}</div>
-            <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase">Anomalies</div>
-        </div>
-        <div style="text-align: center">
-            <div style="font-size: 1.25rem; font-weight: 800; color: ${decisions.length > 0 ? 'var(--warning)' : 'var(--success)'}">${decisions.length}</div>
-            <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase">Decisions</div>
-        </div>
-    `;
-    anomalyFeed.appendChild(summaryItem);
+    if (cpuData.length > MAX_POINTS)   { cpuData.shift(); }
+    if (memData.length > MAX_POINTS)   { memData.shift(); }
+    if (timeLabels.length > MAX_POINTS){ timeLabels.shift(); }
 
-    // 2. Determine what to list
-    if (issues.length === 0 && decisions.length === 0) {
-        const msg = document.createElement('div');
-        msg.style.textAlign = 'center';
-        msg.style.padding = '1.5rem 0';
-        msg.style.fontSize = '0.9rem';
-        msg.style.color = 'var(--text-secondary)';
-        msg.innerHTML = '<span style="color:var(--success); margin-right: 0.25rem">✓</span> System operating normally';
-        anomalyFeed.appendChild(msg);
-    } else {
-        // List Anomalies
-        if (issues.length > 0) {
-            const h = document.createElement('div');
-            h.style.fontSize = '0.8rem';
-            h.style.color = 'var(--text-secondary)';
-            h.style.marginBottom = '0.5rem';
-            h.innerText = 'Active Anomalies:';
-            anomalyFeed.appendChild(h);
-            
-            issues.forEach(issue => {
-                const item = document.createElement('div');
-                item.className = 'container-item';
-                item.innerHTML = `
-                    <div class="info">
-                        <div class="target">${issue.target}</div>
-                        <div class="reason" style="font-size: 0.75rem; color: var(--text-secondary)">${issue.reason}</div>
-                    </div>
-                    <div class="type status-pill ${issue.type === 'critical' ? 'offline' : 'loading'}">${issue.type}</div>
-                `;
-                anomalyFeed.appendChild(item);
-            });
-        }
-        
-        // List Decisions
-        if (decisions.length > 0) {
-            const h = document.createElement('div');
-            h.style.fontSize = '0.8rem';
-            h.style.color = 'var(--text-secondary)';
-            h.style.marginBottom = '0.5rem';
-            h.style.marginTop = '1rem';
-            h.innerText = 'Recent Decisions:';
-            anomalyFeed.appendChild(h);
-            
-            decisions.slice(0, 3).forEach(dec => { // Only show top 3 to keep it clean
-                const item = document.createElement('div');
-                item.className = 'container-item';
-                item.innerHTML = `
-                    <div class="info">
-                        <div class="target">${dec.action}</div>
-                        <div class="reason" style="font-size: 0.75rem; color: var(--text-secondary)">Target: ${dec.target}</div>
-                    </div>
-                    <div class="type status-pill loading" style="font-size: 0.65rem; text-transform: uppercase">${dec.status || 'executed'}</div>
-                `;
-                anomalyFeed.appendChild(item);
-            });
-        }
-    }
+    chart.update('none');
 }
 
-// 2. WebSocket Updates
+// ── Socket – real-time metrics ────────────────────────────────────
 socket.on('metrics_update', (data) => {
     const sys = data.system || {};
-    cpuVal.innerText = `${(sys.cpu || 0).toFixed(1)}%`;
-    cpuFill.style.width = `${sys.cpu || 0}%`;
-    
-    memVal.innerText = `${(sys.mem_gb || 0).toFixed(1)} GB`;
-    memFill.style.width = `${sys.mem || 0}%`;
+    const cpu = sys.cpu || 0;
+    const mem = sys.mem || 0;
+
+    // Stat cards
+    setText('stat-cpu', `${cpu.toFixed(1)}%`);
+    setText('stat-mem', `${(sys.mem_gb || 0).toFixed(1)} GB`);
+
+    // Push to chart
+    pushChartPoint(cpu, mem);
 });
 
-// Periodic refresh
-setInterval(refreshHealth, 5000);
-setInterval(refreshFleet, 5000);
-setInterval(refreshAnomalies, 10000);
+// ── Helpers ───────────────────────────────────────────────────────
+function setText(id, val) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+}
 
-init();
+function getStatusClass(status) {
+    const s = (status || '').toLowerCase();
+    if (s === 'running' || s === 'online') return 'running';
+    if (s === 'restarting') return 'restarting';
+    if (s === 'offline' || s === 'exited') return 'offline';
+    if (s === 'missing') return 'missing';
+    return 'unknown';
+}
+
+function getCpuClass(cpu) {
+    if (cpu >= 80) return 'cpu-crit';
+    if (cpu >= 50) return 'cpu-high';
+    return '';
+}
+
+// ── Health score ──────────────────────────────────────────────────
+async function refreshHealth() {
+    try {
+        const res  = await fetch('/api/health/report');
+        const data = await res.json();
+        const score = data.score || 0;
+        const verdict = data.verdict || 'Healthy';
+
+        setText('health-score', score);
+        const ring = document.getElementById('health-ring');
+        if (ring) {
+            const offset = 220 - (220 * score / 100);
+            ring.style.strokeDashoffset = offset;
+        }
+
+        const verdictEl = document.getElementById('system-verdict');
+        if (verdictEl) {
+            verdictEl.textContent = verdict.toUpperCase();
+            verdictEl.className = `badge ${score >= 80 ? 'running' : score >= 50 ? 'restarting' : 'offline'}`;
+        }
+    } catch (_) {}
+}
+
+// ── Container table ───────────────────────────────────────────────
+async function refreshFleet() {
+    try {
+        const [hRes, mRes] = await Promise.all([
+            fetch('/api/health/report'),
+            fetch('/api/metrics')
+        ]);
+        const hData = await hRes.json();
+        const mData = await mRes.json();
+
+        // Build metrics lookup
+        const metricsByName = {};
+        (mData.containers || []).forEach(c => {
+            metricsByName[c.name] = c;
+            metricsByName[c.name.replace('m3tal-', '')] = c;
+        });
+
+        const containers = hData?.agent_health?.monitor_containers?.containers || {};
+        const entries = Object.entries(containers);
+
+        // Stat cards
+        const online  = entries.filter(([,v]) => ['online','running'].includes((v.status||'').toLowerCase())).length;
+        const total   = entries.length;
+        setText('stat-containers-val', `${online} / ${total}`);
+        setText('stat-containers-sub', 'Running');
+
+        // Uptime
+        const uptimeEl = document.getElementById('stat-uptime');
+        if (uptimeEl && hData.uptime) uptimeEl.textContent = hData.uptime;
+
+        // Table body
+        const tbody = document.getElementById('fleet-tbody');
+        if (!tbody) return;
+
+        if (entries.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" class="loading-text">Waiting for agent data…</td></tr>';
+            return;
+        }
+
+        // Sort: running first
+        const order = { running: 0, online: 0, restarting: 1, offline: 2, missing: 3, unknown: 4 };
+        entries.sort((a, b) => (order[(a[1].status||'').toLowerCase()] ?? 4) - (order[(b[1].status||'').toLowerCase()] ?? 4));
+
+        tbody.innerHTML = entries.map(([name, info]) => {
+            const status = info.status || 'unknown';
+            const sc     = getStatusClass(status);
+            const m      = metricsByName[name] || {};
+            const cpu    = m.cpu  != null ? m.cpu.toFixed(1)  + '%' : '—';
+            const mem    = m.mem_usage || '—';
+            const uptime = info.raw_status || '—';
+            const cpuClass = m.cpu != null ? getCpuClass(m.cpu) : '';
+
+            return `
+                <tr>
+                    <td><span class="container-name">${name}</span></td>
+                    <td><span class="badge ${sc}">${status.toUpperCase()}</span></td>
+                    <td class="metric-cell ${cpuClass}">${cpu}</td>
+                    <td class="metric-cell">${mem}</td>
+                    <td class="metric-cell">${uptime}</td>
+                    <td>
+                        <div class="actions-cell">
+                            <button class="action-btn restart" title="Restart" onclick="doAction('restart','${name}')">↺</button>
+                            <button class="action-btn logs"    title="Logs"    onclick="doAction('logs','${name}')">≡</button>
+                            <button class="action-btn stop"    title="Stop"    onclick="doAction('stop','${name}')">■</button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    } catch (_) {}
+}
+
+// ── Activity feed ─────────────────────────────────────────────────
+async function refreshActivity() {
+    try {
+        const [aRes, hRes] = await Promise.all([
+            fetch('/api/anomalies'),
+            fetch('/api/health/report')
+        ]);
+        const aData = await aRes.json();
+        const hData = await hRes.json();
+
+        const feed = document.getElementById('activity-feed');
+        if (!feed) return;
+
+        const issues = [
+            ...(aData.issues || []).map(i => ({
+                title: i.target || 'Container',
+                sub:   i.reason || i.message || '',
+                type:  (i.type === 'critical') ? 'warn' : 'warn',
+                time:  formatTime()
+            })),
+            ...(hData.issues || []).map(msg => ({
+                title: 'System',
+                sub:   msg,
+                type:  'warn',
+                time:  formatTime()
+            }))
+        ];
+
+        const now = formatTime();
+
+        const pinned = [{
+            title: issues.length === 0 ? 'All systems operational' : `${issues.length} issue(s) detected`,
+            sub:   issues.length === 0 ? 'No issues detected'       : 'Review anomalies below',
+            type:  issues.length === 0 ? 'ok' : 'warn',
+            time:  now
+        }];
+
+        const all = [...pinned, ...issues].slice(0, 8);
+
+        const iconMap = { ok: '✓', warn: '⚠', info: 'ℹ' };
+
+        feed.innerHTML = all.map(item => `
+            <div class="activity-item">
+                <div class="activity-icon ${item.type}">${iconMap[item.type] || 'ℹ'}</div>
+                <div class="activity-text">
+                    <div class="activity-title">${item.title}</div>
+                    ${item.sub ? `<div class="activity-sub">${item.sub}</div>` : ''}
+                </div>
+                <div class="activity-time">${item.time}</div>
+            </div>
+        `).join('');
+    } catch (_) {}
+}
+
+function formatTime() {
+    const n = new Date();
+    return `${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}`;
+}
+
+// ── Actions (wired to /api/action) ───────────────────────────
+async function doAction(action, container) {
+    console.log(`Action: ${action} on ${container}`);
+    const btn = event.currentTarget;
+    const origHtml = btn.innerHTML;
+    btn.innerHTML = '⏳';
+    btn.disabled = true;
+
+    try {
+        const res = await fetch('/api/action', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ action, container })
+        });
+        const data = await res.json();
+        
+        if (data.ok) {
+            if (action === 'logs' && data.logs) {
+                // Show logs in an alert or custom overlay
+                alert(`Logs for ${container}:\n\n${data.logs.substring(0, 1000)}${data.logs.length > 1000 ? '...' : ''}`);
+            } else {
+                btn.style.background = 'var(--green-dim)';
+                btn.style.color = 'var(--green)';
+                setTimeout(() => {
+                    btn.style.background = '';
+                    btn.style.color = '';
+                }, 2000);
+            }
+        } else {
+            alert(`Error: ${data.error || 'Failed'}`);
+            btn.style.background = 'var(--red-dim)';
+            btn.style.color = 'var(--red)';
+        }
+    } catch (e) {
+        alert(`Request failed: ${e.message}`);
+    } finally {
+        setTimeout(() => {
+            btn.innerHTML = origHtml;
+            btn.disabled = false;
+        }, action === 'logs' ? 0 : 2000);
+    }
+}
+
+async function doGlobalAction(action) {
+    console.log(`Global action: ${action}`);
+    
+    // Add confirmation for reboot
+    if (action === 'reboot' && !confirm('Are you sure you want to reboot the entire host system?')) {
+        return;
+    }
+
+    const btn = event.currentTarget;
+    const origHtml = btn.innerHTML;
+    btn.innerHTML = '⏳ Processing...';
+    btn.disabled = true;
+
+    try {
+        const res = await fetch('/api/action', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ action })
+        });
+        const data = await res.json();
+        
+        if (data.ok) {
+            if (action === 'status') {
+                 alert(`Status:\nScore: ${data.score}%\nVerdict: ${data.verdict}\nSystem: ${data.system}`);
+            } else {
+                 btn.innerHTML = `✅ ${data.message || 'Success'}`;
+            }
+        } else {
+            alert(`Error: ${data.error || 'Failed'}`);
+            btn.innerHTML = '❌ Error';
+        }
+    } catch (e) {
+        alert(`Request failed: ${e.message}`);
+        btn.innerHTML = '❌ Failed';
+    } finally {
+        setTimeout(() => {
+            btn.innerHTML = origHtml;
+            btn.disabled = false;
+        }, 3000);
+    }
+}
+
+// ── Boot ──────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    initChart();
+    refreshHealth();
+    refreshFleet();
+    refreshActivity();
+
+    setInterval(refreshHealth,   5000);
+    setInterval(refreshFleet,    8000);
+    setInterval(refreshActivity, 12000);
+});
